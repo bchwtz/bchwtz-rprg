@@ -1,0 +1,35 @@
+on:
+  push:
+     branches:
+       - main
+
+name: Render and deploy GitBook
+
+env:
+      GITHUB_PAT: ${{ secrets.GH_PAT }}
+      
+jobs:
+  bookdown:
+    name: Render-and-Deploy
+    runs-on: ubuntu-20.04
+    container: ghcr.io/bchwtz/courserunner:latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@main
+      - name: Ensure latest FHSWF Package Version
+        run: Rscript -e 'remotes::install_github("bchwtz/fhswf", upgrade = "never")'
+      - name: Render Slides
+        run: cd slides; make clean pdf gif clean-cache; cd ..
+      - name: Render Book
+        run: Rscript -e 'bookdown::render_book("index.Rmd")'
+      - name: Copy Slide Directory
+        run: cp -r slides _book
+      - name: Copy Data Directory
+        run: cp -r data _book
+      - name: Deploy to GitHub Pages
+        uses: Cecilapp/GitHub-Pages-deploy@v2
+        env:
+           EMAIL: ${{ secrets.EMAIL }}               # must be a verified email
+           GH_TOKEN: ${{ secrets.GH_PAT }} # https://github.com/settings/tokens
+           BUILD_DIR: _book/                     # "_site/" by default
+ 
