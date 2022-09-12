@@ -1,0 +1,180 @@
+# Kontrollstrukturen und Funktionen 
+
+Im Vergleich zu C++, C# und Java unterscheidet sich R stark von der Art und Weise wie komplexere Datenstrukturen aufgebaut sind. Dies werden wir erst im nächsten Kapitel genauer beleuchten. Große und erst einmal nicht so offensichtliche Unterschiede gibt es aber auch bei Variablen, während es im Bereich Kontrollstrukturen und Funktionen weniger Überraschungen gibt, wie wir in diesem Kapitel sehen werden.
+
+## 3.1	Namen und Objekte: Ein erster Vergleich mit C und C++ 
+
+Im Folgenden setzen wir Grundkenntnisse in C und C++ voraus und wollen erste grundlegende Unterschiede zwischen R und C bzw. C++ beleuchten. Wie wir sehen werden, gibt es viele Ähnlichkeiten. R wird ähnlich wie C durch Blöcke strukturiert, die durch geschweifte Klammern gekennzeichnet werden. Auch Kontrollstrukturen wie Verzweigungen mithilfe von `if-else` oder Schleifen (`while` oder `for`) haben eine ähnliche Syntax und Semantik.
+
+Erste augenfällige Unterschiede:
+
++ Im Gegensatz zu C wird R interpretiert!  Welche Vor- und Nachteile ergeben sich dadurch?
+
++	In R wird üblicherweise der Operator <- für eine Zuweisung benutzt (obwohl auch der in C benutzte Zuweisungsoperator = benutzt werden kann)
+
++ In R werden Anweisungen nicht durch ein Semikolon abgeschlossen.
+
+Variablen sind ein grundlegendes Konzept beider Sprachen; aber es gibt große und weitreichende Unterschiede. Wir wollen dies an einem Beispiel veranschaulichen. Um R wirklich zu verstehen, ist es hilfreich, diese Unterschiede zu kennen.
+
+Hier und im Folgenden werden wir den Begriff *„Objekt“* benutzen. Damit meinen wir nicht ein Objekt im objektorientierten Sinn (also eine Instanz einer Klasse), sondern wollen damit einen Speicherbereich in der Ausführungsumgebung bezeichnen, der neben eventuell zusätzlichen Metadaten Bitfolgen enthält, die als Werte eines bestimmten Datentyps interpretiert werden können.
+
+in C:
+
+```{r, echo=TRUE, eval=FALSE}
+int n = 5;
+```
+
+Es wird ein Objekt im Speicher angelegt, das groß genug ist, einen `int`-Wert zu repräsentieren, aber nicht größer. Auf einem üblichen PC ist das so erzeugte Objekte genau 4 Byte groß und der entsprechende Speicherbereich enthält die Dualdarstellung von 5 (also 29 Nullen gefolgt von 101). Der Variablenname n ist nun der Bezeichner für dieses Objekt (oder Speicherbereich); man kann auch sagen: das so erzeugte Objekt hat den Namen `n`.
+
+Solange `n` gültig (und sichtbar) ist, ist `n` immer ein Bezeichner für einen `int`-Wert, dessen Binärdarstellung stets im selben Speicherbereich hinterlegt ist. Also bezieht sich n immer auf denselben Speicherbereich.
+
+Der zugehörige Wert von `n` kann sich ändern, z. B. durch eine Zuweisung oder eine Anweisung wie `n++`. Nicht ändern kann sich aber der Datentyp (in unserem Fall `int`). Bereits beim Kompilieren wird `n` an den Datentyp `int` gebunden. Man spricht in diesem Zusammenhang von *frühen Binden (early binding)* im Gegensatz zum *späten Binden (late binding)*, die wir in R vorfinden.
+
+in R:
+
+```{r, echo=TRUE, eval=FALSE}
+n <- 5
+```
+
+Auch hier wird ein Objekt in einem Speicherbereich erzeugt. Im Gegensatz zu C kann man aber in R nicht direkt auf diesen Speicherbereich zugreifen. Auch ist der benutzte Speicherbereich viel größer: auf dem hier benutzten System sind dies 56 Byte für eine 64-Bit-Version von R; eine 32-Bit-Version von R braucht ein paar Byte weniger (wieso?), vielleicht 32 Byte:
+
+```{r, echo=TRUE, eval=TRUE}
+n <- 5
+str(n)
+object.size(n)
+```
+
+Die Funktion `object.size()` gibt die Speichergröße des übergebenen Objekts zurück; dies ist allerdings nur ein geschätzter Wert und kann ungenau sein, insbesondere wenn Teile der Daten mit anderen Objekten geteilt werden.
+
+Bemerkung
+
++ Die Punktnotation `object.size()` ist für C++-Programmierer in diesem Zusammenhang recht  ungewohnt. `size()` ist hier keine Methode des Objekts (oder der Klasse bzw. Struktur) `object`, sondern bezeichnet eine Funktion und keine Methode. Viele C++-Programmierer würden die Funktion stattdessen `objectSize()` oder `object_size()` nennen.
+
+Das nächste Quelltextbeispiel zeigt, dass sowohl durch `n <- c(5,7)` als auch durch `n <- 5` ein Vektorobjekt (vom Typ `double`) erzeugt wird:
+
+```{r, echo=TRUE, eval=TRUE}
+n <- c(5, 7)
+str(n)
+typeof(n)
+is.vector(n)
+length(n)
+n <- 5
+str(n)
+typeof(n)
+is.vector(n)
+length(n)
+```
+
+Die Funktion `length()` gibt die Länge, also die Anzahl der Elemente im Vektor, zurück, während die Funktion `typeof()` den Typ zurückgibt. Die Funktion  `is.vector()` gibt den booleschen Wert TRUE zurück, falls es sich um einen „echten“ Vektor handelt (dazu später mehr, oder siehe `?is.vector`); in allen anderen Fällen wird `FALSE`  zurückgegeben. 
+
+R kennt also keine skalaren Werte. Durch die Zuweisung `n <- 5` wird n nicht an den skalaren Wert 5 gebunden, sondern an einen Vektor der Länge 1! Wenn wir im Folgenden trotzdem von skalaren Werten sprechen, dann meinen wir implizit Vektoren der Länge 1.
+
+Fragen
+
++ Welche Funktion gibt es in R, deren Funktionsnamen mit „is.“ beginnen und was bewirken sie?
+
++	Wird durch `n <- TRUE` auch ein Vektorobjekt erzeugt?
+
+Im Gegensatz zu Programmiersprachen wie C, C++, C# oder Java haben Variablen in R keinen festen Datentyp. In R verweisen (oder zeigen) Variablen auf Objekte; man sagt auch, dass eine Variable an ein Objekt gebunden ist. 
+Während in C und C++ dieser Verweis (ähnlich wie eine Referenz) dauerhaft ist, kann sich in R diese Bindung durch eine Zuweisung ändern:
+
+```{r, echo=TRUE, eval=TRUE}
+x <- 5
+typeof(x)
+str(x)
+x[1]
+x[2]
+
+x <- 1:1000
+typeof(x)
+str(x)
+x <- c("eins", "zwei", "drei")
+typeof(x)
+str(x)
+```
+
+`1:1000` ist ein Vektor vom Typ `integer`, der die ganzen Zahlen von 1 bis 1000 umfasst; dies ist identisch zu `seq(from = 1, to = 1000, by = 1)` (was wiederum identisch zu `seq(from = 1, to = 1000)` ist, siehe `?seq`). 
+
+Durch `x <- c("eins", "zwei", "drei")` wird `x` an einen Vektor vom Typ `character` gebunden, der die Länge 3 hat. Variablen werden in R erst während der Laufzeit (und nicht schon beim Kompilieren) an ein Objekt gebunden (*late binding*). Somit hat eine Variable keinen festen Datentyp, sondern eine Variable ist an ein Objekt gebunden, dem ein fester Datentyp zugeordnet ist. Wir sagen in diesem Zusammenhang auch, dass die Variable auf das Objekt *verweist*.
+
+Im Gegensatz zu C enthält in R jedes Objekt zusätzlich sogenannte *Metadaten*, die u. a. den Typ des Objekts beschreiben (siehe z. B. [Wickham_AdvR], Abschnitt 18.1: Object size, Seite 379 oder [R_ints], Abschnitt 1.1).
+Zwei oder mehrere Variablen können auf dasselbe Objekt verweisen (d.h. an dasselbe Objekt gebunden sein):
+
+```{r, echo=TRUE, eval=TRUE}
+a <- c(1, 5, 3, 2)
+b <- a
+```
+
+Durch die Zuweisung `b <- a` wird kein neues Objekt erzeugt (`a` wird also nicht in `b` kopiert)!\newline
+Werden allerdings `a` oder `b` verändert, dann wird umkopiert und die Variablen `a` und `b` zeigen dann auf unterschiedliche Objekte
+
+```{r, echo=TRUE, eval=TRUE}
+a <- c(1, 5, 3, 2)
+b <- a
+b[2] <- 0
+a
+b
+```
+
+Erst durch die Änderung `b[2] <- 0`
++	erzeugt R eine Kopie des Objekts, das an den Bezeichner `a` gebunden ist
+
++ ändert sich die Kopie entsprechend
+
++	wird der Name `b` an das neue Objekt gebunden.
+
+Dieses Verhalten wird auch als *copy-on-modify* bezeichnet.\newline
+Ein Objekt kann mithilfe der Funktion `rm()` auch wieder gelöscht werden:
+
+```{r, echo=TRUE, eval=TRUE}
+rm(b)
+b
+```
+
+Die Anweisung `rm(list=ls())` löscht ohne Warnung alle Objekte! (Mit `ls()` erhalten Sie ein Vektor aller erzeugten Objekte)
+
+
+Im Gegensatz zu C und C++ gibt es in R einen *Garbage Collector*, kurz auch mit GC bezeichnet Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z. B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund ohne dass der GC explizit aufgerufen werden muss (siehe auch `?gc`). Man kann den GC explizit mit gc() aufrufen (siehe `?gc`), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe `used`) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe `gc trigger`).
+
+```{r, echo=FALSE, eval=TRUE}
+library(dplyr)
+df <- data.frame(cells = c("used", "(Mb)", "gc (trigger)", "(Mb)", "max used", "(Mb)"),
+                 Ncells = c(438523, 23.5, 938047, 50.1, 621888, 33.3),
+                 Vcells = c(100729739, 768.6, 147642767, 1126.5, 100729820, 768.6))
+knitr::kable(t(df), booktabs = T)%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+**Kurzzusammenfassung**
+
+> - Objekt
+> - R kennt keine skalaren Werte (sondern es werden Vektoren der Länge 1 für skalare Werte genutzt)
+> - In R verweisen Variablen auf Objekte; man sagt auch, dass eine Variable an ein Objekt gebunden ist
+> -	Eine Variable hat keinen festen Datentyp, sondern ist an ein Objekt gebunden, dem ein fester Datentyp zugeordnet ist
+> -	Jedes Objekt hat zusätzlich sogenannte *Metadaten*, die u. a. den Typ des Objekts beschreiben
+> -	`object.size()`
+> - `length()`
+> -	`typeof()`
+> -	`is.vector()`
+> -	R nutzt *copy-on-modify*
+> -	Garbage Collection
+> - `1:1000` ist ein Vektor vom Typ integer, der die ganzen Zahlen von 1 bis 1000 umfasst
+> -	*late binding*: Variablen werden erst während der Laufzeit an ein Objekt gebunden  
+
+## Funktionen
+
+Neben Objekten sind Funktionen ein zentraler Bestandteil von R. Mit Funktionen können Anweisungen zu einer Einheit zusammengefasst werden. Dadurch kann Quelltext strukturiert werden und die durch die Funktion beschriebene Funktionalität mehrfach in einem Programm verwandt werden. Funktion sind in R sogenannte *„first-class-objects“*; d.h. es sind in der Tat Objekte, die fast immer wie andere „Datenobjekte“ (Vektoren, Tabellen, Listen, …) benutzt werden können.
+
+Im Folgenden gehen wir davon aus, dass Sie mit dem Konzept einer Funktion vertraut sind, so wie es zum Beispiel in C, C++ oder Java verwandt wird.   \newline
+Ähnlich wie in anderen Programmiersprachen wird in R eine Funktion durch eine Anweisung der folgenden Form definiert:\newline
+`function(arg_1, arg_2, ...) epxression`
+
+Hierbei bezeichnet `arg_1, arg_2, ...` eine Liste der formalen Funktionsparameter und `expression` den *Funktionskörper*, der in der Regel aus einem durch geschweifte Klammern begrenzten Block von Anweisungen besteht. Insgesamt wird hierdurch ein Objekt erzeugt (eine sogenannte *anonyme Funktion*), das aber an keinem Namen gebunden ist. Ein Name wird aber gebraucht, wenn man die Funktion aufrufen will! Daher wird in der Regel eine Funktion in einer Zuweisung definiert, die dann folgende Form hat:\newline
+`name <-function(arg_1, arg_2, ...) expression`
+
+Solange die Variable `name` an das Funktionsobjekt gebunden ist, kann die Funktion dann durch `name (arg_1, arg_2, ...)` aufgerufen werden.\newline
+Ein einfaches Beispiel mit drei formalen Funktionsparametern x, y und z soll dies illustrieren:
+
+
+
+
