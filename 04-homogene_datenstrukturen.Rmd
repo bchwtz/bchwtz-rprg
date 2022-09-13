@@ -1,0 +1,889 @@
+# Homogene Datenstrukturen
+
+Bevor wir auf die wesentlichen Strukturen für Daten eingehen werden, wollen wir kurz grund-sätzlich auf Objekte eingehen.
+
+## Wichtige Eigenschaften von Objekten
+
+Wie bereits gesehen gilt laut John M. Chambers: *„alles, was [in R] existiert, ist ein Objekt“*. Dies trifft sowohl für Datencontainer zu wie z. B. Vektoren als auch für Funktionen oder Na-men.
+
+### `typeof()`
+
+Jedes Objekt hat in R einen zugrundeliegenden Datentyp (kurz Typ), den man mithilfe der Funktion `typeof()` abrufen kann:
+
+```{r, echo=TRUE, eval=TRUE}
+a <- 42
+typeof(a)
+
+x <- 1:10
+typeof(x)
+
+z <- c(1, 2, 3)
+typeof(z)
+
+f3 <- function (x, y, z){
+  x + 2 * y + 3 * z
+}
+typeof(f3)
+
+typeof(sqrt)
+```
+
+Aus der Ausgabe entnehmen wir, dass `x` ein `integer`-Vektor ist und `a` und `z` jeweils `double`-Vektoren sind. Wir haben gesehen, dass R keine skalaren Datentypen hat: ein skalarer Wert wird stets dargestellt durch einen Vektor der Länge eins. Es gibt auch keinen Datentyp Vektor, sondern es gibt verschiedene Vektor-Datentypen wie `integer`-Vektor oder `double`-Vektor.
+
+Weiterhin zeigt die Ausgabe, dass die Funktion `f3()` den Datentyp `closure` besitzt, während die Wurzelfunktion `sqrt()` vom Datentyp `builtin` ist. Zum Teil werden wir auf die einzel-nen Datentypen im Verlauf dieses Skriptes näher eingehen. Neben dem Typ spielen Attribute bei Objekten eine wichtige Rolle. 
+
+Fragen
+
++ Welchen Datentyp hat `NULL`?
+
++ Welchen Datentyp hat `NA`?
+
++ Welchen Datentyp hat `Nile`?
+
+### `length()`
+
+Neben dem Typ hat jedes Objekt in R eine Länge, die die Funktion `length()` zurückgibt:
+```{r, echo=TRUE, eval=TRUE}
+x <- 1:10
+length(x)
+```
+
+Für manche Objekttypen wie z. B. Funktionsobjekte beinhaltet die Längeninformation aller-dings keine zusätzlichen Informationen. Die Eigenschafen Typ und Länge werden oft auch „intrinsische Attribute“ genannt. 
+
+### Attribute
+
+Grundsätzlich kann jedem Objekt eine Menge von Attributen zugeordnet sein und zwar in Form einer „`key-value`“ Beziehung. `key` ist dabei stets eine Zeichenkette, wohingegen `value` ein beliebiger Datentyp sein kann. 
+
+Mit `attributes()` erhält man eine Liste aller zugeordneten Attribute.
+```{r, echo=TRUE, eval=TRUE}
+x <- 1:10
+attributes(x)
+```
+
+Die Ausgabe zeigt, dass der Vektor `x` keine zugeordneten Attribute besitzt. Wir werden bald sehen, dass komplexere Datenstrukturen wie Matrix oder Data Frame durchaus unterschiedli-che Attribute besitzen; dies sieht man auch an dem Datensatz `Nile`:
+```{r, echo=TRUE, eval=TRUE}
+attributes(Nile)
+```
+
+Das Objekt Nile hat also zwei Attribute: „tsp“, das Anfangs- und Endzeit und Frequenz be-schreibt, und „class“, das den Wert „ts“ hat (und für *time series* steht).  
+
+Wie wir später ebenfalls sehen werden, können mithilfe der Funktion `attr()` Attribute gesetzt und verändert werden. Einige Attribute nehmen dabei jedoch eine Sonderrolle  ein, nämlich  „class“, „comment“, „dim“, „dimnames“, „names“, „row.names“ und „tsp“. Für diese Attribute gibt es auch bestimmte Einschränkungen und in der Regel werden spezielle Funktionen bereitgestellt (wie z. B. `names()` oder `class()`), um das entsprechende Attribut zu verändern oder zu setzen. 
+
+Das Attribut „class“ spielt eine zentrale Rolle bei der objektorientierten Programmierung; es ist ein character-Vektor, der die Namen der Oberklassen enthält. Genaugenommen unterstützt R unterschiedliche objektorientierte Systeme, das gebräuchlichste ist S3.
+
+Auch wenn das class-Attribut nicht explizit gesetzt ist, dann gibt der Funktionsaufruf `class()` einen Wert zurück wie „matrix“, „array“, „function“ or „numeric“ oder das Resultat von 
+`typeof()`.
+
+```{r, echo=TRUE, eval=TRUE}
+class(1:10)
+
+class(c(1, 2, 3))
+
+class(sqrt)
+
+class(NULL)
+
+class(Nile)
+```
+
+**Kurzzusammenfassung**
+
+> - `typeof()`
+> - `length()`
+> - `attributes()`
+> - `class()`
+
+## (Atomic) Vector
+
+Vektoren haben wir bereits kennengelernt. Streng genommen gibt es zwei Arten von Vektoren: *atomare Vektoren* und *Listen*. Im Folgenden meinen wir jedoch immer atomare Vektoren, wenn wir von Vektoren reden! 
+
+Ein Vektor ist wie ein Feld (array) eine Datenstruktur, die eine Folge von Elementen desselben Typs enthält, die in aufeinander folgenden Speicherbereichen abgelegt sind. Wie in C haben wir mithilfe des Indexoperators `[]` wahlfreien Zugriff auf die einzelnen Elemente des Vektors. Aber im Gegensatz zu C und vielen anderen Programmiersprachen beginnt die Indexierung in R nicht bei 0, sondern bei 1!
+
+Es gibt sechs unterschiedliche Vektor-Datentypen: `logical`, `integer`, `double`, `complex`,  `character` und `raw`, die den jeweils zugrundeliegenden Datentyp (d. h. den Typ eines Vekto-relements) charakterisieren.
+
+Auf `raw` werden wir im Folgenden nicht weiter eingehen. Im nächsten Quelltextbeispiel sehen wir Vektoren der Länge 2, die jeweils einen unterschiedlicher Vektor-Datentypen haben:
+
+```{r, echo=TRUE, eval=TRUE}
+x1 <- c(T, F)           # logical (entspricht booleschen Wert)
+x2 <- 4:5               # integer
+x3 <- c(4, 5)           # double
+x4 <- c(4 + 1i, 5 + 2i) # complex
+x5 <- c("vier", "5")    # character (entspricht einer Zeichenkette)
+```
+
+Dabei wurden die Abkürzungen `T` und `F` für `TRUE` und `FALSE` benutzt. `character` bezieht sich nicht auf ein einzelnes Zeichnen, sondern stets auf eine Zeichenkette (die leer sein kann oder aus ein oder mehreren Zeichen bestehen kann). Zeichenketten können in R mit einfachen oder doppelten Anführungszeichen geschrieben werden. Statt `c("vier", "5")` hätten wir also auch `c('vier','5')` schreiben können. Wir werden in der Regel die doppelten Anführungszeichen benutzen, es sei denn, wir wollen eine Zeichenkette verwenden, die selbst doppelte Anführungszeichen enthält wie `'Eine Zeichenkette die "doppelte" Anführungszeichen enthält'`.
+
+Aus zum Teil historischen Gründen sind die Bezeichnungen nicht immer konsistent. Aus Kompatibilitätsgründen mit S gibt es neben `typeof()` auch die ähnlichen Funktionen `mode()` und `storage.mode()`, die aber zum Teil unterschiedliche Bezeichnungen zurückgeben, wie aus der folgenden Tabelle hervorgeht:
+
+(ref:typeofmodestor) Die Funktionen `typeof()`, `mode()` und `storage.mode()` im Überblick.
+
+```{r, echo=FALSE, eval=TRUE}
+df <- data.frame(typeof = c("logical", "integer", "double", "complex", "character", "raw"),
+                 mode = c("logical", "numeric", "numeric", "complex", "character", "raw"),
+                 storage.mode = c("logical", "integer", "double", "complex", "character", "raw"))
+knitr::kable(df, booktabs = T, caption = "(ref:typeofmodestor)")%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+`numeric` kann also sowohl für `integer` als auch `double` für stehen. Die Inkonsistenz der Bezeichnung wird auch bei `str()` deutlich: 
+
+```{r, echo=TRUE, eval=TRUE}
+str(x2)
+
+str(x3)
+```
+
+Ein Vektor ist *homogen*, d. h. alle Elemente haben den gleichen zugrundeliegenden Datentyp. Was passiert aber, wenn wir versuchen, einen `integer`-Wert wie 3L und einen `double`-Wert wie 5.1 zu einem neuen Vektor zusammenzufassen?
+
+```{r, echo=TRUE, eval=TRUE}
+typeof(x)
+
+typeof(x[1])
+```
+
+Offensichtlich wird der „kleinere“ Datentyp in den „größeren“ Datentyp umgewandelt (*coercion*) und wir erhalten einen `double`-Vektor. Ebenso:
+
+```{r, echo=TRUE, eval=TRUE}
+z <- c(3.1, 1L, "drei", 2 + 4i)
+typeof(z)
+
+str(z)
+```
+
+
+### Filter und Vektor-Indizierung
+
+Wir haben bereits gesehen, dass durch `x[n]` das `n`-te Element im Vektor `x` angesprochen wird, falls `n` eine natürliche Zahl ist. Dies ist in R verallgemeinert worden: `n` kann auch ein Vektor sein, wie man aus der folgenden Tabelle entnehmen kann:
+
+(ref:vekindiz) Beispiele Vektor-Indizierung.
+
+```{r, echo=FALSE, eval=TRUE}
+df <- data.frame(cone = c("n", "u", "x", "x[n]", "x[-n]", "x[1:n]", "x[-(1:n)]", "x[u]", "x[x > 7]", "x[x >= 3 & x <= 7]", "x[x %in% u]"),
+                 ctwo = c("Ausgangswerte:", "Ausgangswerte:", "Ausgangswerte:", "das n-te Element", "alle, bis auf n-te Elemente", "die ersten n Elemente", "alle bis auf die ersten n Elemente", "die Elemente x[u[1]], x[u[2]], x[u[3]]", "alle Elemente größer als 7", "die Elemente zwischen 3 und 7", "alle Elemente, die in U enthalten sind"),
+                 cthree = c("4", "6 1 3", "3 6 9 12 15 18", "12", "3 6 9 15 18", "3 6 9 12", "15 18", "18 3 9", "9 12 15 18", "3 6", "3 6"))
+knitr::kable(df, booktabs = T, col.names = c("", "", ""), caption = "(ref:vekindiz)")%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+Beispielhaft wollen wir die drittletzte Zeile kurz erläutern. Was bedeutet `x > 7`? Durch Recycling wird aus dem skalaren Wert 7 der Vektor (7, 7, 7, 7, 7, 7), der nun mit `x` elementweise verglichen wird. Das Ergebnis dieses Vergleichs ist der Vektor `(FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)`. Entsprechend besteht `x[x > 7]` daher aus dem 3., 4., 5. und 6. Ele-ment von `x`. 
+
+Ganz ähnlich ergibt sich das Beispiel in der letzten Zeile; hierzu sei angemerkt, dass  `x %in% u` den Vektor `(T, T, F, F, F, F)` zurückgibt.
+
+Auf eine weitere Möglichkeit der Vektor-Indizierung mithilfe des Namens (also der Form `x["einNamen"]`) werden wir in 4.2.4 eingehen.
+
+Die Funktion `subset()` bietet eine ähnliche Filterfunktion wie `x[x > 7]`, unterscheidet sich jedoch dadurch, dass sie automatisch NA-Werte ausschließt. In unserem Fall liefert sie ein identisches Ergebnis:
+
+```{r, echo=TRUE, eval=TRUE}
+subset(x, x > 7)
+```
+
+Die Funktion `which()` kann ebenfalls für Filteraufgaben benutzt werden. Im Gegensatz zu `x[x > 7]` gibt `which(x > 7)` nicht die entsprechenden Elemente von `x` sondern die korrespondierenden Indexwerte zurück:
+
+```{r, echo=TRUE, eval=TRUE}
+which(x > 7)
+```
+
+Ein Sonderfall sollte vielleicht noch an dieser Stelle erwähnt werden: `x[0]` liefert einen leeren Vektor zurück.
+
+Nützlich sind auch die Funktionen `any()` und `all()`. Sie geben zurück, ob mindestens ein Element oder alle Elemente die übergebene Bedingung erfüllen (eine detaillierte Erklärung benutzt wieder Recycling):
+
+```{r, echo=TRUE, eval=TRUE}
+any( x %% 4 == 0)
+all(x > 4)
+```
+
+
+### Elemente einfügen
+
+Mithilfe von Wiederzuweisung und Verkettung kann man Elemente in Vektoren einfügen:
+
+```{r, echo=TRUE, eval=TRUE}
+x <- 3L * (1:8)
+x
+x <- c(x, 5L) # 5 am Ende hinzufügen
+x
+x <- c(x[1:3], 20L, x[4:length(x)]) # 20 als 4. Element einfügen
+x 
+```
+
+
+### Test auf Gleichheit
+
+Die Funktion `identical()` testet, ob zwei Objekte exakt gleich sind. Betrachten Sie hierzu folgendes Beispiel: 
+
+```{r, echo=TRUE, eval=TRUE}
+u <- 1:3
+v <- c(1, 2, 3)
+all(u == v)
+identical(u, v)
+```
+
+Die Vektoren u und v haben zwar gleiche Werte aber unterschiedliche Datentypen; daher liefert `identical(u,v)` den Wert `FALSE` zurück, im Gegensatz zu `u == v`, das den Vektor `(TRUE, TRUE, TRUE)` zurückgibt.
+
+### Elementnamen
+
+Den Elementen eines Vektors können optional Namen zugeordnet werden:
+
+```{r, echo=TRUE, eval=TRUE}
+x <- c(a = 1, b = 2, 3, delta = 4)
+x
+x[1]
+typeof(x[1])
+is.vector(x)
+```
+
+Das so erzeugte Objekt hat nun ein Attribut „names“, das eine Liste von Zeichenketten enthält:
+```{r, echo=TRUE, eval=TRUE}
+attributes(x)
+```
+
+Mithilfe der Funktion `names()` können die Namen der Elemente sowohl abgerufen als auch gesetzt werden:
+
+```{r, echo=TRUE, eval=TRUE}
+names(x)
+names(x) <- c("alpha", "beta", "gamma", "delta")
+names(x)
+str(x)
+```
+
+Nun können wir auch über den Namen auf einzelne Elemente zugreifen:
+```{r, echo=TRUE, eval=TRUE}
+x["beta"]
+```
+
+Dies wollen wir als Nächstes in einem kleinen Beispiel illustrieren. `letters` und `LETTERS` sind (ebenso wie `pi`) in R eingebaute Konstanten. Sie sind Vektoren, die jeweils die 26 Buchstaben des Alphabets (ohne Umlaute) in Klein- bzw. Großschreibung beinhalten:
+
+```{r, echo=TRUE, eval=TRUE}
+letters
+
+LETTERS
+```
+
+Somit können wir nun schreiben:
+```{r, echo=TRUE, eval=TRUE}
+x <- 1:20
+names(x) <- LETTERS[1:length(x)]
+x
+str(x)
+x["H"]
+```
+
+**Kurzzusammenfassung**
+
+> - `logical`, `integer`, `double`, `complex`, `character`
+> -	`numeric`
+> -	Ein Vektor ist homogen
+> -	*Coercion*
+> -	Vektor-Indizierung
+> -	`x > 7`
+> -	`x %in% u`
+> -	leerer Vektor: `x[0]` 
+> -	`which()`
+> -	`subset()`
+> -	`any()` und `all()`
+> -	`identical()` vs. `==`
+> -	`names()`
+> -	`letters` und `LETTERS`
+
+
+## Matrix und Array
+
+Matrizen sind aus der Mathematik bekannt; in Sprachen wie C entsprechen sie zweidimensio-nalen Feldern. In R sind Matrizen einfach Vektoren, die mit einem zusätzlichen Attribut „dim“ (und einem optionalen Attribut „dimnames“) versehen sind; das Attribut „dim“ ist ein numerischer Vektor der Länge zwei, der die Matrixdimensionen festlegt: die Anzahl der Zeilen und die Anzahl der Spalten. Wie wir sehen werden gilt:
+
+Matrix = Vektor + Attribut: dim (Vektor der Länge 2) + Attribut (class = "matrix") + Optionales Attribut: "dimnames"
+
+
+### Matrizen einfügen
+
+In R können Matrizen u. a. erzeugt werden durch:\newline
+`matrix(data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL)`
+
+(ref:argmatrix) Argumente der Funktion `matrix()`.
+
+```{r, echo=FALSE, eval=TRUE}
+df <- data.frame(Argumente = c("data", "nrow", "ncol", "byrow", "dimnames"),
+                 Bedeutung = c("zugrundeliegender Datenvektor", "Anzahl der Zeilen", "Anzahl der Spalten", "Falls TRUE, wird der Datenvektor zeilenweise interpretiert, sonst spaltenweise", "Setzt das Attribut 'dimnames', mit dem Namen für die Matrixdimensionen gesetzt werden können: siehe ?matrix"))
+knitr::kable(df, booktabs = T, caption = "(ref:argmatrix)")%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+Da in `matrix()` alle Argumente optional sind, ergibt sich im einfachsten Fall:
+```{r, echo=TRUE, eval=TRUE}
+matrix()
+```
+
+Im nächsten Beispiel sehen wir, dass die Daten spaltenweise eingelesen werden:
+```{r, echo=TRUE, eval=TRUE}
+A <- matrix(1:6, nrow = 2)
+A
+str(A)
+```
+
+Durch `byrow=TRUE` kann dies geändert werden:
+
+```{r, echo=TRUE, eval=TRUE}
+B <- matrix(1:6, nrow = 2, byrow = TRUE)
+B
+str(B)
+```
+
+Intern wird jedoch eine Matrix stets spaltenweise im Speicher abgelegt. Also sind für eine 2×3-Matrix wie A (d.h. zwei Zeilen und drei Spalten) die Elemente: `A[1,1]`, `A[2,1]`, `A[1,2]`, `A[2,2]`, `A[1,3]`, `A[2,3]` in aufeinanderfolgenden Speicherbereichen abgelegt.
+
+Mit `cbind()` (column bind) erhält man das gleiche Ergebnis:
+
+```{r, echo=TRUE, eval=TRUE}
+c <- cbind(1:2, 3:4, 5:6)
+c
+```
+
+Alternativ kann auch `rbind()` (row bind)
+```{r, echo=TRUE, eval=TRUE}
+D <- rbind(c(1, 3, 5), c(2, 4, 6))
+D
+```
+
+Einen kleinen Unterschied gibt es allerdings: da wir nicht `rbind(c(1L, 3L, 5L), c(2L, 4L, 6L))` geschrieben haben, ist der zugrundeliegende Datentyp nun `double` und nicht wie vorher `integer`
+
+Auf die einzelnen Elemente kann wie gewohnt zugegriffen werden:
+```{r, echo=TRUE, eval=TRUE}
+D[2,3] <- 24
+D
+```
+
+Frage:
+
++ Durch `A <- matrix(1:6, nrow=2); A[1,1] = 3` wird auf jeden Fall die Matrix A umkopiert, wieso?
+
+Die Matrix A ist eine 2×3-Matrix, wie man leicht mithilfe der Funktion `dim()` oder den Funktionen `nrow()` bzw. `ncol()` herausfindet:
+```{r, echo=TRUE, eval=TRUE}
+A <- matrix(1:6, nrow = 2)
+dim(A)
+nrow(A)
+ncol(A)
+```
+
+Die nächste Ausgabe zeigt auch, dass die Funktionen `nrow()` und `ncol()` einfache „Helferfunktionen“ sind, die jeweils das erste bzw. zweite Element von `dim()` zurückgeben.
+
+```{r, echo=TRUE, eval=TRUE}
+nrow
+ncol 
+```
+
+Wir wollen die Matrix A genauer untersuchen:
+
+```{r, echo=TRUE, eval=TRUE}
+str(A)
+typeof(A)
+```
+
+Welche Attribute hat A und zu welcher Klasse und Typ gehört es?
+
+```{r, echo=TRUE, eval=TRUE}
+attributes(A)
+class(A)
+typeof(A)
+```
+
+Die Funktion `attributes()` zeigt lediglich ein Attribut an, nämlich „dim“: ein Vektor der Länge 2, der der Dimension der Matrix (und der Rückgabe der Funktion `dim()`) entspricht). Wie bereits erwähnt, nimmt das „class“-Attribut eine Sonderrolle ein. Erst mithilfe der Funktion `class()` wird das „class“-Attribut sichtbar.
+
+Um zu zeigen, dass folgende Gleichung gilt:\newline
+Matrix = Vektor + Attribut: dim (Vektor der Länge 2) + Attribut (class = "matrix") + Optionales Attribut: "dimnames"
+
+wollen wir einen Vektor in eine Matrix umwandeln:
+
+```{r, echo=TRUE, eval=TRUE}
+E <- 1:6
+attr(E, "dim") <- c(2,3) # oder: dim(E) <- c(2,3)
+str(E)
+attributes(E)
+class(E)
+typeof(E)
+```
+
+Statt `attr(E,"dim") <- c(2,3)` hätten wir auch kürzer `dim(E) <- c(2,3)` schreiben können. Wie wir sehen, erhalten wir eine Matrix und das „class“-Attribut wurde automatisch gesetzt.
+
+
+### Indizierung
+
+In diesem Abschnitt wollen wir die 5×6-Matrix F zugrunde legen:
+
+```{r, echo=TRUE, eval=TRUE}
+F <- matrix(1:30, nrow = 5)
+F
+```
+
+Das folgende Beispiel zeigt, wie auf Spalten und Zeilen einer Matrix zugegriffen werden kann:
+
+```{r, echo=TRUE, eval=TRUE}
+c2 <- F[,2] # 2. Spalte
+c2
+z3 <- F[3,] # 3. Zeile
+z3
+```
+
+Hierbei sollte beachtet werden, dass `c2` und `z3` keine Objekte der Klasse Matrix sind, sondern einfache Vektoren sind:
+
+```{r, echo=TRUE, eval=TRUE}
+class(c2)
+class(z3)
+```
+
+Da in R Matrizen erweiterte Vektoren sind, können Filter und Index-Operationen für Vektoren (siehe Abschnitt 1.2.1) direkt auf Matrizen übertragen werden:
+
+```{r, echo=TRUE, eval=TRUE}
+F[1:2, 5:6] # Matrix
+```
+
+Das Ergebnis ist eine 2×2-Untermatrix von `F`. Das Ergebnis des Beispiels ist hingegen ein einfacher Vektor:
+
+```{r, echo=TRUE, eval=TRUE}
+F[1:2, 6] # Vektor
+```
+
+Mithilfe des zusätzlichen Arguments `drop = FALSE` kann jedoch dieses Umwandeln in einen Vektor vermieden werden:
+
+```{r, echo=TRUE, eval=TRUE}
+F[1:2, 6, drop = FALSE] # Matrix
+```
+
+Wie in Abschnitt 1.2.1 besprochen, können negative Indexwerte benutzt werden, um Bereiche auszuschließen. Die folgende Anweisung gibt `F` ohne die erste Zeile zurück:
+```{r, echo=TRUE, eval=TRUE}
+F[-1,]
+```
+
+Möglich ist es auch, Teilbereichen von `F` neue Werte zuzuweisen:
+```{r, echo=TRUE, eval=TRUE}
+F[1:3, 1:2] <- 100:105
+F
+```
+
+Das nächste Beispiel zeigt, wie man einen Vektor erhält, der alle Werte von `F` umfasst, die kleiner als 13 sind:
+
+```{r, echo=TRUE, eval=TRUE}
+F[F < 13]
+```
+
+Schwieriger ist das folgende Beispiel:
+```{r, echo=TRUE, eval=TRUE}
+F[F[,3] < 13,]
+```
+
+Um das obige Beispiel zu analysieren, betrachten wir zuerst
+```{r, echo=TRUE, eval=TRUE}
+F[,3]
+```
+
+`F[,3]` ist die dritte Spalte von `F` und  daher ergibt die folgende Anweisung einen booleschen Vektor, bei dem nur die ersten beiden Elemente den Wert `TRUE` haben:
+
+```{r, echo=TRUE, eval=TRUE}
+F[,3] < 13
+```
+
+Entsprechend werden daher in `F[F[,3]< 13,]` nur die ersten beiden Zeilen von `F` ausgegeben.
+
+### Zeilen- und Spaltennamen
+
+Wir haben in Abschnitt 4.2.4 gesehen, dass Elemente eines Vektors optional Namen erhalten können. Ähnlich können Namen für die Zeilen und Spalten einer Matrix vergeben werden. Hierzu betrachten wir folgendes Beispiel:
+
+```{r, echo=TRUE, eval=TRUE}
+A <- matrix(1:6, nrow = 2)
+A
+attributes(A)
+```
+
+Mithilfe der Funktionen `colnames()` und `rownames()` können nun Namen für die Zeilen bzw. Spalten vergeben werden:
+```{r, echo=TRUE, eval=TRUE}
+colnames(A)
+colnames(A) <- c("a", "b", "c")
+rownames(A) <- c("X", "Y")
+A
+```
+
+Im Folgenden sehen wir, dass A hierdurch das zusätzliche Attribut „dimnames“ erhalten hat, bestehend aus einer Liste mit zwei Elementen. Beide Listenelemente sind Vektoren, die die Zeilen- bzw. Spaltennamen enthalten. Auf Listen werden wir im nächsten Kapitel genauer eingehen.
+
+```{r, echo=TRUE, eval=TRUE}
+str(A)
+attributes(A)
+```
+
+### Einfügen und Löschen von Zeilen und Spalten
+
+Durch Selbstzuweisung und mithilfe von `cbind()` und `rbind()` können Zeilen und Spalten zu einer gegebenen Matrix hinzugefügt werden. Als Beispiel wollen wir die Matrix A betrachten:
+
+```{r, echo=TRUE, eval=TRUE}
+A <- matrix(1:12 , nrow = 3)
+A
+```
+
+Die nächsten Beispiele zeigen exemplarisch, wie eine zusätzliche Spalte hinzugefügt werden kann:
+
+```{r, echo=TRUE, eval=TRUE}
+A <- cbind(A, c(97, 98, 99))
+A
+```
+
+```{r, echo=TRUE, eval=TRUE}
+A <- cbind(A[, 1:2], c(44, 55, 66), A[,3:5])
+A
+```
+
+Ähnliches gilt für Zeilen:
+```{r, echo=TRUE, eval=TRUE}
+A <- rbind(A[1,], -1:-6, A[2:3,])
+A
+```
+
+Das Löschen von Zeilen und Spalten funktioniert ähnlich:
+```{r, echo=TRUE, eval=TRUE}
+A <- A[c(1, 2, 4),]
+A
+```
+
+```{r, echo=TRUE, eval=TRUE}
+A <- A[c(1, 3), c(2, 4, 6)]
+A
+```
+
+### Matrixoperationen
+
+Es gibt eine Reihe von Matrixoperationen. Wir werden uns im Wesentlichen auf die in der folgenden Tabelle aufgelisteten Funktionen beschränken.
+
+(ref:matrixop) Matrixoperationen.
+
+```{r, echo=FALSE, eval=TRUE}
+df <- data.frame(op = c("colSums(A)", "rowSums(A)", "colMeans(A)", "rowMeans()", "A %*% B", "t(A)", "det(A)", "solve(A)", "solve(A, B)", "eigen(A)"),
+                 Bedeutung = c("Spaltensummen von A", "Zeilensummen von A", "Mittelwerte der Spalten von A", "Mittelwerte der Zeilen von A", "Matrizenmultiplikation von A und B", "Transponierte von A", "Determinante von A", "Inverse zu A", "Lösung des linearen Gleichungssystems Ax = b", "Eigenwerte und Eigenvektoren von A"))
+knitr::kable(df, booktabs = T, col.names = c("", ""), caption = "(ref:matrixop)")%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+Für die folgenden Rechnungen legen wir die folgende Matrix A zugrunde:
+```{r, echo=TRUE, eval=TRUE}
+A <- matrix(1:9, 3)
+A[1,1] = 0
+A
+```
+
+Dann gilt:
+```{r, echo=TRUE, eval=TRUE}
+colSums(A)
+rowSums(A)
+colMeans(A)
+rowMeans(A)
+```
+
+Die transponierte Matrix von A und die Determinante erhält man durch:
+```{r, echo=TRUE, eval=TRUE}
+t(A)
+det(A)
+```
+
+Die Matrixaddition und die Multiplikation einer Matrix mit einem skalaren Wert werden wie erwartet berechnet:
+```{r, echo=TRUE, eval=TRUE}
+A + A
+1.1 * A
+```
+
+Beachten Sie aber den Unterschied zwischen den Operatoren `%*%` und `*`:
+```{r, echo=TRUE, eval=TRUE}
+A * A
+A %*% A
+```
+
+Der Operator `%*%` steht hier für die *Matrixmultiplikation*, während der Operator `*` die *elementweise Multiplikation* bezeichnet.
+
+**Bemerkung**
+
+In MATLAB hat man sich für die umgekehrte Notation entschieden: `A*B` bezeichnet in MATLAB die Matrixmultiplikation, während `A.*B` für die elementweise Multiplikation der Matrizen `A` und `B` steht.
+
+### Lineare Gleichungssysteme
+
+Als Nächstes wollen wir `Ax` berechnen, wobei der Vektor `x` den Wert (1,2,3) haben soll:
+
+```{r, echo=TRUE, eval=TRUE}
+x <- c(1, 2, 3)
+b <- A %*% x
+b 
+```
+
+Wie wir sehen, ist `b` eine 3×1-Matrix. Im Ausdruck `A %*% x` ist `A` eine Matrix und `x` ein Vektor. Bevor die Matrixmultiplikation ausgeführt wird, wird `x` zu einer Matrix umgewandelt, die aus nur einer Spalte besteht. Dies können wir mithilfe der Funktion `as.matrix()`, die versucht, ein übergebenes Objekt in eine Matrix umzuwandeln, auch explizit verdeutlichen:
+
+```{r, echo=TRUE, eval=TRUE}
+as.matrix(x) 
+```
+
+Wir haben `b` so konstruiert, dass `x` die eindeutige Lösung des linearen Gleichungssystems `Ax = b` ist. Dies können wir in R auch umgekehrt verifizieren: die Lösung des durch `A` und `b` gegebenen linearen Gleichungssystems `Ax = b` muss gleich `x` sein:
+
+```{r, echo=TRUE, eval=TRUE}
+solve(A, b) 
+```
+
+Um die inverse Matrix von `A` zu bestimmen, nutzen wir ebenfalls `solve()`:
+
+```{r, echo=TRUE, eval=TRUE}
+B <- solve(A) 
+
+A %*% B
+```
+
+Zur Kontrolle haben wir `A`$\cdot$`B` berechnet, was die Einheitsmatrix ergeben muss. Dasselbe muss eigentlich auch für `B`$\cdot$`A` gelten:
+
+```{r, echo=TRUE, eval=TRUE}
+B %*% A
+```
+
+Aufgrund von Rundungsfehlern sehen wir hier allerdings keine exakte Übereinstimmung. Wenn wir jedoch das Ergebnis mit `round()` runden (zum Beispiel auf 12 Dezimalstellen), erhalten wir das erwartete Ergebnis:
+
+```{r, echo=TRUE, eval=TRUE}
+E <- B %*% A
+round(E, 12)
+```
+
+### Eigenwerte und Eigenvektoren
+
+Als Letztes wollen wir kurz die Eigenwerte und Eigenvektoren von A bestimmen:
+
+```{r, echo=TRUE, eval=TRUE}
+eig <- eigen(A)
+eig
+```
+
+Als Ergebnis erhalten wir eine Liste. Auf Listen werden wir im nächsten Kapitel ausführlicher eingehen. Die Liste besteht aus den beiden Elementen `eig$values` und `eig$vectors`. Das Listenelement `eig$values` ist ein Vektor, der alle Eigenwerte enthält und `eig$vectors` ist eine Matrix, deren Spalten aus den entsprechenden Eigenvektoren der Länge 1 bestehen.
+
+Die erste Spalte von `eig$vectors` ist also ein Eigenvektor zum Eigenwert `eig$values[1]`. Dies lässt sich leicht (bis auf Rundungsfehler) verifizieren:
+```{r, echo=TRUE, eval=TRUE}
+e <- eig$values
+E <- eig$vectors
+v <- as.amtrix(E[,1]) # Eigenvektor zum Eigenwert e[1]
+str(v)
+b <- A %*% v
+c <- e[1] * v
+str(b)
+str(b - c)
+all.equal(b, c)
+```
+
+Theoretisch müssten alle Elemente von `b - c` gleich null sein; durch Rundungsfehler ergibt sich ein leicht anderes Ergebnis. Die Funktion `all.equal(x, y)` testet, ob die beiden übergebe-nen Objekte „fast gleich“ sind (siehe `?all.equal`)
+
+```{r, echo=TRUE, eval=TRUE}
+all.equal(b, c)
+```
+
+Diese Rechnung lässt sich für alle drei Spalten leicht durchführen:
+```{r, echo=TRUE, eval=TRUE}
+for(idx in 1:3){
+  v <- as.matrix(E[,idx])
+  b <- A %*% v
+  c <- e[idx] * v
+  str(b)
+  str(b - c)
+  print(all.equal(b, c))
+}
+```
+
+Um eine kompaktere Ausgabe zu erhalten, haben wir diesmal die Matrix `b - c` mithilfe der Funktion `str()` ausgegeben. 
+
+Grundsätzlich sollten aus Laufzeitgründen in R Schleifen vermieden werden, wenn sie durch Matrix- oder Vektoroperationen ersetzt werden können. Statt dreimal `A %*% v` in der Schleife zu berechnen, kann man auch einmal `A %*% E` berechnen. 
+
+```{r, echo=TRUE, eval=TRUE}
+A %*% E
+```
+
+Das Ergebnis muss dann mit der Matrix übereinstimmen, die man erhält, wenn die erste Spalte von `E` mit `e[1]`, die zweite Spalte von `E` mit `e[2]` und schließlich die dritte Spalte von `E` mit `e[3]` skalar multipliziert wird. Um dies in R zu erreichen, ist die Funktion `rep()` hilfreich, die im Kapitel 2 bereits kurz besprochen wurde (siehe auch `?rep`):
+
+```{r, echo=TRUE, eval=TRUE}
+rep(1:3, 3)
+rep(1:3, times=3)
+rep(1:3, each = 3)
+rep(e, each = 3)
+```
+
+Also muss das Ergebnis (bis auf Rundungsfehler) von `A %*% E` mit `rep(e,each=3) * E` übereinstimmen:
+
+### `apply()`
+
+In R gibt es eine Reihe von „apply“-Funktionen (wie `apply()`, `lapply()`, `sapply()` oder `tapply()`), die eine wichtige Rolle spielen; sie bilden einen zentralen Baustein in der funktionalen Programmierung. In vielen funktionalen Sprachen wie Haskell werden sie als „map“ bezeichnet, ebenso in Python; in C++ hingegen wird der Name „std::transform()“ benutzt.
+
+Wir beschränken uns hier erst einmal auf die Funktion `apply()`. Mit `apply()` können vektorisierbare Funktionen auf jede Spalte oder Zeile einer Matrix angewendet werden, ohne dass explizit Schleifen benutzt werden. Dies hat neben einer häufig besseren Laufzeit auch den Vorteil, übersichtlicheren und klaren Quelltext zu erzeugen. Die Funktion `apply()` hat die folgende allgemeine Form:\newline
+`apply(A, margin, f, ...)`
+
+(ref:Argapply) Argumente von `apply()`.
+
+```{r, echo=FALSE, eval=TRUE}
+df <- data.frame(col1 = c("A", "margin", "f", "..."),
+                 col2 = c("Matrix (oder Array)", "1:Zeilen  2:Spalten", "Die anzuwendende Funktion", "Weitere Argumente, die an die anzuwendende Funktion weitergegeben werden"))
+knitr::kable(df, booktabs = T, col.names = c("", ""), caption = "(ref:Argapply)")%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+In den nächsten Beispielen wollen die folgende 3×5 Matrix A zugrunde legen:
+```{r, echo=TRUE, eval=TRUE}
+A <- matrix(1:15, nrow = 3)
+A
+```
+
+Um die einzelnen Zeilensummen von A zu berechnen, kann die Funktion `rowSums()` benutzt werden. Alternativ können wir die Funktion `sum()` mithilfe von `apply()` auf die Zeilen von A anwenden: 
+
+```{r, echo=TRUE, eval=TRUE}
+rowSums(A)
+apply(X = A, MARGIN = 1, FUN = sum)
+```
+
+Entsprechend erhalten wir:
+
+```{r, echo=TRUE, eval=TRUE}
+colSums(A)
+apply(X = A, MARGIN = 2, FUN = sum)
+```
+
+Ähnlich gilt für die Funktion `mean()`:
+
+```{r, echo=TRUE, eval=TRUE}
+rowMeans(A)
+apply(X = A, MARGIN = 1, FUN = mean)
+```
+
+```{r, echo=TRUE, eval=TRUE}
+colMeans(A)
+apply(X = A, MARGIN = 2, FUN = mean)
+```
+
+Statt der Funktionen `sum()` oder `mean()` kann jede andere vektorisierbare Funktion genutzt werden:
+```{r, echo=TRUE, eval=TRUE}
+quadraticMean <- function(x){
+  return(mean(x * x))
+}
+quadraticMean(A)
+apply(X = A, MARGIN = 1, FUN = quadraticMean)
+apply(X = A, MARGIN = 2, FUN = quadraticMean)
+```
+
+Im Folgenden gehen wir immer davon aus, dass `A` eine Matrix ist. Die anzuwendende Funktion `f` wird dann auf die einzelnen Zeilen bzw. Spalten von `A` angewandt.
+
+Gibt `f` wie in den oberen Beispielen einen skalaren Wert zurück, dann gibt `apply()` einen Vektor zurück, dessen Länge der Anzahl der Zeilen bzw. Spalten entspricht.
+
+Gibt hingegen `f` einen Vektor der Länge k zurück, dann gibt `apply()` eine Matrix `B` mit k Zeilen zurück. Dabei ist die erste Spalte von `B` das Ergebnis von `f` angewandt auf die erste Zeile bzw. Spalte. Hierzu wollen wir folgendes Beispiel betrachten:
+
+```{r, echo=TRUE, eval=TRUE}
+bereich <- function(x){
+  return(c(min(x), max(x)))
+}
+bereich(A)
+apply(X = A, MARGIN = 1, FUN = bereich)
+apply(X = A, MARGIN = 2, FUN = bereich)
+```
+
+Statt unserer Funktion `bereich()`, hätten wir auch die Funktion `range()` benutzen können, die wie `bereich()` einen Vektor mit dem minimalen und maximalen Wert des übergebenen Arguments zurückgibt.
+
+### Array
+
+Matrizen sind konzeptionell zweidimensionale Datenstrukturen; intern sind es aber (eindimensio-nale) Vektoren mit einem zusätzlichen Attribut „dim“. Dies kann in natürlicherweise auf höhere Dimensionen verallgemeinert werden:\newline
+Array = Vektor + Attribut: "dim" (Vektor der Länge größer 0) + Attribut (class = "array") + Optionales Attribut: "dimnames"
+
+In R können Matrizen erzeugt werden durch:\newline 
+`array(data = NA, dim = length(data), dimnames = NULL)`
+
+Hier ist ein erstes Beispiel:
+```{r, echo=TRUE, eval=TRUE}
+a = 1:30
+str(a)
+A = matrix(a, nrow = 5)
+str(A)
+B = array(a, dim = c(5, 3, 2))
+str(B)
+```
+
+Weiterhin gilt dann:
+```{r, echo=TRUE, eval=TRUE}
+B
+```
+
+```{r, echo=TRUE, eval=TRUE}
+B[, , 1]
+B[, 2, 1]
+B[5, 3, 2]
+length(B)
+dim(B)
+```
+
+Ein Array `A` heißt $N$-dimensional, wenn `length(dim(A))` gleich $N$ ist. Im obigen Beispiel ist `B` also ein dreidimensionales Array.\newline
+Arrays können auch eindimensional sein:
+```{r, echo=TRUE, eval=TRUE}
+A <- array(1:12, dim = 1)
+str(A)
+class(A)
+is.vector(A)
+```
+
+Eindimensionale Arrays unterscheiden sich allerdings von Vektoren, da sie im Gegensatz zu Vektoren das Attribut „dim“ besitzen. Hingegen gibt es keinen Unterschied zwischen Matrizen und zweidimensionalen Arrays:
+```{r, echo=TRUE, eval=TRUE}
+B <- array(1:12, dim = c(2, 6))
+str(B)
+class(B)
+is.matrix(B)
+C <- matrix(1:12, nrow = 2)
+str(C)
+identical(B, C)
+```
+
+Dies zeigt auch, dass das class-Attribut bei zweidimensionalen Arrays überraschenderweise den Wert "`matrix`" hat (und nicht wie vermutet "`array`").
+
+In TensorFlow, einer populären Deep-Learning-Plattform, sind Tensoren grundlegende Daten-strukturen. Tensoren werden gemäß der Anzahl $N$ der *Achsen* unterschieden. Ein $N$-D-Tensor $A$ besitzt genau $N$ Achsen und entspricht in R einem $N$-dimensionalen Array `A`.
+
+2-D-Tensoren entsprechen also Matrizen, 1-D-Tensoren entsprechen eindimensionalen Arrays (oder manchmal auch Vektoren) und 0-D-Tensoren sind skalare Werte. Wie wir mehrfach gesehen haben, gibt es in R keinen Datentyp für skalare Werte, stattdessen wird in R ein Vektor der Länge 1 benutzt, was konzeptionell einem skalaren Wert entspricht.
+
+Mit *Shape* von A wird in TensorFlow ein Vektor bezeichnet, der angibt, wie viele Dimensionen der Tensor A bezüglich der verschiedenen Achsen besitzt; Shape von A entspricht somit `dim(A)`.
+
+Für das nächste Beispiel benötigen wir die Datei „ziffern.rds“, die im Downloadbereich hinter-legt ist und die in das aktuelle Arbeitsverzeichnis kopiert werden muss. Die Datei „ziffern.rds“ besteht aus einem mit `saveRDS(ziffern, "ziffern.rds")` serialisierten Objekt. Mithilfe der Funktion `readRDS()` kann das Objekt wiederhergestellt werden (und bei Bedarf unter einem anderen Namen gespeichert werden).
+```{r, echo=TRUE, eval=TRUE}
+ziffern <- readRDS("ziffern.rds")
+str(ziffern)
+object.size(ziffern)
+```
+
+Wie wir sehen, handelt es sich hier bei dem eingelesenen Objekt `ziffern` um ein dreidimensionales Array, das ca. 300 KB umfasst. `ziffern` ist ein Datensatz, der aus hundert Grau-wertbildern besteht, die die Ziffern von 0 bis 9 in ganz unterschiedlichen handgeschriebenen Varianten zeigen. Jedes Grauwertbild besteht aus 28×28 Pixeln und jeder Pixelwert liegt zwischen 0 und 255. Somit beschreibt der erste Dimensionswert von `ziffern` den Bildindex, während die beiden anderen Dimensionswerte die Pixelposition im entsprechenden Bild beschreiben. Die Bilder stammen ursprünglich aus der MNIST-Datensammlung , die insgesamt 70 000 handgeschriebene Varianten von Ziffern umfasst. Die MNIST-Datensammlung wird sehr häufig als Referenzbeispiel für Machine-Learning-Algorithmen benutzt.
+
+```{r, echo=TRUE, eval=TRUE}
+ziffern[1, , ]
+```
+
+Es ist in R nicht schwer, einzelne Bilder anzuzeigen. Mithilfe der Funktion `as.raster()` können Bilddaten in ein entsprechendes Raster-Objekt umgewandelt werden, das mit der Funktion `plot()` angezeigt werden kann: 
+
+```{r, echo=TRUE, eval=TRUE}
+plot(as.raster(ziffern[1, ,], max = 255))
+plot(as.raster(ziffern[2, ,], max = 255))
+```
+
+Das erste Bild zeigt die Ziffer 5, während das zweite die Ziffer 0 darstellt. Wie erhält man die folgenden zwei Bilder?
+
+Die Anwort ist einfach. Dank Recycling kann man schreiben:
+```{r, echo=TRUE, eval=TRUE}
+plot(as.raster(255 - ziffern[1, ,], max = 255))
+plot(as.raster(255 - ziffern[2, ,], max = 255))
+```
+
+**Kurzzusammenfassung**
+
+> -	Matrix = Vektor + Attribut „dim“
+> -	`matrix(data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL)`
+> -	`cbind()`, `rbind()`
+> -	`dim()`, `nrow()`, `ncol()`
+> -	`F[2,]`, `F[,3]`, `F[2:3, 3:5]`, …
+> -	`Drop = FALSE`
+> -	`colnames()`, `rownames()`
+> -	`colSums()`, `rowSums()`, `colMeans()`, `rowMeans()` 
+> -	`2 * A`, `A + B`, `A * B`, `A %*% B`
+> -	`t()` 
+> -	`det()`  
+> -	`as.matrix()`
+> -	`solve(A)`, `solve(A, b)`
+> - `eigen()`
+> -	`round()`
+> -	`apply()`
+> -	`array(data = NA, dim = length(data), dimnames = NULL)`
+> -	$N$-dimensionales Array, Tensoren, Achsen
+> -	`saveRDS()`, `readRDS()`, Serialisierung
+> -	`plot()`, `as.raster()`
+
+
+## Übungen
