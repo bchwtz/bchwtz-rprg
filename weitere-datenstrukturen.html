@@ -4,20 +4,20 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Einführung | Statistical Programming</title>
-  <meta name="description" content="Chapter 1 Einführung | Statistical Programming Course Notes" />
+  <title>Chapter 5 Weitere Datenstrukturen | Statistical Programming</title>
+  <meta name="description" content="Chapter 5 Weitere Datenstrukturen | Statistical Programming Course Notes" />
   <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Einführung | Statistical Programming" />
+  <meta property="og:title" content="Chapter 5 Weitere Datenstrukturen | Statistical Programming" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Chapter 1 Einführung | Statistical Programming Course Notes" />
+  <meta property="og:description" content="Chapter 5 Weitere Datenstrukturen | Statistical Programming Course Notes" />
   <meta name="github-repo" content="bchwtz/bchwtz-rprg" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Einführung | Statistical Programming" />
+  <meta name="twitter:title" content="Chapter 5 Weitere Datenstrukturen | Statistical Programming" />
   
-  <meta name="twitter:description" content="Chapter 1 Einführung | Statistical Programming Course Notes" />
+  <meta name="twitter:description" content="Chapter 5 Weitere Datenstrukturen | Statistical Programming Course Notes" />
   
 
 <meta name="author" content="Benjamin Buchwitz" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="erste-schritte.html"/>
+<link rel="prev" href="homogene-datenstrukturen.html"/>
+<link rel="next" href="datenvisualisierung-mit-ggplot2.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -240,75 +240,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="einführung" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Einführung<a href="einführung.html#einführung" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="zielgruppe" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Zielgruppe<a href="einführung.html#zielgruppe" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Dieses Skript richtet sich an die Studierenden des berufsbegleitenden Masterstudiums der FH-Südwestfalen am Standort Meschede. Neben Grundkenntnissen in der Informatik werden solide Kenntnisse einer imperativen Programmiersprache sowie erste grundlegende Kenntnisse in einer objektorientierten Programmiersprache vorausgesetzt.</p>
-<p>Vorausgesetzt werden:</p>
+<div id="weitere-datenstrukturen" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Weitere Datenstrukturen<a href="weitere-datenstrukturen.html#weitere-datenstrukturen" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Als Nächstes betrachten wir weitere grundlegende Datenstrukturen in R; im Vordergrund hierbei stehen <em>Listen</em> und <em>Data Frames</em>. Die bisher besprochenen Datenstrukturen <em>(atomare) Vektoren</em>, <em>Matrizen</em> und <em>Arrays</em> sind homogene Datenstrukturen: alle Elemente haben den gleichen zugrun-deliegenden Datentyp, der nicht weiter unterteilt werden kann. Er ist entweder <code>logical</code>, <code>integer</code>, <code>double</code>, <code>complex</code>, <code>character</code> oder <code>raw</code>.</p>
+<p>Listen und Data Frames sind hingegen heterogen: in ihnen können Objekte unterschiedlicher Datentypen gespeichert werden. Das erste Listenelement kann z. B. ein Vektor der Länge 10 sein, während das zweite Listenelement eine 28×28-Matrix sein kann.</p>
+<div id="listen" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Listen<a href="weitere-datenstrukturen.html#listen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Wie wir gesehen haben, können in einem einzelnen (atomaren) Vektor nicht Objekte gespeichert werden, die unterschiedliche Datentypen besitzen; hierzu benutzt man Listen. Eine Liste ist ein linear angeordneter Datencontainer, dessen Elemente auf andere Objekte verweisen; eine Liste kann somit also konzeptionell als ein Vektor von Referenzen aufgefasst werden. Intern ist in R der Datentyp Liste als Vektor implementiert und es gibt strenggenommen in R die Unterscheidung zwischen atomaren und nicht-atomaren Vektoren. Da Listen auch Listen als Elemente enthalten können, die ihrerseits wiederum Listen als Elemente enthalten können, … werden Listen auch manchmal <em>rekursive</em> Vektoren genannt. Wir werden aber bei unserer Konvention bleiben und im Folgenden immer atomare Vektoren meinen, wenn wir von Vektoren reden.</p>
+<div id="erzeugung-von-listen-und-indexierung" class="section level3 hasAnchor" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Erzeugung von Listen und Indexierung<a href="weitere-datenstrukturen.html#erzeugung-von-listen-und-indexierung" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Als erstes einfaches Beispiel soll eine Liste in R erzeugt werden, die Prüfungsdaten eines Studenten enthält:</p>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="weitere-datenstrukturen.html#cb538-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">nachname =</span> <span class="st">&quot;Meier&quot;</span>, <span class="at">matNr =</span> <span class="dv">123456</span>, <span class="at">noten =</span> <span class="fu">c</span> (<span class="fl">1.3</span>, <span class="fl">2.7</span>))</span>
+<span id="cb538-2"><a href="weitere-datenstrukturen.html#cb538-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## $nachname
+## [1] &quot;Meier&quot;
+## 
+## $matNr
+## [1] 123456
+## 
+## $noten
+## [1] 1.3 2.7</code></pre>
+<p>Es empfiehlt sich, <code>str()</code> zu benutzen, um eine kompakte und übersichtliche Ausgabe der Liste zu erhalten:</p>
+<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="weitere-datenstrukturen.html#cb540-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)</span></code></pre></div>
+<pre><code>## List of 3
+##  $ nachname: chr &quot;Meier&quot;
+##  $ matNr   : num 123456
+##  $ noten   : num [1:2] 1.3 2.7</code></pre>
+<p><code>x</code> ist also eine Liste mit drei Elementen; jedes Element hat dabei einen Namen. Das dritte Listenelement zeigt auf einen numerischen Vektor der Länge 2. Weiterhin erhalten wir:</p>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="weitere-datenstrukturen.html#cb542-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb544-1"><a href="weitere-datenstrukturen.html#cb544-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb546-1"><a href="weitere-datenstrukturen.html#cb546-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="weitere-datenstrukturen.html#cb548-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.list</span>(x)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb550-1"><a href="weitere-datenstrukturen.html#cb550-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(x)</span></code></pre></div>
+<pre><code>## $names
+## [1] &quot;nachname&quot; &quot;matNr&quot;    &quot;noten&quot;</code></pre>
+<p>In vielen Programmiersprachen kann mithilfe der Punktnotation auf ein Listenelement zugegriffen werden. Dies ist in R nicht möglich! In R wird stattdessen das Dollarzeichen benutzt, um über den Namen auf ein Listenelement zuzugreifen:</p>
+<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb552-1"><a href="weitere-datenstrukturen.html#cb552-1" aria-hidden="true" tabindex="-1"></a>x.noten</span>
+<span id="cb552-2"><a href="weitere-datenstrukturen.html#cb552-2" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; Error: object &#39;x.noten&#39; not found</span></span></code></pre></div>
+<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb553-1"><a href="weitere-datenstrukturen.html#cb553-1" aria-hidden="true" tabindex="-1"></a>x<span class="sc">$</span>noten</span></code></pre></div>
+<pre><code>## [1] 1.3 2.7</code></pre>
+<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb555-1"><a href="weitere-datenstrukturen.html#cb555-1" aria-hidden="true" tabindex="-1"></a>x<span class="sc">$</span>matNr</span></code></pre></div>
+<pre><code>## [1] 123456</code></pre>
+<p>Auch mithilfe des Indexoperators können Listenelemente angesprochen werden, allerdings unterscheidet sich der „<em>einfache</em>“ Indexoperator grundlegend vom „<em>doppelten</em>“ Indexoperator:</p>
 <ul>
-<li>Grundkenntnisse in der Informatik</li>
-<li>solide Kenntnisse einer imperativen Programmiersprache (wie C, C#, Java oder Python)</li>
-<li>erste grundlegende Kenntnisse in einer objektorientierten Programmiersprache (wie C++ oder Java)</li>
-</ul>
-<p>Insbesondere werden grundlegende und in allen imperativen Programmiersprachen zu findende Konzepte wie Variablen und Funktionen vorausgesetzt ebenso wie Kenntnisse über Kontrollstrukturen wie Verzweigungen und Schleifen.</p>
-<p>Im Folgenden werden wir oft Vergleiche zu den Programmiersprachen C und C++ ziehen; daher sind Kenntnisse in C und C++ hilfreich, aber nicht zwingend notwendig. Außerdem gehen wir davon aus, dass die Studierenden in der Lage sind, englische Fachtexte zu lesen.</p>
-</div>
-<div id="überblick" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> Überblick<a href="einführung.html#überblick" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Da es viel gute Quellen und ausführliche Informationen im Internet über R gibt, wollen wir an dieser Stelle auf einen allgemeinen Überblick über die Programmiersprache R verzichten. Stattdessen sollen Sie folgende Teile des <a href="https://de.wikipedia.org/wiki/R_(Programmiersprache)">Wikipedia-Artikels „R (Programmiersprache)“</a> lesen:</p>
-<ul>
-<li>von Anfang bis zum Zitat von John M. Chambers
-„Um Berechnungen in R zu verstehen sind zwei Sätze hilfreich:
-Alles, was existiert, ist ein Objekt.
-Alles, was passiert, ist ein Funktionsaufruf“
-im Beginn des Abschnitts „Programmierparadigmen“</li>
-<li>der Abschnitt „Pakete“</li>
-<li>der Abschnitt „Unterstützung durch Stiftungen“</li>
-<li>der Abschnitt „Rezeption“</li>
-</ul>
-<p>Danach sollen Sie Übungsfragen (siehe unten) beantworten. Nur ein Teil der Antworten ergibt sich allerdings direkt aus dem Wikipedia-Artikel; für den Rest sind grundlegende Informatikkenntnisse gefragt, die Sie hoffentlich im Bachelorstudium erworben haben.</p>
-</div>
-<div id="software" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> Software<a href="einführung.html#software" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Neben dem Softwarepaket R werden wir auch RStudio intensiv benutzen. RStudio (genauer RStudio Desktop) ist eine integrierte Entwicklungsumgebung, die wie R als Open Source Lizenz zur Verfügung steht. Insgesamt gehen wir also davon aus, dass Sie für diese Veranstaltung folgende Softwarepakete auf Ihrem persönlich verfügbaren Rechner installieren:</p>
-<p>R (aktuellste Version):</p>
-<ul>
-<li>Installationsquelle: <a href="https://cran.rstudio.com/" class="uri">https://cran.rstudio.com/</a></li>
-<li>Installieren Sie eine dem Betriebssystem entsprechende vorkompilierte Binär-Distribution („precompiled binary distribution“). Unter Windows brauchen Sie lediglich die „base distribution“</li>
-<li>Wählen Sie die 64-bit-Version, wenn Sie ein 64-bit Betriebssystem benutzen</li>
-</ul>
-<p>RStudio Desktop (aktuellste Version):</p>
-<ul>
-<li>Installationsquelle: <a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a></li>
-<li>plus verschiedenen Packages, auf die wir weiter unten eingehen werden</li>
-</ul>
-<p>Im Verlauf dieses Moduls werden zusätzlich unterschiedliche Packages benötigt. R benutzt sogenannte Pakete (packages), um thematisch zusammengehörende Software zu bündeln. Pakete sind vergleichbar mit Bibliotheken in anderen Programmiersprachen. Einige Pakete werden je nach Konfiguration automatisch geladen wie zum Beispiel das base-Paket. Pakete werden in bestimmten Verzeichnissen gespeichert. Der R-Befehl <code>.libPaths()</code> listet die entsprechenden Verzeichnisse auf. Abhängig vom benutzten Rechner könnte eine Ausgabe wie folgt aussehen (eingegeben in RStudio im Konsolen-Bereich, siehe weiter unten):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="einführung.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>()</span></code></pre></div>
-<pre><code>## [1] &quot;/usr/local/lib/R/site-library&quot; &quot;/usr/local/lib/R/library&quot;</code></pre>
-<p>Aus Zeit- und Speichergründen werden aber nicht alle verfügbaren Pakete beim Start von R geladen. Später werden wir sehen, wie bei Bedarf neue Pakete installiert und geladen werden können.</p>
-</div>
-<div id="übungen" class="section level2 unnumbered hasAnchor">
-<h2>Übungen<a href="einführung.html#übungen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Beantworten Sie folgenden Fragen:</p>
-<ul>
-<li>Wird R interpretiert oder kompiliert?</li>
-<li>Was ist der Unterschied zwischen einem Interpreter und einem Compiler? Erläutern Sie Vor- und Nachteile.</li>
-<li>Nennen Sie populäre Programmiersprachen, die kompiliert bzw. interpretiert wer-den.</li>
-<li>Was ist ein JIT-Compiler?</li>
-<li>Gibt es für R einen JIT-Compiler?</li>
-<li>Ist R Open Source?</li>
-<li>Welche Lizenzkosten entstehen?</li>
-<li>Was ist RStudio?</li>
-<li>Was ist eine integrierte Entwicklungsumgebung (IDE)?</li>
-<li>Nennen Sie Beispiele populärer Entwicklungsumgebungen, z. B. für C und C++.</li>
-<li>Was ist Scheme?</li>
-<li>Was ist S?</li>
-<li>Ist R für alle populären Desktop-Betriebssysteme verfügbar?</li>
-<li>Was sind die Vorteile von R?</li>
-<li>Was ist in R ein Paket? Paket ist hier die deutsche Übersetzung für welchen englischen Begriff?</li>
+<li><p><code>x[3]</code> und <code>x[[3]]</code></p></li>
+<li><p><code>x["noten"]</code> und <code>x[["noten"]]</code></p></li>
 </ul>
 
+</div>
 </div>
 </div>
             </section>
@@ -316,8 +299,8 @@ im Beginn des Abschnitts „Programmierparadigmen“</li>
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="erste-schritte.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="homogene-datenstrukturen.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="datenvisualisierung-mit-ggplot2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -348,7 +331,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-intro.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-weitere_datenstrukturen.Rmd",
 "text": "Edit"
 },
 "history": {
