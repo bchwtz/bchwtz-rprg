@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Kontrollstrukturen und Funktionen | Statistical Programming</title>
+  <meta name="description" content="Chapter 3 Kontrollstrukturen und Funktionen | Statistical Programming Course Notes" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Kontrollstrukturen und Funktionen | Statistical Programming" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Chapter 3 Kontrollstrukturen und Funktionen | Statistical Programming Course Notes" />
+  <meta name="github-repo" content="bchwtz/bchwtz-rprg" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Kontrollstrukturen und Funktionen | Statistical Programming" />
+  
+  <meta name="twitter:description" content="Chapter 3 Kontrollstrukturen und Funktionen | Statistical Programming Course Notes" />
+  
+
+<meta name="author" content="Benjamin Buchwitz" />
+
+
+<meta name="date" content="2022-09-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="erste-schritte.html"/>
+<link rel="next" href="homogene-datenstrukturen.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><b>Statistical Programming</b></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="part"><span><b>Teil 1</b></span></li>
+<li class="chapter" data-level="1" data-path="einführung.html"><a href="einführung.html"><i class="fa fa-check"></i><b>1</b> Einführung</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#zielgruppe"><i class="fa fa-check"></i><b>1.1</b> Zielgruppe</a></li>
+<li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#überblick"><i class="fa fa-check"></i><b>1.2</b> Überblick</a></li>
+<li class="chapter" data-level="1.3" data-path="einführung.html"><a href="einführung.html#software"><i class="fa fa-check"></i><b>1.3</b> Software</a></li>
+<li class="chapter" data-level="" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i>Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="erste-schritte.html"><a href="erste-schritte.html"><i class="fa fa-check"></i><b>2</b> Erste Schritte</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#numerische-ausdrücke"><i class="fa fa-check"></i><b>2.1</b> Numerische Ausdrücke</a></li>
+<li class="chapter" data-level="2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#variablen"><i class="fa fa-check"></i><b>2.2</b> Variablen</a></li>
+<li class="chapter" data-level="2.3" data-path="erste-schritte.html"><a href="erste-schritte.html#vektoren"><i class="fa fa-check"></i><b>2.3</b> Vektoren</a></li>
+<li class="chapter" data-level="2.4" data-path="erste-schritte.html"><a href="erste-schritte.html#recycling"><i class="fa fa-check"></i><b>2.4</b> Recycling</a></li>
+<li class="chapter" data-level="2.5" data-path="erste-schritte.html"><a href="erste-schritte.html#rstudio"><i class="fa fa-check"></i><b>2.5</b> RStudio</a></li>
+<li class="chapter" data-level="2.6" data-path="erste-schritte.html"><a href="erste-schritte.html#demos"><i class="fa fa-check"></i><b>2.6</b> Demos</a></li>
+<li class="chapter" data-level="2.7" data-path="erste-schritte.html"><a href="erste-schritte.html#skripte"><i class="fa fa-check"></i><b>2.7</b> Skripte</a></li>
+<li class="chapter" data-level="" data-path="erste-schritte.html"><a href="erste-schritte.html#übungen-1"><i class="fa fa-check"></i>Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html"><i class="fa fa-check"></i><b>3</b> Kontrollstrukturen und Funktionen</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#namen-und-objekte-ein-erster-vergleich-mit-c-und-c"><i class="fa fa-check"></i><b>3.1</b> Namen und Objekte: Ein erster Vergleich mit C und C++</a></li>
+<li class="chapter" data-level="3.2" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#funktionen"><i class="fa fa-check"></i><b>3.2</b> Funktionen</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#benannte-und-optionale-argumente"><i class="fa fa-check"></i><b>3.2.1</b> Benannte und optionale Argumente</a></li>
+<li class="chapter" data-level="3.2.2" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#call-by-value-und-copy-on-modify"><i class="fa fa-check"></i><b>3.2.2</b> Call-by-value und Copy-on-modify</a></li>
+<li class="chapter" data-level="3.2.3" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#keine-zeiger-und-kein-call-by-reference"><i class="fa fa-check"></i><b>3.2.3</b> Keine Zeiger und kein Call-by-reference</a></li>
+<li class="chapter" data-level="3.2.4" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#operator-versus-funktionsaufruf"><i class="fa fa-check"></i><b>3.2.4</b> Operator versus Funktionsaufruf</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#kontrollstrukturen"><i class="fa fa-check"></i><b>3.3</b> Kontrollstrukturen</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#verzweigung-if-else"><i class="fa fa-check"></i><b>3.3.1</b> Verzweigung: <code>if-else</code></a></li>
+<li class="chapter" data-level="3.3.2" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#verzweigung-ifelse"><i class="fa fa-check"></i><b>3.3.2</b> Verzweigung: ifelse</a></li>
+<li class="chapter" data-level="3.3.3" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#schleife-while-und-repeat"><i class="fa fa-check"></i><b>3.3.3</b> Schleife: <code>while</code> und <code>repeat</code></a></li>
+<li class="chapter" data-level="3.3.4" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#schleife-for"><i class="fa fa-check"></i><b>3.3.4</b> Schleife: <code>for</code></a></li>
+<li class="chapter" data-level="3.3.5" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#mehrfachzweigung-switch"><i class="fa fa-check"></i><b>3.3.5</b> Mehrfachzweigung: <code>switch</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#übungen-2"><i class="fa fa-check"></i><b>3.4</b> Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="homogene-datenstrukturen.html"><a href="homogene-datenstrukturen.html"><i class="fa fa-check"></i><b>4</b> Homogene Datenstrukturen</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="homogene-datenstrukturen.html"><a href="homogene-datenstrukturen.html#wichtige-eigenschaften-von-objekten"><i class="fa fa-check"></i><b>4.1</b> Wichtige Eigenschaften von Objekten</a></li>
+</ul></li>
+<li class="part"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i>System Info</a></li>
+<li class="divider"></li>
+<li><a href="http://www.bchwtz.de" target="blank"><center>www.<b>BCHWTZ</b>.de</center></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Programming</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="kontrollstrukturen-und-funktionen" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Kontrollstrukturen und Funktionen<a href="kontrollstrukturen-und-funktionen.html#kontrollstrukturen-und-funktionen" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Im Vergleich zu C++, C# und Java unterscheidet sich R stark von der Art und Weise wie komplexere Datenstrukturen aufgebaut sind. Dies werden wir erst im nächsten Kapitel genauer beleuchten. Große und erst einmal nicht so offensichtliche Unterschiede gibt es aber auch bei Variablen, während es im Bereich Kontrollstrukturen und Funktionen weniger Überraschungen gibt, wie wir in diesem Kapitel sehen werden.</p>
+<div id="namen-und-objekte-ein-erster-vergleich-mit-c-und-c" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Namen und Objekte: Ein erster Vergleich mit C und C++<a href="kontrollstrukturen-und-funktionen.html#namen-und-objekte-ein-erster-vergleich-mit-c-und-c" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Im Folgenden setzen wir Grundkenntnisse in C und C++ voraus und wollen erste grundlegende Unterschiede zwischen R und C bzw. C++ beleuchten. Wie wir sehen werden, gibt es viele Ähnlichkeiten. R wird ähnlich wie C durch Blöcke strukturiert, die durch geschweifte Klammern gekennzeichnet werden. Auch Kontrollstrukturen wie Verzweigungen mithilfe von <code>if-else</code> oder Schleifen (<code>while</code> oder <code>for</code>) haben eine ähnliche Syntax und Semantik.</p>
+<p>Erste augenfällige Unterschiede:</p>
+<ul>
+<li><p>Im Gegensatz zu C wird R interpretiert! Welche Vor- und Nachteile ergeben sich dadurch?</p></li>
+<li><p>In R wird üblicherweise der Operator &lt;- für eine Zuweisung benutzt (obwohl auch der in C benutzte Zuweisungsoperator = benutzt werden kann)</p></li>
+<li><p>In R werden Anweisungen nicht durch ein Semikolon abgeschlossen.</p></li>
+</ul>
+<p>Variablen sind ein grundlegendes Konzept beider Sprachen; aber es gibt große und weitreichende Unterschiede. Wir wollen dies an einem Beispiel veranschaulichen. Um R wirklich zu verstehen, ist es hilfreich, diese Unterschiede zu kennen.</p>
+<p>Hier und im Folgenden werden wir den Begriff <em>„Objekt“</em> benutzen. Damit meinen wir nicht ein Objekt im objektorientierten Sinn (also eine Instanz einer Klasse), sondern wollen damit einen Speicherbereich in der Ausführungsumgebung bezeichnen, der neben eventuell zusätzlichen Metadaten Bitfolgen enthält, die als Werte eines bestimmten Datentyps interpretiert werden können.</p>
+<p>in C:</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="kontrollstrukturen-und-funktionen.html#cb110-1" aria-hidden="true" tabindex="-1"></a>int n <span class="ot">=</span> <span class="dv">5</span>;</span></code></pre></div>
+<p>Es wird ein Objekt im Speicher angelegt, das groß genug ist, einen <code>int</code>-Wert zu repräsentieren, aber nicht größer. Auf einem üblichen PC ist das so erzeugte Objekte genau 4 Byte groß und der entsprechende Speicherbereich enthält die Dualdarstellung von 5 (also 29 Nullen gefolgt von 101). Der Variablenname n ist nun der Bezeichner für dieses Objekt (oder Speicherbereich); man kann auch sagen: das so erzeugte Objekt hat den Namen <code>n</code>.</p>
+<p>Solange <code>n</code> gültig (und sichtbar) ist, ist <code>n</code> immer ein Bezeichner für einen <code>int</code>-Wert, dessen Binärdarstellung stets im selben Speicherbereich hinterlegt ist. Also bezieht sich n immer auf denselben Speicherbereich.</p>
+<p>Der zugehörige Wert von <code>n</code> kann sich ändern, z. B. durch eine Zuweisung oder eine Anweisung wie <code>n++</code>. Nicht ändern kann sich aber der Datentyp (in unserem Fall <code>int</code>). Bereits beim Kompilieren wird <code>n</code> an den Datentyp <code>int</code> gebunden. Man spricht in diesem Zusammenhang von <em>frühen Binden (early binding)</em> im Gegensatz zum <em>späten Binden (late binding)</em>, die wir in R vorfinden.</p>
+<p>in R:</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="kontrollstrukturen-und-funktionen.html#cb111-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div>
+<p>Auch hier wird ein Objekt in einem Speicherbereich erzeugt. Im Gegensatz zu C kann man aber in R nicht direkt auf diesen Speicherbereich zugreifen. Auch ist der benutzte Speicherbereich viel größer: auf dem hier benutzten System sind dies 56 Byte für eine 64-Bit-Version von R; eine 32-Bit-Version von R braucht ein paar Byte weniger (wieso?), vielleicht 32 Byte:</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="kontrollstrukturen-und-funktionen.html#cb112-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb112-2"><a href="kontrollstrukturen-und-funktionen.html#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(n)</span></code></pre></div>
+<pre><code>##  num 5</code></pre>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="kontrollstrukturen-und-funktionen.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">object.size</span>(n)</span></code></pre></div>
+<pre><code>## 56 bytes</code></pre>
+<p>Die Funktion <code>object.size()</code> gibt die Speichergröße des übergebenen Objekts zurück; dies ist allerdings nur ein geschätzter Wert und kann ungenau sein, insbesondere wenn Teile der Daten mit anderen Objekten geteilt werden.</p>
+<p>Bemerkung</p>
+<ul>
+<li>Die Punktnotation <code>object.size()</code> ist für C++-Programmierer in diesem Zusammenhang recht ungewohnt. <code>size()</code> ist hier keine Methode des Objekts (oder der Klasse bzw. Struktur) <code>object</code>, sondern bezeichnet eine Funktion und keine Methode. Viele C++-Programmierer würden die Funktion stattdessen <code>objectSize()</code> oder <code>object_size()</code> nennen.</li>
+</ul>
+<p>Das nächste Quelltextbeispiel zeigt, dass sowohl durch <code>n &lt;- c(5,7)</code> als auch durch <code>n &lt;- 5</code> ein Vektorobjekt (vom Typ <code>double</code>) erzeugt wird:</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="kontrollstrukturen-und-funktionen.html#cb116-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">7</span>)</span>
+<span id="cb116-2"><a href="kontrollstrukturen-und-funktionen.html#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(n)</span></code></pre></div>
+<pre><code>##  num [1:2] 5 7</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="kontrollstrukturen-und-funktionen.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(n)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="kontrollstrukturen-und-funktionen.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.vector</span>(n)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="kontrollstrukturen-und-funktionen.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(n)</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="kontrollstrukturen-und-funktionen.html#cb124-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb124-2"><a href="kontrollstrukturen-und-funktionen.html#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(n)</span></code></pre></div>
+<pre><code>##  num 5</code></pre>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="kontrollstrukturen-und-funktionen.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(n)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="kontrollstrukturen-und-funktionen.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.vector</span>(n)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="kontrollstrukturen-und-funktionen.html#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(n)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>Die Funktion <code>length()</code> gibt die Länge, also die Anzahl der Elemente im Vektor, zurück, während die Funktion <code>typeof()</code> den Typ zurückgibt. Die Funktion <code>is.vector()</code> gibt den booleschen Wert TRUE zurück, falls es sich um einen „echten“ Vektor handelt (dazu später mehr, oder siehe <code>?is.vector</code>); in allen anderen Fällen wird <code>FALSE</code> zurückgegeben.</p>
+<p>R kennt also keine skalaren Werte. Durch die Zuweisung <code>n &lt;- 5</code> wird n nicht an den skalaren Wert 5 gebunden, sondern an einen Vektor der Länge 1! Wenn wir im Folgenden trotzdem von skalaren Werten sprechen, dann meinen wir implizit Vektoren der Länge 1.</p>
+<p>Fragen</p>
+<ul>
+<li><p>Welche Funktion gibt es in R, deren Funktionsnamen mit „is.“ beginnen und was bewirken sie?</p></li>
+<li><p>Wird durch <code>n &lt;- TRUE</code> auch ein Vektorobjekt erzeugt?</p></li>
+</ul>
+<p>Im Gegensatz zu Programmiersprachen wie C, C++, C# oder Java haben Variablen in R keinen festen Datentyp. In R verweisen (oder zeigen) Variablen auf Objekte; man sagt auch, dass eine Variable an ein Objekt gebunden ist.
+Während in C und C++ dieser Verweis (ähnlich wie eine Referenz) dauerhaft ist, kann sich in R diese Bindung durch eine Zuweisung ändern:</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="kontrollstrukturen-und-funktionen.html#cb132-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb132-2"><a href="kontrollstrukturen-und-funktionen.html#cb132-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="kontrollstrukturen-und-funktionen.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)</span></code></pre></div>
+<pre><code>##  num 5</code></pre>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="kontrollstrukturen-und-funktionen.html#cb136-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="kontrollstrukturen-und-funktionen.html#cb138-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="kontrollstrukturen-und-funktionen.html#cb140-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span></span>
+<span id="cb140-2"><a href="kontrollstrukturen-und-funktionen.html#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="kontrollstrukturen-und-funktionen.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)</span></code></pre></div>
+<pre><code>##  int [1:1000] 1 2 3 4 5 6 7 8 9 10 ...</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="kontrollstrukturen-und-funktionen.html#cb144-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;eins&quot;</span>, <span class="st">&quot;zwei&quot;</span>, <span class="st">&quot;drei&quot;</span>)</span>
+<span id="cb144-2"><a href="kontrollstrukturen-und-funktionen.html#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="kontrollstrukturen-und-funktionen.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)</span></code></pre></div>
+<pre><code>##  chr [1:3] &quot;eins&quot; &quot;zwei&quot; &quot;drei&quot;</code></pre>
+<p><code>1:1000</code> ist ein Vektor vom Typ <code>integer</code>, der die ganzen Zahlen von 1 bis 1000 umfasst; dies ist identisch zu <code>seq(from = 1, to = 1000, by = 1)</code> (was wiederum identisch zu <code>seq(from = 1, to = 1000)</code> ist, siehe <code>?seq</code>).</p>
+<p>Durch <code>x &lt;- c("eins", "zwei", "drei")</code> wird <code>x</code> an einen Vektor vom Typ <code>character</code> gebunden, der die Länge 3 hat. Variablen werden in R erst während der Laufzeit (und nicht schon beim Kompilieren) an ein Objekt gebunden (<em>late binding</em>). Somit hat eine Variable keinen festen Datentyp, sondern eine Variable ist an ein Objekt gebunden, dem ein fester Datentyp zugeordnet ist. Wir sagen in diesem Zusammenhang auch, dass die Variable auf das Objekt <em>verweist</em>.</p>
+<p>Im Gegensatz zu C enthält in R jedes Objekt zusätzlich sogenannte <em>Metadaten</em>, die u. a. den Typ des Objekts beschreiben (siehe z. B. [Wickham_AdvR], Abschnitt 18.1: Object size, Seite 379 oder [R_ints], Abschnitt 1.1).
+Zwei oder mehrere Variablen können auf dasselbe Objekt verweisen (d.h. an dasselbe Objekt gebunden sein):</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="kontrollstrukturen-und-funktionen.html#cb148-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb148-2"><a href="kontrollstrukturen-und-funktionen.html#cb148-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> a</span></code></pre></div>
+<p>Durch die Zuweisung <code>b &lt;- a</code> wird kein neues Objekt erzeugt (<code>a</code> wird also nicht in <code>b</code> kopiert)!
+Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkopiert und die Variablen <code>a</code> und <code>b</code> zeigen dann auf unterschiedliche Objekte</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="kontrollstrukturen-und-funktionen.html#cb149-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb149-2"><a href="kontrollstrukturen-und-funktionen.html#cb149-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> a</span>
+<span id="cb149-3"><a href="kontrollstrukturen-und-funktionen.html#cb149-3" aria-hidden="true" tabindex="-1"></a>b[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb149-4"><a href="kontrollstrukturen-und-funktionen.html#cb149-4" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
+<pre><code>## [1] 1 5 3 2</code></pre>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="kontrollstrukturen-und-funktionen.html#cb151-1" aria-hidden="true" tabindex="-1"></a>b</span></code></pre></div>
+<pre><code>## [1] 1 0 3 2</code></pre>
+<p>Erst durch die Änderung <code>b[2] &lt;- 0</code>
++ erzeugt R eine Kopie des Objekts, das an den Bezeichner <code>a</code> gebunden ist</p>
+<ul>
+<li><p>ändert sich die Kopie entsprechend</p></li>
+<li><p>wird der Name <code>b</code> an das neue Objekt gebunden.</p></li>
+</ul>
+<p>Dieses Verhalten wird auch als <em>copy-on-modify</em> bezeichnet.
+Ein Objekt kann mithilfe der Funktion <code>rm()</code> auch wieder gelöscht werden:</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="kontrollstrukturen-und-funktionen.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(b)</span>
+<span id="cb153-2"><a href="kontrollstrukturen-und-funktionen.html#cb153-2" aria-hidden="true" tabindex="-1"></a>b</span>
+<span id="cb153-3"><a href="kontrollstrukturen-und-funktionen.html#cb153-3" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; Error: object &#39;b&#39; not found</span></span></code></pre></div>
+<p>Die Anweisung <code>rm(list=ls())</code> löscht ohne Warnung alle Objekte! (Mit <code>ls()</code> erhalten Sie ein Vektor aller erzeugten Objekte)</p>
+<p>Im Gegensatz zu C und C++ gibt es in R einen <em>Garbage Collector</em>, kurz auch mit GC bezeichnet Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z. B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund ohne dass der GC explizit aufgerufen werden muss (siehe auch <code>?gc</code>). Man kann den GC explizit mit gc() aufrufen (siehe <code>?gc</code>), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe <code>used</code>) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe <code>gc trigger</code>).</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<tbody>
+<tr>
+<td style="text-align:left;">
+cells
+</td>
+<td style="text-align:left;">
+used
+</td>
+<td style="text-align:left;">
+(Mb)
+</td>
+<td style="text-align:left;">
+gc (trigger)
+</td>
+<td style="text-align:left;">
+(Mb)
+</td>
+<td style="text-align:left;">
+max used
+</td>
+<td style="text-align:left;">
+(Mb)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ncells
+</td>
+<td style="text-align:left;">
+438523.0
+</td>
+<td style="text-align:left;">
+23.5
+</td>
+<td style="text-align:left;">
+938047.0
+</td>
+<td style="text-align:left;">
+50.1
+</td>
+<td style="text-align:left;">
+621888.0
+</td>
+<td style="text-align:left;">
+33.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vcells
+</td>
+<td style="text-align:left;">
+100729739.0
+</td>
+<td style="text-align:left;">
+768.6
+</td>
+<td style="text-align:left;">
+147642767.0
+</td>
+<td style="text-align:left;">
+1126.5
+</td>
+<td style="text-align:left;">
+100729820.0
+</td>
+<td style="text-align:left;">
+768.6
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kurzzusammenfassung</strong></p>
+<blockquote>
+<ul>
+<li>Objekt</li>
+<li>R kennt keine skalaren Werte (sondern es werden Vektoren der Länge 1 für skalare Werte genutzt)</li>
+<li>In R verweisen Variablen auf Objekte; man sagt auch, dass eine Variable an ein Objekt gebunden ist</li>
+<li>Eine Variable hat keinen festen Datentyp, sondern ist an ein Objekt gebunden, dem ein fester Datentyp zugeordnet ist</li>
+<li>Jedes Objekt hat zusätzlich sogenannte <em>Metadaten</em>, die u. a. den Typ des Objekts beschreiben</li>
+<li><code>object.size()</code></li>
+<li><code>length()</code></li>
+<li><code>typeof()</code></li>
+<li><code>is.vector()</code></li>
+<li>R nutzt <em>copy-on-modify</em></li>
+<li>Garbage Collection</li>
+<li><code>1:1000</code> ist ein Vektor vom Typ integer, der die ganzen Zahlen von 1 bis 1000 umfasst</li>
+<li><em>late binding</em>: Variablen werden erst während der Laufzeit an ein Objekt gebunden</li>
+</ul>
+</blockquote>
+</div>
+<div id="funktionen" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Funktionen<a href="kontrollstrukturen-und-funktionen.html#funktionen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Neben Objekten sind Funktionen ein zentraler Bestandteil von R. Mit Funktionen können Anweisungen zu einer Einheit zusammengefasst werden. Dadurch kann Quelltext strukturiert werden und die durch die Funktion beschriebene Funktionalität mehrfach in einem Programm verwandt werden. Funktion sind in R sogenannte <em>„first-class-objects“</em>; d.h. es sind in der Tat Objekte, die fast immer wie andere „Datenobjekte“ (Vektoren, Tabellen, Listen, …) benutzt werden können.</p>
+<p>Im Folgenden gehen wir davon aus, dass Sie mit dem Konzept einer Funktion vertraut sind, so wie es zum Beispiel in C, C++ oder Java verwandt wird.
+Ähnlich wie in anderen Programmiersprachen wird in R eine Funktion durch eine Anweisung der folgenden Form definiert:
+<code>function(arg_1, arg_2, ...) epxression</code></p>
+<p>Hierbei bezeichnet <code>arg_1, arg_2, ...</code> eine Liste der formalen Funktionsparameter und <code>expression</code> den <em>Funktionskörper</em>, der in der Regel aus einem durch geschweifte Klammern begrenzten Block von Anweisungen besteht. Insgesamt wird hierdurch ein Objekt erzeugt (eine sogenannte <em>anonyme Funktion</em>), das aber an keinem Namen gebunden ist. Ein Name wird aber gebraucht, wenn man die Funktion aufrufen will! Daher wird in der Regel eine Funktion in einer Zuweisung definiert, die dann folgende Form hat:
+<code>name &lt;-function(arg_1, arg_2, ...) expression</code></p>
+<p>Solange die Variable <code>name</code> an das Funktionsobjekt gebunden ist, kann die Funktion dann durch <code>name (arg_1, arg_2, ...)</code> aufgerufen werden.
+Ein einfaches Beispiel mit drei formalen Funktionsparametern x, y und z soll dies illustrieren:</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="kontrollstrukturen-und-funktionen.html#cb154-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, z){</span>
+<span id="cb154-2"><a href="kontrollstrukturen-und-funktionen.html#cb154-2" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> y <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> z</span>
+<span id="cb154-3"><a href="kontrollstrukturen-und-funktionen.html#cb154-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> tmp)</span>
+<span id="cb154-4"><a href="kontrollstrukturen-und-funktionen.html#cb154-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Solange <code>f1</code> nicht durch eine Zuweisung an ein anderes Objekt gebunden wird, kann nun unsere Beispielfunktion aufgerufen werden (und <code>f1</code> kann als Funktionsname betrachtet werden, der allerdings eventuell nur temporär ist):</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="kontrollstrukturen-und-funktionen.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="kontrollstrukturen-und-funktionen.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 14</code></pre>
+<p>Wenn wir wollen, können wir auch einen weiteren Namen an unser Funktionsobjekt binden:</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="kontrollstrukturen-und-funktionen.html#cb159-1" aria-hidden="true" tabindex="-1"></a>neuerName <span class="ot">&lt;-</span> f1</span>
+<span id="cb159-2"><a href="kontrollstrukturen-und-funktionen.html#cb159-2" aria-hidden="true" tabindex="-1"></a><span class="fu">neuerName</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 14</code></pre>
+<p>Unsere einfache Beispielfunktion <code>f1</code> besitzt neben den formalen Parametern <code>x, y, z</code> eine <em>lokale Variable</em> <code>tmp</code>. Lokale Variablen können nur im entsprechenden Funktionskörper angesprochen werden:</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="kontrollstrukturen-und-funktionen.html#cb161-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb161-2"><a href="kontrollstrukturen-und-funktionen.html#cb161-2" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(a, a, a)</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="kontrollstrukturen-und-funktionen.html#cb163-1" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="kontrollstrukturen-und-funktionen.html#cb165-1" aria-hidden="true" tabindex="-1"></a>tmp</span>
+<span id="cb165-2"><a href="kontrollstrukturen-und-funktionen.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; Error: object &#39;tmp&#39; not found</span></span></code></pre></div>
+<p>In unserem Beispiel ist die lokale Variable <code>tmp</code> eigentlich unnötig; man hätte auch kürzer schreiben können:</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="kontrollstrukturen-und-funktionen.html#cb166-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="cf">function</span> (x, y, z){</span>
+<span id="cb166-2"><a href="kontrollstrukturen-und-funktionen.html#cb166-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> y <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> z)</span>
+<span id="cb166-3"><a href="kontrollstrukturen-und-funktionen.html#cb166-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Wie in C beendet eine <code>return</code>-Anweisung den Funktionsaufruf. Im Gegensatz zu C ist eine <code>return</code>-Anweisung aber nicht notwendig: Fehlt die <code>return</code>-Anweisung, dann wird der letzte in der Funktion berechnete Wert zurückgegeben:</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="kontrollstrukturen-und-funktionen.html#cb167-1" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="cf">function</span> (x, y, z){</span>
+<span id="cb167-2"><a href="kontrollstrukturen-und-funktionen.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> y <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> z</span>
+<span id="cb167-3"><a href="kontrollstrukturen-und-funktionen.html#cb167-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Theoretisch hätte man hier sogar auch auf die geschweiften Klammern verzichten können. Insgesamt liefern also alle drei Funktionsaufrufe denselben Wert zurück:</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="kontrollstrukturen-und-funktionen.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 11</code></pre>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="kontrollstrukturen-und-funktionen.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f2</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 11</code></pre>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="kontrollstrukturen-und-funktionen.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f3</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 11</code></pre>
+<p>Wie wir gesehen haben, gibt es in R keine skalaren Werte; stattdessen werden Vektoren der Länge 1 benutzt. Was passiert, wenn wir unserer Beispielfunktion Vektoren übergeben, deren Länge größer als eins ist?</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="kontrollstrukturen-und-funktionen.html#cb174-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb174-2"><a href="kontrollstrukturen-und-funktionen.html#cb174-2" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(a, a, a)</span></code></pre></div>
+<pre><code>##  [1]  6 12 18 24 30 36 42 48 54 60</code></pre>
+<p>Wie wir schon bei der Funktion <code>sqrt()</code> in Abschnitt 2.3 gesehen haben, wird nun die Funktion elementweise angewandt und als Ergebnis wird ein Vektor gleicher Länge zurückgegeben.
+Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann tritt automatisch Recyling ein (siehe Abschnitt 2.3.1):</p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="kontrollstrukturen-und-funktionen.html#cb176-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb176-2"><a href="kontrollstrukturen-und-funktionen.html#cb176-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span></span>
+<span id="cb176-3"><a href="kontrollstrukturen-und-funktionen.html#cb176-3" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(a, a, b)</span></code></pre></div>
+<pre><code>##  [1]  6 12 12 18 18 24 24 30 30 36</code></pre>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="kontrollstrukturen-und-funktionen.html#cb178-1" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb178-2"><a href="kontrollstrukturen-und-funktionen.html#cb178-2" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(a, b, c)</span></code></pre></div>
+<pre><code>##  [1]  3  6  5  8  7 10  9 12 11 14</code></pre>
+<p>Zur Kontrolle sollen für jeden der beiden Funktionsaufrufe noch einmal das jeweils letzte Ergebnis explizit berechnet werden:</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="kontrollstrukturen-und-funktionen.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 36</code></pre>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="kontrollstrukturen-und-funktionen.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="dv">10</span>, <span class="dv">2</span>, <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 14</code></pre>
+<p>Informationen über einzelne Funktionsobjekte erhält man, indem man die Funktionsnamen ohne Klammern und Argumente eingibt:</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="kontrollstrukturen-und-funktionen.html#cb184-1" aria-hidden="true" tabindex="-1"></a>f1</span></code></pre></div>
+<pre><code>## function(x, y, z){
+##   tmp &lt;- 2 * y + 3 * z
+##   return(x + tmp)
+## }
+## &lt;bytecode: 0x559882cabdc8&gt;</code></pre>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="kontrollstrukturen-und-funktionen.html#cb186-1" aria-hidden="true" tabindex="-1"></a>sqrt</span></code></pre></div>
+<pre><code>## function (x)  .Primitive(&quot;sqrt&quot;)</code></pre>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="kontrollstrukturen-und-funktionen.html#cb188-1" aria-hidden="true" tabindex="-1"></a>atan2</span></code></pre></div>
+<pre><code>## function (y, x) 
+## .Internal(atan2(y, x))
+## &lt;bytecode: 0x55988314d950&gt;
+## &lt;environment: namespace:base&gt;</code></pre>
+<p><strong>Kurzzusammenfassung</strong></p>
+<blockquote>
+<ul>
+<li><code>name &lt;-function(arg_1, arg_2, ...) expression</code></li>
+<li>Formale Funktionsparameter</li>
+<li>Funktionskörper</li>
+<li>Lokale Variablen</li>
+<li>Fehlt die <code>return</code>-Anweisung, dann wird der letzte in der Funktion berechnete Wert zurückgegeben</li>
+<li>Elementweises Anwenden der Funktion bei Vektorargumenten (und eventuelles Recycling)</li>
+<li>Unterschied <code>sqrt</code> und <code>sqrt(2)</code></li>
+</ul>
+</blockquote>
+<div id="benannte-und-optionale-argumente" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Benannte und optionale Argumente<a href="kontrollstrukturen-und-funktionen.html#benannte-und-optionale-argumente" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="kontrollstrukturen-und-funktionen.html#cb190-1" aria-hidden="true" tabindex="-1"></a>f4 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">z =</span> <span class="dv">0</span>){</span>
+<span id="cb190-2"><a href="kontrollstrukturen-und-funktionen.html#cb190-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> y <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> z</span>
+<span id="cb190-3"><a href="kontrollstrukturen-und-funktionen.html#cb190-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb190-4"><a href="kontrollstrukturen-und-funktionen.html#cb190-4" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb190-5"><a href="kontrollstrukturen-und-funktionen.html#cb190-5" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span></span>
+<span id="cb190-6"><a href="kontrollstrukturen-und-funktionen.html#cb190-6" aria-hidden="true" tabindex="-1"></a><span class="fu">f4</span>(a)</span></code></pre></div>
+<pre><code>##  [1]  3  4  5  6  7  8  9 10 11 12</code></pre>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="kontrollstrukturen-und-funktionen.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f4</span>(a, b)</span></code></pre></div>
+<pre><code>##  [1]  3  6  5  8  7 10  9 12 11 14</code></pre>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="kontrollstrukturen-und-funktionen.html#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f4</span>(a, a, b)</span></code></pre></div>
+<pre><code>##  [1]  6 12 12 18 18 24 24 30 30 36</code></pre>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="kontrollstrukturen-und-funktionen.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f4</span>()</span>
+<span id="cb196-2"><a href="kontrollstrukturen-und-funktionen.html#cb196-2" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; Error in f4(): argument &quot;x&quot; is missing, with no default</span></span></code></pre></div>
+<p>Ähnlich wie in C# kann ein Funktionsaufruf sogenannte <em>benannte Argumente</em> beinhalten. Benannte Argumente ermöglichen es, durch Nennung des Parameternamens ein Argument für einen bestimmten Parameter anzugeben. Dies hat den Vorteil, dass die Position des Parameters dann keine Rolle spielt.</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="kontrollstrukturen-und-funktionen.html#cb197-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f4</span>(<span class="at">z =</span> b, <span class="at">x=</span> a, <span class="at">y =</span> a)</span></code></pre></div>
+<pre><code>##  [1]  6 12 12 18 18 24 24 30 30 36</code></pre>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="kontrollstrukturen-und-funktionen.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f4</span>(a, <span class="at">z =</span> a) <span class="co"># äquivalent zu f4(a, 1, a)</span></span></code></pre></div>
+<pre><code>##  [1]  6 10 14 18 22 26 30 34 38 42</code></pre>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="kontrollstrukturen-und-funktionen.html#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f4</span>(a, <span class="dv">1</span>, a)</span></code></pre></div>
+<pre><code>##  [1]  6 10 14 18 22 26 30 34 38 42</code></pre>
+<p>Benannte Argumente werden sehr häufig benutzt. Ein einfaches und hoffentlich selbsterklärendes Beispiel sind folgende Funktionen:
+<code>rnorm(n, mean = 0, sd = 1)</code>
+<code>runif(n, min = 0, max = 1)</code></p>
+<p><strong>Kurzzusammenfassung</strong></p>
+<blockquote>
+<ul>
+<li>Benannte und optionale Argumente (Default-Werte)</li>
+<li><code>rnorm(n, mean = 0, sd = 1)</code></li>
+<li><code>runif(n, min = 0, max = 1)</code></li>
+</ul>
+</blockquote>
+</div>
+<div id="call-by-value-und-copy-on-modify" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Call-by-value und Copy-on-modify<a href="kontrollstrukturen-und-funktionen.html#call-by-value-und-copy-on-modify" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Wie in C ist das Standardverhalten bei Funktionsaufrufen <em>Call-by-value</em>; also ändert ein Funktionsaufruf die ursprünglich übergebenen Argumente nicht:</p>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="kontrollstrukturen-und-funktionen.html#cb203-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb203-2"><a href="kontrollstrukturen-und-funktionen.html#cb203-2" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">42</span></span>
+<span id="cb203-3"><a href="kontrollstrukturen-und-funktionen.html#cb203-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> x</span>
+<span id="cb203-4"><a href="kontrollstrukturen-und-funktionen.html#cb203-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb203-5"><a href="kontrollstrukturen-und-funktionen.html#cb203-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb203-6"><a href="kontrollstrukturen-und-funktionen.html#cb203-6" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb203-7"><a href="kontrollstrukturen-und-funktionen.html#cb203-7" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">f</span>(v)</span>
+<span id="cb203-8"><a href="kontrollstrukturen-und-funktionen.html#cb203-8" aria-hidden="true" tabindex="-1"></a>v</span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="kontrollstrukturen-und-funktionen.html#cb205-1" aria-hidden="true" tabindex="-1"></a>w</span></code></pre></div>
+<pre><code>##  [1] 84  4  6  8 10 12 14 16 18 20</code></pre>
+<p>Die Funktion <code>f</code> arbeitet mit einer Kopie des übergebenen Objekts <code>x</code>. Lediglich diese Kopie wird durch die Anweisung <code>x[1] &lt;- 42</code> verändert; das ursprüngliche Objekt bleibt hingegen unverändert.
+Allerdings wird zumindest in neueren R-Versionen Call-by-value in Verbindung mit der copy-on-modify Semantik benutzt: Nur wenn die aufgerufene Funktion ein übergebenes Argument verändern will, wird zuvor eine Kopie dieses Arguments erstellt und die Kopie entsprechend verändert. Im folgenden Beispiel sollte also beim Funktionsaufruf keine Kopie erstellt werden, dies ist natürlich wichtig bei großen Datenmengen:</p>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="kontrollstrukturen-und-funktionen.html#cb207-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb207-2"><a href="kontrollstrukturen-und-funktionen.html#cb207-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">length</span>(x))</span>
+<span id="cb207-3"><a href="kontrollstrukturen-und-funktionen.html#cb207-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb207-4"><a href="kontrollstrukturen-und-funktionen.html#cb207-4" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fl">1e9</span> <span class="co"># E-Notation: 1e9 entspricht einer Milliarde</span></span>
+<span id="cb207-5"><a href="kontrollstrukturen-und-funktionen.html#cb207-5" aria-hidden="true" tabindex="-1"></a>  w <span class="ot">&lt;-</span> <span class="fu">g</span>(v)</span>
+<span id="cb207-6"><a href="kontrollstrukturen-und-funktionen.html#cb207-6" aria-hidden="true" tabindex="-1"></a>  w</span></code></pre></div>
+<pre><code>## [1] 1000000000</code></pre>
+</div>
+<div id="keine-zeiger-und-kein-call-by-reference" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Keine Zeiger und kein Call-by-reference<a href="kontrollstrukturen-und-funktionen.html#keine-zeiger-und-kein-call-by-reference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In R sind Variablennamen an Objekte gebunden; Variablennamen „verweisen“ also auf Objekte, ähnlich wie Referenzen oder Zeiger. In R gibt es jedoch keine expliziten Zeiger oder Referenzen. Ist es in R möglich, eine Funktion zu schreiben, die die übergebenen Argumente direkt verändert? In C kann man dies mithilfe von Zeigern lösen; Referenzen sind in C++ eine zusätzliche Möglichkeit, dies mit wenig Aufwand und sehr effektiv zu lösen. In R ist dies hingegen, mit einfachen Mitteln nicht möglich. Um dies zu verdeutlichen, versuchen wir eine Funktion zu schreiben, die die ersten beiden Elemente eines Vektors vertauschen soll. Ein erster nicht erfolgreicher Versuch könnte so aussehen:</p>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="kontrollstrukturen-und-funktionen.html#cb209-1" aria-hidden="true" tabindex="-1"></a>vertausche1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb209-2"><a href="kontrollstrukturen-und-funktionen.html#cb209-2" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">=</span> x[<span class="dv">1</span>]</span>
+<span id="cb209-3"><a href="kontrollstrukturen-und-funktionen.html#cb209-3" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="ot">=</span> x[<span class="dv">2</span>]</span>
+<span id="cb209-4"><a href="kontrollstrukturen-und-funktionen.html#cb209-4" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">2</span>] <span class="ot">=</span> tmp</span>
+<span id="cb209-5"><a href="kontrollstrukturen-und-funktionen.html#cb209-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb209-6"><a href="kontrollstrukturen-und-funktionen.html#cb209-6" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb209-7"><a href="kontrollstrukturen-und-funktionen.html#cb209-7" aria-hidden="true" tabindex="-1"></a><span class="fu">vertausche1</span>(z)</span>
+<span id="cb209-8"><a href="kontrollstrukturen-und-funktionen.html#cb209-8" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## [1] &quot;eins&quot; &quot;zwei&quot; &quot;drei&quot;</code></pre>
+<p>Da R bei Funktionsaufrufen Call-by-value benutzt, kann dies nicht funktionieren: es wird eine Kopie von <code>z</code> erstellt und die beiden ersten Elemente dieser Kopie vertauscht!
+Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider beinhaltet sie unnötiges Kopieren; insbesondere wenn x extrem viele Daten enthält, sollte eigentlich unnötiges Kopieren vermieden werden:</p>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="kontrollstrukturen-und-funktionen.html#cb211-1" aria-hidden="true" tabindex="-1"></a>vertausche2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb211-2"><a href="kontrollstrukturen-und-funktionen.html#cb211-2" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">=</span> x[<span class="dv">1</span>]</span>
+<span id="cb211-3"><a href="kontrollstrukturen-und-funktionen.html#cb211-3" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="ot">=</span> x[<span class="dv">2</span>]</span>
+<span id="cb211-4"><a href="kontrollstrukturen-und-funktionen.html#cb211-4" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">2</span>] <span class="ot">=</span> tmp</span>
+<span id="cb211-5"><a href="kontrollstrukturen-und-funktionen.html#cb211-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb211-6"><a href="kontrollstrukturen-und-funktionen.html#cb211-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb211-7"><a href="kontrollstrukturen-und-funktionen.html#cb211-7" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">vertausche2</span>(z)</span>
+<span id="cb211-8"><a href="kontrollstrukturen-und-funktionen.html#cb211-8" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<pre><code>## [1] 2 1 3 4</code></pre>
+<p>In der Funktion <code>vertausche2()</code> wird eine Kopie von z erstellt, die beiden ersten Elemente vertauscht und die Variable z an die von der Funktion modifizierte Kopie gebunden.</p>
+</div>
+<div id="operator-versus-funktionsaufruf" class="section level3 hasAnchor" number="3.2.4">
+<h3><span class="header-section-number">3.2.4</span> Operator versus Funktionsaufruf<a href="kontrollstrukturen-und-funktionen.html#operator-versus-funktionsaufruf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Abgesehen von der Syntax gibt es keinen Unterschied zwischen einem Operatorausdruck und einem entsprechenden Funktionsaufruf; das Operatorsymbol dient dann als Funktionsname. So kann unser erstes Beispiel <code>6*7</code> auch folgendermaßen geschrieben werden:</p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="kontrollstrukturen-und-funktionen.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;*&#39;</span> (<span class="dv">6</span>, <span class="dv">7</span>)</span></code></pre></div>
+<pre><code>## [1] 42</code></pre>
+<p>Da <code>*</code> kein erlaubter Namen ist (<code>non-syntatic</code>, siehe Abschnitt 2.2), muss es allerdings in Anführungszeichen gesetzt werden.</p>
+<p><strong>Kurzzusammenfassung</strong></p>
+<blockquote>
+<ul>
+<li>Call-by-value in Verbindung mit Copy-on-modify</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>Keine Zeiger und kein Call-by-reference</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>E-Notation wie z.B. <code>1e9</code></li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div id="kontrollstrukturen" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Kontrollstrukturen<a href="kontrollstrukturen-und-funktionen.html#kontrollstrukturen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Einzelne Anweisungen werden in R üblicherweise durch einen Zeilenumbruch getrennt; sie können aber auch durch ein Semikolon abgegrenzt werden. Wie in C auch, können Anweisungen zu einem <em>Block</em> (auch <em>Blockanweisung</em> genannt) mithilfe geschweifter Klammern gruppiert werden. Syntaktisch ist ein Block äquivalent zu einer einzelnen Anweisung.</p>
+<p>Da die elementaren Kontrollstrukturen in R sehr ähnlich zu den Kontrollstrukturen in Sprachen wie C, C++, C#, Java, JavaScript, … sind, werden wir sie an dieser Stelle nicht detailliert behandeln (siehe auch <code>?Control</code> oder <code>?while</code>). Einen großen Unterschied gibt es allerdings: in R werden Kontrollstrukturen intern durch Funktionen realisiert!</p>
+<p>Schleifen haben in R den Ruf, recht langsam zu sein und viele Autoren empfehlen deshalb, sie wenn möglich zu vermeiden. Wie wir gesehen haben (siehe Abschnitt 2.3), können viele Funktionen und Operatoren direkt auf Vektoren angewandt werden, so dass in diesem Fall keine expliziten Schleifen notwendig sind:</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="kontrollstrukturen-und-funktionen.html#cb215-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span></span>
+<span id="cb215-2"><a href="kontrollstrukturen-und-funktionen.html#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sin</span>(x <span class="sc">^</span> <span class="dv">3</span> <span class="sc">-</span> x <span class="sc">^</span> <span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span> <span class="sc">*</span> pi))</span></code></pre></div>
+<pre><code>##  [1]  0.7452069  0.8820497  0.4212873 -0.9815359  0.9975643  0.2146034
+##  [7]  0.8128370 -0.7451375 -0.1737885 -0.6932617 -0.9919059  0.7195282</code></pre>
+<p>Des Weiteren gibt es eine Familie von Funktionen, bestehend aus <code>apply()</code>, <code>lapply()</code>, <code>sapply()</code> …, die oft im Vergleich zu expliziten Schleifen viele Vorteile bieten; darauf werden wir später eingehen.</p>
+<div id="verzweigung-if-else" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Verzweigung: <code>if-else</code><a href="kontrollstrukturen-und-funktionen.html#verzweigung-if-else" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Wie in C lautet die formale Syntax:
+<code>if( statement1 )</code>
+<code>statement2</code>
+<code>else</code>
+<code>statement3</code></p>
+<p>Wie in C ist der <code>else</code>-Teil optional. Falls <code>statement2</code> oder <code>statement3</code> aus mehreren Anweisungen besteht, müssen geschweifte Klammern benutzt werden! Auch ist ein Zeilenumbruch zwischen ‚}‘ und <code>else</code> nicht erlaubt.</p>
+<p><code>if-else</code> gibt den zuletzt berechneten Wert zurück. Dies wird oft in Zuweisungen ausgenutzt. Statt:</p>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="kontrollstrukturen-und-funktionen.html#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>){</span>
+<span id="cb217-2"><a href="kontrollstrukturen-und-funktionen.html#cb217-2" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x</span>
+<span id="cb217-3"><a href="kontrollstrukturen-und-funktionen.html#cb217-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span>{</span>
+<span id="cb217-4"><a href="kontrollstrukturen-und-funktionen.html#cb217-4" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb217-5"><a href="kontrollstrukturen-und-funktionen.html#cb217-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>kann daher auch kürzer geschrieben werden:</p>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="kontrollstrukturen-und-funktionen.html#cb218-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) x <span class="cf">else</span> x <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div>
+<p>Wie in C bezeichnet <code>==</code> den Vergleichsoperator! Der Operator <code>=</code> entspricht hingegen einer Zuweisung (siehe Abschnitt 2.2). Und zur Erinnerung: <code>%%</code> bezeichnet den Modulo-Operator (siehe Abschnitt 2.3)</p>
+<p>Genau wie in C sind auch „else-if“-Ketten erlaubt:
+<code>if( statement1 ){</code>
+<code>statement2</code>
+<code>} else if ( statement 3 ) {</code>
+<code>statement4</code>
+<code>} else if ( statement5 ) {</code>
+<code>statement6</code>
+<code>} else</code>
+<code>statement8</code></p>
+</div>
+<div id="verzweigung-ifelse" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Verzweigung: ifelse<a href="kontrollstrukturen-und-funktionen.html#verzweigung-ifelse" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Die Auswertung der <code>if</code>-Bedingung in der Kontrollstruktur <code>if-else</code> berücksichtigt lediglich das erste Element eines Vektors. <code>if-else</code> ist daher nur bedingt für Vektoren geeignet. Insbesondere sind Funktionen, die im Funktionsrumpf ein <code>if-else</code> benutzten, nicht vektorisierbar!</p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="kontrollstrukturen-und-funktionen.html#cb219-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb219-2"><a href="kontrollstrukturen-und-funktionen.html#cb219-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>){</span>
+<span id="cb219-3"><a href="kontrollstrukturen-und-funktionen.html#cb219-3" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x</span>
+<span id="cb219-4"><a href="kontrollstrukturen-und-funktionen.html#cb219-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb219-5"><a href="kontrollstrukturen-und-funktionen.html#cb219-5" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb219-6"><a href="kontrollstrukturen-und-funktionen.html#cb219-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb219-7"><a href="kontrollstrukturen-und-funktionen.html#cb219-7" aria-hidden="true" tabindex="-1"></a>z </span></code></pre></div>
+<p>Ebenso:</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="kontrollstrukturen-und-funktionen.html#cb220-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb220-2"><a href="kontrollstrukturen-und-funktionen.html#cb220-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="cf">if</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) x <span class="cf">else</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb220-3"><a href="kontrollstrukturen-und-funktionen.html#cb220-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<p>Für diesen Zweck gibt es die Funktion <code>ifelse()</code>:
+<code>ifelse(test, wahr, falsch)</code>
+Zurückgegeben wird ein Objekt der gleichen Größe und Form wie <code>test</code>, der abhängig vom Wahrheitswert von <code>test</code> elementweise gefüllt wird von den entsprechenden Elementen aus <code>wahr</code> bzw. <code>falsch</code>.</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="kontrollstrukturen-und-funktionen.html#cb221-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb221-2"><a href="kontrollstrukturen-und-funktionen.html#cb221-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, x, x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb221-3"><a href="kontrollstrukturen-und-funktionen.html#cb221-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<pre><code>##  [1]  2  2  4  4  6  6  8  8 10 10</code></pre>
+<p>Entsprechend ergibt sich mithilfe von Recycling (siehe Abschnitt 2.3.1):</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="kontrollstrukturen-und-funktionen.html#cb223-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">13</span></span>
+<span id="cb223-2"><a href="kontrollstrukturen-und-funktionen.html#cb223-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">9</span>)</span>
+<span id="cb223-3"><a href="kontrollstrukturen-und-funktionen.html#cb223-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<pre><code>##  [1] 5 9 5 9 5 9 5 9 5 9 5 9</code></pre>
+</div>
+<div id="schleife-while-und-repeat" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Schleife: <code>while</code> und <code>repeat</code><a href="kontrollstrukturen-und-funktionen.html#schleife-while-und-repeat" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Auch das Grundgerüst einer <code>while</code>-Schleife ist wie in C:
+<code>while ( statement1 ) statement2</code></p>
+<p>Ebenso wie in C wird <code>break</code> verwendet, um eine Schleife vorzeitig zu beenden. Statt <code>continue</code> wie in C wird in R allerdings <code>next</code> verwendet, um innerhalb der Schleife sofort (und ohne die folgenden Anweisungen im Schleifenrumpf auszuführen) zur nächsten Schleifenbewertung zu springen.
+Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code>.</p>
+</div>
+<div id="schleife-for" class="section level3 hasAnchor" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> Schleife: <code>for</code><a href="kontrollstrukturen-und-funktionen.html#schleife-for" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Die Syntax für die <code>for</code>-Schleife (ähnlich wie in Python) lautet:
+<code>for ( name in vector )</code>
+<code>statement1</code></p>
+<p>Hierzu ein kleines Beispiel:</p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="kontrollstrukturen-und-funktionen.html#cb225-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">15</span></span>
+<span id="cb225-2"><a href="kontrollstrukturen-und-funktionen.html#cb225-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(idx <span class="cf">in</span> x) <span class="fu">print</span>(idx <span class="sc">^</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 121
+## [1] 144
+## [1] 169
+## [1] 196
+## [1] 225</code></pre>
+</div>
+<div id="mehrfachzweigung-switch" class="section level3 hasAnchor" number="3.3.5">
+<h3><span class="header-section-number">3.3.5</span> Mehrfachzweigung: <code>switch</code><a href="kontrollstrukturen-und-funktionen.html#mehrfachzweigung-switch" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In R gibt es auch eine <code>switch</code>-Anweisung für eine Mehrfachverzweigung, deren Syntax sich aber nicht an C anlehnt. Die Syntax ist unterschiedlich zu C und zeigt aber auch deutlich, dass es sich intern um einen Funktionsaufruf handelt:
+<code>switch(statement, list)</code></p>
+<p>Zuerst wird <code>statement</code> ausgewertet und der erhaltene Wert als Index der Liste <code>list</code> interpretiert. Ist er kein gültiger Indexwert, dann wird <code>NULL</code> zurückgegeben.</p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="kontrollstrukturen-und-funktionen.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">1</span>, <span class="st">&quot;eins&quot;</span>, <span class="st">&quot;zwei&quot;</span>, <span class="st">&quot;drei&quot;</span>, <span class="st">&quot;vier&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;eins&quot;</code></pre>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="kontrollstrukturen-und-funktionen.html#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">3</span>, <span class="st">&quot;eins&quot;</span>, <span class="st">&quot;zwei&quot;</span>, <span class="st">&quot;drei&quot;</span>, <span class="st">&quot;vier&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;drei&quot;</code></pre>
+<p><code>NULL</code> ist ein spezielles Objekt in R, das nur einmal in R existiert. Es wird in der Regel benutzt, um anzuzeigen, dass es kein entsprechendes Objekt gibt (im Gegensatz zu <code>NA</code>, das anzeigt, dass kein Wert verfügbar ist).</p>
+<p><strong>Kurzzusammenfassung</strong></p>
+<blockquote>
+<ul>
+<li>Block</li>
+<li><code>if-else</code></li>
+<li><code>ifelse</code></li>
+<li><code>while</code>, <code>repeat</code></li>
+<li><code>break</code>, <code>next</code></li>
+<li><code>for</code></li>
+<li><code>switch</code></li>
+<li><code>NULL</code></li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div id="übungen-2" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Übungen<a href="kontrollstrukturen-und-funktionen.html#übungen-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="erste-schritte.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="homogene-datenstrukturen.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-kontrollstrukturen_funktionen.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bchwtz-rprg.pdf", "bchwtz-rprg.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
