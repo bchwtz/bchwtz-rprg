@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Buchwitz" />
 
 
-<meta name="date" content="2022-09-13" />
+<meta name="date" content="2022-09-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -123,6 +123,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -214,6 +236,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#listen"><i class="fa fa-check"></i><b>5.1</b> Listen</a>
 <ul>
 <li class="chapter" data-level="5.1.1" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#erzeugung-von-listen-und-indexierung"><i class="fa fa-check"></i><b>5.1.1</b> Erzeugung von Listen und Indexierung</a></li>
+<li class="chapter" data-level="5.1.2" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#listen-ändern"><i class="fa fa-check"></i><b>5.1.2</b> Listen ändern</a></li>
+<li class="chapter" data-level="5.1.3" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#vergleich-liste-versus-vektor"><i class="fa fa-check"></i><b>5.1.3</b> Vergleich: Liste versus Vektor</a></li>
+<li class="chapter" data-level="5.1.4" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#lapply-und-sapply"><i class="fa fa-check"></i><b>5.1.4</b> <code>lapply()</code> und <code>sapply()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#factor"><i class="fa fa-check"></i><b>5.2</b> Factor</a></li>
+<li class="chapter" data-level="5.3" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#data-frame"><i class="fa fa-check"></i><b>5.3</b> Data Frame</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#data-frame-erzeugen"><i class="fa fa-check"></i><b>5.3.1</b> Data Frame erzeugen</a></li>
+<li class="chapter" data-level="5.3.2" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#der-indexoperator"><i class="fa fa-check"></i><b>5.3.2</b> Der Indexoperator</a></li>
+<li class="chapter" data-level="5.3.3" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#apply-1"><i class="fa fa-check"></i><b>5.3.3</b> <code>apply()</code></a></li>
+<li class="chapter" data-level="5.3.4" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#filtern-einfügen-und-löschen"><i class="fa fa-check"></i><b>5.3.4</b> Filtern, Einfügen und Löschen</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Datenvisualisierung mit <code>ggplot2</code></a></li>
@@ -596,21 +629,21 @@ Figure 2.4: Abb4
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>In R sind bereits viele Funktionen zu häufig verwendeten Wahrscheinlichkeitsverteilungen implementiert. Exemplarisch wollen wir an dieser Stelle die Funktionen rnorm() und runif() betrachten (siehe ?rnom und ?runif). Beide Funktionen geben Pseudozufallszahlen gemäß der Normalverteilung bzw. der Gleichverteilung zurück. Werden keine weiteren Argumente spezifiziert, dann wird bei der Normalverteilung Mittelwert 0 und Standardabweichung 1 angenommen; entsprechend gibt rnorm(n) einen Vektor mit n normalverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="erste-schritte.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1]  0.25097992 -0.56944627  0.46696107  0.94139770 -1.59059225  0.00599891
-##  [7] -1.21662803  1.52120264  1.81965516 -0.54451415</code></pre>
+<pre><code>##  [1] -0.70318816  0.33281099 -0.35518549  0.54190979  1.17608786  0.29986734
+##  [7] -0.09503111 -1.04465134  1.22035908 -0.52884791</code></pre>
 <p>Bei der Gleichverteilung wird standardmäßig vom Intervall [0,1] ausgegangen; entsprechend gibt runiform(n) einen Vektor mit n in [0,1] gleichverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="erste-schritte.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.6119472 0.5959712 0.7556765 0.1980131 0.4181207 0.9242560 0.7877493
-##  [8] 0.9268399 0.6981807 0.8092715</code></pre>
+<pre><code>##  [1] 0.7591681 0.6077032 0.9605993 0.6132175 0.8582961 0.5195202 0.4154565
+##  [8] 0.4916063 0.6902190 0.7726797</code></pre>
 <p>Wenn wir im Folgenden von erzeugten Zufallszahlen (oder zufälligen Werten) sprechen, dann meinen wir stets Pseudozufallszahlen.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="erste-schritte.html#cb93-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
 <span id="cb93-2"><a href="erste-schritte.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -3.36232 -0.64563  0.02328  0.02973  0.68157  3.16169</code></pre>
+## -3.04235 -0.76657 -0.02324 -0.03665  0.67974  3.19059</code></pre>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="erste-schritte.html#cb95-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>)</span>
 <span id="cb95-2"><a href="erste-schritte.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
 <pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## -3.959209 -0.661748  0.005990  0.007835  0.690108  3.740164</code></pre>
+## -3.640829 -0.669965  0.006373  0.005971  0.666454  3.732767</code></pre>
 <p>Um zu prüfen, ob die erzeugten Zufallszahlen einer Normalverteilung genügen, können wir als ersten Test ein Histogramm erzeugen:</p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="erste-schritte.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
@@ -624,12 +657,12 @@ Figure 2.4: Abb4
 <p>Das Gleiche wollen wir mit zufällig erzeugten gleichverteilten Werten wiederholen:</p>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="erste-schritte.html#cb100-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
 <span id="cb100-2"><a href="erste-schritte.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
-<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## 0.0001622 0.2780838 0.5148711 0.5182586 0.7722576 0.9978378</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.001231 0.259059 0.507124 0.507679 0.770293 0.999519</code></pre>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="erste-schritte.html#cb102-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10000</span>)</span>
 <span id="cb102-2"><a href="erste-schritte.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
-<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## 0.0001668 0.2504903 0.4985103 0.5006593 0.7525521 0.9999933</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.000444 0.255561 0.498146 0.502276 0.754402 0.999690</code></pre>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="erste-schritte.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="erste-schritte.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x, <span class="at">breaks =</span> <span class="dv">100</span>)</span></code></pre></div>
