@@ -552,13 +552,13 @@ Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann trit
 ##   tmp &lt;- 2 * y + 3 * z
 ##   return(x + tmp)
 ## }
-## &lt;bytecode: 0x560e7848e260&gt;</code></pre>
+## &lt;bytecode: 0x561fc75b8328&gt;</code></pre>
 <div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="kontrollstrukturen-und-funktionen.html#cb187-1" aria-hidden="true" tabindex="-1"></a>sqrt</span></code></pre></div>
 <pre><code>## function (x)  .Primitive(&quot;sqrt&quot;)</code></pre>
 <div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="kontrollstrukturen-und-funktionen.html#cb189-1" aria-hidden="true" tabindex="-1"></a>atan2</span></code></pre></div>
 <pre><code>## function (y, x) 
 ## .Internal(atan2(y, x))
-## &lt;bytecode: 0x560e789424e0&gt;
+## &lt;bytecode: 0x561fc797fa38&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
@@ -900,7 +900,6 @@ Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code
 <p>Ein Sensor einer Maschine, der auf einer geradlinigen Leiste angebracht ist, fährt nacheinander unterschiedliche Punkte <span class="math inline">\(P_1\)</span>, <span class="math inline">\(P_2\)</span>, …, <span class="math inline">\(P_n\)</span> ab. Die eindimensionalen Koordinaten <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, …, <span class="math inline">\(x_n\)</span> der <span class="math inline">\(n\)</span> Punkte sind dabei gleichförmig im Intervall [0,1] und unabhängig verteilt. Wie groß ist der durchschnittliche Weg (in Abhängigkeit von <span class="math inline">\(n\)</span>?), die der Sensor zurücklegt?</p>
 <p>Die Lösung kann relativ leicht analytisch berechnet werden. Sie sollen jedoch die Lösung nicht analytisch bestimmen, sondern dies für unterschiedliche <span class="math inline">\(n\)</span>-Werte in R simulieren, die Ergebnisse visualisieren und aufgrund der ermittelten Daten eine Vermutung aufstellen. Implementieren Sie hierfür eine Funktion <code>rstrecken(n, min = 0, max = 1)</code>, die ähnlich wie <code>runif()</code> oder <code>rnorm()</code> „zufällige“ Werte zurückgibt und die (im Gegensatz zu <code>runif()</code> oder <code>rnorm()</code>) als zurückgelegte Strecken des Sensors interpretiert werden können.</p>
 <p>Eine Visualisierung könnte wie folgt aussehen:</p>
-<pre><code>##  int [1:1000] 100 200 300 400 500 600 700 800 900 1000 ...</code></pre>
 <div class="figure"><span style="display:block;" id="fig:plot-strecken"></span>
 <img src="bchwtz-rprg_files/figure-html/plot-strecken-1.png" alt="Eine mögliche Visualisierung." width="80%" />
 <p class="caption">
@@ -908,15 +907,115 @@ Figure 3.1: Eine mögliche Visualisierung.
 </p>
 </div>
 
-<pre><code>## [1] 1e+05</code></pre>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-94"></span>
-<img src="bchwtz-rprg_files/figure-html/unnamed-chunk-94-1.png" alt="(ref:hist-stre)" width="80%" />
+<div class="figure"><span style="display:block;" id="fig:hist-strecke"></span>
+<img src="bchwtz-rprg_files/figure-html/hist-strecke-1.png" alt="Histogramm der durchschnittlichen Strecke." width="80%" />
 <p class="caption">
-Figure 3.2: (ref:hist-stre)
+Figure 3.2: Histogramm der <em>durchschnittlichen</em> Strecke.
 </p>
 </div>
-<p>Eine mögliche Visualisierung. Histogramm der <em>durchschnittlichen</em> Strecke.</p>
+
 <p><strong>Aufgabe 8</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Implementieren Sie eine Funktion <code>llaenge1()</code>, die die Lauflängen-Codierung einer binären Folge (bestehend aus Nullen und Einsen) zurückgibt. In der folgenden Tabelle sehen Sie einige Beispiele:</li>
+</ol>
+<table>
+<thead>
+<tr class="header">
+<th><code>x</code></th>
+<th><code>llaenge1(x)</code></th>
+<th><code>llaenge(x)</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0,0,0,1,1,0,0,0,0,1,0,1,1</td>
+<td>3,2,4,1,1,2</td>
+<td>3,2,4,1,1,2</td>
+</tr>
+<tr class="even">
+<td>1,1,1,1,0,0</td>
+<td>4, 2</td>
+<td>4, 2</td>
+</tr>
+<tr class="odd">
+<td>0,0,0,0,1,1</td>
+<td>4, 2</td>
+<td>4, 2</td>
+</tr>
+<tr class="even">
+<td>“a”,“a”,“a”,“a”,“a”,“a”,“b”,“b”,“b”,“b”,“a”</td>
+<td>FEHLER</td>
+<td>6, 4, 1</td>
+</tr>
+<tr class="odd">
+<td>“rot”, “rot”, “blau”</td>
+<td>FEHLER</td>
+<td>2, 1</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Implementieren Sie eine Funktion <code>llaenge()</code>, die die <em>Lauflängen-Codierung</em> einer binären Folge (bestehend aus beliebigen zwei Symbolen) zurückgibt.</p></li>
+<li><p>Implementieren Sie eine Funktion <code>llaengeInverse(y, first=0L, second=1L)</code>, die aus einer Lauflängen-Codierung eine binäre Folge erzeugt, die aus den durch <code>first</code> und <code>second</code> spezifizierten Symbolen besteht. In der folgenden Tabelle sehen Sie einige Beispiele:</p></li>
+</ol>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="31%" />
+<col width="47%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>r</code></th>
+<th><code>llaengeInverse(r)</code></th>
+<th><code>llaengeInverse(r, first=-1L)</code></th>
+<th><code>llaengeInverse(r, first="+", second="-")</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3, 2, 1</td>
+<td>0,0,0,1,1,0</td>
+<td>-1,-1,-1,1,1,-1</td>
+<td>“+”,“+”,“+”,“-”,“-”,“+”</td>
+</tr>
+<tr class="even">
+<td>1, 4</td>
+<td>0,1,1,1,1</td>
+<td>-1,1,1,1,1</td>
+<td>“+”,“-”,“-”,“-”,“-”</td>
+</tr>
+</tbody>
+</table>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Testen Sie Ihre implementierten Funktionen mithilfe der folgenden Funktion:</li>
+</ol>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="kontrollstrukturen-und-funktionen.html#cb238-1" aria-hidden="true" tabindex="-1"></a>testLaufLaenge <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">anzahl =</span> 16L, <span class="at">maxLaenge =</span> <span class="dv">12</span>) {</span>
+<span id="cb238-2"><a href="kontrollstrukturen-und-funktionen.html#cb238-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>anzahl){ </span>
+<span id="cb238-3"><a href="kontrollstrukturen-und-funktionen.html#cb238-3" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>maxLaenge,<span class="dv">1</span>)</span>
+<span id="cb238-4"><a href="kontrollstrukturen-und-funktionen.html#cb238-4" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(0L,1L),n,<span class="cn">TRUE</span>)</span>
+<span id="cb238-5"><a href="kontrollstrukturen-und-funktionen.html#cb238-5" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">llaenge</span>(x)</span>
+<span id="cb238-6"><a href="kontrollstrukturen-und-funktionen.html#cb238-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(r)</span>
+<span id="cb238-7"><a href="kontrollstrukturen-und-funktionen.html#cb238-7" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="fu">llaengeInverse</span>(r, 1L, 0L)</span>
+<span id="cb238-8"><a href="kontrollstrukturen-und-funktionen.html#cb238-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(y[<span class="dv">1</span>] <span class="sc">!=</span> x[<span class="dv">1</span>])</span>
+<span id="cb238-9"><a href="kontrollstrukturen-und-funktionen.html#cb238-9" aria-hidden="true" tabindex="-1"></a>      y <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span>y</span>
+<span id="cb238-10"><a href="kontrollstrukturen-und-funktionen.html#cb238-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">any</span>(x <span class="sc">!=</span> y))  </span>
+<span id="cb238-11"><a href="kontrollstrukturen-und-funktionen.html#cb238-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="st">&quot;Test nicht bestanden: &quot;</span>, x)</span>
+<span id="cb238-12"><a href="kontrollstrukturen-und-funktionen.html#cb238-12" aria-hidden="true" tabindex="-1"></a>  }  </span>
+<span id="cb238-13"><a href="kontrollstrukturen-und-funktionen.html#cb238-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>Hinweis:</strong></p>
+<p><code>stop()</code>: Stoppt die Ausführung der aktuellen Anweisung und gibt eine entsprechende Fehlermeldung aus</p>
+<p><strong>Kurzzusammenfassung</strong></p>
+<blockquote>
+<ul>
+<li><code>as.character()</code></li>
+<li><code>as.double()</code></li>
+<li><code>as.integer()</code></li>
+<li><code>var()</code></li>
+<li><code>stop()</code></li>
+</ul>
+</blockquote>
 
 </div>
 </div>
