@@ -552,13 +552,13 @@ Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann trit
 ##   tmp &lt;- 2 * y + 3 * z
 ##   return(x + tmp)
 ## }
-## &lt;bytecode: 0x56348b4adee0&gt;</code></pre>
+## &lt;bytecode: 0x560e7848e260&gt;</code></pre>
 <div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="kontrollstrukturen-und-funktionen.html#cb187-1" aria-hidden="true" tabindex="-1"></a>sqrt</span></code></pre></div>
 <pre><code>## function (x)  .Primitive(&quot;sqrt&quot;)</code></pre>
 <div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="kontrollstrukturen-und-funktionen.html#cb189-1" aria-hidden="true" tabindex="-1"></a>atan2</span></code></pre></div>
 <pre><code>## function (y, x) 
 ## .Internal(atan2(y, x))
-## &lt;bytecode: 0x56348bcb2bf8&gt;
+## &lt;bytecode: 0x560e789424e0&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
@@ -810,12 +810,37 @@ Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code
 <span id="cb233-2"><a href="kontrollstrukturen-und-funktionen.html#cb233-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fl">2.1</span><span class="sc">*</span>i</span>
 <span id="cb233-3"><a href="kontrollstrukturen-und-funktionen.html#cb233-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">*</span>x <span class="sc">+</span>1i<span class="sc">*</span>x</span>
 <span id="cb233-4"><a href="kontrollstrukturen-und-funktionen.html#cb233-4" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">as.character</span>(i)     <span class="co"># Nicht im Skript</span></span></code></pre></div>
-<pre><code>| Wert   | Type</code></pre>
-<p>—-|——–|————
-<code>g</code> | |
-<code>x</code> | |<br />
-<code>c</code> | |<br />
-<code>z</code> | |</p>
+<table>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Wert</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>g</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>x</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>c</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>z</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <p>Was bewirkt die Funktion <code>as.character()</code>? Gibt es auch <code>as.double()</code> und <code>as.integer()</code>?</p>
 <p><strong>Aufgabe 3</strong></p>
 <p>Gegeben ist: <code>x &lt;- 1; for(i in 1:20) x &lt;- c(x,x)</code></p>
@@ -834,6 +859,64 @@ Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code
 </ol>
 <p><strong>Aufgabe 5</strong></p>
 <p>Vereinfachen Sie folgende Schleife:</p>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="kontrollstrukturen-und-funktionen.html#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="cf">repeat</span> {</span>
+<span id="cb234-2"><a href="kontrollstrukturen-und-funktionen.html#cb234-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(n <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;&amp;</span> count <span class="sc">&gt;=</span> <span class="dv">6</span> ) <span class="cf">break</span></span>
+<span id="cb234-3"><a href="kontrollstrukturen-und-funktionen.html#cb234-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(n<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb234-4"><a href="kontrollstrukturen-und-funktionen.html#cb234-4" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">2</span></span>
+<span id="cb234-5"><a href="kontrollstrukturen-und-funktionen.html#cb234-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>Hinweis</strong>: Der Operator <code>&amp;&amp;</code> bezieht sich bei Vektoren nur auf das erste Element; bei Vektoren sollte man statt <code>&amp;&amp;</code> den Operator <code>&amp;</code> benutzen! Ähnliches gilt für die Operatoren <code>||</code> und <code>|</code> (siehe z.B. <code>?‘&amp;‘</code>).</p>
+<p><strong>Aufgabe 6</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Implementieren Sie eine Funktion <code>skalierenW()</code>, die einen nichtnegativen numerischen Vektor <code>x</code> als Häufigkeiten interpretiert und den entsprechenden Wahrscheinlichkeitsvektor <code>p</code> zurückgibt, d. h. folgende Aussagen sind dann wahr:</li>
+</ol>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="kontrollstrukturen-und-funktionen.html#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(p <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb235-2"><a href="kontrollstrukturen-und-funktionen.html#cb235-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(p) <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb235-3"><a href="kontrollstrukturen-und-funktionen.html#cb235-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(x<span class="sc">/</span><span class="fu">sum</span>(x) <span class="sc">==</span> p)</span></code></pre></div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Implementieren Sie eine Funktion <code>skalierenAffin()</code>, die einen numerischen Vektor <code>x</code> folgendermaßen linear skaliert (d.h. mithilfe einer affinen Abbildung):</p>
+<ul>
+<li>Bezeichne mit <span class="math inline">\(x_{min}\)</span> und <span class="math inline">\(x_{max}\)</span> den kleinsten bzw. größten Wert von <code>x</code>.</li>
+<li><span class="math inline">\(x_{min}\)</span> soll auf 0 und <span class="math inline">\(x_{max}\)</span> auf 1 abgebildet werden.</li>
+<li>Da abgesehen von einer Verschiebung die Skalierung linear ist, wird also ein Element <span class="math inline">\(x_{i}\)</span> von <code>x</code> auf (<span class="math inline">\(x_i\)</span> - <span class="math inline">\(x_{min}\)</span>) / (<span class="math inline">\(x_{max}\)</span> - <span class="math inline">\(x_{min}\)</span>) abgebildet.</li>
+</ul></li>
+</ol>
+<p><strong>Beispiele</strong></p>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="kontrollstrukturen-und-funktionen.html#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb236-2"><a href="kontrollstrukturen-und-funktionen.html#cb236-2" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; 0.00 0.25 0.50 0.75 1.00</span></span>
+<span id="cb236-3"><a href="kontrollstrukturen-und-funktionen.html#cb236-3" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb236-4"><a href="kontrollstrukturen-und-funktionen.html#cb236-4" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; 0.00 0.25 0.50 0.75 1.00</span></span>
+<span id="cb236-5"><a href="kontrollstrukturen-und-funktionen.html#cb236-5" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">20</span>))</span>
+<span id="cb236-6"><a href="kontrollstrukturen-und-funktionen.html#cb236-6" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; 0.00 0.05 1.00</span></span>
+<span id="cb236-7"><a href="kontrollstrukturen-und-funktionen.html#cb236-7" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">20</span>)<span class="sc">+</span><span class="dv">10</span>)</span>
+<span id="cb236-8"><a href="kontrollstrukturen-und-funktionen.html#cb236-8" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; 0.00 0.05 1.00</span></span>
+<span id="cb236-9"><a href="kontrollstrukturen-und-funktionen.html#cb236-9" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))</span>
+<span id="cb236-10"><a href="kontrollstrukturen-und-funktionen.html#cb236-10" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; 0.25 0.00 1.00 0.75</span></span></code></pre></div>
+<p>Testen Sie Ihre Lösung auch mit folgenden problematischen Eingabewerten. Wie sieht Ihre Lösung aus?</p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="kontrollstrukturen-und-funktionen.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>((<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), <span class="cn">NA</span>))</span>
+<span id="cb237-2"><a href="kontrollstrukturen-und-funktionen.html#cb237-2" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; 0.00 0.25 0.50 0.75 1.00   NA</span></span>
+<span id="cb237-3"><a href="kontrollstrukturen-und-funktionen.html#cb237-3" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">1</span><span class="sc">/</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span>))</span>
+<span id="cb237-4"><a href="kontrollstrukturen-und-funktionen.html#cb237-4" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; 0.25 0.00  Inf 1.00 0.75</span></span></code></pre></div>
+<p><strong>Aufgabe 7</strong></p>
+<p>Ein Sensor einer Maschine, der auf einer geradlinigen Leiste angebracht ist, fährt nacheinander unterschiedliche Punkte <span class="math inline">\(P_1\)</span>, <span class="math inline">\(P_2\)</span>, …, <span class="math inline">\(P_n\)</span> ab. Die eindimensionalen Koordinaten <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, …, <span class="math inline">\(x_n\)</span> der <span class="math inline">\(n\)</span> Punkte sind dabei gleichförmig im Intervall [0,1] und unabhängig verteilt. Wie groß ist der durchschnittliche Weg (in Abhängigkeit von <span class="math inline">\(n\)</span>?), die der Sensor zurücklegt?</p>
+<p>Die Lösung kann relativ leicht analytisch berechnet werden. Sie sollen jedoch die Lösung nicht analytisch bestimmen, sondern dies für unterschiedliche <span class="math inline">\(n\)</span>-Werte in R simulieren, die Ergebnisse visualisieren und aufgrund der ermittelten Daten eine Vermutung aufstellen. Implementieren Sie hierfür eine Funktion <code>rstrecken(n, min = 0, max = 1)</code>, die ähnlich wie <code>runif()</code> oder <code>rnorm()</code> „zufällige“ Werte zurückgibt und die (im Gegensatz zu <code>runif()</code> oder <code>rnorm()</code>) als zurückgelegte Strecken des Sensors interpretiert werden können.</p>
+<p>Eine Visualisierung könnte wie folgt aussehen:</p>
+<pre><code>##  int [1:1000] 100 200 300 400 500 600 700 800 900 1000 ...</code></pre>
+<div class="figure"><span style="display:block;" id="fig:plot-strecken"></span>
+<img src="bchwtz-rprg_files/figure-html/plot-strecken-1.png" alt="Eine mögliche Visualisierung." width="80%" />
+<p class="caption">
+Figure 3.1: Eine mögliche Visualisierung.
+</p>
+</div>
+
+<pre><code>## [1] 1e+05</code></pre>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-94"></span>
+<img src="bchwtz-rprg_files/figure-html/unnamed-chunk-94-1.png" alt="(ref:hist-stre)" width="80%" />
+<p class="caption">
+Figure 3.2: (ref:hist-stre)
+</p>
+</div>
+<p>Eine mögliche Visualisierung. Histogramm der <em>durchschnittlichen</em> Strecke.</p>
+<p><strong>Aufgabe 8</strong></p>
 
 </div>
 </div>
