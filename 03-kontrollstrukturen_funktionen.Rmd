@@ -138,27 +138,28 @@ Die Anweisung `rm(list=ls())` löscht ohne Warnung alle Objekte! (Mit `ls()` erh
 Im Gegensatz zu C und C++ gibt es in R einen *Garbage Collector*, kurz auch mit GC bezeichnet. Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z.B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund, ohne dass der GC explizit aufgerufen werden muss (siehe auch `?gc`). Man kann den GC explizit mit `gc()` aufrufen (siehe `?gc`), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe `used`) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe `gc trigger`).
 
 ```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(cells = c("used", "(Mb)", "gc (trigger)", "(Mb)", "max used", "(Mb)"),
-                 Ncells = c(438523, 23.5, 938047, 50.1, 621888, 33.3),
+df <- data.frame(Ncells = c(438523, 23.5, 938047, 50.1, 621888, 33.3),
                  Vcells = c(100729739, 768.6, 147642767, 1126.5, 100729820, 768.6))
-knitr::kable(t(df), booktabs = T, col.names = c("used", "(Mb)", "gc (trigger)", "(Mb)", "max used", "(Mb)"), caption = "Speicherbedarf in R.")%>%
+knitr::kable(t(df), booktabs = T, col.names = c("", "used", "(Mb)", "gc (trigger)", "(Mb)", "max used", "(Mb)"), caption = "Speicherbedarf in R.")%>%
  kableExtra::kable_styling(latex_options = "hold_position")
 ```
+
+
 
 **Kurzzusammenfassung**
 
 > - Objekt
-> - R kennt keine skalaren Werte (sondern es werden Vektoren der Länge 1 für skalare Werte genutzt)
-> - In R verweisen Variablen auf Objekte; man sagt auch, dass eine Variable an ein Objekt gebunden ist
-> -	Eine Variable hat keinen festen Datentyp, sondern ist an ein Objekt gebunden, dem ein fester Datentyp zugeordnet ist
-> -	Jedes Objekt hat zusätzlich sogenannte *Metadaten*, die u. a. den Typ des Objekts beschreiben
+> - R kennt keine skalaren Werte (sondern es werden Vektoren der Länge 1 für skalare Werte genutzt).
+> - In R verweisen Variablen auf Objekte; man sagt auch, dass eine Variable an ein Objekt gebunden ist.
+> -	Eine Variable hat keinen festen Datentyp, sondern ist an ein Objekt gebunden, dem ein fester Datentyp zugeordnet ist.
+> -	Jedes Objekt hat zusätzlich sogenannte *Metadaten*, die u. a. den Typ des Objekts beschreiben.
 > -	`object.size()`
 > - `length()`
 > -	`typeof()`
 > -	`is.vector()`
 > -	R nutzt *copy-on-modify*
 > -	Garbage Collection
-> - `1:1000` ist ein Vektor vom Typ integer, der die ganzen Zahlen von 1 bis 1000 umfasst
+> - `1:1000` ist ein Vektor vom Typ integer, der die ganzen Zahlen von 1 bis 1000 umfasst.
 > -	*late binding*: Variablen werden erst während der Laufzeit an ein Objekt gebunden  
 
 ## Funktionen
@@ -268,7 +269,7 @@ atan2
 > - Formale Funktionsparameter
 > -	Funktionskörper
 > - Lokale Variablen
-> - Fehlt die `return`-Anweisung, dann wird der letzte in der Funktion berechnete Wert zurückgegeben 
+> - Fehlt die `return`-Anweisung, dann wird der letzte in der Funktion berechnete Wert zurückgegeben. 
 > -	Elementweises Anwenden der Funktion bei Vektorargumenten (und eventuelles Recycling)
 > -	Unterschied `sqrt` und `sqrt(2)`
 
@@ -534,7 +535,7 @@ switch(3, "eins", "zwei", "drei", "vier")
 
 Was sind die Werte der folgenden Ausdrücke:     
 
-a)	'+' (7,'*' (2, 4)) 
+a)	`'+' (7,'*' (2, 4))` 
 
 b) `1e3`
 
@@ -563,12 +564,12 @@ c <- 4*x +1i*x
 z <- as.character(i)     # Nicht im Skript
 ```
 
-              | Wert              | Type
---------------|-------------------|------------
-`g`           |                   |
-`x`           |                   |
-`c`           |                   |
-`z`           |                   |
+    | Wert   | Type
+----|--------|------------
+`g` |        |
+`x` |        |           
+`c` |        |          
+`z` |        |          
 
 Was bewirkt die Funktion `as.character()`? Gibt es auch `as.double()` und  `as.integer()`?
 
