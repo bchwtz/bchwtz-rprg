@@ -564,7 +564,7 @@ c <- 4*x +1i*x
 z <- as.character(i)     # Nicht im Skript
 ```
 
-    | Wert   | Type
+ Variable   | Wert   | Type
 ----|--------|------------
 `g` |        |
 `x` |        |           
@@ -594,3 +594,96 @@ b)	Testen Sie die erzeugten Daten.
 
 Vereinfachen Sie folgende Schleife:
 
+```{r, eval=FALSE}
+repeat {
+  if(n >= 10 && count >= 6 ) break
+  print(n^2)
+  n <- n + 2
+}
+```
+
+**Hinweis**: Der Operator `&&` bezieht sich bei Vektoren nur auf das erste Element; bei Vektoren sollte man statt `&&` den Operator `&` benutzen! Ähnliches gilt für die Operatoren `||` und `|` (siehe z.B. `?‘&‘`). 
+
+
+**Aufgabe 6**
+
+a) Implementieren Sie eine Funktion `skalierenW()`, die einen nichtnegativen numerischen Vektor `x` als Häufigkeiten interpretiert und den entsprechenden Wahrscheinlichkeitsvektor `p` zurückgibt, d. h. folgende Aussagen sind dann wahr: 
+
+```{r, eval=FALSE}
+all(p >= 0)
+sum(p) == 1
+all(x/sum(x) == p)
+```
+
+b) Implementieren Sie eine Funktion `skalierenAffin()`, die einen numerischen Vektor `x` folgendermaßen linear skaliert (d.h. mithilfe einer affinen Abbildung):
+
+    - Bezeichne mit $x_{min}$ und $x_{max}$ den kleinsten bzw. größten Wert von `x`.
+    - $x_{min}$ soll auf 0 und $x_{max}$  auf 1 abgebildet werden.
+    - Da abgesehen von einer Verschiebung die Skalierung linear ist, wird also ein Element $x_{i}$ von `x` auf  ($x_i$ - $x_{min}$) / ($x_{max}$ - $x_{min}$) abgebildet.
+    
+**Beispiele**
+
+```{r, eval=FALSE}
+skalierenAffin(1:5)
+#R> 0.00 0.25 0.50 0.75 1.00
+skalierenAffin(6:10)
+#R> 0.00 0.25 0.50 0.75 1.00
+skalierenAffin(c(0,1,20))
+#R> 0.00 0.05 1.00
+skalierenAffin(c(0,1,20)+10)
+#R> 0.00 0.05 1.00
+skalierenAffin(c(-0.5, -1, 1, 0.5))
+#R> 0.25 0.00 1.00 0.75
+```
+
+Testen Sie Ihre Lösung auch mit folgenden problematischen Eingabewerten. Wie sieht Ihre Lösung aus?
+
+```{r, eval=FALSE}
+skalierenAffin(c((1:5), NA))
+#R> 0.00 0.25 0.50 0.75 1.00   NA
+skalierenAffin(1/(-2:2))
+#R> 0.25 0.00  Inf 1.00 0.75
+```
+
+**Aufgabe 7**
+
+Ein Sensor einer Maschine, der auf einer geradlinigen Leiste angebracht ist, fährt nacheinander unterschiedliche Punkte $P_1$, $P_2$, ..., $P_n$ ab. Die eindimensionalen Koordinaten $x_1$, $x_2$, ..., $x_n$ der $n$ Punkte sind dabei gleichförmig im Intervall [0,1] und unabhängig verteilt. Wie groß ist der durchschnittliche Weg (in Abhängigkeit von $n$?), die der Sensor zurücklegt?
+
+Die Lösung kann relativ leicht analytisch berechnet werden. Sie sollen jedoch die Lösung nicht analytisch bestimmen, sondern dies für unterschiedliche $n$-Werte in R simulieren, die Ergebnisse visualisieren und aufgrund der ermittelten Daten eine Vermutung aufstellen. Implementieren Sie hierfür eine Funktion `rstrecken(n, min = 0, max = 1)`, die ähnlich wie `runif()` oder `rnorm()` „zufällige“ Werte zurückgibt und die (im Gegensatz zu `runif()` oder `rnorm()`) als zurückgelegte Strecken des Sensors interpretiert werden können.
+
+Eine Visualisierung könnte wie folgt aussehen:
+
+```{r plot-strecken, echo=FALSE, fig.cap="(ref:plot-stre)", out.width="80%"}
+rstrecken<- function(n, min = 0, max = 1) {
+  return(abs(diff(runif(n))))
+}
+ 
+# Plot ----
+#n <- seq(100, 100000, by=100)
+n <- seq(100L, 1e5L, by=100L)
+str(n)
+Durchschnitt <- NULL
+for(nn in n){  
+  Durchschnitt <- c(Durchschnitt, mean(rstrecken(nn))) 
+}
+
+# str(Durchschnitt)
+plot(n, Durchschnitt-(1/3), type="l", col="blue", xlab = "x", ylab = "Durchschnitt - 1/3")
+```
+
+(ref:plot-stre) Eine mögliche Visualisierung.
+
+```{r, echo=FALSE, fig.cap="(ref:hist-stre)", out.width="80%"}
+Durchschnitt <- NULL
+(nn <- 1e5)
+for(i in 1:100){  
+  Durchschnitt <- c(Durchschnitt, mean(rstrecken(nn)))
+}
+
+hist(Durchschnitt)
+```
+
+(ref:plot-stre) Histogramm der *durchschnittlichen* Strecke.
+
+
+**Aufgabe 8**
