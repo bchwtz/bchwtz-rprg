@@ -661,7 +661,7 @@ rstrecken<- function(n, min = 0, max = 1) {
 # Plot ----
 #n <- seq(100, 100000, by=100)
 n <- seq(100L, 1e5L, by=100L)
-str(n)
+# str(n)
 Durchschnitt <- NULL
 for(nn in n){  
   Durchschnitt <- c(Durchschnitt, mean(rstrecken(nn))) 
@@ -673,9 +673,9 @@ plot(n, Durchschnitt-(1/3), type="l", col="blue", xlab = "x", ylab = "Durchschni
 
 (ref:plot-stre) Eine mögliche Visualisierung.
 
-```{r, echo=FALSE, fig.cap="(ref:hist-stre)", out.width="80%"}
+```{r hist-strecke, echo=FALSE, fig.cap="(ref:hist-stre)", out.width="80%"}
 Durchschnitt <- NULL
-(nn <- 1e5)
+nn <- 1e5
 for(i in 1:100){  
   Durchschnitt <- c(Durchschnitt, mean(rstrecken(nn)))
 }
@@ -683,7 +683,57 @@ for(i in 1:100){
 hist(Durchschnitt)
 ```
 
-(ref:plot-stre) Histogramm der *durchschnittlichen* Strecke.
+(ref:hist-stre) Histogramm der *durchschnittlichen* Strecke.
 
 
 **Aufgabe 8**
+
+a)	Implementieren Sie eine Funktion `llaenge1()`, die die Lauflängen-Codierung einer binären Folge (bestehend aus Nullen und Einsen) zurückgibt. In der folgenden Tabelle sehen Sie einige Beispiele:
+
+`x` | `llaenge1(x)` | `llaenge(x)`
+----|---------------|-------------
+0,0,0,1,1,0,0,0,0,1,0,1,1 | 3,2,4,1,1,2 | 3,2,4,1,1,2
+1,1,1,1,0,0 | 4, 2 | 4, 2
+0,0,0,0,1,1 | 4, 2 | 4, 2
+"a","a","a","a","a","a","b","b","b","b","a" | FEHLER | 6, 4, 1
+"rot", "rot", "blau" | FEHLER | 2, 1
+
+b) Implementieren Sie eine Funktion `llaenge()`, die die *Lauflängen-Codierung* einer binären Folge (bestehend aus beliebigen zwei Symbolen) zurückgibt. 
+
+c) Implementieren Sie eine Funktion `llaengeInverse(y, first=0L, second=1L)`, die aus einer Lauflängen-Codierung eine binäre Folge erzeugt, die aus den durch `first` und `second` spezifizierten Symbolen besteht. In der folgenden Tabelle sehen Sie einige Beispiele:
+
+`r` | `llaengeInverse(r)` | `llaengeInverse(r, first=-1L)` | `llaengeInverse(r, first="+", second="-")`
+----|---------------------|--------------------------------|----------
+3, 2, 1 | 0,0,0,1,1,0 | -1,-1,-1,1,1,-1 | "+","+","+","-","-","+" |
+1, 4 | 0,1,1,1,1 | -1,1,1,1,1 | "+","-","-","-","-"
+
+d) Testen Sie Ihre implementierten Funktionen mithilfe der folgenden Funktion:
+```{r, eval=FALSE}
+testLaufLaenge <- function(anzahl = 16L, maxLaenge = 12) {
+  for(i in 1:anzahl){ 
+    n <- sample(1:maxLaenge,1)
+    x <- sample(c(0L,1L),n,TRUE)
+    r <- llaenge(x)
+    print(r)
+    y <- llaengeInverse(r, 1L, 0L)
+    if(y[1] != x[1])
+      y <- 1-y
+    if(any(x != y))  
+      stop("Test nicht bestanden: ", x)
+  }  
+}
+```
+
+**Hinweis:** 
+
+`stop()`: Stoppt die Ausführung der aktuellen Anweisung und gibt eine entsprechende Fehlermeldung aus
+
+
+**Kurzzusammenfassung**
+
+> -	`as.character()`
+> -	`as.double()`
+> -	`as.integer()`
+> -	`var()`
+> -	`stop()`
+
