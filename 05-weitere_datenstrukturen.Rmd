@@ -609,3 +609,326 @@ str(df3)
 
 > - `data.frame()`
 > - `read.table()`, `read.csv()`, `read.csv2()` 
+
+
+## Übungen {-}
+
+### Teil 1 {-}
+
+**Aufgabe 1** 
+
+
+Betrachten Sie folgenden Quelltext:
+```{r, eval=FALSE}
+x <- rnorm(1e4)
+h <- hist(x)
+```
+
+a)	Welchen Datentyp hat `h`?
+
+b)	Ist `h` eine Liste? 
+
+c)	Was gibt `is.list(h)` zurück? 
+
+d)	Was gibt `is.vector(h)` zurück?
+
+e)	Welche Elemente hat `h`?
+
+f)	Welchen Datentyp hat `unlist(h)`? 
+
+
+**Aufgabe 2**
+
+Gegeben ist ein Objekt `x` in R. Ist dann `is.vector(as.vector(x))` stets wahr?
+
+**Aufgabe 3**
+
+Gegegeben ist:
+
+```{r, eval=FALSE}
+v <- 1:4
+w <- LETTERS[1:8]
+l1 <- list(v,T, w[-1])
+```
+
+Mit welcher Anweisung können Sie innerhalb der Liste `l1` den Buchstaben *C* (der durch `w` einfügt wurde) durch den Buchstaben *U* ersetzen?
+
+**Aufgabe 4**
+
+Gegeben ist eine Liste `l1` der Form:
+
+```{r}
+l1 <- list("1"=4, "3"=8, "5"=12, "7"=16)
+```
+
+Wie können Sie mithilfe von `sum()`
+
+a)	die Summe der Listenelemente (also 4+8+12+16) bestimmen?
+
+b)	die Summe der Namen der Listenelemente (also 1+3+5+7) bestimmen?
+
+**Hinweis:* `unlist()`
+
+**Aufgabe 5**
+
+Gegeben ist eine Liste `l1` mit mehr als einem Element. Was gibt dann `length(l1[2])` zurück?
+
+**Aufgabe 6**
+
+Gegeben ist eine Liste `l1`:
+
+```{r}
+l1 <- list(10:1, "Data Science",  c("Data Science", "FH SWF"), c(T, T, F))
+```
+
+a)	Was gibt `length(l1)` zurück?
+
+b)	Bestimmen Sie die Länge des zweiten und des dritten Listenelements.
+
+c)	Wie können Sie mit einem Aufruf die Länge aller Listenelemente als Vektor erhalten?
+
+**Aufgabe 7**
+
+Ändern Sie die Liste `l1` in der vorherigen Aufgabe so, dass `str(l1)` Folgendes zurückgibt:
+
+```{r, echo=FALSE}
+l1 <- list(10:1, "Data Science",  c("Data Science", "FH SWF"), c(T,T,F))
+str(l1)
+names(l1) <- LETTERS[1:length(l1)]
+```
+
+```{r}
+str(l1)
+```
+
+
+**Aufgabe 8**
+
+Gegeben ist:
+
+```{r}
+set.seed(42)
+data <- sample(LETTERS[1:5], 100, replace=TRUE)
+f1 <- factor(data, levels= c( "A", "B","C"), ordered = TRUE)
+f1
+```
+
+a) Ersetzen Sie in `f1` den Wert `B` durch `X`, so dass sich folgende Ausgabe ergibt:
+
+```{r, echo=FALSE}
+levels(f1)
+str(levels(f1))
+levels(f1)[2] <- "X"
+```
+
+```{r}
+f1
+```
+
+b)	Ersetzen Sie in `f1` die Werte `A` und `C` durch `Y`.
+
+```{r, echo=FALSE, eval=FALSE}
+levels(f1)
+levels(f1)[1] <- "Y"
+levels(f1)[3] <- "Y"
+f1
+```
+
+
+c) Löschen Sie in `f1` alle `NA`-Werte:
+
+```{r, echo=FALSE}
+f1 <- f1[!is.na(f1)]
+```
+
+```{r}
+f1
+```
+
+**Aufgabe 9**
+
+Machen Sie sich mit den Funktionen `rev()` und `unique()` vertraut, die im einfachsten Fall auf einen Vektor angewandt werden.
+
+a) Ist `identical(rev(1:100),100:1)` stets wahr?
+
+b)	Gegeben ist: `d <- sample(1:10, 50, replace = TRUE)`.
+Ist `identical(sort(unique(d)), 1:10)` stets wahr?
+
+Bestimmen Sie per Simulation die ungefähre Wahrscheinlichkeit, dass 
+`identical(sort(unique(d)), 1:10)` falsch ist.
+
+Wie ändert sich diese so ermittelte Wahrscheinlichkeit, wenn man statt den Wert 50, die Werte 10, 20, 30, ..., 100 zugrunde legt?
+
+c) Gegeben ist `f1` wie am Beginn der vorherigen Aufgabe. Bestimmen Sie
+`rev(f1)` und `unique(f1)`.
+
+**Aufgabe 10**
+
+Wir haben im Abschnitt „Data Frame erzeugen“ gesehen, dass die Namen der Argumente automatisch übernommen werden, wenn kein Name explizit angegeben wird. Beispiel:
+
+```{r}
+bezeichnung <- paste("M", 1:6, sep="")
+nr <- 1:6
+df <- data.frame(nr, bezeichnung)
+```
+
+Gilt das auch für Listen?
+
+### Teil 2 {-}
+
+Für die Aufgaben im Teil 2 betrachten wir ein Data Frame `student`. Erzeugt werden kann `student` durch:
+
+```{r}
+set.seed(1)
+anzahl <-  100
+Punkte <-  rnorm(anzahl, mean = 65, sd = 20)
+Punkte <- as.integer(Punkte)
+MatNr <- sample(1E6:1E7-1, anzahl)
+names(MatNr) <- sample(c("ET","MB"), anzahl, replace=TRUE)
+Bestanden <- F
+student <- data.frame(MatNr, Punkte, Bestanden)
+student$Stdgang <- names(MatNr)
+rm(Punkte, MatNr,Bestanden,anzahl)
+```
+
+Die Ausgabe von `head(student)` lautet:
+
+```{r}
+head(student)
+```
+
+**Aufgabe 11** 
+
+a)	Aus wie vielen Variablen und aus wie vielen Observationen besteht `student`?
+
+b)	Die Funktionen `head(x)` und `tail(x)` liefern den ersten und letzten Teil von `x` zurück. Was wird ausgegeben durch: 
+
+```{r, eval=FALSE}
+head(student, n=10)
+head(student, n=-95)
+head(student, n=-93)
+tail(student) 
+```
+
+c) Was wird ausgegeben durch: 
+
+```{r}
+student[1]
+student[2] 
+```
+
+?
+
+d) Geben Sie die erste Zeile von `student` aus.
+
+e) Um die Klausur zu bestehen, reichen 50 Punkte. Ändern Sie `student` entsprechend!
+
+```{r, echo=FALSE, eval=TRUE}
+student$Bestanden <- student$Punkte >= 50
+```
+
+```{r}
+head(student)
+```
+
+
+**Aufgabe 12**
+
+In den Übungen zu Kapitel 4 haben wir bereits die Funktion `order()` kennengelernt.
+
+a)	Was geben die Funktionen zurück:
+
+    +	`order(student$Punkte)`
+    +	`order(student$MatNr)`
+    +	`order(student$Stdgang)`?
+    
+b)	Was wird zurückgegeben:
+
+    +	`student[order(student$Punkte), ]`
+    +	`student[order(student$MatNr), ]`
+    +	`student[order(student$Stdgang), ]`? 
+    
+c) Geben Sie geordnet nach Punkten die Ergebnisse im Studiengang MB aus. Die Ausgabe der ersten zehn Zeilen in unserem Beispiel lautet dann:
+
+```{r, echo=FALSE}
+s <- student[order(student$Punkte),]
+s <- s[s$Stdgang=="MB",]
+```
+
+```{r}
+head(s, 10)
+```
+
+**Aufgabe 13**
+
+Als Nächstes sollen Noten in `student` eingefügt werden. Zugrunde liegt das folgende Notenschema:
+
+Note     | Punkte  |
+---------|---------|
+4        | 50--58  |
+3        | 59--69  |
+2        | 70--80  |
+1        |  >= 81  |
+
+a) Benutzen Sie die Funktion `cut()`, um aus `student$Punkte` einen Faktor zu erzeugen, der als Note in `student` eingefügt werden kann. Die Ausgabe der ersten zehn Zeilen in unserem Bespiel lautet dann:
+
+```{r, echo=FALSE}
+notenFaktor <- cut(student$Punkte,  breaks=c(0, 49, 58, 69, 80, Inf))
+# str(notenFaktor)
+levels(notenFaktor)<-5:1
+# str(notenFaktor)
+
+student$Note <- notenFaktor
+# student
+```
+
+```{r}
+head(student, n=10)
+```
+
+b)	Geben Sie nach Punkten sortiert alle Studierenden aus, die mindestens 48 und höchstens 52 Punkte erhalten haben:
+
+```{r, echo=FALSE}
+# student$Punkte >= 48 & student$Punkte <= 52
+
+s <- student[student$Punkte >= 48 & student$Punkte <= 52, ]
+s <- s[order(s$Punkte),]
+```
+
+```{r}
+s
+```
+
+c)	Geben Sie nach Punkten sortiert alle Studierenden aus, die mindestens 79 und höchstens 82 Punkte erhalten haben:
+
+```{r, echo=FALSE}
+s <- student[student$Punkte >= 79 & student$Punkte <= 82, ]
+s <- s[order(s$Punkte),]
+```
+
+```{r}
+s
+```
+
+d)	Erstellen Sie für den Notenspiegel ein entsprechendes Balkendiagramm: 
+
+```{r barplot-noten, echo=FALSE, fig.cap="(ref:balk-noten)", out.width="80%"}
+# head(student)
+# str(notenFaktor)
+notenFaktor1 <- factor(notenFaktor,levels <- 1:5 )
+# str(notenFaktor1)
+student$Note <- notenFaktor1
+# head(student)
+
+barplot(table(student$Note), main = "Notenspiegel", xlab="Noten", ylab="Anzahl")
+```
+
+(ref:balk-noten) Balkendiagramm des Notenspiegels.
+
+e)	Ist `summary(student)` hilfreich?
+
+**Kurzzusammenfassung**
+
+> - rev()
+> -	unique()
+
