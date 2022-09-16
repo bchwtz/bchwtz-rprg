@@ -248,10 +248,13 @@ div.csl-indent {
 <li class="chapter" data-level="5.3.3" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#apply-1"><i class="fa fa-check"></i><b>5.3.3</b> <code>apply()</code></a></li>
 <li class="chapter" data-level="5.3.4" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#filtern-einfügen-und-löschen"><i class="fa fa-check"></i><b>5.3.4</b> Filtern, Einfügen und Löschen</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#übungen-4"><i class="fa fa-check"></i>Übungen</a>
+<ul>
+<li class="chapter" data-level="" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#teil-1"><i class="fa fa-check"></i>Teil 1</a></li>
+<li class="chapter" data-level="" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#teil-2"><i class="fa fa-check"></i>Teil 2</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Datenvisualisierung mit <code>ggplot2</code></a></li>
-<li class="part"><span><b>Übungen - Tidy data, Relational data, Iteration</b></span></li>
-<li class="part"><span><b>Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis</b></span></li>
 <li class="chapter" data-level="7" data-path="test.html"><a href="test.html"><i class="fa fa-check"></i><b>7</b> Test</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i>System Info</a></li>
@@ -1123,6 +1126,490 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <ul>
 <li><code>data.frame()</code></li>
 <li><code>read.table()</code>, <code>read.csv()</code>, <code>read.csv2()</code></li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div id="übungen-4" class="section level2 unnumbered hasAnchor">
+<h2>Übungen<a href="weitere-datenstrukturen.html#übungen-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="teil-1" class="section level3 unnumbered hasAnchor">
+<h3>Teil 1<a href="weitere-datenstrukturen.html#teil-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Aufgabe 1</strong></p>
+<p>Betrachten Sie folgenden Quelltext:</p>
+<div class="sourceCode" id="cb785"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb785-1"><a href="weitere-datenstrukturen.html#cb785-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fl">1e4</span>)</span>
+<span id="cb785-2"><a href="weitere-datenstrukturen.html#cb785-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">hist</span>(x)</span></code></pre></div>
+<ol style="list-style-type: lower-alpha">
+<li><p>Welchen Datentyp hat <code>h</code>?</p></li>
+<li><p>Ist <code>h</code> eine Liste?</p></li>
+<li><p>Was gibt <code>is.list(h)</code> zurück?</p></li>
+<li><p>Was gibt <code>is.vector(h)</code> zurück?</p></li>
+<li><p>Welche Elemente hat <code>h</code>?</p></li>
+<li><p>Welchen Datentyp hat <code>unlist(h)</code>?</p></li>
+</ol>
+<p><strong>Aufgabe 2</strong></p>
+<p>Gegeben ist ein Objekt <code>x</code> in R. Ist dann <code>is.vector(as.vector(x))</code> stets wahr?</p>
+<p><strong>Aufgabe 3</strong></p>
+<p>Gegegeben ist:</p>
+<div class="sourceCode" id="cb786"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb786-1"><a href="weitere-datenstrukturen.html#cb786-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb786-2"><a href="weitere-datenstrukturen.html#cb786-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span>
+<span id="cb786-3"><a href="weitere-datenstrukturen.html#cb786-3" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(v,T, w[<span class="sc">-</span><span class="dv">1</span>])</span></code></pre></div>
+<p>Mit welcher Anweisung können Sie innerhalb der Liste <code>l1</code> den Buchstaben <em>C</em> (der durch <code>w</code> einfügt wurde) durch den Buchstaben <em>U</em> ersetzen?</p>
+<p><strong>Aufgabe 4</strong></p>
+<p>Gegeben ist eine Liste <code>l1</code> der Form:</p>
+<div class="sourceCode" id="cb787"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb787-1"><a href="weitere-datenstrukturen.html#cb787-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;1&quot;</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">&quot;3&quot;</span><span class="ot">=</span><span class="dv">8</span>, <span class="st">&quot;5&quot;</span><span class="ot">=</span><span class="dv">12</span>, <span class="st">&quot;7&quot;</span><span class="ot">=</span><span class="dv">16</span>)</span></code></pre></div>
+<p>Wie können Sie mithilfe von <code>sum()</code></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>die Summe der Listenelemente (also 4+8+12+16) bestimmen?</p></li>
+<li><p>die Summe der Namen der Listenelemente (also 1+3+5+7) bestimmen?</p></li>
+</ol>
+<p>**Hinweis:* <code>unlist()</code></p>
+<p><strong>Aufgabe 5</strong></p>
+<p>Gegeben ist eine Liste <code>l1</code> mit mehr als einem Element. Was gibt dann <code>length(l1[2])</code> zurück?</p>
+<p><strong>Aufgabe 6</strong></p>
+<p>Gegeben ist eine Liste <code>l1</code>:</p>
+<div class="sourceCode" id="cb788"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb788-1"><a href="weitere-datenstrukturen.html#cb788-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">1</span>, <span class="st">&quot;Data Science&quot;</span>,  <span class="fu">c</span>(<span class="st">&quot;Data Science&quot;</span>, <span class="st">&quot;FH SWF&quot;</span>), <span class="fu">c</span>(T, T, F))</span></code></pre></div>
+<ol style="list-style-type: lower-alpha">
+<li><p>Was gibt <code>length(l1)</code> zurück?</p></li>
+<li><p>Bestimmen Sie die Länge des zweiten und des dritten Listenelements.</p></li>
+<li><p>Wie können Sie mit einem Aufruf die Länge aller Listenelemente als Vektor erhalten?</p></li>
+</ol>
+<p><strong>Aufgabe 7</strong></p>
+<p>Ändern Sie die Liste <code>l1</code> in der vorherigen Aufgabe so, dass <code>str(l1)</code> Folgendes zurückgibt:</p>
+<pre><code>## List of 4
+##  $ : int [1:10] 10 9 8 7 6 5 4 3 2 1
+##  $ : chr &quot;Data Science&quot;
+##  $ : chr [1:2] &quot;Data Science&quot; &quot;FH SWF&quot;
+##  $ : int [1:32] 1 1 100 101 102 4 5 103 104 105 ...</code></pre>
+<div class="sourceCode" id="cb790"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb790-1"><a href="weitere-datenstrukturen.html#cb790-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(l1)</span></code></pre></div>
+<pre><code>## List of 4
+##  $ A: int [1:10] 10 9 8 7 6 5 4 3 2 1
+##  $ B: chr &quot;Data Science&quot;
+##  $ C: chr [1:2] &quot;Data Science&quot; &quot;FH SWF&quot;
+##  $ D: int [1:32] 1 1 100 101 102 4 5 103 104 105 ...</code></pre>
+<p><strong>Aufgabe 8</strong></p>
+<p>Gegeben ist:</p>
+<div class="sourceCode" id="cb792"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb792-1"><a href="weitere-datenstrukturen.html#cb792-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb792-2"><a href="weitere-datenstrukturen.html#cb792-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">sample</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], <span class="dv">100</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb792-3"><a href="weitere-datenstrukturen.html#cb792-3" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="fu">factor</span>(data, <span class="at">levels=</span> <span class="fu">c</span>( <span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb792-4"><a href="weitere-datenstrukturen.html#cb792-4" aria-hidden="true" tabindex="-1"></a>f1</span></code></pre></div>
+<pre><code>##   [1] A    &lt;NA&gt; A    A    B    &lt;NA&gt; B    B    A    &lt;NA&gt; A    &lt;NA&gt; &lt;NA&gt; B    B   
+##  [16] C    A    A    C    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; B    &lt;NA&gt; C    B    A    B   
+##  [31] C    B    &lt;NA&gt; &lt;NA&gt; B    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; B    B    C    A    &lt;NA&gt; B   
+##  [46] B    B    &lt;NA&gt; C    &lt;NA&gt; B    B    B    &lt;NA&gt; A    A    &lt;NA&gt; &lt;NA&gt; B    A   
+##  [61] &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; A    C    C    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; B    B    A    B   
+##  [76] &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; A    &lt;NA&gt; B    B    C    &lt;NA&gt; &lt;NA&gt; C    &lt;NA&gt; &lt;NA&gt; A    &lt;NA&gt;
+##  [91] A    A    &lt;NA&gt; C    A    B    &lt;NA&gt; A    &lt;NA&gt; &lt;NA&gt;
+## Levels: A &lt; B &lt; C</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Ersetzen Sie in <code>f1</code> den Wert <code>B</code> durch <code>X</code>, so dass sich folgende Ausgabe ergibt:</li>
+</ol>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
+<pre><code>##  chr [1:3] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
+<div class="sourceCode" id="cb796"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb796-1"><a href="weitere-datenstrukturen.html#cb796-1" aria-hidden="true" tabindex="-1"></a>f1</span></code></pre></div>
+<pre><code>##   [1] A    &lt;NA&gt; A    A    X    &lt;NA&gt; X    X    A    &lt;NA&gt; A    &lt;NA&gt; &lt;NA&gt; X    X   
+##  [16] C    A    A    C    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; X    &lt;NA&gt; C    X    A    X   
+##  [31] C    X    &lt;NA&gt; &lt;NA&gt; X    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; X    X    C    A    &lt;NA&gt; X   
+##  [46] X    X    &lt;NA&gt; C    &lt;NA&gt; X    X    X    &lt;NA&gt; A    A    &lt;NA&gt; &lt;NA&gt; X    A   
+##  [61] &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; A    C    C    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; X    X    A    X   
+##  [76] &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; A    &lt;NA&gt; X    X    C    &lt;NA&gt; &lt;NA&gt; C    &lt;NA&gt; &lt;NA&gt; A    &lt;NA&gt;
+##  [91] A    A    &lt;NA&gt; C    A    X    &lt;NA&gt; A    &lt;NA&gt; &lt;NA&gt;
+## Levels: A &lt; X &lt; C</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Ersetzen Sie in <code>f1</code> die Werte <code>A</code> und <code>C</code> durch <code>Y</code>.</p></li>
+<li><p>Löschen Sie in <code>f1</code> alle <code>NA</code>-Werte:</p></li>
+</ol>
+<div class="sourceCode" id="cb798"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb798-1"><a href="weitere-datenstrukturen.html#cb798-1" aria-hidden="true" tabindex="-1"></a>f1</span></code></pre></div>
+<pre><code>##  [1] A A A X X X A A X X C A A C X C X A X C X X X X C A X X X C X X X A A X A A
+## [39] C C X X A X A X X C C A A A C A X A
+## Levels: A &lt; X &lt; C</code></pre>
+<p><strong>Aufgabe 9</strong></p>
+<p>Machen Sie sich mit den Funktionen <code>rev()</code> und <code>unique()</code> vertraut, die im einfachsten Fall auf einen Vektor angewandt werden.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Ist <code>identical(rev(1:100),100:1)</code> stets wahr?</p></li>
+<li><p>Gegeben ist: <code>d &lt;- sample(1:10, 50, replace = TRUE)</code>.
+Ist <code>identical(sort(unique(d)), 1:10)</code> stets wahr?</p></li>
+</ol>
+<p>Bestimmen Sie per Simulation die ungefähre Wahrscheinlichkeit, dass
+<code>identical(sort(unique(d)), 1:10)</code> falsch ist.</p>
+<p>Wie ändert sich diese so ermittelte Wahrscheinlichkeit, wenn man statt den Wert 50, die Werte 10, 20, 30, …, 100 zugrunde legt?</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Gegeben ist <code>f1</code> wie am Beginn der vorherigen Aufgabe. Bestimmen Sie
+<code>rev(f1)</code> und <code>unique(f1)</code>.</li>
+</ol>
+<p><strong>Aufgabe 10</strong></p>
+<p>Wir haben im Abschnitt „Data Frame erzeugen“ gesehen, dass die Namen der Argumente automatisch übernommen werden, wenn kein Name explizit angegeben wird. Beispiel:</p>
+<div class="sourceCode" id="cb800"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb800-1"><a href="weitere-datenstrukturen.html#cb800-1" aria-hidden="true" tabindex="-1"></a>bezeichnung <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb800-2"><a href="weitere-datenstrukturen.html#cb800-2" aria-hidden="true" tabindex="-1"></a>nr <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb800-3"><a href="weitere-datenstrukturen.html#cb800-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(nr, bezeichnung)</span></code></pre></div>
+<p>Gilt das auch für Listen?</p>
+</div>
+<div id="teil-2" class="section level3 unnumbered hasAnchor">
+<h3>Teil 2<a href="weitere-datenstrukturen.html#teil-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Für die Aufgaben im Teil 2 betrachten wir ein Data Frame <code>student</code>. Erzeugt werden kann <code>student</code> durch:</p>
+<div class="sourceCode" id="cb801"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb801-1"><a href="weitere-datenstrukturen.html#cb801-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb801-2"><a href="weitere-datenstrukturen.html#cb801-2" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span>  <span class="dv">100</span></span>
+<span id="cb801-3"><a href="weitere-datenstrukturen.html#cb801-3" aria-hidden="true" tabindex="-1"></a>Punkte <span class="ot">&lt;-</span>  <span class="fu">rnorm</span>(anzahl, <span class="at">mean =</span> <span class="dv">65</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
+<span id="cb801-4"><a href="weitere-datenstrukturen.html#cb801-4" aria-hidden="true" tabindex="-1"></a>Punkte <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(Punkte)</span>
+<span id="cb801-5"><a href="weitere-datenstrukturen.html#cb801-5" aria-hidden="true" tabindex="-1"></a>MatNr <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fl">1E6</span><span class="sc">:</span><span class="fl">1E7</span><span class="dv">-1</span>, anzahl)</span>
+<span id="cb801-6"><a href="weitere-datenstrukturen.html#cb801-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(MatNr) <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;ET&quot;</span>,<span class="st">&quot;MB&quot;</span>), anzahl, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb801-7"><a href="weitere-datenstrukturen.html#cb801-7" aria-hidden="true" tabindex="-1"></a>Bestanden <span class="ot">&lt;-</span> F</span>
+<span id="cb801-8"><a href="weitere-datenstrukturen.html#cb801-8" aria-hidden="true" tabindex="-1"></a>student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(MatNr, Punkte, Bestanden)</span>
+<span id="cb801-9"><a href="weitere-datenstrukturen.html#cb801-9" aria-hidden="true" tabindex="-1"></a>student<span class="sc">$</span>Stdgang <span class="ot">&lt;-</span> <span class="fu">names</span>(MatNr)</span>
+<span id="cb801-10"><a href="weitere-datenstrukturen.html#cb801-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(Punkte, MatNr,Bestanden,anzahl)</span></code></pre></div>
+<p>Die Ausgabe von <code>head(student)</code> lautet:</p>
+<div class="sourceCode" id="cb802"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb802-1"><a href="weitere-datenstrukturen.html#cb802-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student)</span></code></pre></div>
+<pre><code>##     MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang
+## 1 9075256     52 100 103 11 16 21 26      MB
+## 2 5998360     68 101 104 12 17 22 27      ET
+## 3 7390976     48 102 105 13 18 23 28      MB
+## 4 2188111     96   4   9 14 19 24 29      ET
+## 5 2972641     71   5  10 15 20 25 30      MB
+## 6 7484652     48 100 103 11 16 21 26      ET</code></pre>
+<p><strong>Aufgabe 11</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Aus wie vielen Variablen und aus wie vielen Observationen besteht <code>student</code>?</p></li>
+<li><p>Die Funktionen <code>head(x)</code> und <code>tail(x)</code> liefern den ersten und letzten Teil von <code>x</code> zurück. Was wird ausgegeben durch:</p></li>
+</ol>
+<div class="sourceCode" id="cb804"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb804-1"><a href="weitere-datenstrukturen.html#cb804-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n=</span><span class="dv">10</span>)</span>
+<span id="cb804-2"><a href="weitere-datenstrukturen.html#cb804-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n=</span><span class="sc">-</span><span class="dv">95</span>)</span>
+<span id="cb804-3"><a href="weitere-datenstrukturen.html#cb804-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n=</span><span class="sc">-</span><span class="dv">93</span>)</span>
+<span id="cb804-4"><a href="weitere-datenstrukturen.html#cb804-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(student) </span></code></pre></div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Was wird ausgegeben durch:</li>
+</ol>
+<div class="sourceCode" id="cb805"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb805-1"><a href="weitere-datenstrukturen.html#cb805-1" aria-hidden="true" tabindex="-1"></a>student[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>##       MatNr
+## 1   9075256
+## 2   5998360
+## 3   7390976
+## 4   2188111
+## 5   2972641
+## 6   7484652
+## 7   5912142
+## 8   3578183
+## 9   4222106
+## 10  8963286
+## 11  9228364
+## 12  8574542
+## 13  1926848
+## 14  5208126
+## 15  2109714
+## 16  9297091
+## 17  3628569
+## 18  8045021
+## 19  8663430
+## 20  3314543
+## 21  3673051
+## 22  9438067
+## 23  8614771
+## 24  4261774
+## 25  2935100
+## 26  7053760
+## 27  5662140
+## 28  6056418
+## 29  5674486
+## 30  7495855
+## 31  8870535
+## 32  2734183
+## 33  1982455
+## 34  3478140
+## 35  9742530
+## 36  3240891
+## 37  7469707
+## 38  7848183
+## 39  5610711
+## 40  3007020
+## 41  3379774
+## 42  9276776
+## 43  4919846
+## 44  6056541
+## 45  1784475
+## 46  6188906
+## 47  2656047
+## 48  3108410
+## 49  9632755
+## 50  8606356
+## 51  3377834
+## 52  1922892
+## 53  7309598
+## 54  5707891
+## 55  4650536
+## 56  7413667
+## 57  7061641
+## 58  1102514
+## 59  8224740
+## 60  1980634
+## 61  1009688
+## 62  6432792
+## 63  7708093
+## 64  7671099
+## 65  5817860
+## 66  4172319
+## 67  6836120
+## 68  8334822
+## 69  4644439
+## 70  1195761
+## 71  9354226
+## 72  9286466
+## 73  5204990
+## 74  7907306
+## 75  3243959
+## 76  2470363
+## 77  8647521
+## 78  8795297
+## 79  3848165
+## 80  2868889
+## 81  8776719
+## 82  2358413
+## 83  8483386
+## 84  7589118
+## 85  5633982
+## 86  4809497
+## 87  6893532
+## 88  1982640
+## 89  5130692
+## 90  3180883
+## 91  1002831
+## 92  8642923
+## 93  5281383
+## 94  8871878
+## 95  5809194
+## 96  2248437
+## 97  4658829
+## 98  9436538
+## 99  5502072
+## 100 9591400</code></pre>
+<div class="sourceCode" id="cb807"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb807-1"><a href="weitere-datenstrukturen.html#cb807-1" aria-hidden="true" tabindex="-1"></a>student[<span class="dv">2</span>] </span></code></pre></div>
+<pre><code>##     Punkte
+## 1       52
+## 2       68
+## 3       48
+## 4       96
+## 5       71
+## 6       48
+## 7       74
+## 8       79
+## 9       76
+## 10      58
+## 11      95
+## 12      72
+## 13      52
+## 14      20
+## 15      87
+## 16      64
+## 17      64
+## 18      83
+## 19      81
+## 20      76
+## 21      83
+## 22      80
+## 23      66
+## 24      25
+## 25      77
+## 26      63
+## 27      61
+## 28      35
+## 29      55
+## 30      73
+## 31      92
+## 32      62
+## 33      72
+## 34      63
+## 35      37
+## 36      56
+## 37      57
+## 38      63
+## 39      87
+## 40      80
+## 41      61
+## 42      59
+## 43      78
+## 44      76
+## 45      51
+## 46      50
+## 47      72
+## 48      80
+## 49      62
+## 50      82
+## 51      72
+## 52      52
+## 53      71
+## 54      42
+## 55      93
+## 56     104
+## 57      57
+## 58      44
+## 59      76
+## 60      62
+## 61     113
+## 62      64
+## 63      78
+## 64      65
+## 65      50
+## 66      68
+## 67      28
+## 68      94
+## 69      68
+## 70     108
+## 71      74
+## 72      50
+## 73      77
+## 74      46
+## 75      39
+## 76      70
+## 77      56
+## 78      65
+## 79      66
+## 80      53
+## 81      53
+## 82      62
+## 83      88
+## 84      34
+## 85      76
+## 86      71
+## 87      86
+## 88      58
+## 89      72
+## 90      70
+## 91      54
+## 92      89
+## 93      88
+## 94      79
+## 95      96
+## 96      76
+## 97      39
+## 98      53
+## 99      40
+## 100     55</code></pre>
+<p>?</p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li><p>Geben Sie die erste Zeile von <code>student</code> aus.</p></li>
+<li><p>Um die Klausur zu bestehen, reichen 50 Punkte. Ändern Sie <code>student</code> entsprechend!</p></li>
+</ol>
+<div class="sourceCode" id="cb809"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb809-1"><a href="weitere-datenstrukturen.html#cb809-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student)</span></code></pre></div>
+<pre><code>##     MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden
+## 1 9075256     52 100 103 11 16 21 26      MB      TRUE
+## 2 5998360     68 101 104 12 17 22 27      ET      TRUE
+## 3 7390976     48 102 105 13 18 23 28      MB     FALSE
+## 4 2188111     96   4   9 14 19 24 29      ET      TRUE
+## 5 2972641     71   5  10 15 20 25 30      MB      TRUE
+## 6 7484652     48 100 103 11 16 21 26      ET     FALSE</code></pre>
+<p><strong>Aufgabe 12</strong></p>
+<p>In den Übungen zu Kapitel 4 haben wir bereits die Funktion <code>order()</code> kennengelernt.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Was geben die Funktionen zurück:</p>
+<ul>
+<li><code>order(student$Punkte)</code></li>
+<li><code>order(student$MatNr)</code></li>
+<li><code>order(student$Stdgang)</code>?</li>
+</ul></li>
+<li><p>Was wird zurückgegeben:</p>
+<ul>
+<li><code>student[order(student$Punkte), ]</code></li>
+<li><code>student[order(student$MatNr), ]</code></li>
+<li><code>student[order(student$Stdgang), ]</code>?</li>
+</ul></li>
+<li><p>Geben Sie geordnet nach Punkten die Ergebnisse im Studiengang MB aus. Die Ausgabe der ersten zehn Zeilen in unserem Beispiel lautet dann:</p></li>
+</ol>
+<div class="sourceCode" id="cb811"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb811-1"><a href="weitere-datenstrukturen.html#cb811-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(s, <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##      MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden
+## 84 7589118     34   4   9 14 19 24 29      MB     FALSE
+## 35 9742530     37   5  10 15 20 25 30      MB     FALSE
+## 75 3243959     39   5  10 15 20 25 30      MB     FALSE
+## 97 4658829     39 101 104 12 17 22 27      MB     FALSE
+## 54 5707891     42   4   9 14 19 24 29      MB     FALSE
+## 3  7390976     48 102 105 13 18 23 28      MB     FALSE
+## 46 6188906     50 100 103 11 16 21 26      MB      TRUE
+## 72 9286466     50 101 104 12 17 22 27      MB      TRUE
+## 1  9075256     52 100 103 11 16 21 26      MB      TRUE
+## 13 1926848     52 102 105 13 18 23 28      MB      TRUE</code></pre>
+<p><strong>Aufgabe 13</strong></p>
+<p>Als Nächstes sollen Noten in <code>student</code> eingefügt werden. Zugrunde liegt das folgende Notenschema:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Note</th>
+<th>Punkte</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4</td>
+<td>50–58</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>59–69</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>70–80</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>&gt;= 81</td>
+</tr>
+</tbody>
+</table>
+<ol style="list-style-type: lower-alpha">
+<li>Benutzen Sie die Funktion <code>cut()</code>, um aus <code>student$Punkte</code> einen Faktor zu erzeugen, der als Note in <code>student</code> eingefügt werden kann. Die Ausgabe der ersten zehn Zeilen in unserem Bespiel lautet dann:</li>
+</ol>
+<div class="sourceCode" id="cb813"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb813-1"><a href="weitere-datenstrukturen.html#cb813-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##      MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden Note
+## 1  9075256     52 100 103 11 16 21 26      MB      TRUE    4
+## 2  5998360     68 101 104 12 17 22 27      ET      TRUE    3
+## 3  7390976     48 102 105 13 18 23 28      MB     FALSE    5
+## 4  2188111     96   4   9 14 19 24 29      ET      TRUE    1
+## 5  2972641     71   5  10 15 20 25 30      MB      TRUE    2
+## 6  7484652     48 100 103 11 16 21 26      ET     FALSE    5
+## 7  5912142     74 101 104 12 17 22 27      MB      TRUE    2
+## 8  3578183     79 102 105 13 18 23 28      MB      TRUE    2
+## 9  4222106     76   4   9 14 19 24 29      ET      TRUE    2
+## 10 8963286     58   5  10 15 20 25 30      MB      TRUE    4</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Geben Sie nach Punkten sortiert alle Studierenden aus, die mindestens 48 und höchstens 52 Punkte erhalten haben:</li>
+</ol>
+<div class="sourceCode" id="cb815"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb815-1"><a href="weitere-datenstrukturen.html#cb815-1" aria-hidden="true" tabindex="-1"></a>s</span></code></pre></div>
+<pre><code>##      MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden Note
+## 3  7390976     48 102 105 13 18 23 28      MB     FALSE    5
+## 6  7484652     48 100 103 11 16 21 26      ET     FALSE    5
+## 46 6188906     50 100 103 11 16 21 26      MB      TRUE    4
+## 65 5817860     50   5  10 15 20 25 30      ET      TRUE    4
+## 72 9286466     50 101 104 12 17 22 27      MB      TRUE    4
+## 45 1784475     51   5  10 15 20 25 30      ET      TRUE    4
+## 1  9075256     52 100 103 11 16 21 26      MB      TRUE    4
+## 13 1926848     52 102 105 13 18 23 28      MB      TRUE    4
+## 52 1922892     52 101 104 12 17 22 27      ET      TRUE    4</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Geben Sie nach Punkten sortiert alle Studierenden aus, die mindestens 79 und höchstens 82 Punkte erhalten haben:</li>
+</ol>
+<div class="sourceCode" id="cb817"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb817-1"><a href="weitere-datenstrukturen.html#cb817-1" aria-hidden="true" tabindex="-1"></a>s</span></code></pre></div>
+<pre><code>##      MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden Note
+## 8  3578183     79 102 105 13 18 23 28      MB      TRUE    2
+## 94 8871878     79   4   9 14 19 24 29      ET      TRUE    2
+## 22 9438067     80 101 104 12 17 22 27      MB      TRUE    2
+## 40 3007020     80   5  10 15 20 25 30      ET      TRUE    2
+## 48 3108410     80 102 105 13 18 23 28      MB      TRUE    2
+## 19 8663430     81   4   9 14 19 24 29      MB      TRUE    1
+## 50 8606356     82   5  10 15 20 25 30      ET      TRUE    1</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Erstellen Sie für den Notenspiegel ein entsprechendes Balkendiagramm:</li>
+</ol>
+<div class="figure"><span style="display:block;" id="fig:barplot-noten"></span>
+<img src="bchwtz-rprg_files/figure-html/barplot-noten-1.png" alt="Balkendiagramm des Notenspiegels." width="80%" />
+<p class="caption">
+Figure 5.9: Balkendiagramm des Notenspiegels.
+</p>
+</div>
+
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Ist <code>summary(student)</code> hilfreich?</li>
+</ol>
+<p><strong>Kurzzusammenfassung</strong></p>
+<blockquote>
+<ul>
+<li>rev()</li>
+<li>unique()</li>
 </ul>
 </blockquote>
 

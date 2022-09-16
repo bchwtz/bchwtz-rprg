@@ -248,10 +248,13 @@ div.csl-indent {
 <li class="chapter" data-level="5.3.3" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#apply-1"><i class="fa fa-check"></i><b>5.3.3</b> <code>apply()</code></a></li>
 <li class="chapter" data-level="5.3.4" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#filtern-einfügen-und-löschen"><i class="fa fa-check"></i><b>5.3.4</b> Filtern, Einfügen und Löschen</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#übungen-4"><i class="fa fa-check"></i>Übungen</a>
+<ul>
+<li class="chapter" data-level="" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#teil-1"><i class="fa fa-check"></i>Teil 1</a></li>
+<li class="chapter" data-level="" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#teil-2"><i class="fa fa-check"></i>Teil 2</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Datenvisualisierung mit <code>ggplot2</code></a></li>
-<li class="part"><span><b>Übungen - Tidy data, Relational data, Iteration</b></span></li>
-<li class="part"><span><b>Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis</b></span></li>
 <li class="chapter" data-level="7" data-path="test.html"><a href="test.html"><i class="fa fa-check"></i><b>7</b> Test</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i>System Info</a></li>
@@ -278,36 +281,51 @@ div.csl-indent {
 <div id="datenvisualisierung-mit-ggplot2" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Datenvisualisierung mit <code>ggplot2</code><a href="datenvisualisierung-mit-ggplot2.html#datenvisualisierung-mit-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 
-</div>
+<!--
+# (PART\*) Übungen - Tidy data, Relational data, Iteration {-}
+
+**Aufgabe 1**
+
+Gegeben sind jeweils vier gemessene Laufzeiten eines Algorithmus in Abhängigkeit von der Anzahl der Eingabedaten `n`:
 
 
+```r
+zeiten1 <- tibble(
+  n = (4:9)*1e3L,
+  mess1 = c(3.656, 4.672, 5.719, 6.720, 7.641, 8.750),
+  mess2 = c(3.781, 4.735, 5.672, 6.782, 7.673, 8.798),
+  mess3 = c(3.719, 4.719, 5.672, 6.688, 7.704, 9.048),
+  mess4 = c(3.766, 4.688, 5.625, 6.610, 7.750, 8.735)
+)
 
-<p>Gegeben sind jeweils vier gemessene Laufzeiten eines Algorithmus in Abhängigkeit von der Anzahl der Eingabedaten <code>n</code>:</p>
-<div class="sourceCode" id="cb785"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb785-1"><a href="datenvisualisierung-mit-ggplot2.html#cb785-1" aria-hidden="true" tabindex="-1"></a>zeiten1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb785-2"><a href="datenvisualisierung-mit-ggplot2.html#cb785-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> (<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>)<span class="sc">*</span><span class="fl">1e3</span>L,</span>
-<span id="cb785-3"><a href="datenvisualisierung-mit-ggplot2.html#cb785-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess1 =</span> <span class="fu">c</span>(<span class="fl">3.656</span>, <span class="fl">4.672</span>, <span class="fl">5.719</span>, <span class="fl">6.720</span>, <span class="fl">7.641</span>, <span class="fl">8.750</span>),</span>
-<span id="cb785-4"><a href="datenvisualisierung-mit-ggplot2.html#cb785-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess2 =</span> <span class="fu">c</span>(<span class="fl">3.781</span>, <span class="fl">4.735</span>, <span class="fl">5.672</span>, <span class="fl">6.782</span>, <span class="fl">7.673</span>, <span class="fl">8.798</span>),</span>
-<span id="cb785-5"><a href="datenvisualisierung-mit-ggplot2.html#cb785-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess3 =</span> <span class="fu">c</span>(<span class="fl">3.719</span>, <span class="fl">4.719</span>, <span class="fl">5.672</span>, <span class="fl">6.688</span>, <span class="fl">7.704</span>, <span class="fl">9.048</span>),</span>
-<span id="cb785-6"><a href="datenvisualisierung-mit-ggplot2.html#cb785-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess4 =</span> <span class="fu">c</span>(<span class="fl">3.766</span>, <span class="fl">4.688</span>, <span class="fl">5.625</span>, <span class="fl">6.610</span>, <span class="fl">7.750</span>, <span class="fl">8.735</span>)</span>
-<span id="cb785-7"><a href="datenvisualisierung-mit-ggplot2.html#cb785-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb785-8"><a href="datenvisualisierung-mit-ggplot2.html#cb785-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb785-9"><a href="datenvisualisierung-mit-ggplot2.html#cb785-9" aria-hidden="true" tabindex="-1"></a>zeiten1</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 5
+zeiten1
+```
+
+```
+## # A tibble: 6 × 5
 ##       n mess1 mess2 mess3 mess4
-##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##   <int> <dbl> <dbl> <dbl> <dbl>
 ## 1  4000  3.66  3.78  3.72  3.77
 ## 2  5000  4.67  4.74  4.72  4.69
 ## 3  6000  5.72  5.67  5.67  5.62
 ## 4  7000  6.72  6.78  6.69  6.61
 ## 5  8000  7.64  7.67  7.70  7.75
-## 6  9000  8.75  8.80  9.05  8.74</code></pre>
-<ol style="list-style-type: lower-alpha">
-<li>Wandeln Sie <code>zeiten1</code> in <code>zeiten2</code> um (siehe folgende Auflistung).</li>
-</ol>
-<div class="sourceCode" id="cb787"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb787-1"><a href="datenvisualisierung-mit-ggplot2.html#cb787-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(zeiten2, <span class="at">n=</span><span class="cn">Inf</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 24 × 3
+## 6  9000  8.75  8.80  9.05  8.74
+```
+
+a)  Wandeln Sie `zeiten1` in `zeiten2` um (siehe folgende Auflistung).
+
+
+
+
+```r
+print(zeiten2, n=Inf)
+```
+
+```
+## # A tibble: 24 × 3
 ##        n Nr     zeit
-##    &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
+##    <int> <chr> <dbl>
 ##  1  4000 mess1  3.66
 ##  2  5000 mess1  4.67
 ##  3  6000 mess1  5.72
@@ -331,40 +349,60 @@ div.csl-indent {
 ## 21  6000 mess4  5.62
 ## 22  7000 mess4  6.61
 ## 23  8000 mess4  7.75
-## 24  9000 mess4  8.74</code></pre>
-<ol start="2" style="list-style-type: lower-alpha">
-<li><p>Handelt es sich bei <code>zeiten1</code> bzw. bei <code>zeiten2</code> um „Tidy Data“ im Sinne von Wickham?</p></li>
-<li><p>Mit welcher Anweisung kann aus <code>zeiten2</code> der ursprüngliche Datensatz <code>zeiten1</code> erzeugt werden?</p></li>
-<li><p>Berechnen Sie in Abhängigkeit von <code>n</code> die Mittelwerte der Laufzeiten. Gehen Sie zuerst davon aus, dass lediglich <code>zeiten1</code> gegeben ist, danach gehen Sie davon aus, dass nur <code>zeiten2</code> gegeben ist.</p></li>
-</ol>
-<p><strong>Aufgabe 2</strong></p>
-<p>Ähnlich wie in der vorherigen Aufgabe sind unterschiedliche Laufzeiten eines Algorithmus in Abhängigkeit von <code>n</code> gegeben:</p>
-<div class="sourceCode" id="cb789"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb789-1"><a href="datenvisualisierung-mit-ggplot2.html#cb789-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> (<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>)<span class="sc">*</span><span class="fl">1e3</span>L</span>
-<span id="cb789-2"><a href="datenvisualisierung-mit-ggplot2.html#cb789-2" aria-hidden="true" tabindex="-1"></a>mess1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.656</span>, <span class="cn">NA</span>, <span class="fl">5.719</span>, <span class="cn">NA</span>, <span class="fl">7.641</span>, <span class="fl">8.750</span>)</span>
-<span id="cb789-3"><a href="datenvisualisierung-mit-ggplot2.html#cb789-3" aria-hidden="true" tabindex="-1"></a>mess2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.781</span>, <span class="fl">4.735</span>, <span class="cn">NA</span>, <span class="fl">6.782</span>,<span class="cn">NA</span> , <span class="fl">8.798</span>)</span>
-<span id="cb789-4"><a href="datenvisualisierung-mit-ggplot2.html#cb789-4" aria-hidden="true" tabindex="-1"></a>mess3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fl">4.719</span>, <span class="fl">5.672</span>, <span class="fl">6.688</span>, <span class="fl">7.704</span>, <span class="fl">9.048</span>)</span>
-<span id="cb789-5"><a href="datenvisualisierung-mit-ggplot2.html#cb789-5" aria-hidden="true" tabindex="-1"></a>mess4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fl">4.688</span>, <span class="fl">5.625</span>, <span class="fl">6.610</span>, <span class="fl">7.750</span>, <span class="cn">NA</span>) </span>
-<span id="cb789-6"><a href="datenvisualisierung-mit-ggplot2.html#cb789-6" aria-hidden="true" tabindex="-1"></a>mess5 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.766</span>, <span class="fl">4.672</span>,<span class="cn">NA</span>, <span class="fl">6.720</span>, <span class="fl">7.673</span>, <span class="fl">8.735</span>  )</span>
-<span id="cb789-7"><a href="datenvisualisierung-mit-ggplot2.html#cb789-7" aria-hidden="true" tabindex="-1"></a>mess6 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.719</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>) </span>
-<span id="cb789-8"><a href="datenvisualisierung-mit-ggplot2.html#cb789-8" aria-hidden="true" tabindex="-1"></a>zeiten1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(n, mess1, mess2, mess3, mess4, mess5, mess6)</span>
-<span id="cb789-9"><a href="datenvisualisierung-mit-ggplot2.html#cb789-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb789-10"><a href="datenvisualisierung-mit-ggplot2.html#cb789-10" aria-hidden="true" tabindex="-1"></a>zeiten1</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 7
+## 24  9000 mess4  8.74
+```
+
+
+b)  Handelt es sich bei `zeiten1` bzw. bei `zeiten2` um „Tidy Data“ im Sinne von Wickham?
+
+c)  Mit welcher Anweisung kann aus `zeiten2` der ursprüngliche Datensatz `zeiten1` erzeugt werden?
+
+d)  Berechnen Sie in Abhängigkeit von `n` die Mittelwerte der Laufzeiten. Gehen Sie zuerst davon aus, dass lediglich `zeiten1` gegeben ist, danach gehen Sie davon aus, dass nur `zeiten2` gegeben ist.
+
+
+**Aufgabe 2**
+
+Ähnlich wie in der vorherigen Aufgabe sind unterschiedliche Laufzeiten eines Algorithmus in Abhängigkeit von `n` gegeben:
+
+
+```r
+n <- (4:9)*1e3L
+mess1 <- c(3.656, NA, 5.719, NA, 7.641, 8.750)
+mess2 <- c(3.781, 4.735, NA, 6.782,NA , 8.798)
+mess3 <- c(NA, 4.719, 5.672, 6.688, 7.704, 9.048)
+mess4 <- c(NA, 4.688, 5.625, 6.610, 7.750, NA) 
+mess5 <- c(3.766, 4.672,NA, 6.720, 7.673, 8.735  )
+mess6 <- c(3.719, NA, NA, NA, NA, NA) 
+zeiten1 <- tibble(n, mess1, mess2, mess3, mess4, mess5, mess6)
+
+zeiten1
+```
+
+```
+## # A tibble: 6 × 7
 ##       n mess1 mess2 mess3 mess4 mess5 mess6
-##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##   <int> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 ## 1  4000  3.66  3.78 NA    NA     3.77  3.72
 ## 2  5000 NA     4.74  4.72  4.69  4.67 NA   
 ## 3  6000  5.72 NA     5.67  5.62 NA    NA   
 ## 4  7000 NA     6.78  6.69  6.61  6.72 NA   
 ## 5  8000  7.64 NA     7.70  7.75  7.67 NA   
-## 6  9000  8.75  8.80  9.05 NA     8.74 NA</code></pre>
-<ol style="list-style-type: lower-alpha">
-<li>Wandeln Sie ähnlich wie in der vorherigen Aufgabe <code>zeiten1</code> in <code>zeiten2</code> um (siehe folgende Auflistung).</li>
-</ol>
-<div class="sourceCode" id="cb791"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb791-1"><a href="datenvisualisierung-mit-ggplot2.html#cb791-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(zeiten2, <span class="at">n=</span><span class="cn">Inf</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 23 × 3
+## 6  9000  8.75  8.80  9.05 NA     8.74 NA
+```
+
+a) Wandeln Sie ähnlich wie in der vorherigen Aufgabe `zeiten1` in `zeiten2` um (siehe folgende Auflistung).
+
+
+
+
+```r
+print(zeiten2, n=Inf)
+```
+
+```
+## # A tibble: 23 × 3
 ##        n Nr     zeit
-##    &lt;int&gt; &lt;fct&gt; &lt;dbl&gt;
+##    <int> <fct> <dbl>
 ##  1  4000 mess1  3.66
 ##  2  6000 mess1  5.72
 ##  3  8000 mess1  7.64
@@ -387,44 +425,74 @@ div.csl-indent {
 ## 20  7000 mess5  6.72
 ## 21  8000 mess5  7.67
 ## 22  9000 mess5  8.74
-## 23  4000 mess6  3.72</code></pre>
-<ol start="2" style="list-style-type: lower-alpha">
-<li><p>Handelt es sich bei <code>zeiten1</code> bzw. bei <code>zeiten2</code> um „Tidy Data“ im Sinne von Wickham?</p></li>
-<li><p>Mit welcher Anweisung kann aus <code>zeiten2</code> der ursprüngliche Datensatz <code>zeiten1</code> erzeugt werden?</p></li>
-<li><p>Berechnen Sie in Abhängigkeit von <code>n</code> die Mittelwerte der Laufzeiten ausgehend jeweils von <code>zeiten1</code> und <code>zeiten2</code>.</p></li>
-</ol>
-<p><strong>Aufgabe 3</strong></p>
-<p>Welche Zielflughäfen sind in <code>flights</code> (als <code>dest</code>) aufgelistet, erscheinen aber nicht als FAA-Kennung in <code>airports</code>?</p>
-<p><strong>Aufgabe 4</strong></p>
-<p>Geben Sie diejenigen Datensätze aus <code>airports</code> aus, die als Zielflughafen in <code>flights</code> (als <code>dest</code>) vorkommen.</p>
-<p><strong>Aufgabe 5</strong></p>
-<p>Geben Sie diejenigen Datensätze aus <code>airports</code> aus, die als Abflughafen in <code>flights</code> (als <code>origin</code>) vorkommen.</p>
-<p><strong>Aufgabe 6</strong></p>
-<p>Geben Sie Breitengrad und Längengrad der drei Abflughäfen im Datensatz <code>flights</code> aus. Unterscheiden sich die Koordinatenangaben deutlich und was sind die entsprechenden Mittelwerte?</p>
-<p><strong>Aufgabe 7</strong></p>
-<ol style="list-style-type: lower-alpha">
-<li><p>Nennen Sie den Datensatz <code>flights</code> in den Datensatz <code>flights_withCoord</code> um und fügen Sie aus dem Datensatz <code>airports</code> den Breitengrad (Latitude) und den Längengrad (Longitude) des jeweiligen Zielflughafens in den Datensatz <code>flights</code> ein.</p></li>
-<li><p>Wie groß sind die Korrelationen zwischen</p>
-<ul>
-<li>Breitengrad und Fluglänge</li>
-<li>Längengrad und Fluglänge? (Hinweis: <code>use="complete.obs"</code>)</li>
-</ul></li>
-</ol>
-<p>Ändern sich diese Korrelationen, wenn man die Fluglänge in Kilometer statt in Meilen bei der Berechnung der Korrelation zugrunde legt?</p>
-<ol start="3" style="list-style-type: lower-alpha">
-<li>Betrachten Sie nun für jeden Flug die Differenz der Längen- und Breitengrade von Abflug- und Zielflughafen. Bestimmen Sie die Wurzel aus der Summe der Quadrate dieser beiden Differenzen und ermitteln Sie die Korrelation mit der Fluglänge. Was für einen Wert erwarten Sie?</li>
-</ol>
-<p><strong>Aufgabe 8</strong></p>
-<p>Was geben die folgenden Anweisungen aus und wieso?</p>
-<div class="sourceCode" id="cb793"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb793-1"><a href="datenvisualisierung-mit-ggplot2.html#cb793-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, rnorm)</span>
-<span id="cb793-2"><a href="datenvisualisierung-mit-ggplot2.html#cb793-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span><span class="fu">rnorm</span>(.))</span>
-<span id="cb793-3"><a href="datenvisualisierung-mit-ggplot2.html#cb793-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span><span class="fu">rnorm</span>(<span class="dv">4</span>, .))</span></code></pre></div>
-<p><strong>Aufgabe 9</strong></p>
-<p>Berechnen Sie die Mittelwerte aller Spalten in <code>mtcars</code>.</p>
-<p><strong>Aufgabe 10</strong></p>
-<p>Implementieren Sie mithilfe der Funktionen <code>is.numeric()</code> und <code>map_lgl()</code> eine Funktion <code>numerisch()</code>, die als Argument einen Tibble <code>df</code> erwartet und den Tibble zurückgibt, der genau aus allen numerischen Spalten von <code>df</code> besteht. Insbesondere soll dann möglich sein:</p>
-<div class="sourceCode" id="cb794"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb794-1"><a href="datenvisualisierung-mit-ggplot2.html#cb794-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">numerisch</span>(diamonds), <span class="at">use=</span><span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
-<pre><code>##            carat       depth      table      price           x           y
+## 23  4000 mess6  3.72
+```
+
+
+b) Handelt es sich bei `zeiten1` bzw. bei `zeiten2` um „Tidy Data“ im Sinne von Wickham?
+
+c)  Mit welcher Anweisung kann aus `zeiten2` der ursprüngliche Datensatz `zeiten1` erzeugt werden?
+
+d) Berechnen Sie in Abhängigkeit von `n` die Mittelwerte der Laufzeiten ausgehend jeweils von `zeiten1` und `zeiten2`.
+
+
+**Aufgabe 3**
+
+Welche Zielflughäfen sind in `flights` (als `dest`) aufgelistet, erscheinen aber nicht als FAA-Kennung in `airports`?
+
+**Aufgabe 4**
+
+Geben Sie diejenigen Datensätze aus `airports` aus, die als Zielflughafen in `flights` (als `dest`) vorkommen.
+
+**Aufgabe 5**
+
+Geben Sie diejenigen Datensätze aus `airports` aus, die als Abflughafen in `flights` (als `origin`) vorkommen.
+
+**Aufgabe 6**
+
+Geben Sie Breitengrad und Längengrad der drei Abflughäfen im Datensatz `flights` aus. Unterscheiden sich die Koordinatenangaben deutlich und was sind die entsprechenden Mittelwerte?
+
+**Aufgabe 7**
+
+a)  Nennen Sie den Datensatz `flights` in den Datensatz `flights_withCoord` um und fügen Sie aus dem Datensatz `airports` den Breitengrad (Latitude) und den Längengrad (Longitude) des jeweiligen Zielflughafens in den Datensatz `flights` ein. 
+
+b)  Wie groß sind die Korrelationen zwischen
+
+    + Breitengrad und Fluglänge
+    + Längengrad und Fluglänge? (Hinweis: `use="complete.obs"`)
+    
+Ändern sich diese Korrelationen, wenn man die Fluglänge in Kilometer statt in Meilen bei der Berechnung der Korrelation zugrunde legt?
+
+c)  Betrachten Sie nun für jeden Flug die Differenz der Längen- und Breitengrade von Abflug- und Zielflughafen. Bestimmen Sie die Wurzel aus der Summe der Quadrate dieser beiden Differenzen und ermitteln Sie die Korrelation mit der Fluglänge. Was für einen Wert erwarten Sie?
+
+**Aufgabe 8**
+
+Was geben die folgenden Anweisungen aus und wieso?
+
+
+```r
+map(1:10, rnorm)
+map(1:10, ~rnorm(.))
+map(1:10, ~rnorm(4, .))
+```
+
+**Aufgabe 9**
+
+Berechnen Sie die Mittelwerte aller Spalten in `mtcars`.
+
+**Aufgabe 10**
+
+Implementieren Sie mithilfe der Funktionen `is.numeric()` und `map_lgl()` eine Funktion `numerisch()`, die als Argument einen Tibble `df` erwartet und den Tibble zurückgibt, der genau aus allen numerischen Spalten von `df` besteht. Insbesondere soll dann möglich sein:
+
+
+
+
+```r
+cor(numerisch(diamonds), use="complete.obs")
+```
+
+```
+##            carat       depth      table      price           x           y
 ## carat 1.00000000  0.02822431  0.1816175  0.9215913  0.97509423  0.95172220
 ## depth 0.02822431  1.00000000 -0.2957785 -0.0106474 -0.02528925 -0.02934067
 ## table 0.18161755 -0.29577852  1.0000000  0.1271339  0.19534428  0.18376015
@@ -439,147 +507,238 @@ div.csl-indent {
 ## price 0.86124944
 ## x     0.97077180
 ## y     0.95200572
-## z     1.00000000</code></pre>
-<div class="sourceCode" id="cb796"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb796-1"><a href="datenvisualisierung-mit-ggplot2.html#cb796-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">numerisch</span>(mpg), <span class="at">use=</span><span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
-<pre><code>##            displ         year        cyl         cty          hwy
+## z     1.00000000
+```
+
+```r
+cor(numerisch(mpg), use="complete.obs")
+```
+
+```
+##            displ         year        cyl         cty          hwy
 ## displ  1.0000000  0.147842816  0.9302271 -0.79852397 -0.766020021
 ## year   0.1478428  1.000000000  0.1222453 -0.03723229  0.002157643
 ## cyl    0.9302271  0.122245347  1.0000000 -0.80577141 -0.761912354
 ## cty   -0.7985240 -0.037232291 -0.8057714  1.00000000  0.955915914
-## hwy   -0.7660200  0.002157643 -0.7619124  0.95591591  1.000000000</code></pre>
-<p><strong>Aufgabe 11</strong></p>
-<p>Erklären Sie folgenden Quelltext:</p>
-<div class="sourceCode" id="cb798"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb798-1"><a href="datenvisualisierung-mit-ggplot2.html#cb798-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> diamonds <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">vol=</span>x<span class="sc">*</span>y<span class="sc">*</span>z)</span>
-<span id="cb798-2"><a href="datenvisualisierung-mit-ggplot2.html#cb798-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb798-3"><a href="datenvisualisierung-mit-ggplot2.html#cb798-3" aria-hidden="true" tabindex="-1"></a>lmd <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> vol, <span class="at">data =</span> d)</span>
-<span id="cb798-4"><a href="datenvisualisierung-mit-ggplot2.html#cb798-4" aria-hidden="true" tabindex="-1"></a>sum_lmd <span class="ot">&lt;-</span> <span class="fu">summary</span>(lmd)</span>
-<span id="cb798-5"><a href="datenvisualisierung-mit-ggplot2.html#cb798-5" aria-hidden="true" tabindex="-1"></a>sum_lmd<span class="sc">$</span>r.squared</span></code></pre></div>
-<pre><code>## [1] 0.8142979</code></pre>
-<div class="sourceCode" id="cb800"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb800-1"><a href="datenvisualisierung-mit-ggplot2.html#cb800-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> </span>
-<span id="cb800-2"><a href="datenvisualisierung-mit-ggplot2.html#cb800-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">split</span>(.<span class="sc">$</span>cut) <span class="sc">%&gt;%</span> </span>
-<span id="cb800-3"><a href="datenvisualisierung-mit-ggplot2.html#cb800-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(<span class="sc">~</span><span class="fu">lm</span>(price <span class="sc">~</span> vol, <span class="at">data =</span> .))</span>
-<span id="cb800-4"><a href="datenvisualisierung-mit-ggplot2.html#cb800-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb800-5"><a href="datenvisualisierung-mit-ggplot2.html#cb800-5" aria-hidden="true" tabindex="-1"></a>models <span class="sc">%&gt;%</span> </span>
-<span id="cb800-6"><a href="datenvisualisierung-mit-ggplot2.html#cb800-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">map</span>(summary) <span class="sc">%&gt;%</span> </span>
-<span id="cb800-7"><a href="datenvisualisierung-mit-ggplot2.html#cb800-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">map_dbl</span>(<span class="sc">~</span>.<span class="sc">$</span>r.squared)</span></code></pre></div>
-<pre><code>##      Fair      Good Very Good   Premium     Ideal 
-## 0.7391252 0.8437127 0.8523177 0.7516382 0.8616549</code></pre>
-
-</div>
+## hwy   -0.7660200  0.002157643 -0.7619124  0.95591591  1.000000000
+```
 
 
+**Aufgabe 11**
 
-<p>Woran erkennt man, dass ein R-Objekt kein Objekt einer S3 Klasse ist?</p>
-<p><strong>Aufgabe 2</strong></p>
-<p>Implementieren Sie eine S3-Klasse <code>binseq</code>, die binäre (nicht-leere) Folgen modelliert. Eine binäre Folge ist eine endliche Folge, die nur aus den Elementen -1 und +1 besteht. Die Klasse soll sich wie folgt verhalten:</p>
-<div class="sourceCode" id="cb802"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb802-1"><a href="datenvisualisierung-mit-ggplot2.html#cb802-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">binseq</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb802-2"><a href="datenvisualisierung-mit-ggplot2.html#cb802-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(s)</span></code></pre></div>
-<pre><code>##  &#39;binseq&#39; int [1:7] 1 1 1 -1 1 -1 -1
-##  - attr(*, &quot;n&quot;)= int 7</code></pre>
-<div class="sourceCode" id="cb804"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb804-1"><a href="datenvisualisierung-mit-ggplot2.html#cb804-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(s)</span></code></pre></div>
-<pre><code>## [1] &quot;Binäre Folge der Länge 7&quot;
-## [1]  1  1  1 -1  1 -1 -1</code></pre>
-<div class="sourceCode" id="cb806"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb806-1"><a href="datenvisualisierung-mit-ggplot2.html#cb806-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(s)</span></code></pre></div>
-<pre><code>## $n
+Erklären Sie folgenden Quelltext:
+
+
+```r
+d <- diamonds %>% drop_na() %>% mutate(vol=x*y*z)
+
+lmd <- lm(price ~ vol, data = d)
+sum_lmd <- summary(lmd)
+sum_lmd$r.squared
+```
+
+```
+## [1] 0.8142979
+```
+
+```r
+models <- d %>% 
+    split(.$cut) %>% 
+    map(~lm(price ~ vol, data = .))
+
+models %>% 
+   map(summary) %>% 
+   map_dbl(~.$r.squared)
+```
+
+```
+##      Fair      Good Very Good   Premium     Ideal 
+## 0.7391252 0.8437127 0.8523177 0.7516382 0.8616549
+```
+
+
+
+<!--
+# (PART\*) Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis {-}
+
+**Aufgabe 1**
+
+Woran erkennt man, dass ein R-Objekt kein Objekt einer S3 Klasse ist?
+
+
+**Aufgabe 2**
+
+Implementieren Sie eine S3-Klasse `binseq`, die binäre (nicht-leere) Folgen modelliert. Eine binäre Folge ist eine endliche Folge, die nur aus den Elementen -1 und +1 besteht. Die Klasse soll sich wie folgt verhalten:
+
+
+
+
+
+```r
+s <- binseq(c(1,1,1,-1,1,-1,-1))
+str(s)
+```
+
+```
+##  'binseq' int [1:7] 1 1 1 -1 1 -1 -1
+##  - attr(*, "n")= int 7
+```
+
+```r
+print(s)
+```
+
+```
+## [1] "Binäre Folge der Länge 7"
+## [1]  1  1  1 -1  1 -1 -1
+```
+
+```r
+attributes(s)
+```
+
+```
+## $n
 ## [1] 7
 ## 
 ## $class
-## [1] &quot;binseq&quot;</code></pre>
-<div class="sourceCode" id="cb808"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb808-1"><a href="datenvisualisierung-mit-ggplot2.html#cb808-1" aria-hidden="true" tabindex="-1"></a><span class="co"># binseq(c(1,1,-1.0,1))</span></span>
-<span id="cb808-2"><a href="datenvisualisierung-mit-ggplot2.html#cb808-2" aria-hidden="true" tabindex="-1"></a><span class="co"># # binseq(c(1,3,-1.0,1))</span></span>
-<span id="cb808-3"><a href="datenvisualisierung-mit-ggplot2.html#cb808-3" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.</span></span>
-<span id="cb808-4"><a href="datenvisualisierung-mit-ggplot2.html#cb808-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb808-5"><a href="datenvisualisierung-mit-ggplot2.html#cb808-5" aria-hidden="true" tabindex="-1"></a><span class="co"># # binseq(double())</span></span>
-<span id="cb808-6"><a href="datenvisualisierung-mit-ggplot2.html#cb808-6" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: n==0</span></span>
-<span id="cb808-7"><a href="datenvisualisierung-mit-ggplot2.html#cb808-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb808-8"><a href="datenvisualisierung-mit-ggplot2.html#cb808-8" aria-hidden="true" tabindex="-1"></a><span class="co"># # binseq(c(&quot;a&quot;, &quot;b&quot;))</span></span>
-<span id="cb808-9"><a href="datenvisualisierung-mit-ggplot2.html#cb808-9" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben</span></span>
-<span id="cb808-10"><a href="datenvisualisierung-mit-ggplot2.html#cb808-10" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Zusätzlich: Warnmeldung:</span></span>
-<span id="cb808-11"><a href="datenvisualisierung-mit-ggplot2.html#cb808-11" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; In binseq(c(&quot;a&quot;, &quot;b&quot;)) :</span></span>
-<span id="cb808-12"><a href="datenvisualisierung-mit-ggplot2.html#cb808-12" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben</span></span>
-<span id="cb808-13"><a href="datenvisualisierung-mit-ggplot2.html#cb808-13" aria-hidden="true" tabindex="-1"></a><span class="co"># binseq(-1)</span></span>
-<span id="cb808-14"><a href="datenvisualisierung-mit-ggplot2.html#cb808-14" aria-hidden="true" tabindex="-1"></a><span class="co"># # binseq(c(1,1,1,0))</span></span>
-<span id="cb808-15"><a href="datenvisualisierung-mit-ggplot2.html#cb808-15" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben</span></span>
-<span id="cb808-16"><a href="datenvisualisierung-mit-ggplot2.html#cb808-16" aria-hidden="true" tabindex="-1"></a><span class="co"># binseq(c(T, T, T, F))</span></span>
-<span id="cb808-17"><a href="datenvisualisierung-mit-ggplot2.html#cb808-17" aria-hidden="true" tabindex="-1"></a><span class="co"># identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))</span></span></code></pre></div>
-<p>Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham <a href="https://adv-r.hadley.nz/">https://adv-r.hadley.nz/</a> beschrieben:</p>
-<ul>
-<li><p>Implementieren Sie die Funktionen <code>new_binseq()</code>, <code>validate_binseq()</code> und <code>binseq()</code>.</p></li>
-<li><p>Erzeugen Sie die Methode <code>print.binseq()</code> für die generische Funktion <code>print()</code>.</p></li>
-</ul>
-<p><strong>Aufgabe 3</strong></p>
-<ol style="list-style-type: lower-alpha">
-<li>Was sind generische Funktionen?</li>
-<li>Was ist der Unterschied zwischen einer generischen Funktion und einer Methode?</li>
-<li>Gibt es in Base-R mehr als 100 generische Funktionen?</li>
-<li>Was gibt die Funktion <code>methods()</code> zurück? (Zum Beispiel: <code>methods(mean)</code> oder <code>methods(print)</code>)</li>
-</ol>
-<p><strong>Aufgabe 4</strong></p>
-<p>Eine ist eine endliche Folge <span class="math inline">\(s = \left(s_1, s_2, ..., s_n\right)\)</span> mit <span class="math inline">\(s_j \in \{-1, +1\}\)</span> für alle <span class="math inline">\(1 \leq j \leq n\)</span>. Für <span class="math inline">\(0 &lt; k &lt; n\)</span> ist die <em>(der Ordnung k)</em> definiert durch:</p>
-<p>\begin*{equation}
-C_k(s) = <em>{j=1}^{n-k} s_j s</em>{j+k}
-\end{equation}</p>
-<p>In R kann <span class="math inline">\(s\)</span> leicht durch einen Integer-Vektor dargestellt und die aperiodische Autokorrelation bei-spielsweise wie folgt implementiert werden:</p>
-<div class="sourceCode" id="cb809"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb809-1"><a href="datenvisualisierung-mit-ggplot2.html#cb809-1" aria-hidden="true" tabindex="-1"></a>autokorrelation1 <span class="ot">&lt;-</span> <span class="cf">function</span>(s) {</span>
-<span id="cb809-2"><a href="datenvisualisierung-mit-ggplot2.html#cb809-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(s)</span>
-<span id="cb809-3"><a href="datenvisualisierung-mit-ggplot2.html#cb809-3" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;integer&quot;</span>, <span class="at">length =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb809-4"><a href="datenvisualisierung-mit-ggplot2.html#cb809-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n<span class="dv">-1</span>)) {</span>
-<span id="cb809-5"><a href="datenvisualisierung-mit-ggplot2.html#cb809-5" aria-hidden="true" tabindex="-1"></a>    res[k] <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">t</span>(s[<span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> k)]) <span class="sc">%*%</span> s[(k <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>n])</span>
-<span id="cb809-6"><a href="datenvisualisierung-mit-ggplot2.html#cb809-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb809-7"><a href="datenvisualisierung-mit-ggplot2.html#cb809-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb809-8"><a href="datenvisualisierung-mit-ggplot2.html#cb809-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<ol style="list-style-type: lower-alpha">
-<li><p>Modifizieren Sie die Funktion <code>autokorrelation1()</code>, indem Sie die Schleife durch <code>map_int()</code> (aus <code>purrr</code>) ersetzen. Nennen Sie die modifizierte Version <code>autokorrelation2()</code>.</p></li>
-<li><p>Vergleichen Sie die Laufzeiten der beiden Funktionen für große <code>n</code> mithilfe von <code>system.time()</code>, beispielsweise durch:</p></li>
-</ol>
-<div class="sourceCode" id="cb810"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb810-1"><a href="datenvisualisierung-mit-ggplot2.html#cb810-1" aria-hidden="true" tabindex="-1"></a>randBinSeq <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb810-2"><a href="datenvisualisierung-mit-ggplot2.html#cb810-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">-</span>1L, 1L), n, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb810-3"><a href="datenvisualisierung-mit-ggplot2.html#cb810-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb810-4"><a href="datenvisualisierung-mit-ggplot2.html#cb810-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">randBinSeq</span>(<span class="fl">2E4</span>) </span>
-<span id="cb810-5"><a href="datenvisualisierung-mit-ggplot2.html#cb810-5" aria-hidden="true" tabindex="-1"></a><span class="fu">autokorrelation1</span>(s)</span>
-<span id="cb810-6"><a href="datenvisualisierung-mit-ggplot2.html#cb810-6" aria-hidden="true" tabindex="-1"></a><span class="fu">autokorrelation2</span>(s)</span></code></pre></div>
-<ol start="3" style="list-style-type: lower-alpha">
-<li>Erstellen Sie einen weiteren Laufzeittest; erklären und interpretieren Sie die Ergebnisse:</li>
-</ol>
-<div class="sourceCode" id="cb811"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb811-1"><a href="datenvisualisierung-mit-ggplot2.html#cb811-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(compiler)</span>
-<span id="cb811-2"><a href="datenvisualisierung-mit-ggplot2.html#cb811-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">cmpfun</span>(autokorrelation1)</span>
-<span id="cb811-3"><a href="datenvisualisierung-mit-ggplot2.html#cb811-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">f</span>(s))</span></code></pre></div>
-<p><strong>HINWEIS:</strong> Byte Code Compilation und JIT-Compiler</p>
-<p><strong>Aufgabe 5</strong></p>
-<p>Erzeugen Sie eine neue generische Funktion <code>autokor()</code> und implementieren Sie für die Klasse <code>binseq</code> (siehe oben) eine entsprechende Methode, die die aperiodische Autokorrelation zurückgibt. Wann ist dieses Vorgehen sinnvoll?</p>
-<p><strong>Aufgabe 6</strong></p>
-<p>Erklären Sie den folgenden Quelltext:</p>
-<div class="sourceCode" id="cb812"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb812-1"><a href="datenvisualisierung-mit-ggplot2.html#cb812-1" aria-hidden="true" tabindex="-1"></a>foo1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x,...) {</span>
-<span id="cb812-2"><a href="datenvisualisierung-mit-ggplot2.html#cb812-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(x)</span>
-<span id="cb812-3"><a href="datenvisualisierung-mit-ggplot2.html#cb812-3" aria-hidden="true" tabindex="-1"></a>  args <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
-<span id="cb812-4"><a href="datenvisualisierung-mit-ggplot2.html#cb812-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(a <span class="cf">in</span> args){</span>
-<span id="cb812-5"><a href="datenvisualisierung-mit-ggplot2.html#cb812-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(a)</span>
-<span id="cb812-6"><a href="datenvisualisierung-mit-ggplot2.html#cb812-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb812-7"><a href="datenvisualisierung-mit-ggplot2.html#cb812-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb812-8"><a href="datenvisualisierung-mit-ggplot2.html#cb812-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb812-9"><a href="datenvisualisierung-mit-ggplot2.html#cb812-9" aria-hidden="true" tabindex="-1"></a><span class="fu">foo1</span>(<span class="dv">1</span>)</span>
-<span id="cb812-10"><a href="datenvisualisierung-mit-ggplot2.html#cb812-10" aria-hidden="true" tabindex="-1"></a><span class="fu">foo1</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>, <span class="at">mean=</span><span class="dv">6</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb813"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb813-1"><a href="datenvisualisierung-mit-ggplot2.html#cb813-1" aria-hidden="true" tabindex="-1"></a>foo2 <span class="ot">&lt;-</span> <span class="cf">function</span>(n, ...) {</span>
-<span id="cb813-2"><a href="datenvisualisierung-mit-ggplot2.html#cb813-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rnorm</span>(n, ...))</span>
-<span id="cb813-3"><a href="datenvisualisierung-mit-ggplot2.html#cb813-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb813-4"><a href="datenvisualisierung-mit-ggplot2.html#cb813-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb813-5"><a href="datenvisualisierung-mit-ggplot2.html#cb813-5" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>)</span>
-<span id="cb813-6"><a href="datenvisualisierung-mit-ggplot2.html#cb813-6" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>,<span class="dv">100</span>)</span>
-<span id="cb813-7"><a href="datenvisualisierung-mit-ggplot2.html#cb813-7" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>, <span class="at">mean=</span><span class="dv">100</span>)</span>
-<span id="cb813-8"><a href="datenvisualisierung-mit-ggplot2.html#cb813-8" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>, <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">500</span>)</span>
-<span id="cb813-9"><a href="datenvisualisierung-mit-ggplot2.html#cb813-9" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>, <span class="at">meen=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">500</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb814"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb814-1"><a href="datenvisualisierung-mit-ggplot2.html#cb814-1" aria-hidden="true" tabindex="-1"></a>foo3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
-<span id="cb814-2"><a href="datenvisualisierung-mit-ggplot2.html#cb814-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(<span class="fu">mean</span>(x,...), <span class="fu">median</span>(x,...)))</span>
-<span id="cb814-3"><a href="datenvisualisierung-mit-ggplot2.html#cb814-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb814-4"><a href="datenvisualisierung-mit-ggplot2.html#cb814-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb814-5"><a href="datenvisualisierung-mit-ggplot2.html#cb814-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">100</span>,<span class="dv">4</span>)</span>
-<span id="cb814-6"><a href="datenvisualisierung-mit-ggplot2.html#cb814-6" aria-hidden="true" tabindex="-1"></a><span class="fu">foo3</span>(x)</span>
-<span id="cb814-7"><a href="datenvisualisierung-mit-ggplot2.html#cb814-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="cn">NA</span>, <span class="dv">100</span>,<span class="dv">4</span>)</span>
-<span id="cb814-8"><a href="datenvisualisierung-mit-ggplot2.html#cb814-8" aria-hidden="true" tabindex="-1"></a><span class="fu">foo3</span>(x)</span>
-<span id="cb814-9"><a href="datenvisualisierung-mit-ggplot2.html#cb814-9" aria-hidden="true" tabindex="-1"></a><span class="fu">foo3</span>(x, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
-<span id="cb814-10"><a href="datenvisualisierung-mit-ggplot2.html#cb814-10" aria-hidden="true" tabindex="-1"></a><span class="fu">foo3</span>(x, <span class="at">rm.na=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p><strong>HINWEIS</strong></p>
-<p>Das in R wichtige Konzept <code>environment</code> haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf <a href="https://adv-r.hadley.nz/environments.html">https://adv-r.hadley.nz/environments.html</a>.</p>
+## [1] "binseq"
+```
+
+
+```r
+# binseq(c(1,1,-1.0,1))
+# # binseq(c(1,3,-1.0,1))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
+# 
+# # binseq(double())
+# #R> Fehler: n==0
+# 
+# # binseq(c("a", "b"))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# #R> Zusätzlich: Warnmeldung:
+# #R> In binseq(c("a", "b")) :
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# binseq(-1)
+# # binseq(c(1,1,1,0))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# binseq(c(T, T, T, F))
+# identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
+```
+
+Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham [https://adv-r.hadley.nz/](https://adv-r.hadley.nz/) beschrieben:
+
++ Implementieren Sie die Funktionen `new_binseq()`, `validate_binseq()` und `binseq()`.
+
++ Erzeugen Sie die Methode `print.binseq()` für die generische Funktion `print()`.
+
+**Aufgabe 3**
+
+a)  Was sind generische Funktionen?
+b)  Was ist der Unterschied zwischen einer generischen Funktion und einer Methode?
+c)  Gibt es in Base-R mehr als 100 generische Funktionen?
+d)  Was gibt die Funktion `methods()` zurück? (Zum Beispiel: `methods(mean)` oder `methods(print)`)
+
+**Aufgabe 4**
+
+Eine \textbf{\emph{binäre Folge der Länge n}} ist eine endliche Folge $s = \left(s_1, s_2, ..., s_n\right)$ mit $s_j \in \{-1, +1\}$ für alle $1 \leq j \leq n$. Für $0 < k < n$ ist die \textbf{\emph{aperiodische Autokorrelation}} *(der Ordnung k)* definiert durch:
+
+\begin*{equation}
+C_k(s) = \sum_{j=1}^{n-k} s_j \cdot s_{j+k}
+\end{equation}
+
+In R kann $s$ leicht durch einen Integer-Vektor dargestellt und die aperiodische Autokorrelation bei-spielsweise wie folgt implementiert werden:
+
+
+```r
+autokorrelation1 <- function(s) {
+  n <- length(s)
+  res <- vector(mode = "integer", length = n - 1)
+  for (k in 1:(n-1)) {
+    res[k] <- as.integer(t(s[1:(n - k)]) %*% s[(k + 1):n])
+  }
+  return(res)
+}
+```
+
+a)  Modifizieren Sie die Funktion `autokorrelation1()`, indem Sie die Schleife durch `map_int()` (aus `purrr`) ersetzen. Nennen Sie die modifizierte Version `autokorrelation2()`.
+
+b)  Vergleichen Sie die Laufzeiten der beiden Funktionen für große `n` mithilfe von `system.time()`, beispielsweise durch:
+
+
+```r
+randBinSeq <- function(n) {
+  return(sample(c(-1L, 1L), n, replace = TRUE))
+}
+s <- randBinSeq(2E4) 
+autokorrelation1(s)
+autokorrelation2(s)
+```
+
+c)  Erstellen Sie einen weiteren Laufzeittest; erklären und interpretieren Sie die Ergebnisse:
+
+
+```r
+require(compiler)
+f <- cmpfun(autokorrelation1)
+system.time(f(s))
+```
+
+**HINWEIS:** Byte Code Compilation und JIT-Compiler
+
+**Aufgabe 5**
+
+Erzeugen Sie eine neue generische Funktion `autokor()` und implementieren Sie für die Klasse `binseq` (siehe oben) eine entsprechende Methode, die die aperiodische Autokorrelation zurückgibt. Wann ist dieses Vorgehen sinnvoll?
+
+**Aufgabe 6**
+
+Erklären Sie den folgenden Quelltext:
+
+
+```r
+foo1 <- function(x,...) {
+  print(x)
+  args <- list(...)
+  for(a in args){
+    print(a)
+  }
+}
+
+foo1(1)
+foo1(1,2,3,4, mean=6)
+```
+
+
+```r
+foo2 <- function(n, ...) {
+  return(rnorm(n, ...))
+}
+
+foo2(4)
+foo2(4,100)
+foo2(4, mean=100)
+foo2(4, mean=100, sd=500)
+foo2(4, meen=100, sd=500)
+```
+
+
+```r
+foo3 <- function(x, ...) {
+  return(c(mean(x,...), median(x,...)))
+}
+
+x <- c(1,2,100,4)
+foo3(x)
+x <- c(1,2,NA, 100,4)
+foo3(x)
+foo3(x, na.rm=TRUE)
+foo3(x, rm.na=TRUE)
+```
+
+**HINWEIS**
+
+Das in R wichtige Konzept `environment` haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf [https://adv-r.hadley.nz/environments.html](https://adv-r.hadley.nz/environments.html).
+
 
 </div>
             </section>
