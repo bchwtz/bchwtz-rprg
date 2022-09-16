@@ -9,7 +9,7 @@ Woran erkennt man, dass ein R-Objekt kein Objekt einer S3 Klasse ist?
 
 Implementieren Sie eine S3-Klasse `binseq`, die binäre (nicht-leere) Folgen modelliert. Eine binäre Folge ist eine endliche Folge, die nur aus den Elementen -1 und +1 besteht. Die Klasse soll sich wie folgt verhalten:
 
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 new_binseq <- function(x) {
   n=length(x)
   structure(
@@ -17,6 +17,40 @@ new_binseq <- function(x) {
     n = n,
     class = "binseq"
   )
+}
+
+validate_binseq <- function(x) {
+  values <- unclass(x)
+  n <- attr(x, "n")
+  
+  if(n != length(values)) {
+    stop("Falscher n-Wert", call. = FALSE)
+  }
+  
+  if(n == 0) {
+    stop("n==0", call. = FALSE)
+  }
+  
+  if(!is.integer(x)) {
+    stop("Kein Integer-Vektor", call. = FALSE)
+  }
+  
+  if (!all(!is.na(values) & (values == 1   | values == -1))) {
+    stop("Alle Elemente dürfen nur den Wert 1 oder -1 haben", call. = FALSE)
+  }
+  
+  return(x)
+}
+
+## Helper  
+# In anderen OO-Sprachen ist dies der Kontruktor
+binseq <- function(x) {
+  if(is.logical(x)){
+    x <- 2L*x-1L
+  } else {
+    x <- as.integer(x)
+  }
+  validate_binseq(new_binseq(x))
 }
 ```
 
@@ -51,3 +85,15 @@ Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wic
 + Implementieren Sie die Funktionen `new_binseq()`, `validate_binseq()` und `binseq()`.
 
 + Erzeugen Sie die Methode `print.binseq()` für die generische Funktion `print()`.
+
+**Aufgabe 3**
+
+a)	Was sind generische Funktionen?
+b)	Was ist der Unterschied zwischen einer generischen Funktion und einer Methode?
+c)	Gibt es in Base-R mehr als 100 generische Funktionen?
+d)	Was gibt die Funktion `methods()` zurück? (Zum Beispiel: `methods(mean)` oder `methods(print)`)
+
+**Aufgabe 4**
+
+Eine \textbf{\emph{binäre Folge der Länge n}} ist eine endliche Folge $s = \left(s_1, s_2, ..., s_n\right)$ mit $s_j \in \{-1, +1\}$ für alle $1 \leq j \leq n$. Für $0 < k < n$ ist die \textbf{\emph{aperiodische Autokorrelation}} *(der Ordnung k)* definiert durch:
+
