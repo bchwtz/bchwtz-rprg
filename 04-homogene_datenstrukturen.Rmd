@@ -892,3 +892,144 @@ plot(as.raster(255 - ziffern[2, ,], max = 255))
 
 
 ## Übungen {-}
+
+**Aufgabe 1**
+
+Was wird zurückgegeben?
+
+```{r, eval=FALSE}
+ifelse(1:8%%2 == 0, letters, LETTERS)
+```
+
+**Aufgabe 2**
+
+a)	Was wird ausgegeben? Wieso?
+
+```{r, eval=FALSE}
+set.seed(1)
+x <- sample(1:9, 10, TRUE)
+x
+order(x)
+x[order(x)]
+sort(x)         
+```
+
+b) Beschreiben Sie kurz die Funktion `order()`:
+
+`order()`: 
+
+c)	Ist für einen Vektor `x` der Aufruf  `x[order(x)]` identisch zu `sort(x)`?
+
+**Aufgabe 3**
+
+Was bewirkt die folgende Zuweisung?
+
+```{r, eval=FALSE}
+d <- d[!is.na(d)]
+```
+
+
+**Aufgabe 4**
+
+In den Übungen zu Kapitel 3 haben Sie eine Funktion `llaenge()` implementiert, die die *Lauflängen-Codierung* einer binären Folge (bestehend aus beliebigen zwei Symbolen) zurückgibt. Implementieren Sie eine neue Version dieser Funktion, deren Funktionsrumpf nur drei kurze Anweisungen umfasst!
+
+**Hinweis**
+
++ Betrachten Sie für einen Eingabevektor `x`\newline
+`v <- x[-1L] != x[-n]`
+
++ Wenden Sie zuerst `which` und dann `diff` auf `v` an.
+
+**Aufgabe 5**
+
+a) Die Entropie H eines Wahrscheinlichkeitsvektors $p=\left(p_1, p_2, ..., p_n\right)$ (siehe Übung 6 zu Kapitel 3) ist definiert durch:
+
+\begin*{equation}
+H(p) = - \sum_{k=0}^{n} p_i \cdot log_2 (p_i)
+\end{equation}
+
+Falls $p_i = 0$ gilt, wie ist dann sinnvollerweise $p_i\cdot log_2 (p_i)$ definiert? Wieso? (Hinweis: Regel von de l’Hospital).
+
+Implementieren Sie zwei Versionen einer Funktion `entropie()`, die für einen Wahrscheinlichkeitsvektor $p=\left(p_1, p_2, ..., p_n\right)$ die Entropie zurückgibt. Zum Herausfiltern des Falls $p_i = 0$ soll die erste Version der Funktion `ifelse` benutzen, während die zweite Version stattdessen von der Vektor-Indizierung Gebrauch macht.
+
+b) Bestimmen Sie die Entropie von\newline
+
+$p = (0.25, 0.25, 0.25, 0.25)$\newline
+$p = (0.25, 0, 0.25, 0.25, 0.25)$\newline
+$p = (0.2, 0.2, 0.2, 0.2, 0.2)$\newline
+$p = (0.04, 0.02, 0.04, 0.9)$
+
+c)	Implementieren Sie eine Funktion, die Ihre beiden Versionen der Entropie-Funktion auf Gleichheit testet. Überprüfen Sie zusätzlich, dass stets  $0\leq H(p)\leq log_2 (n)$ gilt. Für welche Wahrscheinlichkeitsvektoren nimmt die Entropie den maximalen Wert $log_2(n)$ an?
+
+**Aufgabe 6**
+
+a) Was sind die Werte der folgenden Vektoren? Wieso?
+
+```{r, eval=FALSE}
+2^1:16
+2^(1:16)
+(0+1i)^(1:16) 
+exp(2*pi*1i/16)^(1:16)
+```
+
+b)	Gibt es einen Unterschied zwischen den folgenden beiden Funktionsaufrufen?
+
+```{r, eval=FALSE}
+complex(argument = 2*pi/16)
+exp(2*pi*1i/16)
+```
+
+c) Gegeben ist `z <- exp(2*pi*1i/16)^(1:16)`. Beschreiben Sie `z`. Welchen Wert hat `z^16`?
+
+
+**Aufgabe 7**
+
+a)	Welchen Wert haben die Ausdrücke `4 + T`, `4 + F` und `T + T`?
+
+b) Gegeben ist ein Vektor `x`. Was geben folgende Funktionsaufrufe zurück?
+
+```{r, eval=FALSE}
+sum(x==2)
+length(x[x==2])
+length(which(x == 2))
+```
+
+c) Erklären Sie:
+
+```{r}
+a <- 2^(1/2)
+x <- a^(1:6)
+x
+sum(x==2)
+length(x[x==2])
+length(which(x == 2))
+all(x == 2)
+any(x == 2)
+all.equal(2,x[2])
+```
+
+**Aufgabe 8**
+
+a)	Wie kann man `x <- 1:20 *-1` kürzer schreiben?
+
+b)	Welche Werte haben dann `x[-(1:5)]` und `x[6:10]`?
+
+
+**Aufgabe 9**
+
+Gegeben ist ein numerischer Vektor `x` der Länge 1000 wie z.B. `x <- runif(1000)`.
+
+a)	Bestimmen Sie jeweils den Mittelwert des dritten Viertels von `x` und den Mittelwert der zweiten Hälfte von `x`.
+
+b)	Wie können Sie die Anzahl der Elemente im dritten Viertel von `x` bestimmen, die größer als 0.5 sind?
+
+c) Geben Sie alle Elemente von `x[i]` aus, die die beiden folgenden Bedingungen erfüllen:\newline
+
++	$51 \leq i \leq 100$  oder  $301 \leq i \leq 400$
++	`x[i] ≥ 0.8`
+
+d) Wieso ist `x[x[c(51:100, 301:400)] >= 0.9]` keine Lösung von c)?
+
+**Aufgabe 10**
+
+Was bewirkt `x[ x < 0] <- -x[ x < 0]` bei einem numerischen Vektor `x`? Wie kann dies kürzer und auch klarer ausgedrückt werden?
