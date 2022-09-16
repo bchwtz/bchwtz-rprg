@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Buchwitz" />
 
 
-<meta name="date" content="2022-09-15" />
+<meta name="date" content="2022-09-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -846,12 +846,12 @@ Setzt das Attribut ‘dimnames’, mit dem Namen für die Matrixdimensionen gese
 <div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="homogene-datenstrukturen.html#cb346-1" aria-hidden="true" tabindex="-1"></a>nrow</span></code></pre></div>
 <pre><code>## function (x) 
 ## dim(x)[1L]
-## &lt;bytecode: 0x562598682db0&gt;
+## &lt;bytecode: 0x55afebb1edb0&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="homogene-datenstrukturen.html#cb348-1" aria-hidden="true" tabindex="-1"></a>ncol </span></code></pre></div>
 <pre><code>## function (x) 
 ## dim(x)[2L]
-## &lt;bytecode: 0x562597ed7540&gt;
+## &lt;bytecode: 0x55afeb373540&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>Wir wollen die Matrix A genauer untersuchen:</p>
 <div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="homogene-datenstrukturen.html#cb350-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(A)</span></code></pre></div>
@@ -1520,6 +1520,120 @@ Arrays können auch eindimensional sein:</p>
 </div>
 <div id="übungen-3" class="section level2 unnumbered hasAnchor">
 <h2>Übungen<a href="homogene-datenstrukturen.html#übungen-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Aufgabe 1</strong></p>
+<p>Was wird zurückgegeben?</p>
+<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb546-1"><a href="homogene-datenstrukturen.html#cb546-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ifelse</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span><span class="sc">%%</span><span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, letters, LETTERS)</span></code></pre></div>
+<p><strong>Aufgabe 2</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Was wird ausgegeben? Wieso?</li>
+</ol>
+<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb547-1"><a href="homogene-datenstrukturen.html#cb547-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb547-2"><a href="homogene-datenstrukturen.html#cb547-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb547-3"><a href="homogene-datenstrukturen.html#cb547-3" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb547-4"><a href="homogene-datenstrukturen.html#cb547-4" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(x)</span>
+<span id="cb547-5"><a href="homogene-datenstrukturen.html#cb547-5" aria-hidden="true" tabindex="-1"></a>x[<span class="fu">order</span>(x)]</span>
+<span id="cb547-6"><a href="homogene-datenstrukturen.html#cb547-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(x)         </span></code></pre></div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Beschreiben Sie kurz die Funktion <code>order()</code>:</li>
+</ol>
+<p><code>order()</code>:</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Ist für einen Vektor <code>x</code> der Aufruf <code>x[order(x)]</code> identisch zu <code>sort(x)</code>?</li>
+</ol>
+<p><strong>Aufgabe 3</strong></p>
+<p>Was bewirkt die folgende Zuweisung?</p>
+<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="homogene-datenstrukturen.html#cb548-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d[<span class="sc">!</span><span class="fu">is.na</span>(d)]</span></code></pre></div>
+<p><strong>Aufgabe 4</strong></p>
+<p>In den Übungen zu Kapitel 3 haben Sie eine Funktion <code>llaenge()</code> implementiert, die die <em>Lauflängen-Codierung</em> einer binären Folge (bestehend aus beliebigen zwei Symbolen) zurückgibt. Implementieren Sie eine neue Version dieser Funktion, deren Funktionsrumpf nur drei kurze Anweisungen umfasst!</p>
+<p><strong>Hinweis</strong></p>
+<ul>
+<li><p>Betrachten Sie für einen Eingabevektor <code>x</code>
+<code>v &lt;- x[-1L] != x[-n]</code></p></li>
+<li><p>Wenden Sie zuerst <code>which</code> und dann <code>diff</code> auf <code>v</code> an.</p></li>
+</ul>
+<p><strong>Aufgabe 5</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Die Entropie H eines Wahrscheinlichkeitsvektors <span class="math inline">\(p=\left(p_1, p_2, ..., p_n\right)\)</span> (siehe Übung 6 zu Kapitel 3) ist definiert durch:</li>
+</ol>
+<p>\begin*{equation}
+H(p) = - _{k=0}^{n} p_i log_2 (p_i)
+\end{equation}</p>
+<p>Falls <span class="math inline">\(p_i = 0\)</span> gilt, wie ist dann sinnvollerweise <span class="math inline">\(p_i\cdot log_2 (p_i)\)</span> definiert? Wieso? (Hinweis: Regel von de l’Hospital).</p>
+<p>Implementieren Sie zwei Versionen einer Funktion <code>entropie()</code>, die für einen Wahrscheinlichkeitsvektor <span class="math inline">\(p=\left(p_1, p_2, ..., p_n\right)\)</span> die Entropie zurückgibt. Zum Herausfiltern des Falls <span class="math inline">\(p_i = 0\)</span> soll die erste Version der Funktion <code>ifelse</code> benutzen, während die zweite Version stattdessen von der Vektor-Indizierung Gebrauch macht.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Bestimmen Sie die Entropie von</li>
+</ol>
+<p><span class="math inline">\(p = (0.25, 0.25, 0.25, 0.25)\)</span>
+<span class="math inline">\(p = (0.25, 0, 0.25, 0.25, 0.25)\)</span>
+<span class="math inline">\(p = (0.2, 0.2, 0.2, 0.2, 0.2)\)</span>
+<span class="math inline">\(p = (0.04, 0.02, 0.04, 0.9)\)</span></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Implementieren Sie eine Funktion, die Ihre beiden Versionen der Entropie-Funktion auf Gleichheit testet. Überprüfen Sie zusätzlich, dass stets <span class="math inline">\(0\leq H(p)\leq log_2 (n)\)</span> gilt. Für welche Wahrscheinlichkeitsvektoren nimmt die Entropie den maximalen Wert <span class="math inline">\(log_2(n)\)</span> an?</li>
+</ol>
+<p><strong>Aufgabe 6</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Was sind die Werte der folgenden Vektoren? Wieso?</li>
+</ol>
+<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb549-1"><a href="homogene-datenstrukturen.html#cb549-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span><span class="dv">1</span><span class="sc">:</span><span class="dv">16</span></span>
+<span id="cb549-2"><a href="homogene-datenstrukturen.html#cb549-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">16</span>)</span>
+<span id="cb549-3"><a href="homogene-datenstrukturen.html#cb549-3" aria-hidden="true" tabindex="-1"></a>(<span class="dv">0</span><span class="sc">+</span>1i)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">16</span>) </span>
+<span id="cb549-4"><a href="homogene-datenstrukturen.html#cb549-4" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>1i<span class="sc">/</span><span class="dv">16</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">16</span>)</span></code></pre></div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Gibt es einen Unterschied zwischen den folgenden beiden Funktionsaufrufen?</li>
+</ol>
+<div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb550-1"><a href="homogene-datenstrukturen.html#cb550-1" aria-hidden="true" tabindex="-1"></a><span class="fu">complex</span>(<span class="at">argument =</span> <span class="dv">2</span><span class="sc">*</span>pi<span class="sc">/</span><span class="dv">16</span>)</span>
+<span id="cb550-2"><a href="homogene-datenstrukturen.html#cb550-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>1i<span class="sc">/</span><span class="dv">16</span>)</span></code></pre></div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Gegeben ist <code>z &lt;- exp(2*pi*1i/16)^(1:16)</code>. Beschreiben Sie <code>z</code>. Welchen Wert hat <code>z^16</code>?</li>
+</ol>
+<p><strong>Aufgabe 7</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Welchen Wert haben die Ausdrücke <code>4 + T</code>, <code>4 + F</code> und <code>T + T</code>?</p></li>
+<li><p>Gegeben ist ein Vektor <code>x</code>. Was geben folgende Funktionsaufrufe zurück?</p></li>
+</ol>
+<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb551-1"><a href="homogene-datenstrukturen.html#cb551-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x<span class="sc">==</span><span class="dv">2</span>)</span>
+<span id="cb551-2"><a href="homogene-datenstrukturen.html#cb551-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x[x<span class="sc">==</span><span class="dv">2</span>])</span>
+<span id="cb551-3"><a href="homogene-datenstrukturen.html#cb551-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(x <span class="sc">==</span> <span class="dv">2</span>))</span></code></pre></div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Erklären Sie:</li>
+</ol>
+<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb552-1"><a href="homogene-datenstrukturen.html#cb552-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb552-2"><a href="homogene-datenstrukturen.html#cb552-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> a<span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span>
+<span id="cb552-3"><a href="homogene-datenstrukturen.html#cb552-3" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## [1] 1.414214 2.000000 2.828427 4.000000 5.656854 8.000000</code></pre>
+<div class="sourceCode" id="cb554"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb554-1"><a href="homogene-datenstrukturen.html#cb554-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x<span class="sc">==</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb556-1"><a href="homogene-datenstrukturen.html#cb556-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x[x<span class="sc">==</span><span class="dv">2</span>])</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="homogene-datenstrukturen.html#cb558-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(x <span class="sc">==</span> <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="homogene-datenstrukturen.html#cb560-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(x <span class="sc">==</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="homogene-datenstrukturen.html#cb562-1" aria-hidden="true" tabindex="-1"></a><span class="fu">any</span>(x <span class="sc">==</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb564"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb564-1"><a href="homogene-datenstrukturen.html#cb564-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="dv">2</span>,x[<span class="dv">2</span>])</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p><strong>Aufgabe 8</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Wie kann man <code>x &lt;- 1:20 *-1</code> kürzer schreiben?</p></li>
+<li><p>Welche Werte haben dann <code>x[-(1:5)]</code> und <code>x[6:10]</code>?</p></li>
+</ol>
+<p><strong>Aufgabe 9</strong></p>
+<p>Gegeben ist ein numerischer Vektor <code>x</code> der Länge 1000 wie z.B. <code>x &lt;- runif(1000)</code>.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Bestimmen Sie jeweils den Mittelwert des dritten Viertels von <code>x</code> und den Mittelwert der zweiten Hälfte von <code>x</code>.</p></li>
+<li><p>Wie können Sie die Anzahl der Elemente im dritten Viertel von <code>x</code> bestimmen, die größer als 0.5 sind?</p></li>
+<li><p>Geben Sie alle Elemente von <code>x[i]</code> aus, die die beiden folgenden Bedingungen erfüllen:</p></li>
+</ol>
+<ul>
+<li><span class="math inline">\(51 \leq i \leq 100\)</span> oder <span class="math inline">\(301 \leq i \leq 400\)</span></li>
+<li><code>x[i] ≥ 0.8</code></li>
+</ul>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Wieso ist <code>x[x[c(51:100, 301:400)] &gt;= 0.9]</code> keine Lösung von c)?</li>
+</ol>
+<p><strong>Aufgabe 10</strong></p>
+<p>Was bewirkt <code>x[ x &lt; 0] &lt;- -x[ x &lt; 0]</code> bei einem numerischen Vektor <code>x</code>? Wie kann dies kürzer und auch klarer ausgedrückt werden?</p>
 
 </div>
 </div>
