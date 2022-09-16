@@ -1033,3 +1033,192 @@ d) Wieso ist `x[x[c(51:100, 301:400)] >= 0.9]` keine Lösung von c)?
 **Aufgabe 10**
 
 Was bewirkt `x[ x < 0] <- -x[ x < 0]` bei einem numerischen Vektor `x`? Wie kann dies kürzer und auch klarer ausgedrückt werden?
+
+**Aufgabe 11** 
+
+Gegeben ist ein numerischer Vektor `x` wie z. B. `x <- (1:1000*131) %% 17`.
+
+a)	Was gibt `table(x)` aus?
+
+b)	Ändern Sie `x`, so dass alle Werte von `x`, die größer gleich 12 sind, den Wert 20 erhalten. Tes-ten Sie Ihre Lösung mithilfe der Funktion `table()`.
+
+**Aufgabe 12**
+
+Gegeben ist folgender Quelltext:
+
+```{r, eval=FALSE}
+x <- 1:10
+aendern <- function(i){ 
+  x[i] <- 99L
+}
+aendern(1)
+```
+
+a)	Hat sich der Vektor `x` durch den Funktionsaufruf `aendern(1)` geändert?
+
+b)	Wie muss man den Quelltext entsprechend umschreiben, so dass der Vektor `x` durch `aendern(1)` den Wert 99 erhält?
+
+
+**Aufgabe 13**
+
+Gegeben ist:
+```{r, eval=FALSE}
+a <- LETTERS[c(T,F,F)]
+b <- LETTERS[c(F,T,F)] 
+worte <- paste(a,b, sep = "")
+auto <- 1:9
+names(auto) <- worte
+```
+
+a)	Welche Werte haben dann `a`, `b`, `worte` und `auto`?
+
+b)	Welchen Wert hat dann `auto["Vw"]` und welchen Wert `auto["VW"]`? Wieso? 
+
+c)	Was wird durch folgende Kommandos ausgegeben? Wieso?
+
+```{r, eval=FALSE}
+paste(a,b)
+paste(a,b, sep = "")
+paste(a,b, sep = "::")
+paste(a,b, sep="::", collapse = ", ")
+paste(a,b, sep="", collapse = ", ")
+paste(a,b, sep="", collapse = "")
+```
+
+
+**Aufgabe 14**
+
+Gegeben ist folgender Quelltext:
+
+```{r, eval=FALSE}
+nchar("Data Sciences") 
+strn <- paste(LETTERS[1:8], collapse = "")
+strn
+nchar(strn)
+substring(strn,1,1)
+substring(strn,1,2)
+substring(strn,1,4)
+substring(strn,2,4)
+```
+
+Was wird ausgegeben? Siehe `?nchar` und `?substring`.
+
+**Aufgabe 15**
+
+Erzeugen Sie einen Vektor `w`, so dass Folgendes gilt:
+
+```{r}
+a <- letters[1:8]
+aa <- rep(a,8)
+b <- 1:8
+bb <- rep(b,each=8)
+
+namen <- paste(aa,bb, sep="")
+
+w <- 1:64
+names(w) <- namen 
+
+w
+str(w)
+```
+
+
+**Aufgabe 16**
+
+Erzeugen Sie eine Matrix `A`, so dass Folgendes gilt:
+
+```{r}
+A <-  matrix(1, nrow=8, ncol = 8)
+rownames(A) <- letters[1:8] 
+colnames(A) <- as.character(1:8) 
+A
+str(A)
+```
+
+**Aufgabe 17**
+
+Gegeben ist wie im Skript:
+
+```{r}
+A <- matrix(1:6, nrow=2) 
+colnames(A) <- c("a", "b", "c")
+rownames(A) <- c("X", "Y")
+```
+
+Was wird dann durch folgende Aufrufe ausgegeben und wieso?
+
+```{r, eval=FALSE}
+A
+A["X", "b"] 
+A["Y", "c"]
+A["Yc"]
+A["Y", ]
+A[, "a"]
+```
+
+**Aufgabe 18**
+
+Was bewirkt folgende Funktion, wenn `x` und `y` Vektoren gleicher Länge sind?\newline
+ 	 	Beispiel:  `zusammenfuehren(letters, LETTERS)` 
+ 	 	
+```{r, eval=FALSE}
+zusammenfuehren <- function(x,y){
+  A <- matrix(c(x,y), nrow=2, byrow=TRUE)
+  # print(A)
+  as.vector(A)
+}
+```
+
+
+**Aufgabe 19**
+
+Gegeben ist die Matrix `A` durch: `A <- matrix(1:20, nrow = 4)`.
+
+a)	Löschen Sie die dritte Spalte und die zweite Zeile. 
+
+b)	Fügen Sie eine neue Zeile mit den Werten 1,2,3,4 am Ende hinzu.
+
+c)	Bestimmen Sie die Determinante von $A$.
+
+d)	Bestimmen Sie die Transponierte $A^t$ von $A$.
+
+**Aufgabe 20**
+
+Gegeben ist die Matrix `A` durch: `A <- matrix(1:20, nrow = 4)`. Berechnen Sie $A^t \cdot A$ , $A \cdot A^t$  und `A * A`.
+
+**Aufgabe 21**
+
+Erzeugen Sie 1000 unterschiedliche quadratische 20×20-Matrizen mit gleichverteilten zufälligen Werten zwischen -2 und 2.  Speichern Sie die Determinanten der so erzeugten Matrizen in einem Vektor d. Verschaffen Sie sich einen Überblick, wie die Werte von d verteilt sind.
+
+a) Matrizen, derer Wert der Determinante nahe bei 0 liegt, sind bei manchen Berechnungen kritisch. Wie viele solcher kritischen Matrizen gibt es in dem erzeugten Datensatz?
+
+b)	Haben Sie zwei Matrizen erzeugt, deren Determinanten identisch sind?
+
+**Aufgabe 22**
+
+Gegeben ist:
+
+```{r, eval=FALSE}
+A <- matrix(1:32, nrow=4) 
+ 
+aus <- function(x){
+  print(paste(x, collapse = "->"))
+  return(NULL)
+}
+```
+
+a) Was wird dann durch die Funktionsaufrufe `apply(A, 1, aus)` und `apply(A, 2, aus)` ausgegeben?
+
+b)	Was wird dann durch die Funktionsaufrufe `apply(A, 1, summary)` und `apply(A, 2, summary)` ausgegeben?
+
+c)	Setze `b <- c(letters, LETTERS)`. Was wird dann durch die Funktionsaufrufe `apply(A, 1, function(x) {b[x]})` und `apply(A, 2, function(x) {b[x]})` ausgegeben?
+
+**Kurzzusammenfassung**
+
+> -	`order()`
+> -	`table()`
+> -	`nchar()`
+> -	`substring()`
+> -	`par()`
+> -	`paste()`
+
