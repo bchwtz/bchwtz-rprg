@@ -1,4 +1,4 @@
-# (PART\*) Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis
+# (PART\*) Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis {-}
 
 **Aufgabe 1**
 
@@ -9,10 +9,45 @@ Woran erkennt man, dass ein R-Objekt kein Objekt einer S3 Klasse ist?
 
 Implementieren Sie eine S3-Klasse `binseq`, die binäre (nicht-leere) Folgen modelliert. Eine binäre Folge ist eine endliche Folge, die nur aus den Elementen -1 und +1 besteht. Die Klasse soll sich wie folgt verhalten:
 
-```{r}
-# s <- binseq(c(1,1,1,-1,1,-1,-1))
-# str(s)
-# print(s)
-# attributes(s)
+```{r, echo=TRUE}
+new_binseq <- function(x) {
+  n=length(x)
+  structure(
+    x, 
+    n = n,
+    class = "binseq"
+  )
+}
 ```
 
+
+```{r}
+s <- binseq(c(1,1,1,-1,1,-1,-1))
+str(s)
+print(s)
+attributes(s)
+```
+
+```{r}
+binseq(c(1,1,-1.0,1))
+# binseq(c(1,3,-1.0,1))
+#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
+# binseq(double())
+#R> Fehler: n==0 
+# binseq(c("a", "b"))
+#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+#R> Zusätzlich: Warnmeldung:
+#R> In binseq(c("a", "b")) :
+#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben 
+binseq(-1)
+# binseq(c(1,1,1,0))
+#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben 
+binseq(c(T, T, T, F))
+identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
+```
+
+Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham [https://adv-r.hadley.nz/](https://adv-r.hadley.nz/) beschrieben:
+
++ Implementieren Sie die Funktionen `new_binseq()`, `validate_binseq()` und `binseq()`.
+
++ Erzeugen Sie die Methode `print.binseq()` für die generische Funktion `print()`.
