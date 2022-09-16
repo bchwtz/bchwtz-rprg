@@ -63,21 +63,21 @@ attributes(s)
 ```
 
 ```{r}
-binseq(c(1,1,-1.0,1))
-# binseq(c(1,3,-1.0,1))
-#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
-# binseq(double())
-#R> Fehler: n==0 
-# binseq(c("a", "b"))
-#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
-#R> Zusätzlich: Warnmeldung:
-#R> In binseq(c("a", "b")) :
-#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben 
-binseq(-1)
-# binseq(c(1,1,1,0))
-#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben 
-binseq(c(T, T, T, F))
-identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
+# binseq(c(1,1,-1.0,1))
+# # binseq(c(1,3,-1.0,1))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
+# # binseq(double())
+# #R> Fehler: n==0 
+# # binseq(c("a", "b"))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# #R> Zusätzlich: Warnmeldung:
+# #R> In binseq(c("a", "b")) :
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben 
+# binseq(-1)
+# # binseq(c(1,1,1,0))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben 
+# binseq(c(T, T, T, F))
+# identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
 ```
 
 Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham [https://adv-r.hadley.nz/](https://adv-r.hadley.nz/) beschrieben:
@@ -97,3 +97,42 @@ d)	Was gibt die Funktion `methods()` zurück? (Zum Beispiel: `methods(mean)` ode
 
 Eine \textbf{\emph{binäre Folge der Länge n}} ist eine endliche Folge $s = \left(s_1, s_2, ..., s_n\right)$ mit $s_j \in \{-1, +1\}$ für alle $1 \leq j \leq n$. Für $0 < k < n$ ist die \textbf{\emph{aperiodische Autokorrelation}} *(der Ordnung k)* definiert durch:
 
+\begin*{equation}
+C_k(s) = \sum_{j=1}^{n-k} s_j \cdot s_{j+k}
+\end{equation}
+
+In R kann $s$ leicht durch einen Integer-Vektor dargestellt und die aperiodische Autokorrelation bei-spielsweise wie folgt implementiert werden:
+
+```{r}
+autokorrelation1 <- function(s) {
+  n <- length(s)
+  res <- vector(mode = "integer", length = n - 1)
+  for (k in 1:(n-1)) {
+    res[k] <- as.integer(t(s[1:(n - k)]) %*% s[(k + 1):n])
+  }
+  return(res)
+}
+```
+
+a)	Modifizieren Sie die Funktion `autokorrelation1()`, indem Sie die Schleife durch `map_int()` (aus `purrr`) ersetzen. Nennen Sie die modifizierte Version `autokorrelation2()`.
+
+b)	Vergleichen Sie die Laufzeiten der beiden Funktionen für große `n` mithilfe von `system.time()`, beispielsweise durch:
+
+```{r, eval=FALSE}
+randBinSeq <- function(n) {
+  return(sample(c(-1L, 1L), n, replace = TRUE))
+}
+s <- randBinSeq(2E4) 
+autokorrelation1(s)
+autokorrelation2(s)
+```
+
+c)	Erstellen Sie einen weiteren Laufzeittest; erklären und interpretieren Sie die Ergebnisse:
+
+```{r, eval=FALSE}
+require(compiler)
+f <- cmpfun(autokorrelation1)
+system.time(f(s))
+```
+
+**HINWEIS:** Byte Code Compilation und JIT-Compiler
