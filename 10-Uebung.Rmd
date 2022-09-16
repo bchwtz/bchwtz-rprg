@@ -1,4 +1,4 @@
-# (PART\*) Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis {-}
+# Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis {-}
 
 **Aufgabe 1**
 
@@ -52,6 +52,11 @@ binseq <- function(x) {
   }
   validate_binseq(new_binseq(x))
 }
+
+print.binseq <- function(s, ...) {  
+  print(paste("Binäre Folge der Länge",length(s) ))
+  print(as.integer(s))
+}
 ```
 
 
@@ -63,21 +68,23 @@ attributes(s)
 ```
 
 ```{r}
-# binseq(c(1,1,-1.0,1))
-# # binseq(c(1,3,-1.0,1))
-# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
-# # binseq(double())
-# #R> Fehler: n==0 
-# # binseq(c("a", "b"))
-# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
-# #R> Zusätzlich: Warnmeldung:
-# #R> In binseq(c("a", "b")) :
-# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben 
-# binseq(-1)
-# # binseq(c(1,1,1,0))
-# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben 
-# binseq(c(T, T, T, F))
-# identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
+binseq(c(1,1,-1.0,1))
+# binseq(c(1,3,-1.0,1))
+#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
+
+# binseq(double())
+#R> Fehler: n==0
+
+# binseq(c("a", "b"))
+#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+#R> Zusätzlich: Warnmeldung:
+#R> In binseq(c("a", "b")) :
+#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+binseq(-1)
+# binseq(c(1,1,1,0))
+#R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+binseq(c(T, T, T, F))
+identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
 ```
 
 Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham [https://adv-r.hadley.nz/](https://adv-r.hadley.nz/) beschrieben:
@@ -136,3 +143,53 @@ system.time(f(s))
 ```
 
 **HINWEIS:** Byte Code Compilation und JIT-Compiler
+
+**Aufgabe 5**
+
+Erzeugen Sie eine neue generische Funktion `autokor()` und implementieren Sie für die Klasse `binseq` (siehe oben) eine entsprechende Methode, die die aperiodische Autokorrelation zurückgibt. Wann ist dieses Vorgehen sinnvoll?
+
+**Aufgabe 6**
+
+Erklären Sie den folgenden Quelltext:
+
+```{r, eval=FALSE}
+foo1 <- function(x,...) {
+  print(x)
+  args <- list(...)
+  for(a in args){
+    print(a)
+  }
+}
+
+foo1(1)
+foo1(1,2,3,4, mean=6)
+```
+
+```{r, eval=FALSE}
+foo2 <- function(n, ...) {
+  return(rnorm(n, ...))
+}
+
+foo2(4)
+foo2(4,100)
+foo2(4, mean=100)
+foo2(4, mean=100, sd=500)
+foo2(4, meen=100, sd=500)
+```
+
+```{r, eval=FALSE}
+foo3 <- function(x, ...) {
+  return(c(mean(x,...), median(x,...)))
+}
+
+x <- c(1,2,100,4)
+foo3(x)
+x <- c(1,2,NA, 100,4)
+foo3(x)
+foo3(x, na.rm=TRUE)
+foo3(x, rm.na=TRUE)
+```
+
+**HINWEIS**
+
+Das in R wichtige Konzept `environment` haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf [https://adv-r.hadley.nz/environments.html](https://adv-r.hadley.nz/environments.html).
