@@ -4,20 +4,20 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Test | Statistical Programming</title>
-  <meta name="description" content="Chapter 7 Test | Statistical Programming Course Notes" />
+  <title>Übungen - Tidy data, Relational data, Iteration | Statistical Programming</title>
+  <meta name="description" content="Übungen - Tidy data, Relational data, Iteration | Statistical Programming Course Notes" />
   <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Test | Statistical Programming" />
+  <meta property="og:title" content="Übungen - Tidy data, Relational data, Iteration | Statistical Programming" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Chapter 7 Test | Statistical Programming Course Notes" />
+  <meta property="og:description" content="Übungen - Tidy data, Relational data, Iteration | Statistical Programming Course Notes" />
   <meta name="github-repo" content="bchwtz/bchwtz-rprg" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Test | Statistical Programming" />
+  <meta name="twitter:title" content="Übungen - Tidy data, Relational data, Iteration | Statistical Programming" />
   
-  <meta name="twitter:description" content="Chapter 7 Test | Statistical Programming Course Notes" />
+  <meta name="twitter:description" content="Übungen - Tidy data, Relational data, Iteration | Statistical Programming Course Notes" />
   
 
 <meta name="author" content="Benjamin Buchwitz" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="übungen---objektorientierte-programmierung-in-r-laufzeitverhalten-three-dots-ellipsis.html"/>
-<link rel="next" href="system-info.html"/>
+<link rel="prev" href="datenvisualisierung-mit-ggplot2.html"/>
+<link rel="next" href="übungen---objektorientierte-programmierung-in-r-laufzeitverhalten-three-dots-ellipsis.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -275,22 +275,200 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="test" class="section level1 hasAnchor" number="7">
-<h1><span class="header-section-number">Chapter 7</span> Test<a href="test.html#test" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb815"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb815-1"><a href="test.html#cb815-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">1</span>)</span></code></pre></div>
-<pre><code>## [1] 1.554133</code></pre>
+<div id="übungen---tidy-data-relational-data-iteration" class="section level1 unnumbered hasAnchor">
+<h1>Übungen - Tidy data, Relational data, Iteration<a href="übungen---tidy-data-relational-data-iteration.html#übungen---tidy-data-relational-data-iteration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Aufgabe 1</strong></p>
+<p>Gegeben sind jeweils vier gemessene Laufzeiten eines Algorithmus in Abhängigkeit von der Anzahl der Eingabedaten <code>n</code>:</p>
+<div class="sourceCode" id="cb785"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb785-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-1" aria-hidden="true" tabindex="-1"></a>zeiten1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb785-2"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> (<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>)<span class="sc">*</span><span class="fl">1e3</span>L,</span>
+<span id="cb785-3"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess1 =</span> <span class="fu">c</span>(<span class="fl">3.656</span>, <span class="fl">4.672</span>, <span class="fl">5.719</span>, <span class="fl">6.720</span>, <span class="fl">7.641</span>, <span class="fl">8.750</span>),</span>
+<span id="cb785-4"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess2 =</span> <span class="fu">c</span>(<span class="fl">3.781</span>, <span class="fl">4.735</span>, <span class="fl">5.672</span>, <span class="fl">6.782</span>, <span class="fl">7.673</span>, <span class="fl">8.798</span>),</span>
+<span id="cb785-5"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess3 =</span> <span class="fu">c</span>(<span class="fl">3.719</span>, <span class="fl">4.719</span>, <span class="fl">5.672</span>, <span class="fl">6.688</span>, <span class="fl">7.704</span>, <span class="fl">9.048</span>),</span>
+<span id="cb785-6"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess4 =</span> <span class="fu">c</span>(<span class="fl">3.766</span>, <span class="fl">4.688</span>, <span class="fl">5.625</span>, <span class="fl">6.610</span>, <span class="fl">7.750</span>, <span class="fl">8.735</span>)</span>
+<span id="cb785-7"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb785-8"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb785-9"><a href="übungen---tidy-data-relational-data-iteration.html#cb785-9" aria-hidden="true" tabindex="-1"></a>zeiten1</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##       n mess1 mess2 mess3 mess4
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  4000  3.66  3.78  3.72  3.77
+## 2  5000  4.67  4.74  4.72  4.69
+## 3  6000  5.72  5.67  5.67  5.62
+## 4  7000  6.72  6.78  6.69  6.61
+## 5  8000  7.64  7.67  7.70  7.75
+## 6  9000  8.75  8.80  9.05  8.74</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Wandeln Sie <code>zeiten1</code> in <code>zeiten2</code> um (siehe folgende Auflistung).</li>
+</ol>
+<div class="sourceCode" id="cb787"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb787-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb787-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(zeiten2, <span class="at">n=</span><span class="cn">Inf</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 24 × 3
+##        n Nr     zeit
+##    &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1  4000 mess1  3.66
+##  2  5000 mess1  4.67
+##  3  6000 mess1  5.72
+##  4  7000 mess1  6.72
+##  5  8000 mess1  7.64
+##  6  9000 mess1  8.75
+##  7  4000 mess2  3.78
+##  8  5000 mess2  4.74
+##  9  6000 mess2  5.67
+## 10  7000 mess2  6.78
+## 11  8000 mess2  7.67
+## 12  9000 mess2  8.80
+## 13  4000 mess3  3.72
+## 14  5000 mess3  4.72
+## 15  6000 mess3  5.67
+## 16  7000 mess3  6.69
+## 17  8000 mess3  7.70
+## 18  9000 mess3  9.05
+## 19  4000 mess4  3.77
+## 20  5000 mess4  4.69
+## 21  6000 mess4  5.62
+## 22  7000 mess4  6.61
+## 23  8000 mess4  7.75
+## 24  9000 mess4  8.74</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Handelt es sich bei <code>zeiten1</code> bzw. bei <code>zeiten2</code> um „Tidy Data“ im Sinne von Wickham?</p></li>
+<li><p>Mit welcher Anweisung kann aus <code>zeiten2</code> der ursprüngliche Datensatz <code>zeiten1</code> erzeugt werden?</p></li>
+<li><p>Berechnen Sie in Abhängigkeit von <code>n</code> die Mittelwerte der Laufzeiten. Gehen Sie zuerst davon aus, dass lediglich <code>zeiten1</code> gegeben ist, danach gehen Sie davon aus, dass nur <code>zeiten2</code> gegeben ist.</p></li>
+</ol>
+<p><strong>Aufgabe 2</strong></p>
+<p>Ähnlich wie in der vorherigen Aufgabe sind unterschiedliche Laufzeiten eines Algorithmus in Abhängigkeit von <code>n</code> gegeben:</p>
+<div class="sourceCode" id="cb789"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb789-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> (<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>)<span class="sc">*</span><span class="fl">1e3</span>L</span>
+<span id="cb789-2"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-2" aria-hidden="true" tabindex="-1"></a>mess1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.656</span>, <span class="cn">NA</span>, <span class="fl">5.719</span>, <span class="cn">NA</span>, <span class="fl">7.641</span>, <span class="fl">8.750</span>)</span>
+<span id="cb789-3"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-3" aria-hidden="true" tabindex="-1"></a>mess2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.781</span>, <span class="fl">4.735</span>, <span class="cn">NA</span>, <span class="fl">6.782</span>,<span class="cn">NA</span> , <span class="fl">8.798</span>)</span>
+<span id="cb789-4"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-4" aria-hidden="true" tabindex="-1"></a>mess3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fl">4.719</span>, <span class="fl">5.672</span>, <span class="fl">6.688</span>, <span class="fl">7.704</span>, <span class="fl">9.048</span>)</span>
+<span id="cb789-5"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-5" aria-hidden="true" tabindex="-1"></a>mess4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fl">4.688</span>, <span class="fl">5.625</span>, <span class="fl">6.610</span>, <span class="fl">7.750</span>, <span class="cn">NA</span>) </span>
+<span id="cb789-6"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-6" aria-hidden="true" tabindex="-1"></a>mess5 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.766</span>, <span class="fl">4.672</span>,<span class="cn">NA</span>, <span class="fl">6.720</span>, <span class="fl">7.673</span>, <span class="fl">8.735</span>  )</span>
+<span id="cb789-7"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-7" aria-hidden="true" tabindex="-1"></a>mess6 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.719</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>) </span>
+<span id="cb789-8"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-8" aria-hidden="true" tabindex="-1"></a>zeiten1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(n, mess1, mess2, mess3, mess4, mess5, mess6)</span>
+<span id="cb789-9"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb789-10"><a href="übungen---tidy-data-relational-data-iteration.html#cb789-10" aria-hidden="true" tabindex="-1"></a>zeiten1</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 7
+##       n mess1 mess2 mess3 mess4 mess5 mess6
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  4000  3.66  3.78 NA    NA     3.77  3.72
+## 2  5000 NA     4.74  4.72  4.69  4.67 NA   
+## 3  6000  5.72 NA     5.67  5.62 NA    NA   
+## 4  7000 NA     6.78  6.69  6.61  6.72 NA   
+## 5  8000  7.64 NA     7.70  7.75  7.67 NA   
+## 6  9000  8.75  8.80  9.05 NA     8.74 NA</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Wandeln Sie ähnlich wie in der vorherigen Aufgabe <code>zeiten1</code> in <code>zeiten2</code> um (siehe folgende Auflistung).</li>
+</ol>
+<div class="sourceCode" id="cb791"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb791-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb791-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(zeiten2, <span class="at">n=</span><span class="cn">Inf</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 23 × 3
+##        n Nr     zeit
+##    &lt;int&gt; &lt;fct&gt; &lt;dbl&gt;
+##  1  4000 mess1  3.66
+##  2  6000 mess1  5.72
+##  3  8000 mess1  7.64
+##  4  9000 mess1  8.75
+##  5  4000 mess2  3.78
+##  6  5000 mess2  4.74
+##  7  7000 mess2  6.78
+##  8  9000 mess2  8.80
+##  9  5000 mess3  4.72
+## 10  6000 mess3  5.67
+## 11  7000 mess3  6.69
+## 12  8000 mess3  7.70
+## 13  9000 mess3  9.05
+## 14  5000 mess4  4.69
+## 15  6000 mess4  5.62
+## 16  7000 mess4  6.61
+## 17  8000 mess4  7.75
+## 18  4000 mess5  3.77
+## 19  5000 mess5  4.67
+## 20  7000 mess5  6.72
+## 21  8000 mess5  7.67
+## 22  9000 mess5  8.74
+## 23  4000 mess6  3.72</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Handelt es sich bei <code>zeiten1</code> bzw. bei <code>zeiten2</code> um „Tidy Data“ im Sinne von Wickham?</p></li>
+<li><p>Mit welcher Anweisung kann aus <code>zeiten2</code> der ursprüngliche Datensatz <code>zeiten1</code> erzeugt werden?</p></li>
+<li><p>Berechnen Sie in Abhängigkeit von <code>n</code> die Mittelwerte der Laufzeiten ausgehend jeweils von <code>zeiten1</code> und <code>zeiten2</code>.</p></li>
+</ol>
+<p><strong>Aufgabe 3</strong></p>
+<p>Welche Zielflughäfen sind in <code>flights</code> (als <code>dest</code>) aufgelistet, erscheinen aber nicht als FAA-Kennung in <code>airports</code>?</p>
+<p><strong>Aufgabe 4</strong></p>
+<p>Geben Sie diejenigen Datensätze aus <code>airports</code> aus, die als Zielflughafen in <code>flights</code> (als <code>dest</code>) vorkommen.</p>
+<p><strong>Aufgabe 5</strong></p>
+<p>Geben Sie diejenigen Datensätze aus <code>airports</code> aus, die als Abflughafen in <code>flights</code> (als <code>origin</code>) vorkommen.</p>
+<p><strong>Aufgabe 6</strong></p>
+<p>Geben Sie Breitengrad und Längengrad der drei Abflughäfen im Datensatz <code>flights</code> aus. Unterscheiden sich die Koordinatenangaben deutlich und was sind die entsprechenden Mittelwerte?</p>
+<p><strong>Aufgabe 7</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Nennen Sie den Datensatz <code>flights</code> in den Datensatz <code>flights_withCoord</code> um und fügen Sie aus dem Datensatz <code>airports</code> den Breitengrad (Latitude) und den Längengrad (Longitude) des jeweiligen Zielflughafens in den Datensatz <code>flights</code> ein.</p></li>
+<li><p>Wie groß sind die Korrelationen zwischen</p>
+<ul>
+<li>Breitengrad und Fluglänge</li>
+<li>Längengrad und Fluglänge? (Hinweis: <code>use="complete.obs"</code>)</li>
+</ul></li>
+</ol>
+<p>Ändern sich diese Korrelationen, wenn man die Fluglänge in Kilometer statt in Meilen bei der Berechnung der Korrelation zugrunde legt?</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Betrachten Sie nun für jeden Flug die Differenz der Längen- und Breitengrade von Abflug- und Zielflughafen. Bestimmen Sie die Wurzel aus der Summe der Quadrate dieser beiden Differenzen und ermitteln Sie die Korrelation mit der Fluglänge. Was für einen Wert erwarten Sie?</li>
+</ol>
+<p><strong>Aufgabe 8</strong></p>
+<p>Was geben die folgenden Anweisungen aus und wieso?</p>
+<div class="sourceCode" id="cb793"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb793-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb793-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, rnorm)</span>
+<span id="cb793-2"><a href="übungen---tidy-data-relational-data-iteration.html#cb793-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span><span class="fu">rnorm</span>(.))</span>
+<span id="cb793-3"><a href="übungen---tidy-data-relational-data-iteration.html#cb793-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span><span class="fu">rnorm</span>(<span class="dv">4</span>, .))</span></code></pre></div>
+<p><strong>Aufgabe 9</strong></p>
+<p>Berechnen Sie die Mittelwerte aller Spalten in <code>mtcars</code>.</p>
+<p><strong>Aufgabe 10</strong></p>
+<p>Implementieren Sie mithilfe der Funktionen <code>is.numeric()</code> und <code>map_lgl()</code> eine Funktion <code>numerisch()</code>, die als Argument einen Tibble <code>df</code> erwartet und den Tibble zurückgibt, der genau aus allen numerischen Spalten von <code>df</code> besteht. Insbesondere soll dann möglich sein:</p>
+<div class="sourceCode" id="cb794"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb794-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb794-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">numerisch</span>(diamonds), <span class="at">use=</span><span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>##            carat       depth      table      price           x           y
+## carat 1.00000000  0.02822431  0.1816175  0.9215913  0.97509423  0.95172220
+## depth 0.02822431  1.00000000 -0.2957785 -0.0106474 -0.02528925 -0.02934067
+## table 0.18161755 -0.29577852  1.0000000  0.1271339  0.19534428  0.18376015
+## price 0.92159130 -0.01064740  0.1271339  1.0000000  0.88443516  0.86542090
+## x     0.97509423 -0.02528925  0.1953443  0.8844352  1.00000000  0.97470148
+## y     0.95172220 -0.02934067  0.1837601  0.8654209  0.97470148  1.00000000
+## z     0.95338738  0.09492388  0.1509287  0.8612494  0.97077180  0.95200572
+##                z
+## carat 0.95338738
+## depth 0.09492388
+## table 0.15092869
+## price 0.86124944
+## x     0.97077180
+## y     0.95200572
+## z     1.00000000</code></pre>
+<div class="sourceCode" id="cb796"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb796-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb796-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">numerisch</span>(mpg), <span class="at">use=</span><span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>##            displ         year        cyl         cty          hwy
+## displ  1.0000000  0.147842816  0.9302271 -0.79852397 -0.766020021
+## year   0.1478428  1.000000000  0.1222453 -0.03723229  0.002157643
+## cyl    0.9302271  0.122245347  1.0000000 -0.80577141 -0.761912354
+## cty   -0.7985240 -0.037232291 -0.8057714  1.00000000  0.955915914
+## hwy   -0.7660200  0.002157643 -0.7619124  0.95591591  1.000000000</code></pre>
+<p><strong>Aufgabe 11</strong></p>
+<p>Erklären Sie folgenden Quelltext:</p>
+<div class="sourceCode" id="cb798"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb798-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb798-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> diamonds <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">vol=</span>x<span class="sc">*</span>y<span class="sc">*</span>z)</span>
+<span id="cb798-2"><a href="übungen---tidy-data-relational-data-iteration.html#cb798-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb798-3"><a href="übungen---tidy-data-relational-data-iteration.html#cb798-3" aria-hidden="true" tabindex="-1"></a>lmd <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> vol, <span class="at">data =</span> d)</span>
+<span id="cb798-4"><a href="übungen---tidy-data-relational-data-iteration.html#cb798-4" aria-hidden="true" tabindex="-1"></a>sum_lmd <span class="ot">&lt;-</span> <span class="fu">summary</span>(lmd)</span>
+<span id="cb798-5"><a href="übungen---tidy-data-relational-data-iteration.html#cb798-5" aria-hidden="true" tabindex="-1"></a>sum_lmd<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.8142979</code></pre>
+<div class="sourceCode" id="cb800"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb800-1"><a href="übungen---tidy-data-relational-data-iteration.html#cb800-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> </span>
+<span id="cb800-2"><a href="übungen---tidy-data-relational-data-iteration.html#cb800-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">split</span>(.<span class="sc">$</span>cut) <span class="sc">%&gt;%</span> </span>
+<span id="cb800-3"><a href="übungen---tidy-data-relational-data-iteration.html#cb800-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(<span class="sc">~</span><span class="fu">lm</span>(price <span class="sc">~</span> vol, <span class="at">data =</span> .))</span>
+<span id="cb800-4"><a href="übungen---tidy-data-relational-data-iteration.html#cb800-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb800-5"><a href="übungen---tidy-data-relational-data-iteration.html#cb800-5" aria-hidden="true" tabindex="-1"></a>models <span class="sc">%&gt;%</span> </span>
+<span id="cb800-6"><a href="übungen---tidy-data-relational-data-iteration.html#cb800-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">map</span>(summary) <span class="sc">%&gt;%</span> </span>
+<span id="cb800-7"><a href="übungen---tidy-data-relational-data-iteration.html#cb800-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">map_dbl</span>(<span class="sc">~</span>.<span class="sc">$</span>r.squared)</span></code></pre></div>
+<pre><code>##      Fair      Good Very Good   Premium     Ideal 
+## 0.7391252 0.8437127 0.8523177 0.7516382 0.8616549</code></pre>
 
 </div>
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="übungen---objektorientierte-programmierung-in-r-laufzeitverhalten-three-dots-ellipsis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="system-info.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="datenvisualisierung-mit-ggplot2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="übungen---objektorientierte-programmierung-in-r-laufzeitverhalten-three-dots-ellipsis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -321,7 +499,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/99-Session2.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/09-Uebung.Rmd",
 "text": "Edit"
 },
 "history": {
