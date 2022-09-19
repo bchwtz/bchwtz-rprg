@@ -611,11 +611,10 @@ str(df3)
 > - `read.table()`, `read.csv()`, `read.csv2()` 
 
 
-## Übungen {-}
+## Übungen - Teil 1 {-}
 
-### Teil 1 {-}
 
-**Aufgabe 1** 
+### Aufgabe 1 {-} 
 
 
 Betrachten Sie folgenden Quelltext:
@@ -637,11 +636,11 @@ e)	Welche Elemente hat `h`?
 f)	Welchen Datentyp hat `unlist(h)`? 
 
 
-**Aufgabe 2**
+### Aufgabe 2 {-}
 
 Gegeben ist ein Objekt `x` in R. Ist dann `is.vector(as.vector(x))` stets wahr?
 
-**Aufgabe 3**
+### Aufgabe 3 {-}
 
 Gegegeben ist:
 
@@ -653,12 +652,12 @@ l1 <- list(v,T, w[-1])
 
 Mit welcher Anweisung können Sie innerhalb der Liste `l1` den Buchstaben *C* (der durch `w` einfügt wurde) durch den Buchstaben *U* ersetzen?
 
-**Aufgabe 4**
+### Aufgabe 4 {-}
 
 Gegeben ist eine Liste `l1` der Form:
 
 ```{r}
-l1 <- list("1"=4, "3"=8, "5"=12, "7"=16)
+l1 <- list("1" = 4, "3" = 8, "5" = 12, "7" = 16)
 ```
 
 Wie können Sie mithilfe von `sum()`
@@ -669,11 +668,11 @@ b)	die Summe der Namen der Listenelemente (also 1+3+5+7) bestimmen?
 
 **Hinweis:** `unlist()`
 
-**Aufgabe 5**
+### Aufgabe 5 {-}
 
 Gegeben ist eine Liste `l1` mit mehr als einem Element. Was gibt dann `length(l1[2])` zurück?
 
-**Aufgabe 6**
+### Aufgabe 6 {-}
 
 Gegeben ist eine Liste `l1`:
 
@@ -687,14 +686,14 @@ b)	Bestimmen Sie die Länge des zweiten und des dritten Listenelements.
 
 c)	Wie können Sie mit einem Aufruf die Länge aller Listenelemente als Vektor erhalten?
 
-**Aufgabe 7**
+### Aufgabe 7 {-}
 
 Ändern Sie die Liste `l1` in der vorherigen Aufgabe so, dass `str(l1)` Folgendes zurückgibt:
 
 ```{r, echo=FALSE}
 l1 <- list(10:1, "Data Science",  c("Data Science", "FH SWF"), c(T,T,F))
 #str(l1)
-#names(l1) <- LETTERS[1:length(l1)]
+names(l1) <- LETTERS[1:length(l1)]
 ```
 
 ```{r}
@@ -702,14 +701,14 @@ str(l1)
 ```
 
 
-**Aufgabe 8**
+### Aufgabe 8 {-}
 
 Gegeben ist:
 
 ```{r}
 set.seed(42)
-data <- sample(LETTERS[1:5], 100, replace=TRUE)
-f1 <- factor(data, levels= c( "A", "B","C"), ordered = TRUE)
+data <- sample(LETTERS[1:5], 100, replace = TRUE)
+f1 <- factor(data, levels = c( "A", "B","C"), ordered = TRUE)
 f1
 ```
 
@@ -727,7 +726,7 @@ f1
 
 b)	Ersetzen Sie in `f1` die Werte `A` und `C` durch `Y`.
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 levels(f1)
 levels(f1)[1] <- "Y"
 levels(f1)[3] <- "Y"
@@ -745,24 +744,25 @@ f1 <- f1[!is.na(f1)]
 f1
 ```
 
-**Aufgabe 9**
+### Aufgabe 9 {-}
 
 Machen Sie sich mit den Funktionen `rev()` und `unique()` vertraut, die im einfachsten Fall auf einen Vektor angewandt werden.
 
-a) Ist `identical(rev(1:100),100:1)` stets wahr?
+a) Ist `identical(rev(1:100), 100:1)` stets wahr?
 
-b)	Gegeben ist: `d <- sample(1:10, 50, replace = TRUE)`.
-Ist `identical(sort(unique(d)), 1:10)` stets wahr?
+b)	Gegeben ist: `d <- sample(1:10, 50, replace = TRUE)`. 
 
-    Bestimmen Sie per Simulation die ungefähre Wahrscheinlichkeit, dass 
+    + Ist `identical(sort(unique(d)), 1:10)` stets wahr?
+
+    + Bestimmen Sie per Simulation die ungefähre Wahrscheinlichkeit, dass 
 `identical(sort(unique(d)), 1:10)` falsch ist.
 
-    Wie ändert sich diese so ermittelte Wahrscheinlichkeit, wenn man statt den Wert 50, die Werte 10, 20, 30, ..., 100 zugrunde legt?
+    + Wie ändert sich diese so ermittelte Wahrscheinlichkeit, wenn man statt den Wert 50, die Werte 10, 20, 30, ..., 100 zugrunde legt?
 
 c) Gegeben ist `f1` wie am Beginn der vorherigen Aufgabe. Bestimmen Sie
 `rev(f1)` und `unique(f1)`.
 
-**Aufgabe 10**
+### Aufgabe 10 {-}
 
 Wir haben im Abschnitt „Data Frame erzeugen“ gesehen, dass die Namen der Argumente automatisch übernommen werden, wenn kein Name explizit angegeben wird. Beispiel:
 
@@ -774,26 +774,26 @@ df <- data.frame(nr, bezeichnung)
 
 Gilt das auch für Listen?
 
-### Teil 2 {-}
+## Übungen - Teil 2 {-}
 
 Für die Aufgaben im Teil 2 betrachten wir ein Data Frame `student`. Erzeugt werden kann `student` durch:
 
-```{r}
+```{r, eval=TRUE}
 set.seed(1)
 anzahl <-  100
 Punkte <-  rnorm(anzahl, mean = 65, sd = 20)
 Punkte <- as.integer(Punkte)
 MatNr <- sample(1E6:1E7-1, anzahl)
-names(MatNr) <- sample(c("ET","MB"), anzahl, replace=TRUE)
+names(MatNr) <- sample(c("ET","MB"), anzahl, replace = TRUE)
 Bestanden <- F
 student <- data.frame(MatNr, Punkte, Bestanden)
 student$Stdgang <- names(MatNr)
-rm(Punkte, MatNr,Bestanden,anzahl)
+rm(Punkte, MatNr, Bestanden, anzahl)
 ```
 
 Die Ausgabe von `head(student)` lautet:
 
-```{r}
+```{r, eval=TRUE}
 head(student)
 ```
 
@@ -803,33 +803,33 @@ a)	Aus wie vielen Variablen und aus wie vielen Observationen besteht `student`?
 
 b)	Die Funktionen `head(x)` und `tail(x)` liefern den ersten und letzten Teil von `x` zurück. Was wird ausgegeben durch: 
 
-```{r, eval=FALSE}
-head(student, n=10)
-head(student, n=-95)
-head(student, n=-93)
-tail(student) 
-```
+    ```{r, eval=FALSE}
+    head(student, n = 10)
+    head(student, n = -95)
+    head(student, n = -93)
+    tail(student) 
+    ```
 
 c) Was wird ausgegeben durch: 
 
-```{r, eval=FALSE}
-student[1]
-student[2] 
-```
+    ```{r, eval=FALSE}
+    student[1]
+    student[2] 
+    ```
 
-?
+    ?
 
 d) Geben Sie die erste Zeile von `student` aus.
 
 e) Um die Klausur zu bestehen, reichen 50 Punkte. Ändern Sie `student` entsprechend!
 
-```{r, echo=FALSE, eval=TRUE}
-student$Bestanden <- student$Punkte >= 50
-```
+    ```{r, echo=FALSE, eval=TRUE}
+    student$Bestanden <- student$Punkte >= 50
+    ```
 
-```{r}
-head(student)
-```
+    ```{r}
+    head(student)
+    ```
 
 
 **Aufgabe 12**
