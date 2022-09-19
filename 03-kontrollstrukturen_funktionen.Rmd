@@ -18,19 +18,19 @@ Variablen sind ein grundlegendes Konzept beider Sprachen; aber es gibt große un
 
 Hier und im Folgenden werden wir den Begriff *„Objekt“* benutzen. Damit meinen wir nicht ein Objekt im objektorientierten Sinn (also eine Instanz einer Klasse), sondern wollen damit einen Speicherbereich in der Ausführungsumgebung bezeichnen, der neben eventuell zusätzlichen Metadaten Bitfolgen enthält, die als Werte eines bestimmten Datentyps interpretiert werden können.
 
-in C:
+In C:
 
 ```{r, echo=TRUE, eval=FALSE}
 int n = 5;
 ```
 
-Es wird ein Objekt im Speicher angelegt, das groß genug ist, einen `int`-Wert zu repräsentieren, aber nicht größer. Auf einem üblichen PC ist das so erzeugte Objekte genau 4 Byte groß und der entsprechende Speicherbereich enthält die Dualdarstellung von 5 (also 29 Nullen gefolgt von 101). Der Variablenname n ist nun der Bezeichner für dieses Objekt (oder Speicherbereich); man kann auch sagen: das so erzeugte Objekt hat den Namen `n`.
+Es wird ein Objekt im Speicher angelegt, das groß genug ist, einen `int`-Wert zu repräsentieren, aber nicht größer. Auf einem üblichen PC ist das so erzeugte Objekte genau 4 Byte groß und der entsprechende Speicherbereich enthält die Dualdarstellung von 5 (also 29 Nullen gefolgt von 101). Der Variablenname `n` ist nun der Bezeichner für dieses Objekt (oder Speicherbereich); man kann auch sagen: das so erzeugte Objekt hat den Namen `n`.
 
 Solange `n` gültig (und sichtbar) ist, ist `n` immer ein Bezeichner für einen `int`-Wert, dessen Binärdarstellung stets im selben Speicherbereich hinterlegt ist. Also bezieht sich n immer auf denselben Speicherbereich.
 
-Der zugehörige Wert von `n` kann sich ändern, z. B. durch eine Zuweisung oder eine Anweisung wie `n++`. Nicht ändern kann sich aber der Datentyp (in unserem Fall `int`). Bereits beim Kompilieren wird `n` an den Datentyp `int` gebunden. Man spricht in diesem Zusammenhang von *frühen Binden (early binding)* im Gegensatz zum *späten Binden (late binding)*, die wir in R vorfinden.
+Der zugehörige Wert von `n` kann sich ändern, z. B. durch eine Zuweisung oder eine Anweisung wie `n++`. Nicht ändern kann sich aber der Datentyp (in unserem Fall `int`). Bereits beim Kompilieren wird `n` an den Datentyp `int` gebunden. Man spricht in diesem Zusammenhang vom *frühen Binden (early binding)* im Gegensatz zum *späten Binden (late binding)*, die wir in R vorfinden.
 
-in R:
+In R:
 
 ```{r, echo=TRUE, eval=TRUE}
 n <- 5
@@ -46,7 +46,7 @@ object.size(n)
 
 Die Funktion `object.size()` gibt die Speichergröße des übergebenen Objekts zurück; dies ist allerdings nur ein geschätzter Wert und kann ungenau sein, insbesondere wenn Teile der Daten mit anderen Objekten geteilt werden.
 
-Bemerkung
+**Bemerkung:**
 
 + Die Punktnotation `object.size()` ist für C++-Programmierer in diesem Zusammenhang recht  ungewohnt. `size()` ist hier keine Methode des Objekts (oder der Klasse bzw. Struktur) `object`, sondern bezeichnet eine Funktion und keine Methode. Viele C++-Programmierer würden die Funktion stattdessen `objectSize()` oder `object_size()` nennen.
 
@@ -65,11 +65,11 @@ is.vector(n)
 length(n)
 ```
 
-Die Funktion `length()` gibt die Länge, also die Anzahl der Elemente im Vektor, zurück, während die Funktion `typeof()` den Typ zurückgibt. Die Funktion  `is.vector()` gibt den booleschen Wert TRUE zurück, falls es sich um einen „echten“ Vektor handelt (dazu später mehr, oder siehe `?is.vector`); in allen anderen Fällen wird `FALSE`  zurückgegeben. 
+Die Funktion `length()` gibt die Länge, also die Anzahl der Elemente im Vektor, zurück, während die Funktion `typeof()` den Typ zurückgibt. Die Funktion  `is.vector()` gibt den booleschen Wert `TRUE` zurück, falls es sich um einen „echten“ Vektor handelt (dazu später mehr, oder siehe `?is.vector`); in allen anderen Fällen wird `FALSE`  zurückgegeben (`TRUE` und `FALSE` können in R auch durch `T` und `F` abgekürzt werden). 
 
-R kennt also keine skalaren Werte. Durch die Zuweisung `n <- 5` wird n nicht an den skalaren Wert 5 gebunden, sondern an einen Vektor der Länge 1! Wenn wir im Folgenden trotzdem von skalaren Werten sprechen, dann meinen wir implizit Vektoren der Länge 1.
+R kennt also keine skalaren Werte. Durch die Zuweisung `n <- 5` wird `n` nicht an den skalaren Wert 5 gebunden, sondern an einen Vektor der Länge 1! Wenn wir im Folgenden trotzdem von skalaren Werten sprechen, dann meinen wir implizit Vektoren der Länge 1.
 
-Fragen
+**Fragen:**
 
 + Welche Funktion gibt es in R, deren Funktionsnamen mit „is.“ beginnen und was bewirken sie?
 
@@ -117,13 +117,15 @@ b
 ```
 
 Erst durch die Änderung `b[2] <- 0`
-+	erzeugt R eine Kopie des Objekts, das an den Bezeichner `a` gebunden ist
 
-+ ändert sich die Kopie entsprechend
++	erzeugt R eine Kopie des Objekts, das an den Bezeichner `a` gebunden ist,
+
++ ändert sich die Kopie entsprechend und
 
 +	wird der Name `b` an das neue Objekt gebunden.
 
-Dieses Verhalten wird auch als *copy-on-modify* bezeichnet.\newline
+Dieses Verhalten wird auch als *copy-on-modify* bezeichnet.
+
 Ein Objekt kann mithilfe der Funktion `rm()` auch wieder gelöscht werden:
 
 ```{r, echo=TRUE, eval=FALSE}
@@ -137,7 +139,12 @@ Die Anweisung `rm(list=ls())` löscht ohne Warnung alle Objekte! (Mit `ls()` erh
 
 Im Gegensatz zu C und C++ gibt es in R einen *Garbage Collector*, kurz auch mit GC bezeichnet. Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z.B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund, ohne dass der GC explizit aufgerufen werden muss (siehe auch `?gc`). Man kann den GC explizit mit `gc()` aufrufen (siehe `?gc`), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe `used`) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe `gc trigger`).
 
-```{r, echo=FALSE, eval=TRUE}
+```{r}
+gc()
+```
+
+
+```{r, echo=FALSE, eval=FALSE}
 df <- data.frame(Ncells = c("", 438523, 23.5, 938047, 50.1, 621888, 33.3),
                  Vcells = c("", 100729739, 768.6, 147642767, 1126.5, 100729820, 768.6))
 knitr::kable(t(df), booktabs = T, col.names = c("", "used", "(Mb)", "gc (trigger)", "(Mb)", "max used", "(Mb)"), caption = "Speicherbedarf in R.")%>%
@@ -159,7 +166,7 @@ knitr::kable(t(df), booktabs = T, col.names = c("", "used", "(Mb)", "gc (trigger
 > -	`is.vector()`
 > -	R nutzt *copy-on-modify*
 > -	Garbage Collection
-> - `1:1000` ist ein Vektor vom Typ integer, der die ganzen Zahlen von 1 bis 1000 umfasst.
+> - `1:1000` ist ein Vektor vom Typ `integer`, der die ganzen Zahlen von 1 bis 1000 umfasst.
 > -	*late binding*: Variablen werden erst während der Laufzeit an ein Objekt gebunden  
 
 ## Funktionen
@@ -167,14 +174,15 @@ knitr::kable(t(df), booktabs = T, col.names = c("", "used", "(Mb)", "gc (trigger
 Neben Objekten sind Funktionen ein zentraler Bestandteil von R. Mit Funktionen können Anweisungen zu einer Einheit zusammengefasst werden. Dadurch kann Quelltext strukturiert werden und die durch die Funktion beschriebene Funktionalität mehrfach in einem Programm verwandt werden. Funktion sind in R sogenannte *„first-class-objects“*; d.h. es sind in der Tat Objekte, die fast immer wie andere „Datenobjekte“ (Vektoren, Tabellen, Listen, …) benutzt werden können.
 
 Im Folgenden gehen wir davon aus, dass Sie mit dem Konzept einer Funktion vertraut sind, so wie es zum Beispiel in C, C++ oder Java verwandt wird.   \newline
-Ähnlich wie in anderen Programmiersprachen wird in R eine Funktion durch eine Anweisung der folgenden Form definiert:\newline
+Ähnlich wie in anderen Programmiersprachen wird in R eine Funktion durch eine Anweisung der folgenden Form definiert:
+
 `function(arg_1, arg_2, ...) epxression`
 
-Hierbei bezeichnet `arg_1, arg_2, ...` eine Liste der formalen Funktionsparameter und `expression` den *Funktionskörper*, der in der Regel aus einem durch geschweifte Klammern begrenzten Block von Anweisungen besteht. Insgesamt wird hierdurch ein Objekt erzeugt (eine sogenannte *anonyme Funktion*), das aber an keinem Namen gebunden ist. Ein Name wird aber gebraucht, wenn man die Funktion aufrufen will! Daher wird in der Regel eine Funktion in einer Zuweisung definiert, die dann folgende Form hat:\newline
+Hierbei bezeichnet `arg_1, arg_2, ...` eine Liste der *formalen Funktionsparameter* und `expression` den *Funktionskörper*, der in der Regel aus einem durch geschweifte Klammern begrenzten Block von Anweisungen besteht. Insgesamt wird hierdurch ein Objekt erzeugt (eine sogenannte *anonyme Funktion*), das aber an keinem Namen gebunden ist. Ein Name wird aber gebraucht, wenn man die Funktion aufrufen will! Daher wird in der Regel eine Funktion in einer Zuweisung definiert, die dann folgende Form hat:\newline
 `name <-function(arg_1, arg_2, ...) expression`
 
-Solange die Variable `name` an das Funktionsobjekt gebunden ist, kann die Funktion dann durch `name (arg_1, arg_2, ...)` aufgerufen werden.\newline
-Ein einfaches Beispiel mit drei formalen Funktionsparametern x, y und z soll dies illustrieren:
+Solange die Variable `name` an das Funktionsobjekt gebunden ist, kann die Funktion dann durch `name(arg_1, arg_2, ...)` aufgerufen werden.\newline
+Ein einfaches Beispiel mit drei formalen Funktionsparametern `x`, `y` und `z` soll dies illustrieren:
 
 ```{r, echo=TRUE, eval=TRUE}
 f1 <- function(x, y, z){
@@ -249,7 +257,7 @@ c <- 0
 f1(a, b, c)
 ```
 
-Zur Kontrolle sollen für jeden der beiden Funktionsaufrufe noch einmal das jeweils letzte Ergebnis explizit berechnet werden: 
+Zur Kontrolle soll für jeden der beiden Funktionsaufrufe noch einmal das jeweils letzte Ergebnis explizit berechnet werden: 
 ```{r, echo=TRUE, eval=TRUE}
 f1(10, 10, 2)
 f1(10, 2, 0)
@@ -265,7 +273,7 @@ atan2
 
 **Kurzzusammenfassung**
 
-> - `name <-function(arg_1, arg_2, ...) expression`
+> - `name <- function(arg_1, arg_2, ...) expression`
 > - Formale Funktionsparameter
 > -	Funktionskörper
 > - Lokale Variablen
@@ -327,6 +335,7 @@ w
 ```
 
 Die Funktion `f` arbeitet mit einer Kopie des übergebenen Objekts `x`. Lediglich diese Kopie wird durch die Anweisung `x[1] <- 42` verändert; das ursprüngliche Objekt bleibt hingegen unverändert. 
+
 Allerdings wird zumindest in neueren R-Versionen Call-by-value in Verbindung mit der copy-on-modify Semantik benutzt: Nur wenn die aufgerufene Funktion ein übergebenes Argument verändern will, wird zuvor eine Kopie dieses Arguments erstellt und die Kopie entsprechend verändert. Im folgenden Beispiel sollte also beim Funktionsaufruf keine Kopie erstellt werden, dies ist natürlich wichtig bei großen Datenmengen:
 ```{r, echo=TRUE, eval=TRUE}
 g <- function(x){
@@ -339,7 +348,7 @@ g <- function(x){
 
 ### Keine Zeiger und kein Call-by-reference
 
-In R sind Variablennamen an Objekte gebunden; Variablennamen „verweisen“ also auf Objekte, ähnlich wie Referenzen oder Zeiger. In R gibt es jedoch keine expliziten Zeiger oder Referenzen. Ist es in R möglich, eine Funktion zu schreiben, die die übergebenen Argumente direkt verändert? In C kann man dies mithilfe von Zeigern lösen; Referenzen sind in C++ eine zusätzliche Möglichkeit, dies mit wenig Aufwand und sehr effektiv zu lösen. In R ist dies hingegen, mit einfachen Mitteln nicht möglich. Um dies zu verdeutlichen, versuchen wir eine Funktion zu schreiben, die die ersten beiden Elemente eines Vektors vertauschen soll. Ein erster nicht erfolgreicher Versuch könnte so aussehen:
+In R sind Variablennamen an Objekte gebunden; Variablennamen „verweisen“ also auf Objekte, ähnlich wie Referenzen oder Zeiger. In R gibt es jedoch keine expliziten Zeiger oder Referenzen. Ist es in R möglich, eine Funktion zu schreiben, die die übergebenen Argumente direkt verändert? In C kann man dies mithilfe von Zeigern lösen; Referenzen sind in C++ eine zusätzliche Möglichkeit, dies mit wenig Aufwand und sehr effektiv zu lösen. In R ist dies hingegen mit einfachen Mitteln nicht möglich. Um dies zu verdeutlichen, versuchen wir eine Funktion zu schreiben, die die ersten beiden Elemente eines Vektors vertauschen soll. Ein erster nicht erfolgreicher Versuch könnte so aussehen:
 
 ```{r, echo=TRUE, eval=TRUE}
 vertausche1 <- function(x){
@@ -353,7 +362,7 @@ x
 ```
 
 Da R bei Funktionsaufrufen Call-by-value benutzt, kann dies nicht funktionieren: es wird eine Kopie von `z` erstellt und die beiden ersten Elemente dieser Kopie vertauscht! 
-Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider beinhaltet sie unnötiges Kopieren; insbesondere wenn x extrem viele Daten enthält, sollte eigentlich unnötiges Kopieren vermieden werden:
+Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider beinhaltet sie unnötiges Kopieren; insbesondere wenn `x` extrem viele Daten enthält, sollte eigentlich unnötiges Kopieren vermieden werden:
 
 ```{r, echo=TRUE, eval=TRUE}
 vertausche2 <- function(x){
@@ -366,11 +375,11 @@ z <- vertausche2(z)
 z
 ```
 
-In der Funktion `vertausche2()` wird eine Kopie von z erstellt, die beiden ersten Elemente vertauscht und die Variable z an die von der Funktion modifizierte Kopie gebunden. 
+In der Funktion `vertausche2()` wird eine Kopie von `z` erstellt, die beiden ersten Elemente vertauscht und die Variable `z` an die von der Funktion modifizierte Kopie gebunden. 
 
 ### Operator versus Funktionsaufruf
 
-Abgesehen von der Syntax gibt es keinen Unterschied zwischen einem Operatorausdruck und einem entsprechenden Funktionsaufruf; das Operatorsymbol dient dann als Funktionsname.  So kann unser erstes Beispiel  `6*7` auch folgendermaßen geschrieben werden:
+Abgesehen von der Syntax gibt es keinen Unterschied zwischen einem Operatorausdruck und einem entsprechenden Funktionsaufruf; das Operatorsymbol dient dann als Funktionsname (s. [R-lang], S. 11).  So kann unser erstes Beispiel  `6*7` auch folgendermaßen geschrieben werden:
 ```{r, echo=TRUE, eval=TRUE}
 '*' (6, 7)
 ```
@@ -389,7 +398,7 @@ Da `*` kein erlaubter Namen ist (`non-syntatic`, siehe Abschnitt 2.2), muss es a
 
 Einzelne Anweisungen werden in R üblicherweise durch einen Zeilenumbruch getrennt; sie können aber auch durch ein Semikolon abgegrenzt werden. Wie in C auch, können Anweisungen zu einem *Block* (auch *Blockanweisung* genannt) mithilfe geschweifter Klammern gruppiert werden. Syntaktisch ist ein Block äquivalent zu einer einzelnen Anweisung.
 
-Da die elementaren Kontrollstrukturen in R sehr ähnlich zu den Kontrollstrukturen in Sprachen wie C, C++, C#, Java, JavaScript, … sind, werden wir sie an dieser Stelle nicht detailliert behandeln (siehe auch `?Control` oder `?while`). Einen großen Unterschied gibt es allerdings: in R werden Kontrollstrukturen intern durch Funktionen realisiert! 
+Da die elementaren Kontrollstrukturen in R sehr ähnlich zu den Kontrollstrukturen in Sprachen wie C, C++, C#, Java, JavaScript, … sind, werden wir sie an dieser Stelle nicht detailliert behandeln (siehe auch `?Control` oder `?while`). Einen großen Unterschied gibt es allerdings: In R werden Kontrollstrukturen intern durch Funktionen realisiert! 
 
 Schleifen haben in R den Ruf, recht langsam zu sein und viele Autoren empfehlen deshalb, sie wenn möglich zu vermeiden. Wie wir gesehen haben (siehe Abschnitt 2.3), können viele Funktionen und Operatoren direkt auf Vektoren angewandt werden, so dass in diesem Fall keine expliziten Schleifen notwendig sind:
 ```{r, echo=TRUE, eval=TRUE}
@@ -401,13 +410,17 @@ Des Weiteren gibt es eine Familie von Funktionen, bestehend aus `apply()`, `lapp
 
 ### Verzweigung: `if-else`
 
-Wie in C lautet die formale Syntax:\newline
-`if( statement1 )`\newline
-`statement2`\newline
-`else`\newline
+Wie in C lautet die formale Syntax:
+
+`if( statement1 )`
+
+`statement2`
+
+`else`
+
 `statement3`
 
-Wie in C ist der `else`-Teil optional. Falls `statement2` oder `statement3` aus mehreren Anweisungen besteht, müssen geschweifte Klammern benutzt werden! Auch ist ein Zeilenumbruch zwischen ‚}‘ und `else` nicht erlaubt. 
+Wie in C ist der `else`-Teil optional. Falls `statement2` oder `statement3` aus mehreren Anweisungen bestehen, müssen geschweifte Klammern benutzt werden! Auch ist ein Zeilenumbruch zwischen `‚}‘` und `else` nicht erlaubt. 
 
 `if-else` gibt den zuletzt berechneten Wert zurück. Dies wird oft in Zuweisungen ausgenutzt. Statt:
 
@@ -426,14 +439,22 @@ z <- if (x %% 2 == 0) x else x + 1
 
 Wie in C bezeichnet `==` den Vergleichsoperator! Der Operator `=` entspricht hingegen einer Zuweisung (siehe Abschnitt 2.2). Und zur Erinnerung: `%%` bezeichnet den Modulo-Operator (siehe Abschnitt 2.3)
 
-Genau wie in C sind auch „else-if“-Ketten erlaubt:\newline
-`if( statement1 ){`\newline
-`statement2`\newline
-`} else if ( statement 3 ) {`\newline
-`statement4`\newline
-`} else if ( statement5 ) {`\newline
-`statement6`\newline
-`} else`\newline
+Genau wie in C sind auch „else-if“-Ketten erlaubt:
+
+`if( statement1 ){`
+
+`statement2`
+
+`} else if ( statement 3 ) {`
+
+`statement4`
+
+`} else if ( statement5 ) {`
+
+`statement6`
+
+`} else`
+
 `statement8`
 
 ### Verzweigung: `ifelse`
@@ -466,8 +487,10 @@ z
 ## Error-Meldung? (Im Skript steht Warnmeldung)
 ```
 
-Für diesen Zweck gibt es die Funktion `ifelse()`:\newline
+Für diesen Zweck gibt es die Funktion `ifelse()`:
+
 `ifelse(test, wahr, falsch)`
+
 Zurückgegeben wird ein Objekt der gleichen Größe und Form wie `test`, der abhängig vom Wahrheitswert von `test` elementweise gefüllt wird von den entsprechenden Elementen aus `wahr` bzw. `falsch`.
 
 ```{r, echo=TRUE, eval=TRUE}
@@ -486,7 +509,8 @@ z
 
 ### Schleife: `while` und `repeat`
 
-Auch das Grundgerüst einer `while`-Schleife ist wie in C:\newline
+Auch das Grundgerüst einer `while`-Schleife ist wie in C:
+
 `while ( statement1 ) statement2`
 
 Ebenso wie in C wird `break` verwendet, um eine Schleife vorzeitig zu beenden. Statt `continue` wie in C wird in R allerdings `next` verwendet, um innerhalb der Schleife sofort (und ohne die folgenden Anweisungen im Schleifenrumpf auszuführen) zur nächsten Schleifenbewertung zu springen.\newline
@@ -494,8 +518,10 @@ Weiterhin entspricht `repeat` im Wesentlichen `while(TRUE)`.
 
 ### Schleife: `for`
 
-Die Syntax für die `for`-Schleife (ähnlich wie in Python) lautet:\newline
-`for ( name in vector )`\newline
+Die Syntax für die `for`-Schleife (ähnlich wie in Python) lautet:
+
+`for ( name in vector )`
+
 `statement1`
 
 Hierzu ein kleines Beispiel:
@@ -504,9 +530,12 @@ x <- 11:15
 for(idx in x) print(idx ^ 2)
 ```
 
+`break` und `next` werden ähnlich wie in einer `while`-Schleife (siehe oben) behandelt.
+
 ### Mehrfachzweigung: `switch`
 
-In R gibt es auch eine `switch`-Anweisung für eine Mehrfachverzweigung, deren Syntax sich aber nicht an C anlehnt. Die Syntax ist unterschiedlich zu C und zeigt aber auch deutlich, dass es sich intern um einen Funktionsaufruf handelt:\newline
+In R gibt es auch eine `switch`-Anweisung für eine Mehrfachverzweigung, deren Syntax sich aber nicht an C anlehnt. Die Syntax ist unterschiedlich zu C und zeigt aber auch deutlich, dass es sich intern um einen Funktionsaufruf handelt:
+
 `switch(statement, list)`
 
 Zuerst wird `statement` ausgewertet und der erhaltene Wert als Index der Liste `list` interpretiert. Ist er kein gültiger Indexwert, dann wird `NULL` zurückgegeben. 
