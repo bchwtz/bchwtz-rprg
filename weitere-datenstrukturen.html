@@ -1330,27 +1330,20 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <span id="cb814-3"><a href="weitere-datenstrukturen.html#cb814-3" aria-hidden="true" tabindex="-1"></a>Punkte <span class="ot">&lt;-</span>  <span class="fu">rnorm</span>(anzahl, <span class="at">mean =</span> <span class="dv">65</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
 <span id="cb814-4"><a href="weitere-datenstrukturen.html#cb814-4" aria-hidden="true" tabindex="-1"></a>Punkte <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(Punkte)</span>
 <span id="cb814-5"><a href="weitere-datenstrukturen.html#cb814-5" aria-hidden="true" tabindex="-1"></a>MatNr <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fl">1E6</span><span class="sc">:</span><span class="fl">1E7</span><span class="dv">-1</span>, anzahl)</span>
-<span id="cb814-6"><a href="weitere-datenstrukturen.html#cb814-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(MatNr) <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;ET&quot;</span>,<span class="st">&quot;MB&quot;</span>), anzahl, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb814-6"><a href="weitere-datenstrukturen.html#cb814-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(MatNr) <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;ET&quot;</span>,<span class="st">&quot;MB&quot;</span>), anzahl, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
 <span id="cb814-7"><a href="weitere-datenstrukturen.html#cb814-7" aria-hidden="true" tabindex="-1"></a>Bestanden <span class="ot">&lt;-</span> F</span>
-<span id="cb814-8"><a href="weitere-datenstrukturen.html#cb814-8" aria-hidden="true" tabindex="-1"></a>student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">MatNr =</span> MatNr, <span class="at">Punkte =</span> Punkte, <span class="at">Bestanden =</span> Bestanden)</span>
+<span id="cb814-8"><a href="weitere-datenstrukturen.html#cb814-8" aria-hidden="true" tabindex="-1"></a>student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(MatNr, Punkte, Bestanden)</span>
 <span id="cb814-9"><a href="weitere-datenstrukturen.html#cb814-9" aria-hidden="true" tabindex="-1"></a>student<span class="sc">$</span>Stdgang <span class="ot">&lt;-</span> <span class="fu">names</span>(MatNr)</span>
-<span id="cb814-10"><a href="weitere-datenstrukturen.html#cb814-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(Punkte, MatNr, Bestanden, anzahl)</span></code></pre></div>
+<span id="cb814-10"><a href="weitere-datenstrukturen.html#cb814-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(Punkte, MatNr,Bestanden,anzahl)</span></code></pre></div>
 <p>Die Ausgabe von <code>head(student)</code> lautet:</p>
 <div class="sourceCode" id="cb815"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb815-1"><a href="weitere-datenstrukturen.html#cb815-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student)</span></code></pre></div>
-<pre><code>##     MatNr Punkte Bestanden.1 Bestanden.2 Bestanden.3 Bestanden.4 Bestanden.5
-## 1 9075256     52         100         103          11          16          21
-## 2 5998360     68         101         104          12          17          22
-## 3 7390976     48         102         105          13          18          23
-## 4 2188111     96           4           9          14          19          24
-## 5 2972641     71           5          10          15          20          25
-## 6 7484652     48         100         103          11          16          21
-##   Bestanden.6 Stdgang
-## 1          26      MB
-## 2          27      ET
-## 3          28      MB
-## 4          29      ET
-## 5          30      MB
-## 6          26      ET</code></pre>
+<pre><code>##     MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang
+## 1 9075256     52 100 103 11 16 21 26      MB
+## 2 5998360     68 101 104 12 17 22 27      ET
+## 3 7390976     48 102 105 13 18 23 28      MB
+## 4 2188111     96   4   9 14 19 24 29      ET
+## 5 2972641     71   5  10 15 20 25 30      MB
+## 6 7484652     48 100 103 11 16 21 26      ET</code></pre>
 <p><strong>Aufgabe 11</strong></p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Aus wie vielen Variablen und aus wie vielen Observationen besteht <code>student</code>?</p></li>
@@ -1366,20 +1359,13 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <li><p>Geben Sie die erste Zeile von <code>student</code> aus.</p></li>
 <li><p>Um die Klausur zu bestehen, reichen 50 Punkte. Ändern Sie <code>student</code> entsprechend!</p>
 <div class="sourceCode" id="cb819"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb819-1"><a href="weitere-datenstrukturen.html#cb819-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student)</span></code></pre></div>
-<pre><code>##     MatNr Punkte Bestanden.1 Bestanden.2 Bestanden.3 Bestanden.4 Bestanden.5
-## 1 9075256     52         100         103          11          16          21
-## 2 5998360     68         101         104          12          17          22
-## 3 7390976     48         102         105          13          18          23
-## 4 2188111     96           4           9          14          19          24
-## 5 2972641     71           5          10          15          20          25
-## 6 7484652     48         100         103          11          16          21
-##   Bestanden.6 Stdgang Bestanden
-## 1          26      MB      TRUE
-## 2          27      ET      TRUE
-## 3          28      MB     FALSE
-## 4          29      ET      TRUE
-## 5          30      MB      TRUE
-## 6          26      ET     FALSE</code></pre></li>
+<pre><code>##     MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden
+## 1 9075256     52 100 103 11 16 21 26      MB      TRUE
+## 2 5998360     68 101 104 12 17 22 27      ET      TRUE
+## 3 7390976     48 102 105 13 18 23 28      MB     FALSE
+## 4 2188111     96   4   9 14 19 24 29      ET      TRUE
+## 5 2972641     71   5  10 15 20 25 30      MB      TRUE
+## 6 7484652     48 100 103 11 16 21 26      ET     FALSE</code></pre></li>
 </ol>
 <p><strong>Aufgabe 12</strong></p>
 <p>In den Übungen zu Kapitel 4 haben wir bereits die Funktion <code>order()</code> kennengelernt.</p>
@@ -1397,28 +1383,17 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <li><code>student[order(student$Stdgang), ]</code>?</li>
 </ul></li>
 <li><p>Geben Sie geordnet nach Punkten die Ergebnisse im Studiengang MB aus. Die Ausgabe der ersten zehn Zeilen in unserem Beispiel lautet dann:</p>
-<pre><code>##      MatNr Punkte Bestanden.1 Bestanden.2 Bestanden.3 Bestanden.4 Bestanden.5
-## 84 7589118     34           4           9          14          19          24
-## 35 9742530     37           5          10          15          20          25
-## 75 3243959     39           5          10          15          20          25
-## 97 4658829     39         101         104          12          17          22
-## 54 5707891     42           4           9          14          19          24
-## 3  7390976     48         102         105          13          18          23
-## 46 6188906     50         100         103          11          16          21
-## 72 9286466     50         101         104          12          17          22
-## 1  9075256     52         100         103          11          16          21
-## 13 1926848     52         102         105          13          18          23
-##    Bestanden.6 Stdgang Bestanden
-## 84          29      MB     FALSE
-## 35          30      MB     FALSE
-## 75          30      MB     FALSE
-## 97          27      MB     FALSE
-## 54          29      MB     FALSE
-## 3           28      MB     FALSE
-## 46          26      MB      TRUE
-## 72          27      MB      TRUE
-## 1           26      MB      TRUE
-## 13          28      MB      TRUE</code></pre></li>
+<pre><code>##      MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden
+## 84 7589118     34   4   9 14 19 24 29      MB     FALSE
+## 35 9742530     37   5  10 15 20 25 30      MB     FALSE
+## 75 3243959     39   5  10 15 20 25 30      MB     FALSE
+## 97 4658829     39 101 104 12 17 22 27      MB     FALSE
+## 54 5707891     42   4   9 14 19 24 29      MB     FALSE
+## 3  7390976     48 102 105 13 18 23 28      MB     FALSE
+## 46 6188906     50 100 103 11 16 21 26      MB      TRUE
+## 72 9286466     50 101 104 12 17 22 27      MB      TRUE
+## 1  9075256     52 100 103 11 16 21 26      MB      TRUE
+## 13 1926848     52 102 105 13 18 23 28      MB      TRUE</code></pre></li>
 </ol>
 <p><strong>Aufgabe 13</strong></p>
 <p>Als Nächstes sollen Noten in <code>student</code> eingefügt werden. Zugrunde liegt das folgende Notenschema:</p>
@@ -1451,66 +1426,37 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <ol style="list-style-type: lower-alpha">
 <li><p>Benutzen Sie die Funktion <code>cut()</code>, um aus <code>student$Punkte</code> einen Faktor zu erzeugen, der als Note in <code>student</code> eingefügt werden kann. Die Ausgabe der ersten zehn Zeilen in unserem Bespiel lautet dann:</p>
 <div class="sourceCode" id="cb822"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb822-1"><a href="weitere-datenstrukturen.html#cb822-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##      MatNr Punkte Bestanden.1 Bestanden.2 Bestanden.3 Bestanden.4 Bestanden.5
-## 1  9075256     52         100         103          11          16          21
-## 2  5998360     68         101         104          12          17          22
-## 3  7390976     48         102         105          13          18          23
-## 4  2188111     96           4           9          14          19          24
-## 5  2972641     71           5          10          15          20          25
-## 6  7484652     48         100         103          11          16          21
-## 7  5912142     74         101         104          12          17          22
-## 8  3578183     79         102         105          13          18          23
-## 9  4222106     76           4           9          14          19          24
-## 10 8963286     58           5          10          15          20          25
-##    Bestanden.6 Stdgang Bestanden Note
-## 1           26      MB      TRUE    4
-## 2           27      ET      TRUE    3
-## 3           28      MB     FALSE    5
-## 4           29      ET      TRUE    1
-## 5           30      MB      TRUE    2
-## 6           26      ET     FALSE    5
-## 7           27      MB      TRUE    2
-## 8           28      MB      TRUE    2
-## 9           29      ET      TRUE    2
-## 10          30      MB      TRUE    4</code></pre></li>
+<pre><code>##      MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden Note
+## 1  9075256     52 100 103 11 16 21 26      MB      TRUE    4
+## 2  5998360     68 101 104 12 17 22 27      ET      TRUE    3
+## 3  7390976     48 102 105 13 18 23 28      MB     FALSE    5
+## 4  2188111     96   4   9 14 19 24 29      ET      TRUE    1
+## 5  2972641     71   5  10 15 20 25 30      MB      TRUE    2
+## 6  7484652     48 100 103 11 16 21 26      ET     FALSE    5
+## 7  5912142     74 101 104 12 17 22 27      MB      TRUE    2
+## 8  3578183     79 102 105 13 18 23 28      MB      TRUE    2
+## 9  4222106     76   4   9 14 19 24 29      ET      TRUE    2
+## 10 8963286     58   5  10 15 20 25 30      MB      TRUE    4</code></pre></li>
 <li><p>Geben Sie nach Punkten sortiert alle Studierenden aus, die mindestens 48 und höchstens 52 Punkte erhalten haben:</p>
-<pre><code>##      MatNr Punkte Bestanden.1 Bestanden.2 Bestanden.3 Bestanden.4 Bestanden.5
-## 3  7390976     48         102         105          13          18          23
-## 6  7484652     48         100         103          11          16          21
-## 46 6188906     50         100         103          11          16          21
-## 65 5817860     50           5          10          15          20          25
-## 72 9286466     50         101         104          12          17          22
-## 45 1784475     51           5          10          15          20          25
-## 1  9075256     52         100         103          11          16          21
-## 13 1926848     52         102         105          13          18          23
-## 52 1922892     52         101         104          12          17          22
-##    Bestanden.6 Stdgang Bestanden Note
-## 3           28      MB     FALSE    5
-## 6           26      ET     FALSE    5
-## 46          26      MB      TRUE    4
-## 65          30      ET      TRUE    4
-## 72          27      MB      TRUE    4
-## 45          30      ET      TRUE    4
-## 1           26      MB      TRUE    4
-## 13          28      MB      TRUE    4
-## 52          27      ET      TRUE    4</code></pre></li>
+<pre><code>##      MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden Note
+## 3  7390976     48 102 105 13 18 23 28      MB     FALSE    5
+## 6  7484652     48 100 103 11 16 21 26      ET     FALSE    5
+## 46 6188906     50 100 103 11 16 21 26      MB      TRUE    4
+## 65 5817860     50   5  10 15 20 25 30      ET      TRUE    4
+## 72 9286466     50 101 104 12 17 22 27      MB      TRUE    4
+## 45 1784475     51   5  10 15 20 25 30      ET      TRUE    4
+## 1  9075256     52 100 103 11 16 21 26      MB      TRUE    4
+## 13 1926848     52 102 105 13 18 23 28      MB      TRUE    4
+## 52 1922892     52 101 104 12 17 22 27      ET      TRUE    4</code></pre></li>
 <li><p>Geben Sie nach Punkten sortiert alle Studierenden aus, die mindestens 79 und höchstens 82 Punkte erhalten haben:</p>
-<pre><code>##      MatNr Punkte Bestanden.1 Bestanden.2 Bestanden.3 Bestanden.4 Bestanden.5
-## 8  3578183     79         102         105          13          18          23
-## 94 8871878     79           4           9          14          19          24
-## 22 9438067     80         101         104          12          17          22
-## 40 3007020     80           5          10          15          20          25
-## 48 3108410     80         102         105          13          18          23
-## 19 8663430     81           4           9          14          19          24
-## 50 8606356     82           5          10          15          20          25
-##    Bestanden.6 Stdgang Bestanden Note
-## 8           28      MB      TRUE    2
-## 94          29      ET      TRUE    2
-## 22          27      MB      TRUE    2
-## 40          30      ET      TRUE    2
-## 48          28      MB      TRUE    2
-## 19          29      MB      TRUE    1
-## 50          30      ET      TRUE    1</code></pre></li>
+<pre><code>##      MatNr Punkte  X1  X2 X3 X4 X5 X6 Stdgang Bestanden Note
+## 8  3578183     79 102 105 13 18 23 28      MB      TRUE    2
+## 94 8871878     79   4   9 14 19 24 29      ET      TRUE    2
+## 22 9438067     80 101 104 12 17 22 27      MB      TRUE    2
+## 40 3007020     80   5  10 15 20 25 30      ET      TRUE    2
+## 48 3108410     80 102 105 13 18 23 28      MB      TRUE    2
+## 19 8663430     81   4   9 14 19 24 29      MB      TRUE    1
+## 50 8606356     82   5  10 15 20 25 30      ET      TRUE    1</code></pre></li>
 <li><p>Erstellen Sie für den Notenspiegel ein entsprechendes Balkendiagramm (Benutzt wurden die Argumente: <code>main = "Notenspiegel"</code>,<code>xlab="Noten"</code>, <code>ylab="Anzahl"</code>):</p></li>
 </ol>
 <div class="figure"><span style="display:block;" id="fig:barplot-noten"></span>

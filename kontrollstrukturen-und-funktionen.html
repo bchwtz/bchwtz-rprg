@@ -444,8 +444,8 @@ Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkop
 <p>Im Gegensatz zu C und C++ gibt es in R einen <em>Garbage Collector</em>, kurz auch mit GC bezeichnet. Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z.B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund, ohne dass der GC explizit aufgerufen werden muss (siehe auch <code>?gc</code>). Man kann den GC explizit mit <code>gc()</code> aufrufen (siehe <code>?gc</code>), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe <code>used</code>) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe <code>gc trigger</code>).</p>
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="kontrollstrukturen-und-funktionen.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used (Mb) gc trigger  (Mb) max used  (Mb)
-## Ncells 1164096 62.2    2309748 123.4  2309748 123.4
-## Vcells 2192984 16.8    8388608  64.0  6886894  52.6</code></pre>
+## Ncells 1164094 62.2    2308217 123.3  2308217 123.3
+## Vcells 2192989 16.8    8388608  64.0  6877438  52.5</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
 <ul>
@@ -535,13 +535,13 @@ Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann trit
 ##   tmp &lt;- 2 * y + 3 * z
 ##   return(x + tmp)
 ## }
-## &lt;bytecode: 0x5641e2f52e58&gt;</code></pre>
+## &lt;bytecode: 0x55abbfb78658&gt;</code></pre>
 <div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="kontrollstrukturen-und-funktionen.html#cb189-1" aria-hidden="true" tabindex="-1"></a>sqrt</span></code></pre></div>
 <pre><code>## function (x)  .Primitive(&quot;sqrt&quot;)</code></pre>
 <div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="kontrollstrukturen-und-funktionen.html#cb191-1" aria-hidden="true" tabindex="-1"></a>atan2</span></code></pre></div>
 <pre><code>## function (y, x) 
 ## .Internal(atan2(y, x))
-## &lt;bytecode: 0x5641e54b3210&gt;
+## &lt;bytecode: 0x55abc20df890&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
@@ -701,18 +701,22 @@ Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider bei
 </div>
 <div id="verzweigung-ifelse" class="section level3 hasAnchor" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> Verzweigung: <code>ifelse</code><a href="kontrollstrukturen-und-funktionen.html#verzweigung-ifelse" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Die Auswertung der <code>if</code>-Bedingung in der Kontrollstruktur <code>if-else</code> berücksichtigt lediglich das erste Element eines Vektors. <code>if-else</code> ist daher nur bedingt für Vektoren geeignet. Insbesondere sind Funktionen, die im Funktionsrumpf ein <code>if-else</code> benutzten, nicht vektorisierbar!</p>
+<p>Die Auswertung der <code>if</code>-Bedingung in der Kontrollstruktur <code>if-else</code> berücksichtigt lediglich das erste Element eines Vektors. <code>if-else</code> ist daher nur bedingt für Vektoren geeignet. Insbesondere sind Funktionen, die im Funktionsrumpf ein <code>if-else</code> benutzen, nicht vektorisierbar!</p>
 <div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="kontrollstrukturen-und-funktionen.html#cb222-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb222-2"><a href="kontrollstrukturen-und-funktionen.html#cb222-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>){</span>
+<span id="cb222-2"><a href="kontrollstrukturen-und-funktionen.html#cb222-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(x<span class="sc">%%</span><span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>){</span>
 <span id="cb222-3"><a href="kontrollstrukturen-und-funktionen.html#cb222-3" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x</span>
 <span id="cb222-4"><a href="kontrollstrukturen-und-funktionen.html#cb222-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
 <span id="cb222-5"><a href="kontrollstrukturen-und-funktionen.html#cb222-5" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
 <span id="cb222-6"><a href="kontrollstrukturen-und-funktionen.html#cb222-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb222-7"><a href="kontrollstrukturen-und-funktionen.html#cb222-7" aria-hidden="true" tabindex="-1"></a>z </span></code></pre></div>
+<span id="cb222-7"><a href="kontrollstrukturen-und-funktionen.html#cb222-7" aria-hidden="true" tabindex="-1"></a>z </span>
+<span id="cb222-8"><a href="kontrollstrukturen-und-funktionen.html#cb222-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb222-9"><a href="kontrollstrukturen-und-funktionen.html#cb222-9" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; Error-Meldung</span></span></code></pre></div>
 <p>Ebenso:</p>
 <div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="kontrollstrukturen-und-funktionen.html#cb223-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
 <span id="cb223-2"><a href="kontrollstrukturen-und-funktionen.html#cb223-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="cf">if</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) x <span class="cf">else</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb223-3"><a href="kontrollstrukturen-und-funktionen.html#cb223-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<span id="cb223-3"><a href="kontrollstrukturen-und-funktionen.html#cb223-3" aria-hidden="true" tabindex="-1"></a>z</span>
+<span id="cb223-4"><a href="kontrollstrukturen-und-funktionen.html#cb223-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb223-5"><a href="kontrollstrukturen-und-funktionen.html#cb223-5" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; Error-Meldung</span></span></code></pre></div>
 <p>Für diesen Zweck gibt es die Funktion <code>ifelse()</code>:</p>
 <p><code>ifelse(test, wahr, falsch)</code></p>
 <p>Zurückgegeben wird ein Objekt der gleichen Größe und Form wie <code>test</code>, der abhängig vom Wahrheitswert von <code>test</code> elementweise gefüllt wird von den entsprechenden Elementen aus <code>wahr</code> bzw. <code>falsch</code>.</p>
