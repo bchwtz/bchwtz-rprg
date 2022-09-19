@@ -781,14 +781,19 @@ Für die Aufgaben im Teil 2 betrachten wir ein Data Frame `student`. Erzeugt wer
 ```{r}
 set.seed(1)
 anzahl <-  100
-Punkte <-  rnorm(anzahl, mean = 65, sd = 20)
-Punkte <- as.integer(Punkte)
-MatNr <- sample(1E6:1E7-1, anzahl)
-names(MatNr) <- sample(c("ET","MB"), anzahl, replace=TRUE)
-Bestanden <- F
-student <- data.frame(MatNr, Punkte, Bestanden)
-student$Stdgang <- names(MatNr)
-rm(Punkte, MatNr,Bestanden,anzahl)
+# Punkte <-  rnorm(anzahl, mean = 65, sd = 20)
+# Punkte <- as.integer(Punkte)
+# MatNr <- sample(1E6:1E7-1, anzahl)
+# names(MatNr) <- sample(c("ET","MB"), anzahl, replace=TRUE)
+# Bestanden <- F
+# student <- data.frame(MatNr, Punkte, Bestanden)
+# student$Stdgang <- names(MatNr)
+# rm(Punkte, MatNr,Bestanden,anzahl)
+
+student <- data.frame(MatNr = round(runif(anzahl, min= 100000, 999999)),
+                       Punkte = round(rnorm(anzahl, mean = 65, sd = 20)),
+                       Bestanden = FALSE,
+                       Stdgang = sample(c("ET","MB"), anzahl, replace = TRUE))
 ```
 
 Die Ausgabe von `head(student)` lautet:
@@ -797,7 +802,7 @@ Die Ausgabe von `head(student)` lautet:
 head(student)
 ```
 
-**Aufgabe 11** 
+### Aufgabe 11 {-}
 
 a)	Aus wie vielen Variablen und aus wie vielen Observationen besteht `student`?
 
@@ -832,7 +837,7 @@ e) Um die Klausur zu bestehen, reichen 50 Punkte. Ändern Sie `student` entsprec
     ```
 
 
-**Aufgabe 12**
+### Aufgabe 12 {-}
 
 In den Übungen zu Kapitel 4 haben wir bereits die Funktion `order()` kennengelernt.
 
@@ -859,7 +864,7 @@ c) Geben Sie geordnet nach Punkten die Ergebnisse im Studiengang MB aus. Die Aus
     head(s, 10)
     ```
 
-**Aufgabe 13**
+### Aufgabe 13 {-}
 
 Als Nächstes sollen Noten in `student` eingefügt werden. Zugrunde liegt das folgende Notenschema:
 
