@@ -1,0 +1,89 @@
+# Spezielle Themen und Fallstudien 
+
+## Fallstudie 1
+
+### Boxplots
+
+*Inhaltliche Voraussetzung*: Boxplot, unteres Quartil, Median, oberes Quartil
+
+Führen Sie folgenden Quelltext aus:
+
+```{r, eval=FALSE}
+anzahl <- 8
+op <- par(mfrow=c(2,anzahl/2), col="blue") # Grafikeinstellung ändern
+n <- 100L
+x <- 0:n 
+for (i in 0:(anzahl-1)){
+  x[n] <- x[n]+10*i
+  x[n-1] <- x[n-1]+5*i
+  print(paste("i = ",i, ":")) 
+  print(summary(x)) 
+  boxplot(x, main = paste("i = ",i),   
+        xlab = paste("x[n-1] =", x[n-1], ", x[n] =", x[n]))
+}
+par(op)  # stellt die ursprüngliche Grafikeinstellung wieder her
+```
+
+
+*Erklärungen zum Quelltext:*
+
++	Durch `par()` können Grafikoptionen gesetzt werden. In unserem Fall werden die nächsten 8 Bilder in einem Plot bestehend aus 2×4 Einzelbildern dargestellt.
+
++	`paste()` konvertiert die übergebenen Argumente zu Zeichenketten (`character`-Vektoren) und fügt sie zusammen.
+
+
+Ausgegeben wird:
+
+```{r, echo=FALSE, eval=TRUE}
+anzahl <- 8
+op <- par(mfrow=c(2,anzahl/2), col="blue") # Grafikeinstellung ändern
+n <- 100L
+x <- 0:n 
+for (i in 0:(anzahl-1)){
+  x[n] <- x[n]+10*i
+  x[n-1] <- x[n-1]+5*i
+  print(paste("i = ",i, ":")) 
+  print(summary(x)) 
+ # boxplot(x, main = paste("i = ",i),   
+  #      xlab = paste("x[n-1] =", x[n-1], ", x[n] =", x[n]))
+}
+par(op)  # stellt die ursprüngliche Grafikeinstellung wieder her
+```
+
+Sie erhalten folgenden Plot:
+
+
+```{r fallstudie1-boxplots, echo=FALSE, eval=TRUE, fig.cap="Die erzeugten Boxplots."}
+anzahl <- 8
+op <- par(mfrow=c(2,anzahl/2), col="blue") # Grafikeinstellung ändern
+n <- 100L
+x <- 0:n 
+for (i in 0:(anzahl-1)){
+  x[n] <- x[n]+10*i
+  x[n-1] <- x[n-1]+5*i
+ # print(paste("i = ",i, ":")) 
+ # print(summary(x)) 
+  boxplot(x, main = paste("i = ",i),   
+         xlab = paste("x[n-1] =", x[n-1], ", x[n] =", x[n]))
+}
+par(op)  # stellt die ursprüngliche Grafikeinstellung wieder her
+```
+
+Beantworten Sie folgende Fragen:
+
++	Einen Ausreißer gibt es für $i \geq 3$; für $i \geq 5$ gibt es sogar zwei Ausreißer. Was genau sind Ausreißer? Erklären Sie die unterschiedlichen Bilder.
+
++ Ist die Breite der Box der Quartilabstand? Wie viel Prozent der Daten „liegen“ in der Box?
+
++ Wie lang sind die jeweiligen „Whiskers“?
+
++	Wie müssen Sie den Aufruf von `boxplot()` ändern, so dass es erst bei $i \geq 5$ den ersten und für $i \geq 7$ den zweiten Ausreißer gibt?
+
+
+**Kurzzusammenfassung**
+
+> - `par()`
+> - `paste()`
+
+
+### MNIST-Bilddaten
