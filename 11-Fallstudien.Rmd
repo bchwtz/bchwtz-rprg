@@ -148,3 +148,102 @@ for(x in 1:3){ # Plotten der ersten neun Ziffern
 
 (fig:plot-ziffer3) Plots der ersten neun extrahierten Bilder der Ziffer 3 aus dem Ziffern-Trainingsdatensatz [@dslabs].
 
+
+## Fallstudie 2
+
+IMDb Internet Movie Database
+
+### imdb_Bewertungen
+
+### wortIndex
+
+
+## Fallstudie 3
+
+### Wahrscheinlichkeitsverteilungen in R
+
+In den folgenden Abschnitten werden wir auf unterschiedliche Wahrscheinlichkeitsverteilungen zurückgreifen. In der nächsten Tabelle sind die in Base-R verfügbaren Verteilungen aufgelistet. 
+
+Verteilung    | R Bezeichnung  | Zusätzliche Argumente
+--------------|----------------|-----------------------
+Betan | `beta` | `shape1`, `shape2`, `ncp`
+Binomial | `binom` | `size`, `prob`
+Cauchy | `cauchy` | `location`, `scale`
+Chi-Quadrat $\chi^2$ | `chisq` | `df`, `ncp`
+Exponential | `exp` | `rate`
+F | `f` | `df1`, `df2`, `ncp` 
+Gamma | `gamma` | `shape`, `rate (=1/scale)`
+Geometrisch | `geom` | `prob`
+Gleichförmig | `unif` | `min`, `max`
+Hypergeometrisch | `hyper` | `m`, `n`, `k`
+Log-normal | `lnorm` | `meanlog`, `sdlog`
+Logistic | `logis` | `location`, `scale`
+Negativ binomial | `nbinom` | `size`, `prob`
+Normal | `norm` | `mean`, `sd`
+Poisson | `pois` | `lambda`
+Signed rank | `signrank` | `n`
+Student's t | `t`  | `df`, `ncp`
+Weibull | `weibull` | `shape`, `scale`
+Wilcoxon Rangsumme | `wilcox` | `m`, `n`
+Wilcoxon Vorzeichen-Rang | `signrank` | `n`
+
+
+Vor die aufgelistete R-Bezeichnung (wie norm) kommt noch ein entsprechender Buchstabe (Die folgenden Beipiele beziehen sich auf die Normalverteilung.):
+
++ `r` für „zufällige“ Daten gemäß der Verteilung. *Beispiel:* `rnorm(10)`
+
++ `d` für die Dichte. *Beispiel:* `dnorm(x)`
+
++ `p` für die Verteilungsfunktion. *Beispiel:* `pnorm(x)`
+
++ `q`	für die Quantilfunktion. *Beispiel:* `qnorm(p)`
+
+
+### Funktionsplot
+
+In einer `ggplot2`-Grafik kann leicht mit `stat_function()` ein Funktionsplot in einer neuen Ebene hinzugefügt werden. Die zu zeichnende Funktion wird dabei durch das Argument `fun` bestimmt.
+
+```{r ggplot-dnorm, fig.cap="Dichte der Standardnormalverteilung N(0;1)."}
+ggplot(data.frame(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dnorm, colour = "red")
+```
+
+Statt `dnorm` hätten wir auch eine andere Funktion wie z.B. `sin` oder den Bezeichner einer selbst geschriebenen numerischen Funktion angeben können. Ähnlich leicht können mehrere Ebenen in einer Grafik gleichzeitig angezeigt werden. Als Beispiel verwenden wir die Dichten der $\chi^2$-Verteilung mit unterschiedlichen Freiheitsgraden: 
+
+```{r ggplot-chisq, fig.cap="(fig:plot-chisq)"}
+?dchisq 
+sizeline <- 1
+ggplot(data.frame(x = c(0, 10)), aes(x)) + 
+  stat_function(fun = dchisq, args = list(df=1), color = "cyan", size = sizeline) +
+  stat_function(fun = dchisq, args = list(df=2), color = "red", size = sizeline) +
+  stat_function(fun = dchisq, args = list(df=3), color = "blue", size = sizeline)+
+  stat_function(fun = dchisq, args = list(df=4), color = "green3", size = sizeline)+
+  labs(title = "Dichten der Chi-Quadrat-Verteilungen", subtitle ="Data Science, J. Willms")
+```
+
+(fig:plot-chisq) $\chi^2$-Verteilung mit den Freiheitsgraden $df = \{1, 2, 3, 4\}$.
+
+Wie wir sehen, können in `stat_function()` zusätzliche Argumente für den Funktionsaufruf mithilfe des Arguments `args` in Form einer Liste übergeben werden. Das nächste Beispiel zeigt die Dichten der $t$-Verteilung :
+
+```{r ggplot-t-verteilung, fig.cap="(fig:ggplot-t)"}
+sizeline <- 1
+ggplot(data.frame(x = c(-4, 4)), aes(x)) + 
+  stat_function(fun = dt, args = list(df=1), color = "cyan", size = sizeline) +
+  stat_function(fun = dt, args = list(df=2), color = "red", size = sizeline) +
+  stat_function(fun = dt, args = list(df=3), color = "blue", size = sizeline)+
+  stat_function(fun = dt, args= list(df=4), color = "green3", size = sizeline)+
+  labs(title = "Dichten der t-Verteilungen", subtitle ="Data Science, J. Willms") +
+  theme_light() 
+```
+
+(fig:ggplot-t) Dichte der $t$-Verteilung mit den Freiheitsgraden $df = \{1, 2, 3, 4\}$.
+
+Im letzten Beispielplot haben wir ein anderes „Theme“ benutzt. `ggplot2()` unterstützt standardmäßig acht unterschiedliche „Themes“, mit denen die globalen Eigenschaften der Nicht-Daten-Elemente in einer Grafik gesetzt werden können (siehe `?theme` und `?theme_bw`).
+
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+Die $\chi^2$-Verteilung ist ein Spezialfall der Gamma-Verteilung. Zeigen Sie, dass Sie Abbildung \ref{fig:plot-chisq} auch mit `dgamma()` statt mit `dchisq()` erzeugen können.
+
+
+### Histogramme
