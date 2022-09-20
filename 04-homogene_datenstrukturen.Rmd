@@ -863,81 +863,46 @@ In TensorFlow, einer populären Deep-Learning-Plattform, sind Tensoren grundlege
 
 Mit *Shape* von `A` wird in TensorFlow ein Vektor bezeichnet, der angibt, wie viele Dimensionen der Tensor `A` bezüglich der verschiedenen Achsen besitzt; Shape von `A` entspricht somit `dim(A)`.
 
-```{r, echo=FALSE, eval=FALSE}
-ziffer5 <- matrix(c(rep(0, times = 5*28), rep(0, times = 12), 3, 18, 18, 18, 126, 136, 175, 26, 166, 255, 247, 127, 0, 0, 0, 0, rep(0, times = 8), 30, 36, 94, 154, 170, 253, 253, 253, 253, 253, 225, 172, 253, 242, 195, 64, 0, 0, 0, 0,
-rep(0, 7), 49, 238, rep(253, 8), 251, 93, 82, 82, 56, 39, rep(0, 5),
-rep(0, 7), 18, 219, rep(253, 5), 198, 182, 247, 241, rep(0, 10),
-rep(0, 8), 80, 156, 107, 253, 253, 205, 11, 0, 43, 154, rep(0, 10),
-rep(0, 9), 14, 1, 154, 253, 90, rep(0, 14),
-rep(0, 11), 139, 253, 190, 2, rep(0, 13),
-rep(0, 11), 11, 190, 253, 70, rep(0, 13),
-rep(0, 12), 35, 241, 225, 160, 108, 1, rep(0, 10),
-rep(0, 13), 81, 240, 253, 253, 119, 25, rep(0, 9),
-rep(0, 14), 45, 186, 253, 253, 150, 27, rep(0, 8),
-rep(0, 15), 16, 93, 252, 253, 187, rep(0, 8),
-rep(0, 17), 249, 253, 249, 64, rep(0, 7),
-rep(0, 14), 46, 130, 183, 253, 253, 207, 2, rep(0, 7),
-rep(0, 12), 39, 148, 229, 253, 253, 253, 250, 182, rep(0, 8),
-rep(0, 10),24, 114, 221, rep(253, 4), 201, 78, rep(0, 9),
-rep(0, 8), 23, 66, 213, rep(253, 4), 198, 81, 2, rep(0, 10),
-rep(0, 6), 18, 171, 219,rep(253, 4), 195, 80, 9, rep(0, 12),
-rep(0, 4), 55, 172, 226, rep(253, 4), 244, 133, 11, rep(0, 14),
-rep(0, 4), 136, 253, 253, 253, 212, 135, 132, 16, rep(0, 16),
-rep(0, 3*28)), ncol=28, byrow=TRUE)
-``` 
+Für das nächste Beispiel benötigen wir das R-Paket `dslabs` und seine Funktion `read_mnist()` wie folgt [@dslabs]:
 
-```{r, echo=FALSE, eval=FALSE}
-# saveRDS(ziffer5, "ziffer5.rds")
-# ziffer5 <- readRDS("ziffer5.rds")
-
-# write.table(ziffer1, file = "ziffer1.csv", sep=",")
-# ziffer_einlesen <- read.table("ziffer1.csv", sep=",")
+```{r}
+mnist <- read_mnist()
 ```
 
+Wie `?read_mnist()` und
 
-Für das nächste Beispiel benötigen wir die Datei [ziffer5.rds](data/ziffer5.rds), die in das aktuelle Arbeitsverzeichnis kopiert werden muss. Die Datei „ziffer5.rds“ besteht aus einem mit `saveRDS(ziffer5, "ziffer5.rds")` serialisierten Objekt. Mithilfe der Funktion `readRDS()` kann das Objekt wiederhergestellt werden (und bei Bedarf unter einem anderen Namen gespeichert werden).
-```{r, echo=TRUE, eval=TRUE}
-ziffern <- readRDS("data/ziffer5.rds")
-str(ziffern)
-object.size(ziffern)
-
-ziffern
+```{r}
+str(mnist)
+object.size(mnist)
 ```
 
-```{r, echo=FALSE, eval=FALSE}
-## TODO: Wo ist die ziffern.rds-Datei hinterlegt?
-```
+zu entnehmen sind, wurden Trainings- und Testdaten der MNIST-Datensammlung (siehe z.B. https://en.wikipedia.org/wiki/MNIST_database) (ca. 220 MB) importiert. [@dslabs] Im Folgenden werden wir die Trainingsdaten betrachten, die aus 60,000 Grauwertbildern bestehen, die die Ziffern von 0 bis 9 in ganz unterschiedlichen handgeschriebenen Varianten zeigen. Jedes Grauwertbild besteht aus 28×28 Pixeln und jeder Pixelwert liegt zwischen 0 und 255. Die Dimensionswerte geben dabei die Pixelpositionen im entsprechenden Bild an. Die MNIST-Datensammlung wird sehr häufig als Referenzbeispiel für Machine-Learning-Algorithmen benutzt.
 
-
-Wie wir sehen, handelt es sich hier bei dem eingelesenen Objekt `ziffern` um ein zweidimensionales Array, das ca. 6 KB umfasst. `ziffern` ist ein Datensatz, der aus dem Grauwertbild für die Ziffer 5 besteht. Dieses Grauwertbild besteht aus 28×28 Pixeln und jeder Pixelwert liegt zwischen 0 und 255. Somit beschreiben die Dimensionswerte von `ziffern` die Pixelpositionen. Dieses Grauwertbild sowie weitere Bilder stammen ursprünglich aus der MNIST-Datensammlung (siehe z. B. https://en.wikipedia.org/wiki/MNIST_database), die insgesamt 70 000 handgeschriebene Varianten von Ziffern umfasst. Die MNIST-Datensammlung wird sehr häufig als Referenzbeispiel für Machine-Learning-Algorithmen benutzt.
-
-```{r, echo=FALSE, eval=F}
-ziffern[1, , ]
+```{r}
+# Jede Zeile ist ein 28x28 Pixel Bild
+m1 <- matrix(mnist$train$images[1,], nrow = 28, ncol = 28, byrow = T)
+m2 <- matrix(mnist$train$images[2,], nrow = 28, ncol = 28, byrow = T)
 ```
 
 Es ist in R nicht schwer, einzelne Bilder anzuzeigen. Mithilfe der Funktion `as.raster()` können Bilddaten in ein entsprechendes Raster-Objekt umgewandelt werden, das mit der Funktion `plot()` angezeigt werden kann: 
 
-```{r, echo=FALSE, eval=FALSE}
-plot(as.raster(ziffern[1, ,], max = 255))
-plot(as.raster(ziffern[2, ,], max = 255))
-```
-
 ```{r}
-plot(as.raster(ziffern, max = 255))
+plot(as.raster(m1, max = 255))
+plot(as.raster(m2, max = 255))
+```
+Das erste Bild zeigt die Ziffer 5, während das zweite die Ziffer 0 darstellt. Wie erhält man die folgenden zwei Bilder?
+
+```{r, echo = FALSE}
+plot(as.raster(255 - m1, max = 255))
+plot(as.raster(255 - m2, max = 255))
 ```
 
-Wie erhält man die folgendes Bild?
+Die Antwort ist einfach. Dank Recycling kann man schreiben:
 
-Die Anwort ist einfach. Dank Recycling kann man schreiben:
-```{r, echo=FALSE, eval=FALSE}
-plot(as.raster(255 - ziffern[1, ,], max = 255))
-plot(as.raster(255 - ziffern[2, ,], max = 255))
+```{r, echo = TRUE, eval=FALSE}
+plot(as.raster(255 - m1, max = 255))
+plot(as.raster(255 - m2, max = 255))
 ```
-
-```{r}
-plot(as.raster(255 - ziffern, max = 255))
-```
-
 
 **Kurzzusammenfassung**
 
