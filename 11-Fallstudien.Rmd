@@ -119,7 +119,8 @@ Das x-te Bild (also `mnist$train$images[x,]`) stellt die Ziffer `labels[x]` dar.
 
 ```{r}
 labels <- mnist$train$labels
-labels
+head(labels, n = 9)
+tail(labels, n = 9)
 ```
 
 
@@ -141,7 +142,7 @@ ziffer3 <- ziffern[which(labels == 3),]
 
 ```{r plot-zif3, fig.cap="(ref:plot-ziffer3)"}
 par(mfrow = c(3, 3))
-for(x in 1:3){ # Plotten der ersten neun Ziffern
+for(x in 1:9){ # Plotten der ersten neun Ziffern
   plotZiffer(ziffer3, z)
 }
 ```
@@ -243,12 +244,12 @@ Im letzten Beispielplot haben wir ein anderes „Theme“ benutzt. `ggplot2()` u
 
 **Bearbeiten Sie folgende Aufgabe:**
 
-Die $\chi^2$-Verteilung ist ein Spezialfall der Gamma-Verteilung. Zeigen Sie, dass Sie Abbildung \ref{fig:plot-chisq} auch mit `dgamma()` statt mit `dchisq()` erzeugen können.
+a) Die $\chi^2$-Verteilung ist ein Spezialfall der Gamma-Verteilung. Zeigen Sie, dass Sie Abbildung \ref{fig:ggplot-chisq} auch mit `dgamma()` statt mit `dchisq()` erzeugen können.
 
 
 ### Histogramme
 
-Wir beginnen mit einem einfachen Datensatz `x`. Wir haben bereits gesehen, dass mithilfe der Funktion `hist()` ein Histogramm erstellt werden kann:
+Wir beginnen mit einem einfachen Datensatz `x`. Wir haben bereits gesehen, dass mithilfe der Funktion `hist()` (Bestandteil von Base-R) ein Histogramm erstellt werden kann:
 
 ```{r plot-hist, fig.cap="(ref:histplot)"}
 set.seed(1)
@@ -279,3 +280,365 @@ Mithilfe von `str(h)` sehen wir, wie die Gruppen im ersten Histogramm gebildet w
 str(h)
 ```
 
+Den gleichen Effekt erhalten wir, wenn wir in `geom_histogram()` als Grenze `boundary = -2.5` und als Gruppenbreite `binwidth = 0.5` angeben und zusätzlich `theme_minimal()` verwenden:
+
+```{r ang-hist-ggplot, fig.cap="(ref:angp-hist)"}
+ggplot(data.frame(x = x), aes(x)) + 
+  geom_histogram(boundary=-2.5, binwidth = 0.5, fill="white", color="black") + 
+  theme_minimal()
+```
+
+(ref:angp-hist) Angepasstes Histogramm, mittels `ggplot2` erstellt.
+
+
+#### Unterschiedliche Anzahl der Gruppen
+
+Es ist eigentlich nicht überraschend, dass die Gestalt eines Histogramms bei identischen Daten sehr wesentlich von der Anzahl der Gruppen („bins“) abhängt.
+
+```{r severalplots, fig.cap="(ref:severalhists)", echo=FALSE}
+p1 <- ggplot(data.frame(x = x), aes(x)) + 
+    geom_histogram(boundary=-2.5, bins = 7, fill="gray", color="black") +
+    labs(title = "Histogramm of x") +
+    theme_bw()
+
+p2 <- ggplot(data.frame(x = x), aes(x)) + 
+    geom_histogram(boundary=-2.5, bins = 8, fill="gray", color="black") +
+    labs(title = "Histogramm of x") +
+    theme_bw()
+
+p3 <- ggplot(data.frame(x = x), aes(x)) + 
+    geom_histogram(boundary=-2.5, bins = 9, fill="gray", color="black") +
+    labs(title = "Histogramm of x") +
+    theme_bw()
+
+p4 <- ggplot(data.frame(x = x), aes(x)) + 
+    geom_histogram(boundary=-2.5, bins = 10, fill="gray", color="black") +
+    labs(title = "Histogramm of x") +
+    theme_bw()
+
+p5 <- ggplot(data.frame(x = x), aes(x)) + 
+    geom_histogram(boundary=-2.5, bins = 11, fill="gray", color="black") +
+    labs(title = "Histogramm of x") +
+    theme_bw()
+
+p6 <- ggplot(data.frame(x = x), aes(x)) + 
+    geom_histogram(boundary=-2.5, bins = 12, fill="gray", color="black") +
+    labs(title = "Histogramm of x") +
+    theme_bw()
+
+gridExtra::grid.arrange(p1, p2, p3, p4, p5, p6, ncol=2)
+```
+
+(ref:severalhists) Identische Daten, aber eine unterschiedliche Anzahl von Gruppen ("bins") (`bins` = $\{7, 8, 9, 10, 11, 12\}$).
+
+
+#### Unterschiedliche untere Grenzen
+
+Überraschend ist vielleicht Folgendes: Selbst wenn die Anzahl der Gruppen und die Gruppenbreite konstant bleibt, kann die Gestalt eines Histogramms bei identischen Daten wesentlich von der unteren Grenze der ersten Gruppe (bzw. von der oberen Grenze der letzten Gruppe) abhängen!
+
+Als Beispiel wollen wir einen bekannten Datensatz verwenden, der die Schneehöhen in Inches aus 63 hintereinander folgenden Wintern auflistet, gemessen in Buffalo im Bundesstaat New York, USA (Eine detailliertere Behandlung dieses Beispiels finden Sie auch auf S. 11 im Abschnitt „*Histogramme lassen sich weiter verfeinern*“ [@Kockelkorn2012] oder [@Arens2017, Kapitel 18, S. 206 ff.] (auch als EBook in der FH-SWF verfügbar, Stand Oktober 2019):
+
+```{r}
+sHoehe <- c(25.0 , 39.8 , 39.9 , 40.1 , 46.7 , 49.1 , 49.6 , 51.1 , 51.6,
+            53.5 , 54.7 , 55.5 , 55.9 , 58.0 , 60.3 , 63.6 , 65.4 , 66.1,
+            69.3 , 70.9 , 71.4 , 71.5 , 71.8 , 72.9 , 74.4 , 76.2 , 77.8,
+            78.1 , 78.4 , 79.0 , 79.3 , 79.6 , 80.7 , 82.4 , 82.4 , 83.0,
+            83.6 , 83.6 , 84.8 , 85.5 , 87.4 , 88.7 , 89.6 , 89.8 , 89.9,
+            90.9 , 97.0 , 98.3 , 101.4 , 102.4 , 103.9 , 104.5 , 105.2 , 110.0,
+            110.5 , 110.5 , 113.7 , 114.5 , 115.6 , 120.5 , 120.7 , 124.7 , 126.4)
+df <- data.frame(x = sHoehe)
+```
+
+Wir wollen nun fünf Histogramme erstellen, die sich *lediglich* in der Position der unteren Grenze der ersten Gruppe unterscheiden (sowohl Anzahl der Gruppen als auch Gruppenbreite bleiben dabei konstant):
+
+```{r trans-ggplots, fig.cap="(ref:ggplots-transp)", echo=FALSE}
+transparenz <- 0.2
+b <- seq(16, 24, by=2)
+
+pt1 <- ggplot(df, aes(x)) +  
+  geom_histogram(binwidth=10, boundary=b, alpha=transparenz) 
+pt2 <- ggplot(df, aes(x)) +  
+  geom_histogram(binwidth=10, boundary=b, alpha=transparenz + 0.1) 
+pt3 <- ggplot(df, aes(x)) +  
+  geom_histogram(binwidth=10, boundary=b, alpha=transparenz + 0.2) 
+pt4 <- ggplot(df, aes(x)) +  
+  geom_histogram(binwidth=10, boundary=b, alpha=transparenz + 0.3) 
+pt5 <- ggplot(df, aes(x)) +  
+  geom_histogram(binwidth=10, boundary=b, alpha=transparenz + 0.4) 
+pt6 <- ggplot(df, aes(x)) +  
+  geom_histogram(binwidth=10, boundary=b, alpha=transparenz + 0.5) 
+
+gridExtra::grid.arrange(pt1, pt2, pt3, pt4, pt5, pt6, ncol=2)
+```
+
+(ref:ggplots-transp) Unterschiedliche untere Grenzen $b$ der jeweils ersten Gruppe: $b = \{16, 18, 20, 22, 24\}$.
+
+Die Gestalt der fünf Histogramme ist sehr unterschiedlich, obwohl alle auf denselben Daten basieren; auch die Anzahl der Gruppen und die Gruppenbreiten sind identisch! Dies wird auch deutlich, wenn die fünf Histogramme in einer Grafik als Überlagerung dargestellt werden:
+
+```{r ueb-hists, fig.cap="(ref:ueberl-hists)"}
+transparenz <- 0.2
+p <- ggplot(df, aes(x)) 
+for(b in seq(16, 24, by=2)) {
+  p <- p + geom_histogram(binwidth=10, boundary=b, alpha=transparenz) 
+  transparenz <- transparenz+0.1
+}
+p + labs(title = "Überlagerung der fünf Histogramme")
+```
+
+(ref:ueberl-hists) Überlagerung der fünf Histogramme.
+
+
+#### Kerndichteschätzer `geom_density()`
+
+In der Überlagerung der fünf Histogramme scheint nun eine Struktur erkennbar, die in den einzelnen Histogrammen nicht so ersichtlich ist. Hier helfen oft Kerndichteschätzer wie `geom_density()`, die das Histogramm glätten und ein stetiges Bild des Histogramms vermitteln. 
+
+Damit wir `geom_density()` anwenden können, müssen wir `aes(x, stat(density))` statt `aes(x)` in `ggplot()` angeben. Statt der Anzahl (`count`) wird nun die Dichte (`density`)  auf der y-Achse im Histogramm aufgetragen. Die Daten (Schneehöhen) übernehmen wir unverändert, ebenso die Gruppenbreite 10; die untere Grenze $b$ der ersten Gruppe legen wir auf den Wert 16 fest:
+
+```{r plot-geom-dens1, fig.cap="(ref:geom_dens)"}
+ggplot(df, aes(x, stat(density))) + 
+  geom_histogram(binwidth=10, boundary=16, alpha=0.2) +
+  geom_density(color="blue", size=1)
+```
+
+(ref:geom_dens) Histogramm mit `geom_density()`.
+
+Mit dem Argument `adjust` können wir die Dichteschätzung relativ zur Gruppenbreite anpassen; `adjust = 0.5` nimmt die halbe Gruppenbreite als Grundlage der Schätzung:
+
+```{r plot-geom-dens2, fig.cap="(ref:geom_dens2)"}
+ggplot(df, aes(x, stat(density))) + 
+  geom_histogram(binwidth=10, boundary=16, alpha=0.2) +
+  geom_density(color="blue", size=1)+
+  geom_density(adjust=0.5, color="red", size =1)
+```
+
+(ref:geom_dens2) Histogramm mit `geom_density()` (rot: `adjust = 0.5`).
+
+Aus meiner Sicht wird die Funktionsweise des Dichteschätzers `geom_density()` noch deutlicher, wenn man die Überlagerung der Histogramme zugrunde legt:
+
+```{r plot-geom-dens3, fig.cap="(ref:geom_dens3)"}
+transparenz <- 0.2
+p <- ggplot(df, aes(x, stat(density))) 
+for(b in seq(16, 24, by=2)) {
+  p <- p + geom_histogram(binwidth=10, boundary=b, alpha=transparenz) 
+  transparenz <- transparenz+0.1
+}
+p <- p + geom_density(color="blue", size=1)+
+    geom_density(adjust=0.5, color="red", size =1)
+p + 
+  theme_bw() +
+  labs(title = "Überlagerung der Histogramme mit Dichteschätzer", 
+         subtitle ="Data Science, J. Willms")
+```
+
+(ref:geom_dens3) Überlagerung und Kerndichteschätzer.
+
+
+### Zentraler Grenzwertsatz
+
+Als nächstes Beispiel wollen wir die Konvergenzaussage des zentralen Grenzwertsatzes anhand eines elementaren Beispiels visualisieren. Abgesehen von `dnorm()`, der Dichtefunktion der Normalverteilung, wollen wir lediglich die Funktion `sample()` benutzen.
+
+Als Erstes wollen wir einen zufälligen Wert `x` erzeugen, der mit Wahrscheinlichkeit 2/3 den Wert 0 und mit Wahrscheinlichkeit 1/3 den Wert 1 annimmt:
+
+```{r}
+set.seed(1)
+x1 <- sample(c(0,0,1),1)
+```
+
+Die (theoretische) Varianz der zugrundeliegenden zweiwertigen Zufallsvariablen $X$ ist leicht berechnet: $Var(X)= 2/3 \cdot 1/9 + 1/3 \cdot 4/9 = 2/9$.
+
+Als Nächstes wollen nicht einen, sondern `n` = 300 solcher Datensätze erzeugen:
+
+```{r}
+n <- 300
+x <- sample(c(0,0,1),n, replace = TRUE)
+```
+
+`x` ist also ein Vektor mit 300 Elementen und jedes Element hat mit Wahrscheinlichkeit 2/3 den Wert 0 und mit Wahrscheinlichkeit 1/3 den Wert 1:
+
+```{r}
+x
+```
+
+Als Nächstes wollen wir den Durchschnitt `sn` unserer zufälligen Daten `x` betrachten. Nach dem Gesetz der großen Zahlen sollte `sn` ungefähr den Wert 1/3 haben:
+
+```{r}
+sn <- sum(x)/n     # == mean(x)
+sn
+```
+
+`sn` kann als Realisierung einer Zufallsvariable $S_n$ aufgefasst werden. Für große `n` macht der zentrale Grenzwertsatz eine Aussage über die Verteilung von $S_n$: Sie sollte ungefähr normalverteilt sein. Dies wollen wir visuell mithilfe einer Simulation überprüfen. Dazu müssen wir mehrfach (in unserem Beispiel fünfzigmal) und stochastisch unabhängig voneinander solche zufälligen Datensätze `x` erzeugen, `sn` berechnen und grafisch darstellen.
+
+```{r}
+Anzahl <- 50    # gibt an, wie oft sn realisiert werden soll 
+s <- replicate(Anzahl, sum(sample(c(0,0,1),n, replace = TRUE))/n)
+```
+
+
+**Beantworten Sie folgende Frage:**
+
+b)	Welche Verteilung hat die Zufallsvariable $n \dot S_n$?
+
+`replicate(n, expression)` ruft `sapply()` auf und führt `n`-mal den übergebenen Ausdruck `expression` aus und speichert das Ergebnis in einer möglichst einfachen Datenstruktur (In unserem Beispiel ist dies ein Vektor.). In unserem Beispiel enthält der Vektor `s` nun 50 Realisierungen der Zufallsvariable $S_n$.
+
+```{r}
+str(s)
+```
+
+Das arithmetische Mittel von `s` sollte annähernd 1/3 betragen und `var(s)` müsste ungefähr gleich `2/9n` sein:
+
+```{r}
+mean(s)
+var(s) - 2 / (9*n)
+```
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+c) Erzeugen Sie den Vektor `s`, ohne die Funktion `replicate()` zu benutzen 
+(Hinweis: `sapply()`).
+
+
+Mithilfe eines Histogramms können wir die Mittelwerte `s` visualisieren:
+
+```{r plot-geom-dens4, fig.cap="(ref:geom_dens4)"}
+df <- data.frame(x=s) 
+# Zeichne Histogramm
+ggplot(df, aes(x, stat(density))) + 
+  geom_histogram(bins = 8, alpha = 0.4) +  
+  geom_density(color = "blue", size = 1.2)+
+  labs(title = "Konvergenz gegen die Normalverteilung?", 
+       subtitle ="anzahl=50, n=300,  J. Willms") +
+  theme_bw()
+```
+
+(ref:geom_dens4) Histogramm von `s`.
+
+Die mit `n` multiplizierten so erzeugten `s`-Werte sind binomialverteilt. Nach dem zentralen Grenzwertsatz kann für große `n` diese Binomialverteilung durch eine Normalverteilung approximiert werden. Also fügen wir im Plot in einer zusätzlichen Ebene als Vergleich die Dichte der entsprechenden Normalverteilung hinzu. In unserem Fall ist dies die Normalverteilung `N(n/3; 2/9n)`. 
+
+**Beantworten Sie folgende Frage:**
+
+d) Wieso `n/3` und `2/9n`?
+
+
+Um flexibler zu sein, kapseln wir die Zeichenbefehle in einer Funktion:
+
+```{r}
+zeichne <- function(df, nGruppen, n=300){
+  supStr <- sprintf("anzahl=%d, n=300,  J. Willms", length(df$x)) 
+  p <- ggplot(df, aes(x)) +
+    geom_histogram(aes(x, stat(density)), bins=nGruppen, alpha=0.4)+
+    geom_density(color="blue", size =1.2) +
+    labs(title = "Konvergenz gegen die Normalverteilung?", subtitle = supStr) +
+    stat_function(fun = dnorm, args= list(mean=1/3, sd=sqrt(2/(9*n))), 
+                  colour = "red", size = 1.1) +
+    theme_bw()
+  return(p)
+}
+```
+
+Da der Untertitel angepasst werden muss, entspricht er dem `char`-vektor `subStr`, der mithilfe der Funktion `sprintf()` gemäß den übergebenen Argumenten gesetzt wird. `sprintf()` wird anlog wie die C-Funktion `sprintf()` (und somit auch wie `printf()`) aufgerufen. 
+
+Vergleichen wollen wir nun für die Anzahl 50 und die Anzahl 2000 die entsprechenden Histogramme (mit der Anzahl der Gruppen von 10 und 18), die durch folgende Anweisungen erzeugt werden:
+
+```{r annaeh-norm-plot, fig.cap="(ref:annaeh-norm)"}
+set.seed(1)  
+n <- 300
+x <- sample(c(0,0,1),n, replace = TRUE)
+Anzahl <- 50    # gibt an, wie oft sn realisiert werden soll 
+s <- replicate(Anzahl, sum(sample(c(0,0,1),n, replace = TRUE))/n)
+df <- data.frame(x=s)  
+z1 <- zeichne(df,10,n)
+
+set.seed(1)  
+n <- 300
+x <- sample(c(0,0,1),n, replace = TRUE)
+Anzahl <- 2000    # gibt an, wie oft sn realisiert werden soll 
+s <- replicate(Anzahl, sum(sample(c(0,0,1),n, replace = TRUE))/n)
+df <- data.frame(x=s)  
+z2 <- zeichne(df,18,n)
+gridExtra::grid.arrange(z1, z2, ncol = 2)
+```
+
+(ref:annaeh-norm) Annäherung an die Normalverteilung.
+
+Abbildung \ref{fig:annaeh-norm-plot} zeigt in der Tat, dass die beiden Verteilungen recht gut durch die Normalverteilung 
+`N(n/3; 2/9n)` approximiert werden können.
+
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+e) Für $n= 2,3,4,5$ überprüfen Sie in ähnlicher Weise durch eine Simulation, wie sich die Summe $n$ identisch verteilter und unabhängiger Zufallsvariablen verhält, die `N(0; 1)` verteilt sind.
+
+## Quantilplot
+
+Ein *Quantilplot* (siehe z.B. [@Kockelkorn2012, S. 173]) bietet die Möglichkeit, zwei Verteilungen auf Gleichheit visuell zu überprüfen. In einem Quantilplot werden die jeweiligen $\alpha$-Quantile zweier Verteilungen in einem Koordinatensystem gegeneinander aufgetragen. Liegen die gezeichneten Punkte annähernd auf einer Geraden, dann liegt die Vermutung nahe, dass es sich um ähnliche Verteilungen handelt. Wir wollen sogenannte $NP-Plots$ benutzen, die eine Verteilung mit der Normalverteilung vergleichen.
+
+Als einführendes Beispiel wollen wir einen Datensatz verwenden, von dem wir wissen, dass er `N(4; 4)`-verteilt ist.
+
+Wir erhalten folgenden NP-Plot:
+
+```{r NP-plot, fig.cap="(ref:NPplot)"}
+set.seed(0)  
+s <- rnorm(400 ,mean=4, sd=2)  # N(4;4)-verteilt
+ggplot(data.frame(s), aes(sample = s)) +
+  stat_qq() + stat_qq_line()  +
+  labs(title = "NP-PLot", subtitle = "N(4;4)-verteilt")
+```
+
+(ref:NPplot) NP-Plot von `N(4; 4)` verteilten Daten.
+
+Im Idealfall müssten alle Punkte auf einer Geraden liegen. Unser Beispiel ist „zufällig“ recht schlecht: Werden in unserem konkreten Beispiel andere „Seed“-Werte als 0 gewählt, ergeben sich sehr oft bessere Übereinstimmungen. Abweichungen finden sich im Allgemeinen häufig bei sehr kleinen oder sehr großen Quantil-Werten. Eine bessere Übereinstimmung erhält man in der Regel auch, wenn die Anzahl der Daten erhöht wird. 
+
+Aus dem y-Achsenabschnitt der eingezeichneten Geraden kann der Erwartungswert und aus der Steigung der Geraden kann die Streuung der theoretisch ermittelten Normalverteilung, die am „besten“ zu dem Datensatz passt, abgelesen werden. Unabhängig vom „Seed“ sollten in unserem Beispiel stets ungefähr 1/3 als Erwartungswert und 2 als Steigung abzulesen sein.
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+f) Erstellen Sie für unterschiedliche Seeds und unterschiedliche Datensatzgrößen entsprechende NP-Plots für Daten, die `N(2; 9)`-verteilt sind.
+
+Als Nächstes wollen wir die Daten aus dem letzten Kapitel durch einen NP-Plot visualisieren.
+
+```{r np-plot2, fig.cap="(ref:np-plot-2)"}
+set.seed(1)  
+n <- 300
+x <- sample(c(0,0,1),n, replace = TRUE) 
+s50 <- replicate(50, sum(sample(c(0,0,1),n, replace = TRUE))/n)
+ggplot(data.frame(s50), aes(sample = s50))+
+  stat_qq() + stat_qq_line() +
+  labs(title = "NP-PLot", subtitle = "Anzahl=50")
+```
+
+(ref:np-plot-2) NP-Plot mit 50 Werten.
+
+Unabhängig vom „Seed“ sollten stets ungefähr 1/3 als Erwartungswert und $\sqrt{(2⁄9n)}$  (ca. 0.027 für den benutzten Wert `n`= 300) als Steigung abzulesen sein. Ein ähnliches Bild ergibt sich auch für den zweiten Datensatz aus dem vorherigen Kapitel:
+
+```{r np-plot3, fig.cap="(ref:np-plot-3)"}
+set.seed(1) 
+x <- sample(c(0,0,1),n, replace = TRUE) 
+s2000 <- replicate(2000, sum(sample(c(0,0,1),n, replace = TRUE))/n)
+ggplot(data.frame(s2000), aes(sample = s2000))+
+  stat_qq() + stat_qq_line() +
+  labs(title = "NP-PLot", subtitle = "Anzahl=2000")
+```
+
+(ref:np-plot-3) NP-Plot mit 2000 Werten.
+
+
+## Fallstudie 4
+
+### Aufgabe 1
+
+In dieser Fallstudie wollen wir uns mit dem Import von Daten beschäftigen. Weiterführende Ausführungen zu diesem Thema finden Sie im Kapitel „11 Data import“ in @Wickhamny.
+
+Genauer wollen wir uns mit folgender Aufgabenstellung beschäftigen:
+
+Gegeben ist die CSV-Datei „*diamonds100.csv*“, deren erste Zeilen wie folgt lauten:
+
+
+
+
+**Beantworten Sie folgende Frage:**
+
+a)	Was bedeuten `<dbl>`, `<ord>`, `<int>` und `<lgl>` in der obigen Ausgabe?  
+Wie im Datensatz `diamonds` sind die geordneten Level der einzelnen Faktoren:
+
+
+Damit Sie leicht Ihre importierten Daten mit den ursprünglichen Daten abgleichen können, zeigen wir im nächsten Kapitel zu Kontrollzwecken, wie die Daten ursprünglich erzeugt wurden. In Kapitel 3 zeigen wir mögliche Lösungswege auf.
