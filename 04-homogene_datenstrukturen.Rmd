@@ -876,7 +876,7 @@ str(mnist)
 object.size(mnist)
 ```
 
-zu entnehmen sind, wurden Trainings- und Testdaten der MNIST-Datensammlung (siehe z.B. https://en.wikipedia.org/wiki/MNIST_database) (ca. 220 MB) importiert. [@dslabs] Im Folgenden werden wir die Trainingsdaten betrachten, die aus 60,000 Grauwertbildern bestehen, die die Ziffern von 0 bis 9 in ganz unterschiedlichen handgeschriebenen Varianten zeigen. Jedes Grauwertbild besteht aus 28×28 Pixeln und jeder Pixelwert liegt zwischen 0 und 255. Die Dimensionswerte geben dabei die Pixelpositionen im entsprechenden Bild an. Die MNIST-Datensammlung wird sehr häufig als Referenzbeispiel für Machine-Learning-Algorithmen benutzt.
+zu entnehmen sind, wurden Trainings- und Testdaten der MNIST-Datensammlung (siehe z.B. https://en.wikipedia.org/wiki/MNIST_database) (ca. 220 MB) importiert. [@dslabs] Im Folgenden werden wir die Trainingsdaten betrachten, die aus 60.000 Grauwertbildern bestehen und die die Ziffern von 0 bis 9 in ganz unterschiedlichen handgeschriebenen Varianten zeigen. Jedes Grauwertbild besteht aus 28×28 Pixeln und jeder Pixelwert liegt zwischen 0 und 255. Die Dimensionswerte geben dabei die Pixelpositionen im entsprechenden Bild an. Die MNIST-Datensammlung wird sehr häufig als Referenzbeispiel für Machine-Learning-Algorithmen benutzt.
 
 ```{r}
 # Jede Zeile ist ein 28x28 Pixel Bild
@@ -884,18 +884,38 @@ m1 <- matrix(mnist$train$images[1,], nrow = 28, ncol = 28, byrow = T)
 m2 <- matrix(mnist$train$images[2,], nrow = 28, ncol = 28, byrow = T)
 ```
 
+```{r}
+m1
+```
+
+
 Es ist in R nicht schwer, einzelne Bilder anzuzeigen. Mithilfe der Funktion `as.raster()` können Bilddaten in ein entsprechendes Raster-Objekt umgewandelt werden, das mit der Funktion `plot()` angezeigt werden kann: 
 
-```{r}
+```{r, out.width="50%", fig.cap="(ref:ziffer5)"}
 plot(as.raster(m1, max = 255))
+```
+
+(ref:ziffer5) Grauwertbild der Ziffer 5.
+
+```{r, out.width="50%", fig.cap="(ref:mziffer0)"}
 plot(as.raster(m2, max = 255))
 ```
+
+(ref:ziffer0) Grauwertbild der Ziffer 0.
+
 Das erste Bild zeigt die Ziffer 5, während das zweite die Ziffer 0 darstellt. Wie erhält man die folgenden zwei Bilder?
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, out.width="50%", fig.cap="(ref:mziffer5)"}
 plot(as.raster(255 - m1, max = 255))
+```
+
+(ref:mziffer5) *Modifiziertes* Grauwertbild der Ziffer 5.
+
+```{r, echo = FALSE, out.width="50%", fig.cap="(ref:mziffer0)"}
 plot(as.raster(255 - m2, max = 255))
 ```
+
+(ref:mziffer0) *Modifiziertes* Grauwertbild der Ziffer 0.
 
 Die Antwort ist einfach. Dank Recycling kann man schreiben:
 
@@ -1261,4 +1281,3 @@ Was wird dann durch die Funktionsaufrufe `apply(A, 1, function(x) {b[x]})` und `
 > -	`substring()`
 > -	`par()`
 > -	`paste()`
-
