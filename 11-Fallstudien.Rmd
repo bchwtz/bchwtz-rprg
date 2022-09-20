@@ -105,14 +105,14 @@ plotZiffer <- function(ziffern, zeile){
 }
 ```
 
-```{r plot-zif, fig.cap="(fig:plot-ziffern)"}
+```{r plot-zif, fig.cap="(ref:plot-ziffern)"}
 par(mfrow = c(3, 3))
 for(z in 1:9){ # Plotten der ersten neun Ziffern
   plotZiffer(ziffern, z)
 }
 ```
 
-(fig:plot-ziffern) Plots der ersten neun Ziffern aus dem Ziffern-Trainingsdatensatz [@dslabs].
+(ref:plot-ziffern) Plots der ersten neun Ziffern aus dem Ziffern-Trainingsdatensatz [@dslabs].
 
 Bislang haben wir außer Acht gelassen, dass der Trainings- und Testdatensatz jeweils aus einem eindimensionalen Array namens `labels` bestehen. In `labels` ist gespeichert, welche der zehn Ziffern von den jeweiligen Bildern dargestellt werden.
 Das x-te Bild (also `mnist$train$images[x,]`) stellt die Ziffer `labels[x]` dar. Also stellen die ersten neun Bilder die Ziffern 5, 0, 4, 1, 9, 2, 1, 3 und 1 während die letzten neun Bilder die Ziffern 2, 9, 5, 1, 8, 3, 5, 6 und 8 darstellen. Vergleichen Sie die Werte von `labels` mit der vorherigen Abbildung.
@@ -139,14 +139,14 @@ c) Extrahieren Sie alle Bilder der Ziffer 3. Plotten Sie die ersten neun extrahi
 ziffer3 <- ziffern[which(labels == 3),]
 ```
 
-```{r plot-zif3, fig.cap="(fig:plot-ziffer3)"}
+```{r plot-zif3, fig.cap="(ref:plot-ziffer3)"}
 par(mfrow = c(3, 3))
 for(x in 1:3){ # Plotten der ersten neun Ziffern
   plotZiffer(ziffer3, z)
 }
 ```
 
-(fig:plot-ziffer3) Plots der ersten neun extrahierten Bilder der Ziffer 3 aus dem Ziffern-Trainingsdatensatz [@dslabs].
+(ref:plot-ziffer3) Plots der ersten neun extrahierten Bilder der Ziffer 3 aus dem Ziffern-Trainingsdatensatz [@dslabs].
 
 
 ## Fallstudie 2
@@ -210,7 +210,7 @@ ggplot(data.frame(x = c(-4, 4)), aes(x)) +
 
 Statt `dnorm` hätten wir auch eine andere Funktion wie z.B. `sin` oder den Bezeichner einer selbst geschriebenen numerischen Funktion angeben können. Ähnlich leicht können mehrere Ebenen in einer Grafik gleichzeitig angezeigt werden. Als Beispiel verwenden wir die Dichten der $\chi^2$-Verteilung mit unterschiedlichen Freiheitsgraden: 
 
-```{r ggplot-chisq, fig.cap="(fig:plot-chisq)"}
+```{r ggplot-chisq, fig.cap="(ref:plot-chisq)"}
 ?dchisq 
 sizeline <- 1
 ggplot(data.frame(x = c(0, 10)), aes(x)) + 
@@ -221,11 +221,11 @@ ggplot(data.frame(x = c(0, 10)), aes(x)) +
   labs(title = "Dichten der Chi-Quadrat-Verteilungen", subtitle ="Data Science, J. Willms")
 ```
 
-(fig:plot-chisq) $\chi^2$-Verteilung mit den Freiheitsgraden $df = \{1, 2, 3, 4\}$.
+(ref:plot-chisq) $\chi^2$-Verteilung mit den Freiheitsgraden $df = \{1, 2, 3, 4\}$.
 
 Wie wir sehen, können in `stat_function()` zusätzliche Argumente für den Funktionsaufruf mithilfe des Arguments `args` in Form einer Liste übergeben werden. Das nächste Beispiel zeigt die Dichten der $t$-Verteilung :
 
-```{r ggplot-t-verteilung, fig.cap="(fig:ggplot-t)"}
+```{r ggplot-t-verteilung, fig.cap="(ref:ggplot-t)"}
 sizeline <- 1
 ggplot(data.frame(x = c(-4, 4)), aes(x)) + 
   stat_function(fun = dt, args = list(df=1), color = "cyan", size = sizeline) +
@@ -236,7 +236,7 @@ ggplot(data.frame(x = c(-4, 4)), aes(x)) +
   theme_light() 
 ```
 
-(fig:ggplot-t) Dichte der $t$-Verteilung mit den Freiheitsgraden $df = \{1, 2, 3, 4\}$.
+(ref:ggplot-t) Dichte der $t$-Verteilung mit den Freiheitsgraden $df = \{1, 2, 3, 4\}$.
 
 Im letzten Beispielplot haben wir ein anderes „Theme“ benutzt. `ggplot2()` unterstützt standardmäßig acht unterschiedliche „Themes“, mit denen die globalen Eigenschaften der Nicht-Daten-Elemente in einer Grafik gesetzt werden können (siehe `?theme` und `?theme_bw`).
 
@@ -247,3 +247,35 @@ Die $\chi^2$-Verteilung ist ein Spezialfall der Gamma-Verteilung. Zeigen Sie, da
 
 
 ### Histogramme
+
+Wir beginnen mit einem einfachen Datensatz `x`. Wir haben bereits gesehen, dass mithilfe der Funktion `hist()` ein Histogramm erstellt werden kann:
+
+```{r plot-hist, fig.cap="(ref:histplot)"}
+set.seed(1)
+x = rnorm(50)
+h <- hist(x, breaks = 10)
+h
+```
+
+(ref:histplot) Histogramm des Datensatzes `x` mittels `hist()` erzeugt.
+
+
+Als Nächstes wollen wir mithilfe von `ggplot()` ein ähnliches Histogramm erstellen und dann nacheinander weitere Ebenen in die Grafik bringen:
+
+```{r ggplot-hist, fig.cap="(ref:ggplothist)"}
+library(ggplot2)
+ggplot(data.frame(x = x), aes(x)) + 
+  geom_histogram(bins=9)   # y: count
+```
+
+
+(ref:ggplothist) Histogramm des Datensatzes `x` mittels `ggplot2` erzeugt.
+
+Überraschenderweise hat das so erzeugte Histogramm eine andere Form. Der Grund hierfür ist, dass die beiden Histogramme auf unterschiedlichen Gruppenaufteilungen basieren. Die Gestalt eines Histogramms hängt sehr wesentlich von der Anzahl der Gruppen („bins“), der einzelnen Gruppenbreiten sowie von der unteren Grenze der ersten Gruppe (bzw. von der oberen Grenze der letzten Gruppe) ab. Im Folgenden wollen wir dies anhand von Beispielen illustrieren.
+
+Mithilfe von `str(h)` sehen wir, wie die Gruppen im ersten Histogramm gebildet worden sind.
+
+```{r}
+str(h)
+```
+
