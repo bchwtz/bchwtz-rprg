@@ -420,6 +420,43 @@ knitr::include_graphics("gfx/abb13.png")
 knitr::include_graphics("gfx/abb14.png")
 ```
 
+## Einführung in die Entwicklungsumgebung von R
+
+Nachdem Sie mit viel Mühe und Zeit ein R-Skript erstellt haben, stellen Sie auf fest, dass das Ergebnis nicht dem entspricht, das Sie erwartet haben. Was tun Sie nun?
+
+In diesem Abschnitt sind einige Tipps angeführt, wie Sie Ihre Skripte auf mögliche Fehler kontrollieren und diese identifizieren können.  
+
+Wir wollen dies anhand folgenden Codes bzw. Problems beispielhaft illustrieren:
+
+Die Aufgabe besteht darin, für jedes Element des Vektors `xs` die quadrierte Abweichung vom Mittelwert zu bestimmen. Folglich wird als Ergebnis ein Vektor erwartet, den wir `v` nennen.
+
+Wird der folgende Code ausgeführt, erhalten wir allerdings keinen Vektor sondern nur einen Wert. Wo liegt der Fehler?
+
+```{r}
+set.seed(1)
+x <- 1:1000
+xs <- sample(x, size = 20, replace = TRUE)
+n <- length(xs)
+xquer <- mean(xs)
+
+v <- c()
+for(idx in 1:n){
+  browser()
+  y <- (xs[idx] - xquer)^2 
+  v <- y 
+}
+
+v
+```
+
+**Tipps zur Fehleridentifizierung:**
+
+1. Oft haben Sie mehrere R-Skripte parallel oder seriell geöffnet. Folglich kann es sein, dass in Ihrer *Environment* (*Umgebung*) bereits einige Objekte definiert sind. Um zu kontrollieren, ob Objekte *einfach nur* überschrieben wurden und der Fehler möglicherweise gar nicht in Ihrem Skript liegt, leeren Sie die *Environment* und führen Sie Ihr Skript bzw. Ihren Code erneut aus: Klicken Sie dafür auf das *Besen*-Symbol (in Abbildung xx orange umrandet) (*Clear objects from the workspace*). Bestätigen Sie die folgende Meldung mit "Yes" und Ihre *Environment* ist leer.
+
+```{r, echo=FALSE, fig.cap="Workspace bzw. Environment leeren.", out.width="80%"}
+knitr::include_graphics("gfx/abb_clear_workspace.PNG")
+```
+
 **Kurzzusammenfassung**
 
 > - Anweisung versus Befehl
