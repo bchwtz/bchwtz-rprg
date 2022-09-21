@@ -719,21 +719,21 @@ Figure 2.4: Plot in RStudio.
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>In R sind bereits viele Funktionen zu häufig verwendeten Wahrscheinlichkeitsverteilungen implementiert. Exemplarisch wollen wir an dieser Stelle die Funktionen <code>rnorm()</code> und <code>runif()</code> betrachten (siehe <code>?rnorm</code> und <code>?runif</code>). Beide Funktionen geben Pseudozufallszahlen gemäß der Normalverteilung bzw. der Gleichverteilung zurück. Werden keine weiteren Argumente spezifiziert, dann wird bei der Normalverteilung Mittelwert 0 und Standardabweichung 1 angenommen; entsprechend gibt <code>rnorm(n)</code> einen Vektor mit <code>n</code> normalverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="erste-schritte.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] -1.38199223  0.34181165  2.20984724 -0.04670422 -1.19862061 -0.50509700
-##  [7] -0.84757424  0.32015739  1.29708352  0.46524203</code></pre>
+<pre><code>##  [1] -0.5698536 -1.4142474 -0.2722982  0.3136468 -1.0675202  0.2594085
+##  [7]  0.9937556  0.3204992  0.2701940  0.7270655</code></pre>
 <p>Bei der Gleichverteilung wird standardmäßig vom Intervall [0,1] ausgegangen; entsprechend gibt <code>runiform(n)</code> einen Vektor mit <code>n</code> in [0,1] gleichverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="erste-schritte.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.6951629 0.3784047 0.5697966 0.4837763 0.7860129 0.3926804 0.8788023
-##  [8] 0.3534190 0.3303330 0.9031942</code></pre>
+<pre><code>##  [1] 0.94996629 0.63592940 0.25244094 0.81330965 0.96966561 0.80766723
+##  [7] 0.96352003 0.19151029 0.54953501 0.07868698</code></pre>
 <p>Wenn wir im Folgenden von erzeugten Zufallszahlen (oder zufälligen Werten) sprechen, dann meinen wir stets <em>Pseudozufallszahlen</em>.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="erste-schritte.html#cb93-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
 <span id="cb93-2"><a href="erste-schritte.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
-<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -3.27624 -0.72839 -0.06193 -0.05911  0.65146  2.80145</code></pre>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## -3.285382 -0.696008  0.006297 -0.013298  0.653151  3.670281</code></pre>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="erste-schritte.html#cb95-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>)</span>
 <span id="cb95-2"><a href="erste-schritte.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
-<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## -3.974121 -0.663976  0.008114  0.011250  0.675290  3.605979</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -3.83919 -0.68839 -0.01437 -0.01846  0.64812  4.00931</code></pre>
 <p>Um zu prüfen, ob die erzeugten Zufallszahlen einer Normalverteilung genügen, können wir als ersten Test ein Histogramm erzeugen:</p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="erste-schritte.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
@@ -747,12 +747,12 @@ Figure 2.4: Plot in RStudio.
 <p>Das Gleiche wollen wir mit zufällig erzeugten gleichverteilten Werten wiederholen:</p>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="erste-schritte.html#cb100-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
 <span id="cb100-2"><a href="erste-schritte.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
-<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## 0.0005497 0.2610273 0.5004548 0.5059753 0.7579215 0.9990064</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.001401 0.235070 0.495631 0.496296 0.759019 0.998439</code></pre>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="erste-schritte.html#cb102-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10000</span>)</span>
 <span id="cb102-2"><a href="erste-schritte.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
 <pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## 0.0001098 0.2429858 0.4953051 0.4949168 0.7470500 0.9999669</code></pre>
+## 0.0001157 0.2491044 0.5004831 0.5000070 0.7513736 0.9997117</code></pre>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="erste-schritte.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="erste-schritte.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x, <span class="at">breaks =</span> <span class="dv">100</span>)</span></code></pre></div>
@@ -787,8 +787,8 @@ Figure 2.6: Zusätzlicher Editor-Bereich in R-Studio.
 </div>
 <div id="einführung-in-die-entwicklungsumgebung-von-r" class="section level2 hasAnchor" number="2.8">
 <h2><span class="header-section-number">2.8</span> Einführung in die Entwicklungsumgebung von R<a href="erste-schritte.html#einführung-in-die-entwicklungsumgebung-von-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Nachdem Sie mit viel Mühe und Zeit ein R-Skript erstellt haben, stellen Sie auf fest, dass das Ergebnis nicht dem entspricht, das Sie erwartet haben. Was tun Sie nun?</p>
-<p>In diesem Abschnitt sind einige Tipps angeführt, wie Sie Ihre Skripte auf mögliche Fehler kontrollieren und diese identifizieren können.</p>
+<p>Nachdem Sie mit viel Mühe und Zeit ein R-Skript erstellt haben, stellen Sie fest, dass das Ergebnis nicht dem entspricht, das Sie erwartet haben. Was tun Sie nun?</p>
+<p>In diesem Abschnitt sind einige Tipps angeführt, wie Sie Ihre Skripte auf mögliche Fehler kontrollieren und diese ggf. identifizieren können.</p>
 <p>Wir wollen dies anhand folgenden Codes bzw. Problems beispielhaft illustrieren:</p>
 <p>Die Aufgabe besteht darin, für jedes Element des Vektors <code>xs</code> die quadrierte Abweichung vom Mittelwert zu bestimmen. Folglich wird als Ergebnis ein Vektor erwartet, den wir <code>v</code> nennen.</p>
 <p>Wird der folgende Code ausgeführt, erhalten wir allerdings keinen Vektor sondern nur einen Wert. Wo liegt der Fehler?</p>
