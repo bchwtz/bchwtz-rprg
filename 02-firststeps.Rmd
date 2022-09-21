@@ -458,8 +458,77 @@ knitr::include_graphics("gfx/abb_clear_workspace.PNG")
 
 In unserem Beispiel hat das Leeren der *Environment* und das erneute Ausführen des Skripts zu keiner Fehlerbehebung geführt. 
 
-2. 
+2. Wir vermuten, dass der Fehler innerhalb der `for`-Schleife liegt. Folglich würde es uns helfen, wenn wir die Schleife schrittweise durchlaufen und überprüfen würden, weshalb die einzelnen ermittelten quadratischen Abweichungen nicht in Form eines Vektors gespeichert werden. Dies erreichen wir, indem wir einen *Breakpoint* in unserer Schleife z.B. mittels `browser()` wie folgt setzen [@McPherson2022]:
 
+```{r, eval=FALSE}
+set.seed(1)
+x <- 1:1000
+xs <- sample(x, size = 20, replace = TRUE)
+n <- length(xs)
+xquer <- mean(xs)
+
+v <- c()
+for(idx in 1:n){
+  browser() # Breakpoint setzen
+  y <- (xs[idx] - xquer)^2 
+  v <- y 
+}
+
+v
+```
+
+Das im Folgenden beschriebene Vorgehen sowie weitere hilfreiche Tipps und Alternativen zum Thema *Debugging* sind @McPherson2022 zu entnehmen.
+Klicken wir dann auf *Source*, wird die Funktion `browser()` gelb markiert und ein grüner Pfeil erscheint am linken Rand:
+
+```{r abb-debug1, echo=FALSE, fig.cap="(ref:debug-browser)", out.width="60%"}
+knitr::include_graphics("gfx/abb_browser_function.PNG")
+```
+
+(ref:debug-browser) Debugging mithilfe der Funktion `browser()`.
+
+Darüber hinaus
+
++ öffnet sich ein Feld namens *Traceback* und 
+
++ in der Konsole erscheint eine Leiste mit Optionen wie *Next*, *Stop* etc., die uns den *Debugging-Modus* anzeigen.
+
+Die einfachste Möglichkeit, um die `for`-Schleife schrittweise zu durchlaufen, besteht im Drücken der `Enter`-Taste. Dadurch *wandern* das gelbe Feld und der grüne Pfeil nach unten. Auf die Werte der Variablen - in unserem Beispiel `idx`, `y` und `v` kann zugegriffen werden, indem diese über die  *Console* abgefragt über die *Environment* mitverfolgt werden (siehe Abbildung \ref{fig:abb-debug2}). In der Abbildung \ref{fig:abb-debug2} wurde die Schleife ein Mal vollständig durchlaufen, sodass `idx` nun den Wert `2` annimmt (siehe *Environment*).
+
+```{r abb-debug2, echo=FALSE, fig.cap="(ref:debug-browser2)", out.width="60%"}
+knitr::include_graphics("gfx/abb_browser_function2.PNG")
+```
+
+(ref:debug-browser2) Vollständiges Durchlaufen der `for`-Schleife für `idx = 1` und Zugriff auf die Zwischenwerte, die die Variablen `idx`, `y` und `v` annehmen.
+
+Weiterhin sehen wir in der Abbildung \ref{fig:abb-debug2}, dass `v` aus einem Wert besteht, was wir erwarten, da bislang nur die quadratische Abweichung vom Mittelwert des ersten Elements des Vektors `xs` bestimmt wurde. Die Werte `v` und `y` sind somit identisch.
+
+Durchlaufen wir die Schleife ein weiteres Mal (siehe Abbildung \ref{fig:abb-debug3}) sehen wir erneut, dass `v` und `y` identisch sind, wohingegen wir erwarten würden, dass `v` nun zwei Werte enthält, da wir die quadratische Abweichung vom Mittelwert bislang für zwei Werte bestimmt haben.
+
+```{r abb-debug3, echo=FALSE, fig.cap="(ref:debug-browser3)", out.width="60%"}
+knitr::include_graphics("gfx/abb_browser_function3.PNG")
+```
+
+(ref:debug-browser3) Vollständiges Durchlaufen der `for`-Schleife für `idx = 1` und `idx = 2` und Zugriff auf die Zwischenwerte, die die Variablen `idx`, `y` und `v` annehmen.
+
+Daraus können wir schließen, dass der Vektor `v` **nicht** nach jedem Durchlauf der `for`-Schleife *verlängert* wird, weshalb wir den Code wie folgt abändern müssen:
+
+```{r, eval=FALSE}
+set.seed(1)
+x <- 1:1000
+xs <- sample(x, size = 20, replace = TRUE)
+n <- length(xs)
+xquer <- mean(xs)
+
+v <- c()
+for(idx in 1:n){
+  y <- (xs[idx] - xquer)^2 
+  v <- c(v, y) 
+}
+
+v
+```
+
+Für einige mag das Problem bei diesem Code vielleicht sofort offensichtlich gewesen sein. Liegt Ihnen jedoch ein viel umfangreicherer Code vor, so ist dieses Problem nicht sofort offensichtlich und *Debugging* ist ein hilfreiches Tool.
 
 **Kurzzusammenfassung**
 
