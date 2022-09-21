@@ -719,21 +719,21 @@ Figure 2.4: Plot in RStudio.
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>In R sind bereits viele Funktionen zu häufig verwendeten Wahrscheinlichkeitsverteilungen implementiert. Exemplarisch wollen wir an dieser Stelle die Funktionen <code>rnorm()</code> und <code>runif()</code> betrachten (siehe <code>?rnorm</code> und <code>?runif</code>). Beide Funktionen geben Pseudozufallszahlen gemäß der Normalverteilung bzw. der Gleichverteilung zurück. Werden keine weiteren Argumente spezifiziert, dann wird bei der Normalverteilung Mittelwert 0 und Standardabweichung 1 angenommen; entsprechend gibt <code>rnorm(n)</code> einen Vektor mit <code>n</code> normalverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="erste-schritte.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] -0.5698536 -1.4142474 -0.2722982  0.3136468 -1.0675202  0.2594085
-##  [7]  0.9937556  0.3204992  0.2701940  0.7270655</code></pre>
+<pre><code>##  [1] -0.3254982 -0.8374982  0.9493234 -1.4628598 -0.3023672  0.9686261
+##  [7]  1.3382131 -0.5355118  2.2084785  1.3897880</code></pre>
 <p>Bei der Gleichverteilung wird standardmäßig vom Intervall [0,1] ausgegangen; entsprechend gibt <code>runiform(n)</code> einen Vektor mit <code>n</code> in [0,1] gleichverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="erste-schritte.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.94996629 0.63592940 0.25244094 0.81330965 0.96966561 0.80766723
-##  [7] 0.96352003 0.19151029 0.54953501 0.07868698</code></pre>
+<pre><code>##  [1] 0.84206725 0.47120974 0.75604978 0.66014576 0.27971617 0.25225203
+##  [7] 0.91597530 0.89529341 0.54422688 0.09335784</code></pre>
 <p>Wenn wir im Folgenden von erzeugten Zufallszahlen (oder zufälligen Werten) sprechen, dann meinen wir stets <em>Pseudozufallszahlen</em>.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="erste-schritte.html#cb93-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
 <span id="cb93-2"><a href="erste-schritte.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
-<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## -3.285382 -0.696008  0.006297 -0.013298  0.653151  3.670281</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -3.16024 -0.71133 -0.06671 -0.02967  0.62292  3.67946</code></pre>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="erste-schritte.html#cb95-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>)</span>
 <span id="cb95-2"><a href="erste-schritte.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
-<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -3.83919 -0.68839 -0.01437 -0.01846  0.64812  4.00931</code></pre>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## -4.003860 -0.706374 -0.004504 -0.012686  0.665946  3.781315</code></pre>
 <p>Um zu prüfen, ob die erzeugten Zufallszahlen einer Normalverteilung genügen, können wir als ersten Test ein Histogramm erzeugen:</p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="erste-schritte.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
@@ -747,12 +747,12 @@ Figure 2.4: Plot in RStudio.
 <p>Das Gleiche wollen wir mit zufällig erzeugten gleichverteilten Werten wiederholen:</p>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="erste-schritte.html#cb100-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
 <span id="cb100-2"><a href="erste-schritte.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
-<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## 0.001401 0.235070 0.495631 0.496296 0.759019 0.998439</code></pre>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## 0.0002063 0.2301632 0.5016229 0.4969985 0.7585430 0.9998670</code></pre>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="erste-schritte.html#cb102-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10000</span>)</span>
 <span id="cb102-2"><a href="erste-schritte.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
 <pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## 0.0001157 0.2491044 0.5004831 0.5000070 0.7513736 0.9997117</code></pre>
+## 0.0000512 0.2535743 0.5008109 0.5000647 0.7503488 0.9998283</code></pre>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="erste-schritte.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="erste-schritte.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x, <span class="at">breaks =</span> <span class="dv">100</span>)</span></code></pre></div>
@@ -800,82 +800,26 @@ Figure 2.6: Zusätzlicher Editor-Bereich in R-Studio.
 <span id="cb110-6"><a href="erste-schritte.html#cb110-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb110-7"><a href="erste-schritte.html#cb110-7" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
 <span id="cb110-8"><a href="erste-schritte.html#cb110-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(idx <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
-<span id="cb110-9"><a href="erste-schritte.html#cb110-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
-<span id="cb110-10"><a href="erste-schritte.html#cb110-10" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> (xs[idx] <span class="sc">-</span> xquer)<span class="sc">^</span><span class="dv">2</span> </span>
-<span id="cb110-11"><a href="erste-schritte.html#cb110-11" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> y </span>
-<span id="cb110-12"><a href="erste-schritte.html#cb110-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<pre><code>## Called from: eval(expr, envir, enclos)
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y
-## debug at &lt;text&gt;#9: browser()
-## debug at &lt;text&gt;#10: y &lt;- (xs[idx] - xquer)^2
-## debug at &lt;text&gt;#11: v &lt;- y</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="erste-schritte.html#cb112-1" aria-hidden="true" tabindex="-1"></a>v</span></code></pre></div>
+<span id="cb110-9"><a href="erste-schritte.html#cb110-9" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> (xs[idx] <span class="sc">-</span> xquer)<span class="sc">^</span><span class="dv">2</span> </span>
+<span id="cb110-10"><a href="erste-schritte.html#cb110-10" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> y </span>
+<span id="cb110-11"><a href="erste-schritte.html#cb110-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb110-12"><a href="erste-schritte.html#cb110-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-13"><a href="erste-schritte.html#cb110-13" aria-hidden="true" tabindex="-1"></a>v</span></code></pre></div>
 <pre><code>## [1] 64872.09</code></pre>
 <p><strong>Tipps zur Fehleridentifizierung:</strong></p>
 <ol style="list-style-type: decimal">
-<li>Oft haben Sie mehrere R-Skripte parallel oder seriell geöffnet. Folglich kann es sein, dass in Ihrer <em>Environment</em> (<em>Umgebung</em>) bereits einige Objekte definiert sind. Um zu kontrollieren, ob Objekte <em>einfach nur</em> überschrieben wurden und der Fehler möglicherweise gar nicht in Ihrem Skript liegt, leeren Sie die <em>Environment</em> und führen Sie Ihr Skript bzw. Ihren Code erneut aus: Klicken Sie dafür auf das <em>Besen</em>-Symbol (in Abbildung xx orange umrandet) (<em>Clear objects from the workspace</em>). Bestätigen Sie die folgende Meldung mit “Yes” und Ihre <em>Environment</em> ist leer.</li>
+<li>Oft haben Sie mehrere R-Skripte parallel oder seriell geöffnet. Folglich kann es sein, dass in Ihrer <em>Environment</em> (<em>Umgebung</em>) bereits einige Objekte definiert sind. Um zu kontrollieren, ob Objekte <em>einfach nur</em> überschrieben wurden und der Fehler möglicherweise gar nicht in Ihrem Skript bzw. in Ihrer Programmierung liegt, leeren Sie die <em>Environment</em> und führen Sie Ihr Skript bzw. Ihren Code erneut aus: Klicken Sie dafür auf das <em>Besen</em>-Symbol (in Abbildung <span class="math inline">\(\ref{fig:abb-workspace}\)</span> orange umrandet) (<em>Clear objects from the workspace</em>). Bestätigen Sie die anschließende Meldung mit “Yes” und Ihre <em>Environment</em> ist leer. Führen Sie Ihr Skript erneut aus.</li>
 </ol>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-48"></span>
-<img src="gfx/abb_clear_workspace.PNG" alt="Workspace bzw. Environment leeren." width="80%" />
+<div class="figure"><span style="display:block;" id="fig:abb-workspace"></span>
+<img src="gfx/abb_clear_workspace.PNG" alt="Workspace bzw. Environment leeren." width="60%" />
 <p class="caption">
 Figure 2.7: Workspace bzw. Environment leeren.
 </p>
 </div>
+<p>In unserem Beispiel hat das Leeren der <em>Environment</em> und das erneute Ausführen des Skripts zu keiner Fehlerbehebung geführt.</p>
+<ol start="2" style="list-style-type: decimal">
+<li></li>
+</ol>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
 <ul>
@@ -1149,10 +1093,10 @@ Figure 2.7: Workspace bzw. Environment leeren.
 </tbody>
 </table></li>
 <li><p>Gegeben ist:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="erste-schritte.html#cb114-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>)</span>
-<span id="cb114-2"><a href="erste-schritte.html#cb114-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dv">7</span>) </span>
-<span id="cb114-3"><a href="erste-schritte.html#cb114-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(x, y, <span class="dv">17</span>)</span>
-<span id="cb114-4"><a href="erste-schritte.html#cb114-4" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(z, z)</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="erste-schritte.html#cb112-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>)</span>
+<span id="cb112-2"><a href="erste-schritte.html#cb112-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dv">7</span>) </span>
+<span id="cb112-3"><a href="erste-schritte.html#cb112-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(x, y, <span class="dv">17</span>)</span>
+<span id="cb112-4"><a href="erste-schritte.html#cb112-4" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(z, z)</span></code></pre></div>
 <p>Was wird ausgegeben und wieso?</p>
 <ul>
 <li><code>x</code></li>
