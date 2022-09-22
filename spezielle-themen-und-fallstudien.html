@@ -342,6 +342,13 @@ div.csl-indent {
 <li class="chapter" data-level="7.4.2" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#aufgabe-2-4"><i class="fa fa-check"></i><b>7.4.2</b> Aufgabe 2</a></li>
 <li class="chapter" data-level="7.4.3" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#aufgabe-3-4"><i class="fa fa-check"></i><b>7.4.3</b> Aufgabe 3</a></li>
 </ul></li>
+<li class="chapter" data-level="7.5" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-5"><i class="fa fa-check"></i><b>7.5</b> Fallstudie 5</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#shapiro-wilk-test"><i class="fa fa-check"></i><b>7.5.1</b> Shapiro-Wilk-Test</a></li>
+<li class="chapter" data-level="7.5.2" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#funktionen-zur-mehrfachen-wiederholung-des-shapiro-wilk-tests"><i class="fa fa-check"></i><b>7.5.2</b> Funktionen zur mehrfachen Wiederholung des Shapiro-Wilk-Tests</a></li>
+<li class="chapter" data-level="7.5.3" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#testgüte-des-shapiro-wilk-tests-bei-gleichverteilung"><i class="fa fa-check"></i><b>7.5.3</b> Testgüte des Shapiro-Wilk-Tests bei Gleichverteilung</a></li>
+<li class="chapter" data-level="7.5.4" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#vergleich-mit-dem-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>7.5.4</b> Vergleich mit dem Kolmogorov-Smirnov-Test</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i>System Info</a></li>
@@ -1054,6 +1061,199 @@ Figure 7.20: NP-Plot mit 2000 Werten.
 <li><p>Speichern Sie den modifizierten Datensatz als CSV-Datei mit dem Namen “Diamonds50_modified.csv”. Nutzen Sie die Funktion <code>write.csv()</code>. Welche Argumente müssen Sie definieren?</p></li>
 <li><p>Lesen Sie die Datei “Diamonds50_modified.csv” in R ein. Entspricht die eingelesene Datei der gespeicherten Datei?</p></li>
 </ol>
+</div>
+</div>
+<div id="fallstudie-5" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Fallstudie 5<a href="spezielle-themen-und-fallstudien.html#fallstudie-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="shapiro-wilk-test" class="section level3 hasAnchor" number="7.5.1">
+<h3><span class="header-section-number">7.5.1</span> Shapiro-Wilk-Test<a href="spezielle-themen-und-fallstudien.html#shapiro-wilk-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In dieser Fallstudie wollen wir zuerst exemplarisch auf den Shapiro-Wilk-Test eingehen. Der Shapiro-Wilk-Test ist ein statistischer Signifikanztest, der die Hypothese überprüft, ob eine Normalverteilung vorliegt.</p>
+<p>Die <em>Nullhypothese</em> <span class="math inline">\(H_0\)</span> lautet: <em>Die Daten der Grundgesamtheit sind normalverteilt.</em> Die Alternativhypothese <span class="math inline">\(H_1\)</span> lautet somit: <em>Die Daten der Grundgesamtheit sind nicht normalverteilt.</em></p>
+<p>Als <em>Signifikanzniveau</em> wählen wir zunächst <span class="math inline">\(\alpha = 0.05\)</span> (Dies ist ein üblicher, aber trotzdem sehr willkürlicher Wert.).</p>
+<p>Es ist in R sehr leicht, den Shapiro-Wilk-Test durchzuführen. Viel schwieriger ist es, die richtigen Schlüsse aus den berechneten Testergebnissen zu ziehen.</p>
+<p>Zuerst wollen wir den Pseudo-Zufallsgenerator initialisieren:</p>
+<div class="sourceCode" id="cb887"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb887-1"><a href="spezielle-themen-und-fallstudien.html#cb887-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">17122019</span>)</span></code></pre></div>
+<p>Als Nächstes wollen wir eine Stichprobe bestehend aus 40 Elementen aus einer normalverteilen Grundgesamtheit testen:</p>
+<div class="sourceCode" id="cb888"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb888-1"><a href="spezielle-themen-und-fallstudien.html#cb888-1" aria-hidden="true" tabindex="-1"></a>stichprobe <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">5</span>, <span class="at">sd =</span> <span class="dv">3</span>)</span>
+<span id="cb888-2"><a href="spezielle-themen-und-fallstudien.html#cb888-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(stichprobe)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  stichprobe
+## W = 0.97987, p-value = 0.6846</code></pre>
+<p>Wie wir sehen, ist der p-Wert recht groß; wir haben also keinen Grund, die Nullhypothese <span class="math inline">\(H_0\)</span> abzulehnen. Selbst ein großer p-Wert belegt nicht, dass <span class="math inline">\(H_0\)</span> wahr ist. Dies Aussagekraft des Ergebnisses ist also in diesem Fall recht schwach.</p>
+<p>Bei einer Stichprobe, die aus einer auf [0, 1] gleichverteilten Grundgesamtheit stammt, sollten die Testergebnisse anders aussehen:</p>
+<div class="sourceCode" id="cb890"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb890-1"><a href="spezielle-themen-und-fallstudien.html#cb890-1" aria-hidden="true" tabindex="-1"></a>stichprobe <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">40</span>)</span>
+<span id="cb890-2"><a href="spezielle-themen-und-fallstudien.html#cb890-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(stichprobe)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  stichprobe
+## W = 0.88576, p-value = 0.0007558</code></pre>
+<p>Da der p-Wert unter dem gewählten Signifikanzniveau <span class="math inline">\(\alpha\)</span> liegt, ist die Nullhypothese <span class="math inline">\(H_0\)</span> in diesem Fall abzulehnen. Wir können aber nicht ausschließen, dass <span class="math inline">\(H_0\)</span> trotzdem richtig ist! Wird <span class="math inline">\(H_0\)</span> aufgrund des Tests (fälschlicherweise) abgelehnt, obwohl <span class="math inline">\(H_0\)</span> wahr ist (Fehler 1. Art), dann repräsentiert die Stichprobe ein sehr seltenes Ereignis, das höchstens mit Wahrscheinlichkeit <span class="math inline">\(\alpha\)</span> eintritt. Daraus lässt sich aber nicht ableiten, dass die Wahrscheinlichkeit, dass <span class="math inline">\(H_0\)</span> wahr ist, kleiner als das gewählte Signifikanzniveau <span class="math inline">\(\alpha\)</span> ist (Leider wird dieser Schluss fälschlicherweise sehr oft gezogen.).</p>
+<p>Im Folgenden sehen wir, dass die Funktion <code>shapiro.test()</code> eine Liste mit vier Elementen zurückgibt und dass <code>p.value</code> dem p-Wert entspricht:</p>
+<div class="sourceCode" id="cb892"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb892-1"><a href="spezielle-themen-und-fallstudien.html#cb892-1" aria-hidden="true" tabindex="-1"></a>sTest <span class="ot">&lt;-</span> <span class="fu">shapiro.test</span>(stichprobe)</span>
+<span id="cb892-2"><a href="spezielle-themen-und-fallstudien.html#cb892-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sTest)</span></code></pre></div>
+<pre><code>## List of 4
+##  $ statistic: Named num 0.886
+##   ..- attr(*, &quot;names&quot;)= chr &quot;W&quot;
+##  $ p.value  : num 0.000756
+##  $ method   : chr &quot;Shapiro-Wilk normality test&quot;
+##  $ data.name: chr &quot;stichprobe&quot;
+##  - attr(*, &quot;class&quot;)= chr &quot;htest&quot;</code></pre>
+</div>
+<div id="funktionen-zur-mehrfachen-wiederholung-des-shapiro-wilk-tests" class="section level3 hasAnchor" number="7.5.2">
+<h3><span class="header-section-number">7.5.2</span> Funktionen zur mehrfachen Wiederholung des Shapiro-Wilk-Tests<a href="spezielle-themen-und-fallstudien.html#funktionen-zur-mehrfachen-wiederholung-des-shapiro-wilk-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Wir wollen als Nächstes für unterschiedliche Stichprobengrößen ähnliche Tests mehrfach wiederholen und jeweils untersuchen, wie oft die entsprechende Nullhypothese verworfen wird. Dafür verwenden wir vier Funktionen. Die erste Funktion werden wir benutzen, um unsere erhaltenen Ergebnisdaten zu visualisieren:</p>
+<div class="sourceCode" id="cb894"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb894-1"><a href="spezielle-themen-und-fallstudien.html#cb894-1" aria-hidden="true" tabindex="-1"></a>myPlot <span class="ot">&lt;-</span> <span class="cf">function</span>(titel, nWerte, Anteil){</span>
+<span id="cb894-2"><a href="spezielle-themen-und-fallstudien.html#cb894-2" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">data.frame</span>(nWerte, Anteil), <span class="fu">aes</span>(<span class="at">x =</span> nWerte, <span class="at">y =</span> Anteil)) <span class="sc">+</span></span>
+<span id="cb894-3"><a href="spezielle-themen-und-fallstudien.html#cb894-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(titel, <span class="at">subtitle =</span> </span>
+<span id="cb894-4"><a href="spezielle-themen-und-fallstudien.html#cb894-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">expression</span>(<span class="st">&#39;H&#39;</span>[<span class="dv">0</span>]<span class="sc">*</span><span class="st">&#39;: Normalverteilung liegt vor&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb894-5"><a href="spezielle-themen-und-fallstudien.html#cb894-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="st">&#39;H&#39;</span>[<span class="dv">0</span>]<span class="sc">*</span><span class="st">&#39; verworfen&#39;</span>)) <span class="sc">+</span> </span>
+<span id="cb894-6"><a href="spezielle-themen-und-fallstudien.html#cb894-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Stichproben-Größe: n&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb894-7"><a href="spezielle-themen-und-fallstudien.html#cb894-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent)  </span>
+<span id="cb894-8"><a href="spezielle-themen-und-fallstudien.html#cb894-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(g)</span>
+<span id="cb894-9"><a href="spezielle-themen-und-fallstudien.html#cb894-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Wir haben hier den Funktionsaufruf <code>scale_y_continuous(labels = scales::percent)</code> benutzt, um die y-Achse mit den entsprechenden Prozentzahlen zu skalieren. Neu ist auch
+<code>expression('H'[0]*': Normalverteilung liegt vor'))</code>.
+Damit wird der folgende Text im Plot erzeugt: Der mit <code>[]</code> umschlossene Buchstabe wird also tiefergestellt (Um einen Buchstaben hoch zu stellen, wird <code>^</code> statt <code>[]</code> benutzt.). Auf die genaue Syntax wollen wir an dieser Stelle nicht eingehen, sondern lediglich ein weiteres Beispiel anführen, das in Abbildung <span class="math inline">\(\ref{fig:ggplot-expression}\)</span> resultiert:</p>
+<div class="sourceCode" id="cb895"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb895-1"><a href="spezielle-themen-und-fallstudien.html#cb895-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="st">&#39;Beispiel: A&#39;</span>[<span class="st">&#39;1,2&#39;</span>]<span class="sc">*</span> <span class="st">&#39; und B&#39;</span> <span class="sc">^</span><span class="st">&#39;1,2&#39;</span><span class="sc">*</span> </span>
+<span id="cb895-2"><a href="spezielle-themen-und-fallstudien.html#cb895-2" aria-hidden="true" tabindex="-1"></a>                              <span class="st">&#39; und x&#39;</span> <span class="sc">^</span> <span class="st">&#39;n&#39;</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:ggplot-expression"></span>
+<img src="bchwtz-rprg_files/figure-html/ggplot-expression-1.png" alt="Leerer Plot mit tiefer und höher gestellten Zahlen und Buchstaben im Titel." width="80%" />
+<p class="caption">
+Figure 7.21: Leerer Plot mit tiefer und höher gestellten Zahlen und Buchstaben im Titel.
+</p>
+</div>
+
+<p>Die zweite Funktion<code>pShapiro(n)</code> erzeugt in [-1,1] gleichverteilte Stichproben der Größe <code>n</code>, führt den Shapiro-Wilk-Test durch und gibt den entsprechenden p-Wert zurück. Wollen wir eine andere Wahrscheinlichkeitsverteilung zugrunde legen, dann muss diese Funktion angepasst werden.</p>
+<div class="sourceCode" id="cb896"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb896-1"><a href="spezielle-themen-und-fallstudien.html#cb896-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Shapiro-Wilk-Test</span></span>
+<span id="cb896-2"><a href="spezielle-themen-und-fallstudien.html#cb896-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Stichproben gleichverteilt</span></span>
+<span id="cb896-3"><a href="spezielle-themen-und-fallstudien.html#cb896-3" aria-hidden="true" tabindex="-1"></a><span class="co"># n: Stichprobengröße</span></span>
+<span id="cb896-4"><a href="spezielle-themen-und-fallstudien.html#cb896-4" aria-hidden="true" tabindex="-1"></a>pShapiroTest <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
+<span id="cb896-5"><a href="spezielle-themen-und-fallstudien.html#cb896-5" aria-hidden="true" tabindex="-1"></a>  stichprobe <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min=</span><span class="sc">-</span><span class="dv">1</span>, <span class="at">max=</span><span class="dv">1</span>)</span>
+<span id="cb896-6"><a href="spezielle-themen-und-fallstudien.html#cb896-6" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">shapiro.test</span>(stichprobe) </span>
+<span id="cb896-7"><a href="spezielle-themen-und-fallstudien.html#cb896-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(h<span class="sc">$</span>p.value)</span>
+<span id="cb896-8"><a href="spezielle-themen-und-fallstudien.html#cb896-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Die dritte Funktion <code>replicateTest()</code> ruft <code>nTest</code>-mal die übergebene Funktion <code>FUN(n)</code> auf und gibt den Anteil zurück, wie oft der entsprechende p-Wert unter dem Signifikanzniveau <span class="math inline">\(\alpha\)</span> gelegen hat.</p>
+<div class="sourceCode" id="cb897"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb897-1"><a href="spezielle-themen-und-fallstudien.html#cb897-1" aria-hidden="true" tabindex="-1"></a><span class="co"># n: Stichprobengröße</span></span>
+<span id="cb897-2"><a href="spezielle-themen-und-fallstudien.html#cb897-2" aria-hidden="true" tabindex="-1"></a><span class="co"># FUN: Testfunktion (Default: pShapiroTest)</span></span>
+<span id="cb897-3"><a href="spezielle-themen-und-fallstudien.html#cb897-3" aria-hidden="true" tabindex="-1"></a><span class="co"># nTest: Anzahl der Tests (Wiederholungen) </span></span>
+<span id="cb897-4"><a href="spezielle-themen-und-fallstudien.html#cb897-4" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha: entspricht dem Signifikanzniveau</span></span>
+<span id="cb897-5"><a href="spezielle-themen-und-fallstudien.html#cb897-5" aria-hidden="true" tabindex="-1"></a>replicateTest <span class="ot">&lt;-</span> <span class="cf">function</span>(n, <span class="at">FUN=</span>pShapiroTest, nTest, alpha){</span>
+<span id="cb897-6"><a href="spezielle-themen-und-fallstudien.html#cb897-6" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">replicate</span>(nTest, <span class="fu">FUN</span>(n))</span>
+<span id="cb897-7"><a href="spezielle-themen-und-fallstudien.html#cb897-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(res <span class="sc">&lt;=</span> alpha)<span class="sc">/</span>nTest)</span>
+<span id="cb897-8"><a href="spezielle-themen-und-fallstudien.html#cb897-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>In der vierten Funktion <code>testShapiro()</code> schließlich wird festgelegt:</p>
+<ul>
+<li><p>die Stichprobengröße <code>n</code></p></li>
+<li><p>welcher Test benutzt werden soll (der Defaultwert ist die Funktion <code>pShapiroTest()</code>)</p></li>
+<li><p>wie oft (bei gegebener Stichprobengröße) ein Test ausgeführt werden soll (<code>nTest</code>)</p></li>
+<li><p>das Signifikanzniveau <code>alpha</code></p></li>
+</ul>
+<p>und es wird die Funktion <code>replicateTest()</code> aufgerufen:</p>
+<div class="sourceCode" id="cb898"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb898-1"><a href="spezielle-themen-und-fallstudien.html#cb898-1" aria-hidden="true" tabindex="-1"></a>testShapiro <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
+<span id="cb898-2"><a href="spezielle-themen-und-fallstudien.html#cb898-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replicateTest</span>(n, <span class="at">FUN=</span>pShapiroTest, <span class="at">nTest=</span><span class="dv">1000</span>, <span class="at">alpha=</span><span class="fl">0.05</span>)</span>
+<span id="cb898-3"><a href="spezielle-themen-und-fallstudien.html#cb898-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="testgüte-des-shapiro-wilk-tests-bei-gleichverteilung" class="section level3 hasAnchor" number="7.5.3">
+<h3><span class="header-section-number">7.5.3</span> Testgüte des Shapiro-Wilk-Tests bei Gleichverteilung<a href="spezielle-themen-und-fallstudien.html#testgüte-des-shapiro-wilk-tests-bei-gleichverteilung" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Nun können wir sehr leicht die Testgüte des Shapiro-Wilk-Tests untersuchen und die Ergebnisse visuell darstellen. Nach wie vor lautet die Nullhypothese <span class="math inline">\(H_0\)</span>: <em>Die Daten der Grundgesamtheit sind normalverteilt.</em> Die Alternativhypothese H1 lautet somit: Die Daten der Grundgesamtheit sind nicht normalverteilt. Wir wissen, dass die Stichproben aus einer gleichverteilten Grundgesamtheit stammen, also ist die Nullhypothese <span class="math inline">\(H_0\)</span> falsch. Wir wollen nun untersuchen, wie oft die Nullhypothese <span class="math inline">\(H_0\)</span> durch den Test tatsächlich verworfen wird. Welche qualitativen Ergebnisse erwarten wir? Für relativ große Stichprobengrößen sollte ein Test in der Lage sein, in fast 100% der Fälle die Nullhypothese <span class="math inline">\(H_0\)</span> zu verwerfen. Je kleiner die Stichprobengröße hingegen ist, desto öfter erwarten wir, dass aufgrund des p-Wertes die Nullhypothese <span class="math inline">\(H_0\)</span> nicht abgelehnt wird. Dies können wir nun leicht nachprüfen. Als Stichprobengröße <code>n</code> wählen wir
+<code>n = 3, 4, 5,…,100</code>:</p>
+<div class="sourceCode" id="cb899"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb899-1"><a href="spezielle-themen-und-fallstudien.html#cb899-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">17122019</span>) </span>
+<span id="cb899-2"><a href="spezielle-themen-und-fallstudien.html#cb899-2" aria-hidden="true" tabindex="-1"></a>nWerte <span class="ot">&lt;-</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">100</span> </span>
+<span id="cb899-3"><a href="spezielle-themen-und-fallstudien.html#cb899-3" aria-hidden="true" tabindex="-1"></a>AnteilShapiro <span class="ot">&lt;-</span> <span class="fu">sapply</span>(nWerte, testShapiro)</span>
+<span id="cb899-4"><a href="spezielle-themen-und-fallstudien.html#cb899-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb899-5"><a href="spezielle-themen-und-fallstudien.html#cb899-5" aria-hidden="true" tabindex="-1"></a><span class="fu">myPlot</span>(<span class="st">&quot;Shapiro-Wilk-Test: gleichverteilte Stichproben (nTest=1000)&quot;</span>, </span>
+<span id="cb899-6"><a href="spezielle-themen-und-fallstudien.html#cb899-6" aria-hidden="true" tabindex="-1"></a>                                                    nWerte, AnteilShapiro)<span class="sc">+</span></span>
+<span id="cb899-7"><a href="spezielle-themen-und-fallstudien.html#cb899-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>()</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<div class="figure"><span style="display:block;" id="fig:ggplot-shapiro-wilk1"></span>
+<img src="bchwtz-rprg_files/figure-html/ggplot-shapiro-wilk1-1.png" alt="Testgüte des Shapiro-Wilk-Tests." width="80%" />
+<p class="caption">
+Figure 7.22: Testgüte des Shapiro-Wilk-Tests.
+</p>
+</div>
+
+<p>Ändert sich der Plot wesentlich, wenn die Untersuchung mit anderen zufälligen Werten wiederholt wird? Auch dies können wir sofort nachprüfen.</p>
+<div class="sourceCode" id="cb901"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb901-1"><a href="spezielle-themen-und-fallstudien.html#cb901-1" aria-hidden="true" tabindex="-1"></a>AnteilShapiro2 <span class="ot">&lt;-</span> <span class="fu">sapply</span>(nWerte, testShapiro)</span>
+<span id="cb901-2"><a href="spezielle-themen-und-fallstudien.html#cb901-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb901-3"><a href="spezielle-themen-und-fallstudien.html#cb901-3" aria-hidden="true" tabindex="-1"></a><span class="fu">myPlot</span>(<span class="st">&quot;Shapiro-Wilk-Test: gleichverteilte Stichproben (nTest=1000)&quot;</span>, nWerte, AnteilShapiro)  <span class="sc">+</span></span>
+<span id="cb901-4"><a href="spezielle-themen-und-fallstudien.html#cb901-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb901-5"><a href="spezielle-themen-und-fallstudien.html#cb901-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> nWerte, <span class="at">y =</span> AnteilShapiro2), <span class="at">color =</span> <span class="st">&quot;green&quot;</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<div class="figure"><span style="display:block;" id="fig:ggplot-shapiro-wilk2"></span>
+<img src="bchwtz-rprg_files/figure-html/ggplot-shapiro-wilk2-1.png" alt="Wiederholung mit anderen zufälligen Werten." width="80%" />
+<p class="caption">
+Figure 7.23: Wiederholung mit anderen zufälligen Werten.
+</p>
+</div>
+
+<p>Die neu hinzu gekommenen Daten wurden in den letzten Plot als grüne Punkte eingefügt. Wie man sieht, gibt es nur geringfügige Abweichungen.</p>
+<p><strong>Bearbeiten Sie folgende Aufgaben:</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Wiederholen Sie die Untersuchung mit einer <span class="math inline">\(\chi^2\)</span>-Verteilung (Chi-Quadrat-Verteilung) mit zwei Freiheitsgraden anstelle der Gleichverteilung. Wie unterscheiden sich die Ergebnisse? Plotten Sie zuerst die <span class="math inline">\(\chi^2\)</span>-Verteilung mit zwei Freiheitsgraden.</p></li>
+<li><p>Wiederholen Sie die Untersuchung mit einer Normalverteilung anstelle der Gleichverteilung. Was ändert sich nun grundsätzlich? Welchen Einfluss haben nun die Stichprobengröße <code>n</code> und das Signifikanzniveau <code>alpha</code>. Testen Sie dies!</p></li>
+</ol>
+</div>
+<div id="vergleich-mit-dem-kolmogorov-smirnov-test" class="section level3 hasAnchor" number="7.5.4">
+<h3><span class="header-section-number">7.5.4</span> Vergleich mit dem Kolmogorov-Smirnov-Test<a href="spezielle-themen-und-fallstudien.html#vergleich-mit-dem-kolmogorov-smirnov-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Mithilfe unserer oben definierten Funktionen ist es nun sehr leicht, den Shapiro-Wilk-Test <code>shapiro.test()</code> durch den Kolmogorov-Smirnov-Test <code>ks.test()</code> zu ersetzen und beide Tests direkt zu vergleichen.</p>
+<div class="sourceCode" id="cb903"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb903-1"><a href="spezielle-themen-und-fallstudien.html#cb903-1" aria-hidden="true" tabindex="-1"></a>pKSTest <span class="ot">&lt;-</span> <span class="cf">function</span>(n){ </span>
+<span id="cb903-2"><a href="spezielle-themen-und-fallstudien.html#cb903-2" aria-hidden="true" tabindex="-1"></a>  stichprobe <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min=</span><span class="sc">-</span><span class="dv">1</span>, <span class="at">max=</span><span class="dv">1</span>) </span>
+<span id="cb903-3"><a href="spezielle-themen-und-fallstudien.html#cb903-3" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">ks.test</span>(stichprobe, <span class="st">&quot;pnorm&quot;</span>)</span>
+<span id="cb903-4"><a href="spezielle-themen-und-fallstudien.html#cb903-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(h<span class="sc">$</span>p.value)</span>
+<span id="cb903-5"><a href="spezielle-themen-und-fallstudien.html#cb903-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb903-6"><a href="spezielle-themen-und-fallstudien.html#cb903-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb903-7"><a href="spezielle-themen-und-fallstudien.html#cb903-7" aria-hidden="true" tabindex="-1"></a>testKS <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
+<span id="cb903-8"><a href="spezielle-themen-und-fallstudien.html#cb903-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replicateTest</span>(n, <span class="at">FUN=</span>pKSTest, <span class="at">nTest=</span><span class="dv">1000</span>, <span class="at">alpha=</span><span class="fl">0.1</span>)</span>
+<span id="cb903-9"><a href="spezielle-themen-und-fallstudien.html#cb903-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb904"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb904-1"><a href="spezielle-themen-und-fallstudien.html#cb904-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">17122019</span>)</span>
+<span id="cb904-2"><a href="spezielle-themen-und-fallstudien.html#cb904-2" aria-hidden="true" tabindex="-1"></a>nWerte <span class="ot">&lt;-</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">100</span> </span>
+<span id="cb904-3"><a href="spezielle-themen-und-fallstudien.html#cb904-3" aria-hidden="true" tabindex="-1"></a>AnteilKS <span class="ot">&lt;-</span> <span class="fu">sapply</span>(nWerte, testKS)</span></code></pre></div>
+<p>Ähnlich wie im vorherigen Abschnitt können wir die berechneten Anteile (<code>AnteilKS</code>), wie oft die Nullhypothese <span class="math inline">\(H_0\)</span> verworfen wurde, visualisieren:</p>
+<div class="sourceCode" id="cb905"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb905-1"><a href="spezielle-themen-und-fallstudien.html#cb905-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(nWerte, AnteilKS)</span>
+<span id="cb905-2"><a href="spezielle-themen-und-fallstudien.html#cb905-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> nWerte, <span class="at">y =</span> AnteilKS))<span class="sc">+</span></span>
+<span id="cb905-3"><a href="spezielle-themen-und-fallstudien.html#cb905-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:plot-shapiro-wilk-kolmog-simple"></span>
+<img src="bchwtz-rprg_files/figure-html/plot-shapiro-wilk-kolmog-simple-1.png" alt="Testgüte des Kolmogorov-Smirnov-Tests." width="80%" />
+<p class="caption">
+Figure 7.24: Testgüte des Kolmogorov-Smirnov-Tests.
+</p>
+</div>
+
+<p>Um die Ergebnisse besser vergleichen zu können, erweitern wir Abbildung <span class="math inline">\(\ref{fig:ggplot-shapiro-wilk1}\)</span> um die neu berechneten roten Punkte und erhalten Abbildung <span class="math inline">\(\ref{fig:plot-shapiro-wilk-kolmog}\)</span>.</p>
+<div class="sourceCode" id="cb906"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb906-1"><a href="spezielle-themen-und-fallstudien.html#cb906-1" aria-hidden="true" tabindex="-1"></a><span class="fu">myPlot</span>(<span class="st">&quot;Gleichverteilte Stichproben (nTest=1000)&quot;</span>, </span>
+<span id="cb906-2"><a href="spezielle-themen-und-fallstudien.html#cb906-2" aria-hidden="true" tabindex="-1"></a>       nWerte, AnteilShapiro)  <span class="sc">+</span></span>
+<span id="cb906-3"><a href="spezielle-themen-und-fallstudien.html#cb906-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb906-4"><a href="spezielle-themen-und-fallstudien.html#cb906-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> nWerte, <span class="at">y =</span> AnteilKS), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<div class="figure"><span style="display:block;" id="fig:plot-shapiro-wilk-kolmog"></span>
+<img src="bchwtz-rprg_files/figure-html/plot-shapiro-wilk-kolmog-1.png" alt="Vergleich der Testgüte: Shapiro-Wilk-Test (schwarz) und Kolmogorov-Smirnov-Tests (rot)." width="80%" />
+<p class="caption">
+Figure 7.25: Vergleich der Testgüte: Shapiro-Wilk-Test (schwarz) und Kolmogorov-Smirnov-Tests (rot).
+</p>
+</div>
+
+<p>Wir können die Ergebnisse auch in Abbildung <span class="math inline">\(\ref{fig:ggplot-shapiro-wilk2}\)</span> einfügen, sollten dann aber auch eine entsprechende Legende hinzufügen:</p>
+<div class="sourceCode" id="cb908"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb908-1"><a href="spezielle-themen-und-fallstudien.html#cb908-1" aria-hidden="true" tabindex="-1"></a><span class="fu">myPlot</span>(<span class="st">&quot;Gleichverteilte Stichproben (nTest=1000)&quot;</span>, nWerte, AnteilShapiro)  <span class="sc">+</span></span>
+<span id="cb908-2"><a href="spezielle-themen-und-fallstudien.html#cb908-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> <span class="st">&quot;Shapiro 1&quot;</span>)) <span class="sc">+</span> <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb908-3"><a href="spezielle-themen-und-fallstudien.html#cb908-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> nWerte, <span class="at">y =</span> AnteilShapiro2, <span class="at">color =</span> <span class="st">&quot;Shapiro 2&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb908-4"><a href="spezielle-themen-und-fallstudien.html#cb908-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> nWerte, <span class="at">y =</span> AnteilKS, <span class="at">color =</span> <span class="st">&quot;KS&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb908-5"><a href="spezielle-themen-und-fallstudien.html#cb908-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;Legende&quot;</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<div class="figure"><span style="display:block;" id="fig:plot-gleichvert"></span>
+<img src="bchwtz-rprg_files/figure-html/plot-gleichvert-1.png" alt="Alle Ergebnisse." width="80%" />
+<p class="caption">
+Figure 7.26: Alle Ergebnisse.
+</p>
+</div>
+
+<p>In der Tat sehen wir, dass in unserem speziellen Testmodell der Shapiro-Wilk-Test für Stichprobengrößen <code>n</code> <span class="math inline">\(\leq\)</span> 65 (für <code>n</code> <span class="math inline">\(\leq\)</span> 60 sogar deutlich besser) besser als der Kolmogorov-Smirnov-Test abschneidet.</p>
+<p><strong>Beantworten Sie folgende Frage:</strong></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Wie sieht der Vergleich des Shapiro-Wilk-Tests mit dem Kolmogorov-Smirnov-Test aus für Stichprobengrößen <code>n</code> zwischen 4 und 100, wenn statt der Gleichverteilung eine <span class="math inline">\(\chi^2\)</span>-Verteilung (Chi-Quadrat-Verteilung) mit zwei Freiheitsgraden zugrunde gelegt wird?</li>
+</ol>
 
 <!--
 # Test
@@ -1064,7 +1264,7 @@ rnorm(1)
 ```
 
 ```
-## [1] 2.54548
+## [1] -0.07602661
 ```
 
 
