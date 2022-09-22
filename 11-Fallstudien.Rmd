@@ -630,7 +630,7 @@ ggplot(data.frame(s2000), aes(sample = s2000))+
 
 ### Aufgabe 1
 
-In dieser Fallstudie wollen wir uns mit dem Import und der Manipulation von Daten beschäftigen. Laden Sie den [diamonds_modified.csv](data/diamonds_modified.csv) Datensatz herunter; dieser basiert auf dem Datensatz `diamonds` [@ggplot2].
+In dieser Fallstudie wollen wir uns mit dem Import und der Manipulation von Daten beschäftigen. Laden Sie den [Diamonds_modified.csv](data/Diamonds_modified.csv) Datensatz herunter; dieser basiert auf dem Datensatz `diamonds` [@ggplot2].
 
 Lesen Sie diesen Datensatz in R ein, indem Sie die folgenden Funktionen nutzen:
 
@@ -640,7 +640,7 @@ Lesen Sie diesen Datensatz in R ein, indem Sie die folgenden Funktionen nutzen:
 
 + `read.table()`.
 
-Was müssen Sie beachten? Welche Unterschiede fallen Ihnen auf, wenn Sie diese Funktionen anwenden? Welche Funktion präferieren Sie und warum?
+Was müssen Sie beim Gebrauch der Funktionen beachten? Welche Unterschiede fallen Ihnen auf, wenn Sie diese Funktionen anwenden? Welche Funktion präferieren Sie und warum?
 
 ```{r, echo=FALSE, eval=FALSE}
 diam <- read.csv("data/Diamonds_modified.csv", sep = ",") # bevorzugt
@@ -655,11 +655,11 @@ head(diam3)
 
 a) Schauen Sie sich die einzelnen Variablen des eingelesenen Datensatzes genau an, d.h. 
 
-+ schauen Sie sich die (inhaltliche) Beschreibung der Variablen (`?diamonds`) an,
+    + schauen Sie sich die (inhaltliche) Beschreibung der Variablen (`?diamonds`) an,
 
-+ untersuchen Sie die Struktur der Variablen und
+    + untersuchen Sie die Struktur der Variablen und
 
-+ untersuchen Sie die Werte der Variablen.
+    + untersuchen Sie die Werte der Variablen.
 
 Was fällt Ihnen auf?
 
@@ -674,7 +674,7 @@ unique(diam$clarity)
 # die Definition der anderen Variablen passt erstmal soweit
 ```
 
-b) Modifizieren Sie die Variablen des `Diamonds_modified.csv` Datensatzes basierend auf Ihren Beobachtungen aus Aufgabenteil a). (**Hinweis:** Siehe `factor()` und `stringr::str_replace()`.)
+b) Modifizieren Sie die Variablen des `Diamonds_modified.csv` Datensatzes basierend auf Ihren Beobachtungen aus Aufgabenteil a). (**Hinweis:** Siehe `factor()` und `stringr::str_replace()` [@stringr].)
 
 ```{r, echo=FALSE, eval=FALSE}
 diam$cut <- factor(diam$cut, levels = unique(diam$cut))
@@ -688,7 +688,7 @@ carat <- str_replace(diam$carat, "\\,", replacement = ".")
 diam$carat <- as.numeric(carat)
 ```
 
-c) Vergleichen Sie nun den von Ihnen modifizierten Datensatz mit `ggplot2::diamonds` [@ggplot2]. Können Sie die beiden Datensätze *problemlos* miteinander vergleichen? Warum ja oder warum nicht? Wenn es nicht so ohne Weiteres möglich ist: Was müssen Sie tun, um die Datensätze miteinander vergleichen zu können?
+c) Vergleichen Sie nun den von Ihnen modifizierten Datensatz mit dem Datensatz `ggplot2::diamonds` [@ggplot2]. Können Sie die beiden Datensätze *problemlos* miteinander vergleichen? Warum ja oder warum nicht? Wenn ein Vergleich nicht so *ohne Weiteres* möglich ist: Was müssen Sie tun, um die Datensätze miteinander vergleichen zu können?
 
 ```{r, echo=FALSE, eval=FALSE}
 # diamonds == diam # geht nicht, da Faktoren nicht geordnet sind 
@@ -700,8 +700,6 @@ diam$color <- factor(diam$color, levels = sort(unique(diam$color)), ordered = TR
 diam$clarity <- factor(diam$clarity, levels = c("I1", "SI2", "SI1", "VS2", "VS1", "VVS2", "VVS1", "IF"), ordered = TRUE)
 ```
 
-d) Können Sie die beiden Datensätze *problemlos* miteinander vergleichen? Warum ja oder warum nicht? Wenn es nicht so ohne Weiteres möglich ist: Was müssen Sie tun, um die Datensätze miteinander vergleichen zu können?
-
 ```{r, echo=FALSE, eval=FALSE}
 diamonds == diam
 sum(diamonds != diam) # muss 0 sein
@@ -710,7 +708,7 @@ sum(diamonds != diam) # muss 0 sein
 ```
 
 
-e) Wie Sie der Beschreibung (`?diamonds`) entnehmen können, ist der `price` in US Dollar angegeben [@ggplot2]. Transfomieren Sie die Variable, sodass der Preis die Einheit Euro trägt.
+d) Wie Sie der Beschreibung (`?diamonds`) entnehmen können, ist die Variable `price` in US Dollar angegeben [@ggplot2]. Transfomieren Sie die Variable, sodass der Preis die Einheit Euro trägt.
 
 ```{r, echo=FALSE, eval=FALSE}
 ## nach Google Finanzen (1$ = ca. 1 € [Stand: 22.09.2022])
@@ -718,15 +716,17 @@ e) Wie Sie der Beschreibung (`?diamonds`) entnehmen können, ist der `price` in 
 
 ### Aufgabe 3
 
-Speichern Sie die ersten 50 Einträge des `diamonds` Datensatzes [@ggplot2] in einer CSV-Datei. Führen Sie dann folgende Arbeitsschritte durch:
+Führen Sie die folgenden Arbeitsschritte aus:
 
-+ Entfernen Sie die Spalte `table`.
+1. Extrahieren Sie die ersten 50 Einträge des `diamonds` Datensatzes [@ggplot2]. 
 
-+ Bennen Sie die Spaltennamen um in "Karat_Gewicht", "Qual_Schnitt", "Farbe", "Klarheit", "proz_Tiefe", "Preis", "Laenge", "Breite" und "Tiefe".
+2. Entfernen Sie die Spalte `table`.
 
-+ Speichern Sie den modifizierten Datensatz als CSV-Datei mit dem Namen "Diamonds50_modified.csv". Nutzen Sie die Funktion `write.csv()`. Welche Argumente müssen Sie definieren?
+3. Bennen Sie die Spaltennamen in "Karat_Gewicht", "Qual_Schnitt", "Farbe", "Klarheit", "proz_Tiefe", "Preis", "Laenge", "Breite" und "Tiefe" um.
 
-+ Lesen Sie die Datei "Diamonds50_modified.csv" in R ein. Entspricht die eingelesene Datei der gespeicherten Datei?
+4. Speichern Sie den modifizierten Datensatz als CSV-Datei mit dem Namen "Diamonds50_modified.csv". Nutzen Sie die Funktion `write.csv()`. Welche Argumente müssen Sie definieren?
+
+5. Lesen Sie die Datei "Diamonds50_modified.csv" in R ein. Entspricht die eingelesene Datei der gespeicherten Datei?
 
 ```{r, echo=FALSE, eval=FALSE}
 diamonds50 <- diamonds[1:50,]
