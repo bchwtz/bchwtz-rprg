@@ -159,7 +159,7 @@ IMDb Internet Movie Database
 ### wortIndex
 
 
-## Fallstudie 3
+## Fallstudie 3: Visualisierung mit `ggplot2` [@ggplot2]
 
 ### Wahrscheinlichkeitsverteilungen in R
 
@@ -622,7 +622,7 @@ ggplot(data.frame(s2000), aes(sample = s2000))+
 (ref:np-plot-3) NP-Plot mit 2000 Werten.
 
 
-## Fallstudie 4
+## Fallstudie 4: Datenimport, -manipulation und speicherung
 
 **Lernziel:**
 
@@ -741,7 +741,7 @@ diamonds50_2 <- read.csv("data/Diamonds50_modified.csv")
 ```
 
 
-## Fallstudie 5
+## Fallstudie 5: Shapiro-Wilk-Test und Kolmogorov-Smirnov-Test
 
 ### Shapiro-Wilk-Test
 
@@ -957,3 +957,45 @@ In der Tat sehen wir, dass in unserem speziellen Testmodell der Shapiro-Wilk-Tes
 **Beantworten Sie folgende Frage:**
 
 c)	Wie sieht der Vergleich des Shapiro-Wilk-Tests mit dem Kolmogorov-Smirnov-Test aus für Stichprobengrößen `n` zwischen 4 und 100, wenn statt der Gleichverteilung eine $\chi^2$-Verteilung (Chi-Quadrat-Verteilung) mit zwei Freiheitsgraden zugrunde gelegt wird?
+
+
+## Fallstudie 6: Datenanalyse
+
+```{r}
+require(tidyverse)
+```
+
+
+### Datenanalyse der x-, y- und z-Werte
+
+Dieser Fallstudie liegt der Datensatz `diamonds` zugrunde [@ggplot2]. In einer Übung haben wir bereits Auffälligkeiten in der Verteilung der Preis-Variablen aufgedeckt. In dieser Fallstudie wollen wir nach Auffälligkeiten in den x-, y- und z-Variablen suchen und die gefundenen Werte im Datensatz kennzeichnen. 
+
+```{r}
+dd <- diamonds
+```
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+a)	Fügen Sie ein weiteres Attribut `nr` dem Datensatz `dd` hinzu. Dieses Attribut soll das erste Attribut des Datensatzes dd sein und der Zeilennummer entsprechen (Hinweis: `row_number()`):
+
+```{r}
+dd 
+```
+
+
+**Beantworten Sie folgende Fragen:**
+
+b)	Für wie viele Datensätze gilt x $\geq$ y und für wie viele x < y? Ändern Sie die einzelnen Datensätze, so dass stets x $\geq$ y gilt (In einer zusätzlichen Übungsaufgabe wird behandelt, wie in einem Tibble zeilenweise bezüglich mehrerer Spalten sortiert werden kann.).
+
+c) Für welche Datensätze gilt: z > y?
+
+In dieser Fallstudie werden wir erst einmal lediglich die Werte der Variablen x, y und z in unsere Datenanalyse einfließen lassen. Dabei sollen zunächst zwei Aspekte beleuchtet werden:
+  
+    + Gibt es bezüglich der drei Variablen x, y und z Werte, die nicht definiert oder offensichtlich fehlerhaft sind? Der Datensatz soll entsprechend bereinigt und die ausgeschlossenen Datensätze do-kumentiert werden.
+    
+    + Gibt es in den so bereinigten Daten noch extrem auffällige x, y oder z Werte?
+
+
+#### NA-Werte
+
+Zu Testzwecken wollen wir zuerst den folgenden Datensatz betrachten:
