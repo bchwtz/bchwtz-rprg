@@ -624,21 +624,119 @@ ggplot(data.frame(s2000), aes(sample = s2000))+
 
 ## Fallstudie 4
 
+**Lernziel:**
+
+> - Nach Durchführung der Fallstudie 4 sollen Sie Daten in R importieren, modifizieren (manipulieren) und anschließend als CSV-Dateien speichern können. 
+
 ### Aufgabe 1
 
-In dieser Fallstudie wollen wir uns mit dem Import von Daten beschäftigen. Weiterführende Ausführungen zu diesem Thema finden Sie im Kapitel „11 Data import“ in @Wickhamny.
+In dieser Fallstudie wollen wir uns mit dem Import und der Manipulation von Daten beschäftigen. Laden Sie den [diamonds_modified.csv](data/diamonds_modified.csv) Datensatz herunter; dieser basiert auf dem Datensatz `diamonds` [@ggplot2].
 
-Genauer wollen wir uns mit folgender Aufgabenstellung beschäftigen:
+Lesen Sie diesen Datensatz in R ein, indem Sie die folgenden Funktionen nutzen:
 
-Gegeben ist die CSV-Datei „*diamonds100.csv*“, deren erste Zeilen wie folgt lauten:
++ `read.csv()`,
+
++ `read.csv2()` und
+
++ `read.table()`.
+
+Was müssen Sie beachten? Welche Unterschiede fallen Ihnen auf, wenn Sie diese Funktionen anwenden? Welche Funktion präferieren Sie und warum?
+
+```{r, echo=FALSE, eval=FALSE}
+diam <- read.csv("data/Diamonds_modified.csv", sep = ",") # bevorzugt
+head(diam)
+diam2 <- read.csv2("data/Diamonds_modified.csv", sep = ",") # bevorzugt
+head(diam2)
+diam3 <- read.table("data/Diamonds_modified.csv", sep=",") # Spaltennamen passe nicht!
+head(diam3)
+```
+
+### Aufgabe 2
+
+a) Schauen Sie sich die einzelnen Variablen des eingelesenen Datensatzes genau an, d.h. 
+
++ schauen Sie sich die (inhaltliche) Beschreibung der Variablen (`?diamonds`) an,
+
++ untersuchen Sie die Struktur der Variablen und
+
++ untersuchen Sie die Werte der Variablen.
+
+Was fällt Ihnen auf?
+
+```{r, echo=FALSE, eval=FALSE}
+str(diam)
+# carat ist vom Typ character, obwohl es sich um ein Gewicht, d.h. numerische Werte, handelt, außerdem ist das Dezimaltrennzeichen uneinheitlich
+# die Variablen cut, color und clarity sind ebenfalls vom Typ character, obwohl diese jeweils Kategorien beinhalten, d.h. sie sollten als factor definiert werden!
+unique(diam$carat)
+unique(diam$cut)
+unique(diam$color)
+unique(diam$clarity)
+# die Definition der anderen Variablen passt erstmal soweit
+```
+
+b) Modifizieren Sie die Variablen des `Diamonds_modified.csv` Datensatzes basierend auf Ihren Beobachtungen aus Aufgabenteil a). (**Hinweis:** Siehe `factor()` und `stringr::str_replace()`.)
+
+```{r, echo=FALSE, eval=FALSE}
+diam$cut <- factor(diam$cut, levels = unique(diam$cut))
+diam$color <- factor(diam$color, levels = unique(diam$color))
+diam$clarity <- factor(diam$clarity, levels = unique(diam$clarity))
+
+carat <- str_replace(diam$carat, "\\,", replacement = ".")
+# which(str_detect(carat, "\\,")) # überprüfen, dass kein Komma als Dezimaltrennzeichen verwendet wird
+# carat is immer noch vom Typ character
+
+diam$carat <- as.numeric(carat)
+```
+
+c) Vergleichen Sie nun den von Ihnen modifizierten Datensatz mit `ggplot2::diamonds` [@ggplot2]. Können Sie die beiden Datensätze *problemlos* miteinander vergleichen? Warum ja oder warum nicht? Wenn es nicht so ohne Weiteres möglich ist: Was müssen Sie tun, um die Datensätze miteinander vergleichen zu können?
+
+```{r, echo=FALSE, eval=FALSE}
+# diamonds == diam # geht nicht, da Faktoren nicht geordnet sind 
+## Kategorien ordnen:
+diam$cut <- factor(diam$cut, levels = c("Fair", "Good", "Very Good", "Premium", "Ideal"), ordered = TRUE)
+diam$color <- factor(diam$color, levels = c("D", "E", "F", "G", "H", "I", "J"), ordered = TRUE) 
+## Alternativ: 
+diam$color <- factor(diam$color, levels = sort(unique(diam$color)), ordered = TRUE)
+diam$clarity <- factor(diam$clarity, levels = c("I1", "SI2", "SI1", "VS2", "VS1", "VVS2", "VVS1", "IF"), ordered = TRUE)
+```
+
+d) Können Sie die beiden Datensätze *problemlos* miteinander vergleichen? Warum ja oder warum nicht? Wenn es nicht so ohne Weiteres möglich ist: Was müssen Sie tun, um die Datensätze miteinander vergleichen zu können?
+
+```{r, echo=FALSE, eval=FALSE}
+diamonds == diam
+sum(diamonds != diam) # muss 0 sein
+
+# diamTibble <- tibble::as_tibble(diam)
+```
 
 
+e) Wie Sie der Beschreibung (`?diamonds`) entnehmen können, ist der `price` in US Dollar angegeben [@ggplot2]. Transfomieren Sie die Variable, sodass der Preis die Einheit Euro trägt.
 
+```{r, echo=FALSE, eval=FALSE}
+## nach Google Finanzen (1$ = ca. 1 € [Stand: 22.09.2022])
+```
 
-**Beantworten Sie folgende Frage:**
+### Aufgabe 3
 
-a)	Was bedeuten `<dbl>`, `<ord>`, `<int>` und `<lgl>` in der obigen Ausgabe?  
-Wie im Datensatz `diamonds` sind die geordneten Level der einzelnen Faktoren:
+Speichern Sie die ersten 50 Einträge des `diamonds` Datensatzes [@ggplot2] in einer CSV-Datei. Führen Sie dann folgende Arbeitsschritte durch:
 
++ Entfernen Sie die Spalte `table`.
 
-Damit Sie leicht Ihre importierten Daten mit den ursprünglichen Daten abgleichen können, zeigen wir im nächsten Kapitel zu Kontrollzwecken, wie die Daten ursprünglich erzeugt wurden. In Kapitel 3 zeigen wir mögliche Lösungswege auf.
++ Bennen Sie die Spaltennamen um in "Karat_Gewicht", "Qual_Schnitt", "Farbe", "Klarheit", "proz_Tiefe", "Preis", "Laenge", "Breite" und "Tiefe".
+
++ Speichern Sie den modifizierten Datensatz als CSV-Datei mit dem Namen "Diamonds50_modified.csv". Nutzen Sie die Funktion `write.csv()`. Welche Argumente müssen Sie definieren?
+
++ Lesen Sie die Datei "Diamonds50_modified.csv" in R ein. Entspricht die eingelesene Datei der gespeicherten Datei?
+
+```{r, echo=FALSE, eval=FALSE}
+diamonds50 <- diamonds[1:50,]
+diamonds50 <- as.data.frame(diamonds50) # damit Spaltennamen entfernt werden können
+## wenn diamonds ein tibble ist, können Spaltennamen nicht entfernt werden
+diamonds50[,6] <- NULL
+colNames_new <- c("Karat_Gewicht", "Qual_Schnitt", "Farbe", "Klarheit", "proz_Tiefe", "Preis", "Laenge", "Breite", "Tiefe")
+colnames(diamonds50) <- colNames_new
+
+write.csv(diamonds50, "Diamonds50_modified.csv", row.names = FALSE)
+diamonds50_2 <- read.csv("data/Diamonds50_modified.csv")
+```
+
