@@ -740,3 +740,220 @@ write.csv(diamonds50, "Diamonds50_modified.csv", row.names = FALSE)
 diamonds50_2 <- read.csv("data/Diamonds50_modified.csv")
 ```
 
+
+## Fallstudie 5
+
+### Shapiro-Wilk-Test
+
+In dieser Fallstudie wollen wir zuerst exemplarisch auf den Shapiro-Wilk-Test eingehen. Der Shapiro-Wilk-Test ist ein statistischer Signifikanztest, der die Hypothese überprüft, ob eine Normalverteilung vorliegt.
+
+Die *Nullhypothese* $H_0$ lautet: *Die Daten der Grundgesamtheit sind normalverteilt.* Die Alternativhypothese $H_1$ lautet somit: *Die Daten der Grundgesamtheit sind nicht normalverteilt.*
+
+Als *Signifikanzniveau* wählen wir zunächst $\alpha = 0.05$ (Dies ist ein üblicher, aber trotzdem sehr willkürlicher Wert.).
+
+Es ist in R sehr leicht, den Shapiro-Wilk-Test durchzuführen. Viel schwieriger ist es, die richtigen Schlüsse aus den berechneten Testergebnissen zu ziehen. 
+
+Zuerst wollen wir den Pseudo-Zufallsgenerator initialisieren:
+
+```{r}
+set.seed(17122019)
+```
+
+Als Nächstes wollen wir eine Stichprobe bestehend aus 40 Elementen aus einer normalverteilen Grundgesamtheit testen:
+
+```{r}
+stichprobe <- rnorm(40, mean = 5, sd = 3)
+shapiro.test(stichprobe)
+```
+
+Wie wir sehen, ist der p-Wert recht groß; wir haben also keinen Grund, die Nullhypothese $H_0$ abzulehnen. Selbst ein großer p-Wert belegt nicht, dass $H_0$ wahr ist. Dies Aussagekraft des Ergebnisses ist also in diesem Fall recht schwach.
+
+Bei einer Stichprobe, die aus einer auf [0, 1] gleichverteilten Grundgesamtheit stammt, sollten die Testergebnisse anders aussehen:
+
+```{r}
+stichprobe <- runif(40)
+shapiro.test(stichprobe)
+```
+
+Da der p-Wert unter dem gewählten Signifikanzniveau $\alpha$ liegt, ist die Nullhypothese $H_0$ in diesem Fall abzulehnen. Wir können aber nicht ausschließen, dass $H_0$ trotzdem richtig ist!  Wird $H_0$ aufgrund des Tests (fälschlicherweise) abgelehnt, obwohl $H_0$ wahr ist (Fehler 1. Art), dann repräsentiert die Stichprobe ein sehr seltenes Ereignis, das höchstens mit Wahrscheinlichkeit $\alpha$ eintritt. Daraus lässt sich aber nicht ableiten, dass die Wahrscheinlichkeit, dass $H_0$ wahr ist, kleiner als das gewählte Signifikanzniveau $\alpha$ ist  (Leider wird dieser Schluss fälschlicherweise sehr oft gezogen.). 
+
+Im Folgenden sehen wir, dass die Funktion `shapiro.test()` eine Liste mit vier Elementen zurückgibt und dass `p.value` dem p-Wert entspricht:
+
+```{r}
+sTest <- shapiro.test(stichprobe)
+str(sTest)
+```
+
+### Funktionen zur mehrfachen Wiederholung des Shapiro-Wilk-Tests
+
+Wir wollen als Nächstes für unterschiedliche Stichprobengrößen ähnliche Tests mehrfach wiederholen und jeweils untersuchen, wie oft die entsprechende Nullhypothese verworfen wird.  Dafür verwenden wir vier Funktionen. Die erste Funktion werden wir benutzen, um unsere erhaltenen Ergebnisdaten zu visualisieren:
+
+```{r}
+myPlot <- function(titel, nWerte, Anteil){
+  g <- ggplot(data.frame(nWerte, Anteil), aes(x = nWerte, y = Anteil)) +
+    ggtitle(titel, subtitle = 
+              expression('H'[0]*': Normalverteilung liegt vor')) +
+    ylab(expression('H'[0]*' verworfen')) + 
+    xlab("Stichproben-Größe: n") + 
+    scale_y_continuous(labels = scales::percent)  
+  return(g)
+}
+```
+
+Wir haben hier den Funktionsaufruf `scale_y_continuous(labels = scales::percent)` benutzt, um die y-Achse mit den entsprechenden Prozentzahlen zu skalieren. Neu ist auch 
+`expression('H'[0]*': Normalverteilung liegt vor'))`.
+Damit wird der folgende Text im Plot erzeugt: \texttt{„$H_0$ : Normalverteilung liegt vor“.} Der mit `[]` umschlossene Buchstabe wird also tiefergestellt (Um einen Buchstaben hoch zu stellen, wird `^` statt `[]` benutzt.). Auf die genaue Syntax wollen wir an dieser Stelle nicht eingehen, sondern lediglich ein weiteres Beispiel anführen, das in Abbildung \ref{fig:ggplot-expression} resultiert:
+
+```{r ggplot-expression, fig.cap="(ref:ggplot-expr)", out.width="80%"}
+ggplot() + ggtitle(expression('Beispiel: A'['1,2']* ' und B' ^'1,2'* 
+                              ' und x' ^ 'n'))
+```
+
+(ref:ggplot-expr) Leerer Plot mit tiefer und höher gestellten Zahlen und Buchstaben im Titel.
+
+Die zweite Funktion` pShapiro(n)` erzeugt in [-1,1] gleichverteilte Stichproben der Größe `n`, führt den Shapiro-Wilk-Test durch und gibt den entsprechenden p-Wert zurück. Wollen wir eine andere Wahrscheinlichkeitsverteilung zugrunde legen, dann muss diese Funktion angepasst werden.
+
+```{r}
+# Shapiro-Wilk-Test
+# Stichproben gleichverteilt
+# n: Stichprobengröße
+pShapiroTest <- function(n){
+  stichprobe <- runif(n, min=-1, max=1)
+  h <- shapiro.test(stichprobe) 
+  return(h$p.value)
+}
+```
+
+Die dritte Funktion `replicateTest()` ruft `nTest`-mal die übergebene Funktion `FUN(n)` auf und gibt den Anteil zurück, wie oft der entsprechende p-Wert unter dem Signifikanzniveau $\alpha$ gelegen hat.
+
+```{r}
+# n: Stichprobengröße
+# FUN: Testfunktion (Default: pShapiroTest)
+# nTest: Anzahl der Tests (Wiederholungen) 
+# alpha: entspricht dem Signifikanzniveau
+replicateTest <- function(n, FUN=pShapiroTest, nTest, alpha){
+  res <- replicate(nTest, FUN(n))
+  return(sum(res <= alpha)/nTest)
+}
+```
+
+
+In der vierten Funktion `testShapiro()` schließlich wird festgelegt:
+
++	die Stichprobengröße `n`
+
++	welcher Test benutzt werden soll (der Defaultwert ist die Funktion `pShapiroTest()`)
+
++	wie oft (bei gegebener Stichprobengröße) ein Test ausgeführt werden soll (`nTest`)
+
++	das Signifikanzniveau `alpha`
+
+und es wird die Funktion `replicateTest()` aufgerufen: 
+
+```{r}
+testShapiro <- function(n){
+  replicateTest(n, FUN=pShapiroTest, nTest=1000, alpha=0.05)
+}
+```
+
+
+### Testgüte des Shapiro-Wilk-Tests bei Gleichverteilung
+
+Nun können wir sehr leicht die Testgüte des Shapiro-Wilk-Tests untersuchen und die Ergebnisse visuell darstellen. Nach wie vor lautet die Nullhypothese $H_0$: *Die Daten der Grundgesamtheit sind normalverteilt.* Die Alternativhypothese H1 lautet somit: Die Daten der Grundgesamtheit sind nicht normalverteilt. Wir wissen, dass die Stichproben aus einer gleichverteilten Grundgesamtheit stammen, also ist die Nullhypothese $H_0$ falsch. Wir wollen nun untersuchen, wie oft die Nullhypothese $H_0$ durch den Test tatsächlich verworfen wird. Welche qualitativen Ergebnisse erwarten wir? Für relativ große Stichprobengrößen sollte ein Test in der Lage sein, in fast 100% der Fälle die Nullhypothese $H_0$ zu verwerfen. Je kleiner die Stichprobengröße hingegen ist, desto öfter erwarten wir, dass aufgrund des p-Wertes die Nullhypothese $H_0$ nicht abgelehnt wird. Dies können wir nun leicht nachprüfen. Als Stichprobengröße `n` wählen wir 
+`n = 3, 4, 5,…,100`:
+
+```{r ggplot-shapiro-wilk1, fig.cap="(ref:shapwilk1)", out.width="80%"}
+set.seed(17122019) 
+nWerte <- 3:100 
+AnteilShapiro <- sapply(nWerte, testShapiro)
+
+myPlot("Shapiro-Wilk-Test: gleichverteilte Stichproben (nTest=1000)", 
+                                                    nWerte, AnteilShapiro)+
+  geom_point() + geom_smooth()
+```
+
+(ref:shapwilk1) Testgüte des Shapiro-Wilk-Tests.
+
+Ändert sich der Plot wesentlich, wenn die Untersuchung mit anderen zufälligen Werten wiederholt wird? Auch dies können wir sofort nachprüfen. 
+
+```{r ggplot-shapiro-wilk2, fig.cap="(ref:shapwilk2)", out.width="80%"}
+AnteilShapiro2 <- sapply(nWerte, testShapiro)
+
+myPlot("Shapiro-Wilk-Test: gleichverteilte Stichproben (nTest=1000)", nWerte, AnteilShapiro)  +
+  geom_point() + geom_smooth() +
+  geom_point(aes(x = nWerte, y = AnteilShapiro2), color = "green")
+```
+
+(ref:shapwilk2) Wiederholung mit anderen zufälligen Werten.
+ 
+Die neu hinzu gekommenen Daten wurden in den letzten Plot als grüne Punkte eingefügt. Wie man sieht, gibt es nur geringfügige Abweichungen. 
+
+
+**Bearbeiten Sie folgende Aufgaben:**
+
+a)	Wiederholen Sie die Untersuchung mit einer $\chi^2$-Verteilung (Chi-Quadrat-Verteilung) mit zwei Freiheitsgraden anstelle der Gleichverteilung. Wie unterscheiden sich die Ergebnisse? Plotten Sie zuerst die $\chi^2$-Verteilung mit zwei Freiheitsgraden.
+
+
+b)	Wiederholen Sie die Untersuchung mit einer Normalverteilung anstelle der Gleichverteilung. Was ändert sich nun grundsätzlich? Welchen Einfluss haben nun die Stichprobengröße `n` und das Signifikanzniveau `alpha`. Testen Sie dies!
+
+
+###	Vergleich mit dem Kolmogorov-Smirnov-Test 
+
+Mithilfe unserer oben definierten Funktionen ist es nun sehr leicht, den Shapiro-Wilk-Test `shapiro.test()` durch den Kolmogorov-Smirnov-Test `ks.test()` zu ersetzen und beide Tests direkt zu vergleichen.
+
+```{r}
+pKSTest <- function(n){ 
+  stichprobe <- runif(n, min=-1, max=1) 
+  h <- ks.test(stichprobe, "pnorm")
+  return(h$p.value)
+}
+
+testKS <- function(n){
+  replicateTest(n, FUN=pKSTest, nTest=1000, alpha=0.1)
+}
+```
+
+```{r}
+set.seed(17122019)
+nWerte <- 3:100 
+AnteilKS <- sapply(nWerte, testKS)
+```
+
+Ähnlich wie im vorherigen Abschnitt können wir die berechneten Anteile (`AnteilKS`), wie oft die Nullhypothese $H_0$ verworfen wurde, visualisieren:
+
+```{r plot-shapiro-wilk-kolmog-simple, fig.cap="(ref:shw-k0)", out.width="80%"}
+df <- data.frame(nWerte, AnteilKS)
+ggplot(df, aes(x = nWerte, y = AnteilKS))+
+  geom_point(color = "red")
+```
+
+(ref:shw-k0) Testgüte des Kolmogorov-Smirnov-Tests.
+
+Um die Ergebnisse besser vergleichen zu können, erweitern wir Abbildung \ref{fig:ggplot-shapiro-wilk1} um die neu berechneten roten Punkte und erhalten Abbildung \ref{fig:plot-shapiro-wilk-kolmog}.
+
+```{r plot-shapiro-wilk-kolmog, fig.cap="(ref:shw-k1)", out.width="80%"}
+myPlot("Gleichverteilte Stichproben (nTest=1000)", 
+       nWerte, AnteilShapiro)  +
+  geom_point() + geom_smooth() +
+  geom_point(aes(x = nWerte, y = AnteilKS), color = "red")
+```
+
+(ref:shw-k1) Vergleich der Testgüte: Shapiro-Wilk-Test (schwarz) und Kolmogorov-Smirnov-Tests (rot).
+
+Wir können die Ergebnisse auch in Abbildung \ref{fig:ggplot-shapiro-wilk2} einfügen, sollten dann aber auch eine entsprechende Legende hinzufügen:
+
+```{r plot-gleichvert, fig.cap="(ref:gleich-swk)", out.width="80%"}
+myPlot("Gleichverteilte Stichproben (nTest=1000)", nWerte, AnteilShapiro)  +
+  geom_point(aes(color = "Shapiro 1")) + geom_smooth() +
+  geom_point(aes(x = nWerte, y = AnteilShapiro2, color = "Shapiro 2")) +
+  geom_point(aes(x = nWerte, y = AnteilKS, color = "KS")) +
+  labs(color = "Legende")
+```
+
+(ref:gleich-swk) Alle Ergebnisse.
+
+In der Tat sehen wir, dass in unserem speziellen Testmodell der Shapiro-Wilk-Test für Stichprobengrößen `n` $\leq$ 65 (für `n` $\leq$ 60 sogar deutlich besser) besser  als der Kolmogorov-Smirnov-Test abschneidet.  
+
+**Beantworten Sie folgende Frage:**
+
+c)	Wie sieht der Vergleich des Shapiro-Wilk-Tests mit dem Kolmogorov-Smirnov-Test aus für Stichprobengrößen `n` zwischen 4 und 100, wenn statt der Gleichverteilung eine $\chi^2$-Verteilung (Chi-Quadrat-Verteilung) mit zwei Freiheitsgraden zugrunde gelegt wird?
