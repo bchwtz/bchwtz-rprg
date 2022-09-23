@@ -1,1 +1,311 @@
 # Datenvisualisierung mit `ggplot2`
+
+Parallel zu diesem Kapitel sollen Sie das Kapitel "3 Data visualisation"  aus *"R for Data Sciences"* durcharbeiten. *"R for Data Sciences"* gibt es in mindestens drei Versionen:
+
++ \url{https://r4ds.had.co.nz} ist die Webseite zu dem Buch; im Folgenden werden wir diese Quelle mit [R4DS] bezeichnen.
+
++ Wickham, Hadley and Grolemund, Garrett: *R for Data Science: Import, Tidy, Transform, Visualize, and Model Data*.  Sebastopol: O'Reilly Media, Inc., 2016.
+
++ Mittlerweile gibt es auch eine deutsche Übersetzung:
+Wickham, Hadley und Grolemund, Garrett: *R für Data Science : Daten importieren, be-reinigen, umformen, modellieren und visualisieren*. Sebastopol: O'Reilly, 2017
+
+Es gibt mehrere Möglichkeiten, Grafiken in R zu erstellen. Bis jetzt haben wir die im Base-R enthaltenen Funktionen wie `plot()`, `barplot()`, `boxplot()` und `hist()` benutzt, um einfache Grafiken zu erstellen. Das `ggplot2`-Package bietet darüber hinaus viele interessante Möglichkeiten, mit relativ wenig Aufwand aussagekräftige Grafiken zu erstellen. Nicht umsonst ist es mittlerweile weit verbreitet. Allerdings unterstützt `ggplot2` keine dreidimensionalen Grafiken. Wie wir sehen werden, ist die `ggplot2` zugrunde liegende Idee, die einzelnen Komponenten einer Grafik durch eine spezielle Grammatik zu beschreiben.   
+
+## Erste Beispiele
+
+Das Data Frame `mpg` ist Teil des `ggplot2`-Packages (siehe `?mpg`). Es besteht aus 234 Datensät-zen mit jeweils 11 Variablen. Es enthält u. a. Informationen über den Energieverbrauch von unter-schiedlichen Automodellen aus den Jahren 1999 und 2008, die von der US Environment Protec-tion Agency gesammelt wurden. 
+
+```{r}
+library(ggplot2)
+str(mpg)
+```
+
+(ref:Varmpg) Variablen des Datensatzes `mpg`.
+
+```{r, echo=FALSE, eval=TRUE}
+df <- data.frame(col1 = c("manufacturer", "model", "displ", "year", "cyl", "trans", "drv", "cty", "hwy", "fl", "class"),
+                 col2 = c("Manufacturer/brand name", "Car model name", "Engine displacement, in litres", "Year of manufacture", "Number of cylinders", "Type of transmission", "f = front-wheel drive, r = rear wheel drive, 4 = 4wd", "City miles per gallon", "Highway miles per gallon", "Fuel type. e = ethanol, d = diesel, r = regular, p = premium, c = natural gas", "The 'type' of car"),
+                 col3 = c("Hersteller", "Modell-Name", "Hubraum in Litern", "Baujahr", "Anzahl der Zylinder", "Schaltung (Automatik / Anzahl der Gänge", "Antrieb", "Verbrauch: Stadt", "Verbrauch: Autobahn", "Antriebsart", "Fahrzeugtyp"))
+knitr::kable(df, booktabs = T, col.names = c("", "", ""), caption = "(ref:Varmpg)")%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+**Umrechnung: miles per gallon (mpg) nach Liter pro 100 km**
+
+```{r, echo=FALSE, eval=TRUE}
+df <- data.frame(col1 = c("10 mpg entsprechen 23,5 l/100 km", "20 mpg entsprechen 11,8 l/100 km", "30 mpg entsprechen 7,8 l/100 km"),
+                 col2 = c("15 mpg entsprechen 15,7 l/100 km", "25 mpg entsprechen 9,4 l/100 km", "35 mpg entsprechen 6,7 l/100 km"))
+knitr::kable(df, booktabs = T, col.names = c("", ""))%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+Die Umrechnung von Miles per Gallon (mpg) nach Liter pro 100 km kann z. B. durch eine Funk-tion geschehen:
+
+```{r}
+# Umrechnung von Miles per Gallon (mpg) nach Liter pro 100 km
+literPer100km <- function(mpg) {
+  return(round(235.195 / mpg, digits = 1))
+}
+```
+
+Wir erhalten dann die obigen Werte:
+
+```{r}
+fuel.mpg <- seq(from = 10, to = 40,by=5)
+fuel.mpg
+literPer100km(fuel.mpg)
+```
+
+Wie wir sehen, hat der Datensatz `mpg` einigermaßen vernünftige „sprechende“ Bezeichnungen für die verschiedenen Variablen (Spaltennamen) ; ebenso haben die nicht nominal skalierten Daten aussagekräftige Werte. Dies wird uns bei der Erstellung der unterschiedlichen Plots helfen.
+
+Der erste Plot in Kapitel 3 in [R4DS] wurde erzeugt durch:
+```{r, eval=FALSE}
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+Es geht mithilfe der `qplot`-Funktion sogar noch kürzer: 
+```{r qplot-mpg, fig.cap="(ref:qplotmpg)"}
+qplot(displ, hwy, data = mpg)
+```
+
+(ref:qplotmpg) Der erste Plot: Hubraum versus Verbrauch.
+
+Allerdings bezeichnet selbst Hadley Wickham, der `ggplot2` entwickelt hat, die Funktion `qplot` als „Krücke“, die zwar in vielen Situationen vernünftige Defaultwerte benutzt, empfiehlt aber das konzeptionell übersichtlichere `ggplot` für komplizierte Grafiken zu benutzen.
+
+Wir gehen vom Folgenden aus:
+
++	Die zugehörigen Daten liegen immer in Form eines Data Frame vor.
+
++ Eine Grafik besteht aus mehreren Ebenen.
+
++	Ein \textbf{\emph{„Geom“}} ist ein geometrisches Objekt, das die Erscheinungsform festlegt. Beispiele:
+
+    -	Balkendiagramm: `geom_bar()` (gut geeignet für die Visualisierung der Werte einer diskreten Variable)
+    
+    -	Histogramm: `geom_histogram()` (gut geeignet für die Visualisierung der Werte einer kontinuierlichen Variable)
+    
+    -	Boxplot: `geom_boxplot()` (gut geeignet für die Visualisierung des Zusammenhangs einer diskreten und einer kontinuierli-chen Variable)
+
+    -	x-y-Plot (scatterplot): `geom_point()` (gut geeignet für die Visualisierung des Zusammenhangs zweier kontinuierlicher Variable)
+  
+
+### Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen
+
+Ästhetische Eigenschaften wie `colour` oder `size` können direkt mithilfe eines festen Werts fest-gelegt werden (und zwar außerhalb der Funktion `aes()`):
+
+```{r, eval=FALSE}
+### Alle Punkte blau
+ggplot(data = mpg) +                          # outside of aes()
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+Sie können aber auch an eine Variable gebunden werden und nehmen dann abhängig von diesem Variablenwert unterschiedliche Werte an. Dieses „Binden“ geschieht *innerhalb* der Funktion `aes()`, dessen Rückgabewert mithilfe des Arguments `mapping` an das Geom-Objekt übergeben wird:
+
+```{r, eval=FALSE}
+ggplot(data = mpg) +                           # inside aes()
+  geom_point(mapping = aes(x = displ, y = hwy, color = year))
+```
+
+`x` und `y` sind ebenfalls ästhetische Eigenschaften; da sie (in der Regel) an Variablen gebunden werden, stehen sie somit stets innerhalb der Funktion `aes()`.
+
+Im dem folgenden erzeugten Plot sind die Punkte zwar einfarbig, aber nicht blau! „blue“ wird hier als kategoriale Variable interpretiert, die nur einen Wert annimmt und in der erstellten Legende angezeigt wird: 
+
+```{r plot-hwy-displ, fig.cap="(ref:hwy-displ)"}
+ggplot(data = mpg) +                         
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+(ref:hwy-displ) Unerwartete Farbe.
+
+Entsprechend erhält man durch den folgenden Plot eine Vielzahl von Farbtönen und eine entspre-chende Legende:
+```{r plot-hwy-displ-legend, fig.cap="(ref:hwy-displ-legend)"}
+ggplot(data = mpg) +                          
+  geom_point(mapping = aes(x = displ, y = hwy, color = 1:234))
+```
+
+(ref:hwy-displ-legend) Vielzahl von Farben.
+
+### Beispiel: Ästhetische Eigenschaften (aesthetic) für `geom_point()`
+
+`geom_point()` versteht folgende ästhetische Eigenschaften (`x` und `y` müssen immer gesetzt werden):\newline
+`x`, `y`, `alpha`, `colour`, `fill`, `group`, `shape`, `size`, `stroke` 
+
+Beispielsweise erzeugt den folgenden Plot:
+```{r plot-hwy-displ-fill-colour, fig.cap="(ref:hwy-displ-fill-colour)"}
+ggplot(data = mpg) +                         
+  geom_point(mapping = aes(x = displ, y = hwy), 
+       size = 3, stroke = 1.5, shape = 21, fill = "blue", color ="orange") 
+```
+
+(ref:hwy-displ-fill-colour) Argumente `fill` und `colour`.
+
+## Statistische Transformation
+
+Bevor Daten visualisiert werden, müssen sie in der Regel transformiert und verdichtet werden. Dazu dienen `stat`-Objekte. Jedes `geom`-Objekt ist einem Standard-`stat`-Objekt zugeordnet und umgekehrt. In der folgenden Tabelle werden die häufigsten `geom-stat`-Beziehungen aufgelistet:
+
+(ref:geom-stat) Gebräuchliche `geom-stat`-Beziehungen.
+
+```{r, echo=FALSE, eval=TRUE}
+df <- data.frame(geom = c("geom_bar()", "geom_bin2d()", "geom_boxplot()", "geom_contour()", "geom_count()", "geom_density()", "geom_density_2d()", "geom_hex()", "geom_freqpoly()", "geom_histogram()", "geom_qq_line()", "geom_qq()", "geom_quantile()", "geom_smooth()", "geom_violin()", "geom_sf()"),
+                 stat = c("stat_count()", "stat_bin_2d()", "stat_boxplot()", "stat_contour()", "stat_sum()", "stat_density()", "stat_density_2d()", "stat_hex()", "stat_bin()", "stat_bin()", "stat_qq_line()", "stat_qq()", "stat_quantile()", "stat_smooth()", "stat_violin()", "stat_sf()"))
+knitr::kable(df, booktabs = T, caption = "(ref:geom-stat)")%>%
+ kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+
+## Übungen {-}
+
+**Aufgabe 1**
+
+Basierend auf folgendem Hinweis, erstellen Sie die folgende Grafik: 
+
+**Hinweis:** `anzahl <- c(5,10,14,3,7)`
+
+```{r ggplot-notenspiegel, echo=FALSE, fig.cap="(ref:colhistogram)", out.width="80%"}
+anzahl <- c(5,10,14,3,7)
+noten <- data.frame(Note=as.character(1:5), Anzahl=anzahl)
+ggplot(noten) +
+  geom_bar(mapping = aes(x = Note, y = Anzahl), fill="yellow", color = "red",
+           stat = "identity") +
+  labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") +
+  theme_bw()
+ 
+# # Alternativ:
+# ggplot(noten) +
+#   geom_col(mapping = aes(x = Note, y = Anzahl), fill="yellow", color = "red",
+#            stat = "identity") +
+#   labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") +
+#   theme_bw()
+```
+
+(ref:colhistogram) Farbiges Histogram.
+
+
+**Aufgabe 2**
+
+Gegeben sind folgende Daten:  
+
+```{r}
+n <- 32
+x <- y <- c(1:n, 1:n, 1:(n/2), 1:(n/4)) 
+```
+
+Was ist der Unterschied zwischen den beiden Plots:
+
+```{r, eval=FALSE}
+ggplot(data = data.frame(x,y)) + 
+  geom_point(mapping = aes(x = x, y = y))
+```
+
+```{r}
+ggplot(data = data.frame(x,y)) + 
+  geom_point(mapping = aes(x = x, y = y), position = "jitter")
+```
+
+Was würden Sie bevorzugen?
+
+**Aufgabe 3**
+
+Gegeben sind ähnlich wie in den Übungen zu Kapitel 5 folgende Daten:
+
+```{r}
+set.seed(1)
+anzahl <-  100
+MatNr <- sample(1E6:1E7-1, anzahl)
+names(MatNr) <- sample(c("ET","MB", "WIng", "WInfo"), anzahl, replace=TRUE)
+student <- data.frame(MatNr)
+student$Stdgang <- names(MatNr)
+student$Punkte <- as.integer(rnorm(anzahl, mean = 68, sd = 12))
+```
+
+Es soll wieder das folgende Notenschema zugrunde liegen:
+
+Note     | Punkte  |
+---------|---------|
+4        | 50--58  |
+3        | 59--69  |
+2        | 70--80  |
+1        |  >= 81  |
+
+
+Erzeugen Sie die folgenden zwei Grafiken unter Beachtung des folgenden Hinweises: `…… geom_bar(……) + scale_fill_brewer(palette="Dark2")  + theme_bw()`
+
+```{r grafik-noten-1, echo=FALSE, fig.cap="(ref-grafik-n1)", out.width="80%"}
+student$Note <-  factor(student$Note,levels <- 1:5)
+#head(student,10)
+#str(student)
+
+# Siehe auch http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+ggplot(data = student) + 
+  geom_bar(mapping = aes(x = Note, fill = Stdgang)) +
+  labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") +
+  scale_fill_brewer(palette="Dark2") +
+  theme_bw()
+```
+
+(ref-grafik-n1) Notenspiegel (Variante 1).
+
+
+```{r grafik-noten-2, echo=FALSE, fig.cap="(ref-grafik-n2)", out.width="80%"}
+ggplot(data = student) + 
+  geom_bar(mapping = aes(x = Note, fill = Stdgang), position = "dodge")+
+  labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") +
+  scale_fill_brewer(palette="Dark2") +
+  theme_bw()
+```
+
+(ref-grafik-n2) Notenspiegel (Variante 2).
+
+**Aufgabe 4**
+
+Erzeugen Sie mit den Daten der letzten Übungsaufgabe die folgenden vier Grafiken:
+
+```{r grafik-noten-A4-1, echo=TRUE, fig.cap="(ref-graf-not-A4-1)", out.width="80%"}
+ggplot(data = student) + 
+  geom_bar(mapping = aes(x = Note, fill = Note)) +
+  labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") + 
+  facet_wrap(~ Stdgang, nrow = 2) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_bw()
+```
+
+(ref-graf-not-A4-1) Notenspiegel mit Facetten (Variante 1). 
+
+
+```{r grafik-noten-A4-2, echo=TRUE, fig.cap="(ref-graf-not-A4-2)", out.width="80%"}
+ggplot(data = student) + 
+  geom_bar(mapping = aes(x = Note, fill = Stdgang), position = "dodge")+
+  labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") + 
+  facet_wrap(~ Note, nrow = 2) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_bw()
+```
+
+(ref-graf-not-A4-2) Notenspiegel mit Facetten (Variante 2). 
+
+```{r grafik-noten-A4-3, echo=TRUE, fig.cap="(ref-graf-not-A4-3)", out.width="80%"}
+f <- factor(student$Punkte >= 50)
+levels(f) <- c("durchgefallen", "bestanden")
+student$Bestanden <- f
+
+ggplot(data = student) + 
+  geom_bar(mapping = aes(x = Note, fill= Stdgang), position = "dodge") +
+  labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") + 
+  facet_wrap( Stdgang ~ Bestanden, nrow = 2) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_bw()
+```
+
+(ref-graf-not-A4-3) Noten aufgeteilt in „bestanden“ und  „durchgefallen“ (Variante 1). 
+
+
+```{r grafik-noten-A4-4, echo=TRUE, fig.cap="(ref-graf-not-A4-4)", out.width="80%"}
+ggplot(data = student) + 
+  geom_bar(mapping = aes(x = Note, fill= Stdgang), position = "dodge") +
+  labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") + 
+  facet_wrap(  Bestanden ~ Stdgang , nrow = 2) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_bw()
+```
+
+(ref-graf-not-A4-4) Noten aufgeteilt in „bestanden“ und  „durchgefallen“ (Variante 2).
