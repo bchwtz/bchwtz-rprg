@@ -1446,11 +1446,16 @@ Figure 7.28: Ein Histogramm der <code>x</code>-Werte.
 ##    1.07    2.91    3.53    3.54    4.04    8.06      21</code></pre>
 <p>Beim Aufruf von <code>geom_boxplot()</code> erhalten wir nun die Warnung: „<code>Removed 9 rows containing non-finite values (stat_boxplot).</code>“:</p>
 <div class="sourceCode" id="cb945"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb945-1"><a href="spezielle-themen-und-fallstudien.html#cb945-1" aria-hidden="true" tabindex="-1"></a>dd <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>, <span class="at">y =</span> x)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<pre><code>## Warning: Removed 8 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-381-1.png" width="672" /></p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-381"></span>
+<img src="bchwtz-rprg_files/figure-html/unnamed-chunk-381-1.png" alt="Ein erster Boxplot der bereinigten x-Werte." width="80%" />
+<p class="caption">
+Figure 7.29: Ein erster Boxplot der bereinigten <code>x</code>-Werte.
+</p>
+</div>
+
 <p>Zu Dokumentationszwecken speichern wir die fraglichen Datensätze ab und schreiben sie in eine CSV-Datei:</p>
-<div class="sourceCode" id="cb947"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb947-1"><a href="spezielle-themen-und-fallstudien.html#cb947-1" aria-hidden="true" tabindex="-1"></a>dd.na <span class="ot">&lt;-</span> dd[<span class="sc">!</span><span class="fu">complete.cases</span>(dd),]</span>
-<span id="cb947-2"><a href="spezielle-themen-und-fallstudien.html#cb947-2" aria-hidden="true" tabindex="-1"></a>dd.na</span></code></pre></div>
+<div class="sourceCode" id="cb946"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb946-1"><a href="spezielle-themen-und-fallstudien.html#cb946-1" aria-hidden="true" tabindex="-1"></a>dd.na <span class="ot">&lt;-</span> dd[<span class="sc">!</span><span class="fu">complete.cases</span>(dd),]</span>
+<span id="cb946-2"><a href="spezielle-themen-und-fallstudien.html#cb946-2" aria-hidden="true" tabindex="-1"></a>dd.na</span></code></pre></div>
 <pre><code>## # A tibble: 23 × 11
 ##       nr carat cut       color clarity depth table price     x     y     z
 ##    &lt;int&gt; &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -1466,24 +1471,24 @@ Figure 7.28: Ein Histogramm der <code>x</code>-Werte.
 ## 10 24068  2    Premium   H     SI2      58.9    57 12210  8.09 NA     8.06
 ## # … with 13 more rows
 ## # ℹ Use `print(n = ...)` to see more rows</code></pre>
-<div class="sourceCode" id="cb949"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb949-1"><a href="spezielle-themen-und-fallstudien.html#cb949-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv2</span>(dd.na, <span class="st">&quot;diamonds_fraglich1.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb948"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb948-1"><a href="spezielle-themen-und-fallstudien.html#cb948-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv2</span>(dd.na, <span class="st">&quot;diamonds_fraglich1.csv&quot;</span>)</span></code></pre></div>
 <p>Danach bereinigen wir unsere Daten, in dem wir alle Datensätze löschen, die einen <code>NA</code>-Wert enthalten. Da dies nur einen äußerst geringen Anteil der gesamten Daten betrifft, verlieren wir hierdurch nicht viel Information.</p>
-<div class="sourceCode" id="cb950"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb950-1"><a href="spezielle-themen-und-fallstudien.html#cb950-1" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> dd <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb949"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb949-1"><a href="spezielle-themen-und-fallstudien.html#cb949-1" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> dd <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>()</span></code></pre></div>
 </div>
 <div id="weitere-ausreißer" class="section level4 hasAnchor" number="7.6.1.3">
 <h4><span class="header-section-number">7.6.1.3</span> Weitere Ausreißer<a href="spezielle-themen-und-fallstudien.html#weitere-ausreißer" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Wie man z.B. in Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:ggplot-box-case6">7.27</a> sieht, gibt es in den <code>x</code>-Werten nach oben einige deutliche Ausreißer. Ob dies fehlerhafte oder fragliche Werte sind, können wir ohne spezielles Anwenderwissen nicht beurteilen. Für die weitere Analyse scheint es sinnvoll zu sein, die Zusammenhänge zwischen den <code>x</code>- und <code>y</code>-Werten genauer zu betrachten. Einen ersten Hinweis erhalten wir über die Korrelation:</p>
-<div class="sourceCode" id="cb951"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb951-1"><a href="spezielle-themen-und-fallstudien.html#cb951-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dd<span class="sc">$</span>x, dd<span class="sc">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb950"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb950-1"><a href="spezielle-themen-und-fallstudien.html#cb950-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dd<span class="sc">$</span>x, dd<span class="sc">$</span>y)</span></code></pre></div>
 <pre><code>## [1] 0.9986573</code></pre>
 <p>Es gibt also einen starken linearen Zusammenhang zwischen den <code>x</code>- und <code>y</code>-Werten. Dies sieht man auch im folgenden Plot:</p>
-<div class="sourceCode" id="cb953"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb953-1"><a href="spezielle-themen-und-fallstudien.html#cb953-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb953-2"><a href="spezielle-themen-und-fallstudien.html#cb953-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb953-3"><a href="spezielle-themen-und-fallstudien.html#cb953-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&#39;lm&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb952"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb952-1"><a href="spezielle-themen-und-fallstudien.html#cb952-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb952-2"><a href="spezielle-themen-und-fallstudien.html#cb952-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb952-3"><a href="spezielle-themen-und-fallstudien.html#cb952-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&#39;lm&#39;</span>)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <div class="figure"><span style="display:block;" id="fig:cor-x-y"></span>
 <img src="bchwtz-rprg_files/figure-html/cor-x-y-1.png" alt="Zusammenhang der y- und x-Werte mit einer Ausgleichsgeraden (`ggplot2::geom_smooth() (Wickham 2016))." width="80%" />
 <p class="caption">
-Figure 7.29: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit einer Ausgleichsgeraden (`<code>ggplot2::geom_smooth()</code> <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>).
+Figure 7.30: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit einer Ausgleichsgeraden (`<code>ggplot2::geom_smooth()</code> <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>).
 </p>
 </div>
 
@@ -1491,8 +1496,8 @@ Figure 7.29: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit einer
 </div>
 <div id="lineare-regression" class="section level4 hasAnchor" number="7.6.1.4">
 <h4><span class="header-section-number">7.6.1.4</span> Lineare Regression<a href="spezielle-themen-und-fallstudien.html#lineare-regression" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Mithilfe linearer Regression können wir die Ausgleichsgerade in Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:cor-x-y">7.29</a> auch direkt berechnen. Dazu nutzen wir die mächtige Funktion <code>lm()</code>:</p>
-<div class="sourceCode" id="cb955"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb955-1"><a href="spezielle-themen-und-fallstudien.html#cb955-1" aria-hidden="true" tabindex="-1"></a>mod_xy <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x , <span class="at">data =</span> dd)</span></code></pre></div>
+<p>Mithilfe linearer Regression können wir die Ausgleichsgerade in Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:cor-x-y">7.30</a> auch direkt berechnen. Dazu nutzen wir die mächtige Funktion <code>lm()</code>:</p>
+<div class="sourceCode" id="cb954"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb954-1"><a href="spezielle-themen-und-fallstudien.html#cb954-1" aria-hidden="true" tabindex="-1"></a>mod_xy <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x , <span class="at">data =</span> dd)</span></code></pre></div>
 <p>Der Ausdruck <code>y ~ x</code> beschreibt eine Formel (formula) in R. Eine Formel ist ein eigener Datentyp; sie ist typischerweise von der Form <code>y ~ model</code>, wobei <code>model</code> aus einer Reihe von Variablen (Einflussgrößen) besteht, die die Größe <code>y</code> beschreiben und für die entsprechenden Modell-Parameter bestimmt werden sollen (wie zum Beispiel durch Kleinste-Quadrat-Schätzer der Regressionskoeffizienten für lineare Modelle). In der folgenden Tabelle, in der einfache lineare Modelle aufgelistet sind, sind die zu bestimmenden Modell-Parameter: <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> und <span class="math inline">\(\gamma\)</span>.</p>
 <table>
 <thead>
@@ -1516,7 +1521,7 @@ Figure 7.29: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit einer
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb956"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb956-1"><a href="spezielle-themen-und-fallstudien.html#cb956-1" aria-hidden="true" tabindex="-1"></a>mod_xy</span></code></pre></div>
+<div class="sourceCode" id="cb955"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb955-1"><a href="spezielle-themen-und-fallstudien.html#cb955-1" aria-hidden="true" tabindex="-1"></a>mod_xy</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ 1 + x, data = dd)
@@ -1525,26 +1530,26 @@ Figure 7.29: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit einer
 ## (Intercept)            x  
 ##     0.05109      0.99140</code></pre>
 <p>Die Funktion <code>lm()</code> gibt eine Liste zurück, genauer ein Objekt der Klasse <code>lm</code>. In unserem einfachen Fall erhalten wir in der Ausgabe die Steigung und den y-Achsenabschnitt der gefundenen Ausgleichsgeraden. Im Listenelement <code>coefficients</code> sind die berechneten Modell-Parameter hinterlegt. In unserem Fall sind dies die Steigung und der y-Achsenabschnitt der berechneten Ausgleichsgeraden.</p>
-<div class="sourceCode" id="cb958"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb958-1"><a href="spezielle-themen-und-fallstudien.html#cb958-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> mod_xy<span class="sc">$</span>coefficients[<span class="dv">1</span>]</span>
-<span id="cb958-2"><a href="spezielle-themen-und-fallstudien.html#cb958-2" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">&lt;-</span> mod_xy<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
-<span id="cb958-3"><a href="spezielle-themen-und-fallstudien.html#cb958-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb958-4"><a href="spezielle-themen-und-fallstudien.html#cb958-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb958-5"><a href="spezielle-themen-und-fallstudien.html#cb958-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb958-6"><a href="spezielle-themen-und-fallstudien.html#cb958-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> beta, <span class="at">slope =</span> alpha, <span class="at">color =</span> <span class="st">&quot;magenta&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb958-7"><a href="spezielle-themen-und-fallstudien.html#cb958-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Berechnete Ausgleichsgerade&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb957"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb957-1"><a href="spezielle-themen-und-fallstudien.html#cb957-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> mod_xy<span class="sc">$</span>coefficients[<span class="dv">1</span>]</span>
+<span id="cb957-2"><a href="spezielle-themen-und-fallstudien.html#cb957-2" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">&lt;-</span> mod_xy<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb957-3"><a href="spezielle-themen-und-fallstudien.html#cb957-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb957-4"><a href="spezielle-themen-und-fallstudien.html#cb957-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb957-5"><a href="spezielle-themen-und-fallstudien.html#cb957-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb957-6"><a href="spezielle-themen-und-fallstudien.html#cb957-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> beta, <span class="at">slope =</span> alpha, <span class="at">color =</span> <span class="st">&quot;magenta&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb957-7"><a href="spezielle-themen-und-fallstudien.html#cb957-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Berechnete Ausgleichsgerade&quot;</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:x-y-ausgleichsgerade"></span>
 <img src="bchwtz-rprg_files/figure-html/x-y-ausgleichsgerade-1.png" alt="Zusammenhang der y- und x-Werte mit berechneter Ausgleichsgerade." width="80%" />
 <p class="caption">
-Figure 7.30: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit berechneter Ausgleichsgerade.
+Figure 7.31: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit berechneter Ausgleichsgerade.
 </p>
 </div>
 
 <p>Die <em>Residuen</em>, also die Abstände zwischen den Datenpunkten und den jeweils korrespondierenden Punkten auf der Ausgleichsgeraden erhalten wir durch: <code>dd$y - (beta * dd$x + alpha)</code>. (Zu einem Datenpunkt mit den Koordinaten (x,y) ist dies der Punkt auf der Ausgleichsgeraden mit derselben x-Koordinate.) Alternativ können wir diese Werte auch über das Objekt <code>mod_xy</code> erhalten:</p>
-<div class="sourceCode" id="cb959"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb959-1"><a href="spezielle-themen-und-fallstudien.html#cb959-1" aria-hidden="true" tabindex="-1"></a>residuen_manuell <span class="ot">&lt;-</span> dd<span class="sc">$</span>y <span class="sc">-</span> (beta <span class="sc">*</span> dd<span class="sc">$</span>x <span class="sc">+</span> alpha) <span class="co"># Residuen manuell berechnet</span></span>
-<span id="cb959-2"><a href="spezielle-themen-und-fallstudien.html#cb959-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.double</span>(residuen_manuell), <span class="fu">as.double</span>(mod_xy<span class="sc">$</span>residuals))</span></code></pre></div>
+<div class="sourceCode" id="cb958"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb958-1"><a href="spezielle-themen-und-fallstudien.html#cb958-1" aria-hidden="true" tabindex="-1"></a>residuen_manuell <span class="ot">&lt;-</span> dd<span class="sc">$</span>y <span class="sc">-</span> (beta <span class="sc">*</span> dd<span class="sc">$</span>x <span class="sc">+</span> alpha) <span class="co"># Residuen manuell berechnet</span></span>
+<span id="cb958-2"><a href="spezielle-themen-und-fallstudien.html#cb958-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.double</span>(residuen_manuell), <span class="fu">as.double</span>(mod_xy<span class="sc">$</span>residuals))</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Die Funktion <code>lm()</code> berechnet noch viel mehr. Dies wird deutlich beim Aufruf von <code>summary(mod_xy)</code>. Hierdurch erhält man zusätzliche Informationen über die Güte des Schätzers, die Residuen und die daraus abgeleiteten statistischen Kenngrößen (wie Standard-Fehler, t-Test- und F-Test-Werte), auf die wir aber hier nicht weiter eingehen werden:</p>
-<div class="sourceCode" id="cb961"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb961-1"><a href="spezielle-themen-und-fallstudien.html#cb961-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_xy)</span></code></pre></div>
+<div class="sourceCode" id="cb960"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb960-1"><a href="spezielle-themen-und-fallstudien.html#cb960-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_xy)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ 1 + x, data = dd)
@@ -1563,25 +1568,25 @@ Figure 7.30: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit berec
 ## Residual standard error: 0.05757 on 53915 degrees of freedom
 ## Multiple R-squared:  0.9973, Adjusted R-squared:  0.9973 
 ## F-statistic: 2.004e+07 on 1 and 53915 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>In unserem Fall sehen wir, dass die Bestimmtheitsmaße <code>Multiple R-squared</code> und <code>Adjusted R-squared</code> nahe bei 1 liegen; dies bedeutet, dass das gewählte Modell (hier: ein einfaches lineares Modell) sehr gut zu den Daten passt. Dies überrascht nicht, da Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:cor-x-y">7.29</a> und Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:x-y-ausgleichsgerade">7.30</a> denselben Schluss nahelegen.</p>
+<p>In unserem Fall sehen wir, dass die Bestimmtheitsmaße <code>Multiple R-squared</code> und <code>Adjusted R-squared</code> nahe bei 1 liegen; dies bedeutet, dass das gewählte Modell (hier: ein einfaches lineares Modell) sehr gut zu den Daten passt. Dies überrascht nicht, da Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:cor-x-y">7.30</a> und Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:x-y-ausgleichsgerade">7.31</a> denselben Schluss nahelegen.</p>
 <p>Als Nächstes speichern wir die Residuen in einer neuen Spalte:</p>
-<div class="sourceCode" id="cb963"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb963-1"><a href="spezielle-themen-und-fallstudien.html#cb963-1" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> dd <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">res_xy =</span> y <span class="sc">-</span> (beta <span class="sc">*</span> x <span class="sc">+</span> alpha))</span></code></pre></div>
+<div class="sourceCode" id="cb962"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb962-1"><a href="spezielle-themen-und-fallstudien.html#cb962-1" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> dd <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">res_xy =</span> y <span class="sc">-</span> (beta <span class="sc">*</span> x <span class="sc">+</span> alpha))</span></code></pre></div>
 <p>Im Folgenden wollen wir diejenigen Diamanten kennzeichnen, die bezüglich der Variablen <code>res_xy</code> auffällige Werte haben. Hierzu betrachten wir ähnlich wie bei einem Boxplot die Ausreißer:</p>
-<div class="sourceCode" id="cb964"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb964-1"><a href="spezielle-themen-und-fallstudien.html#cb964-1" aria-hidden="true" tabindex="-1"></a>schranke <span class="ot">&lt;-</span>  <span class="fu">median</span>(dd<span class="sc">$</span>res_xy) <span class="sc">-</span> <span class="dv">10</span> <span class="sc">*</span> <span class="fu">IQR</span>(dd<span class="sc">$</span>res_xy)</span>
-<span id="cb964-2"><a href="spezielle-themen-und-fallstudien.html#cb964-2" aria-hidden="true" tabindex="-1"></a>dd <span class="sc">%&gt;%</span> <span class="fu">filter</span>( <span class="fu">abs</span>(res_xy) <span class="sc">&gt;</span> <span class="fu">abs</span>(schranke)) <span class="sc">%&gt;%</span> <span class="fu">count</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb963"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb963-1"><a href="spezielle-themen-und-fallstudien.html#cb963-1" aria-hidden="true" tabindex="-1"></a>schranke <span class="ot">&lt;-</span>  <span class="fu">median</span>(dd<span class="sc">$</span>res_xy) <span class="sc">-</span> <span class="dv">10</span> <span class="sc">*</span> <span class="fu">IQR</span>(dd<span class="sc">$</span>res_xy)</span>
+<span id="cb963-2"><a href="spezielle-themen-und-fallstudien.html#cb963-2" aria-hidden="true" tabindex="-1"></a>dd <span class="sc">%&gt;%</span> <span class="fu">filter</span>( <span class="fu">abs</span>(res_xy) <span class="sc">&gt;</span> <span class="fu">abs</span>(schranke)) <span class="sc">%&gt;%</span> <span class="fu">count</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##       n
 ##   &lt;int&gt;
 ## 1    12</code></pre>
 <p><code>IQR(dd$res_xy)</code> gibt den mittleren Quartilsabstand zurück, entspricht also der Differenz quantile(dd<span class="math inline">\(res_xy, 0.75) - quantile(dd\)</span>res_xy, 0.25). Der Faktor 10 wurde hier mehr oder weniger willkürlich gewählt. Wie die obige Ausgabe zeigt, gibt es 29 Ausreißer (beim Faktor 10). In <code>dd</code> fügen wir nun eine neue Spalte ein, die die Ausreißer kennzeichnet:</p>
-<div class="sourceCode" id="cb966"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb966-1"><a href="spezielle-themen-und-fallstudien.html#cb966-1" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> dd <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Atypisch =</span> <span class="st">&quot;NONE&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb966-2"><a href="spezielle-themen-und-fallstudien.html#cb966-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Atypisch =</span> <span class="fu">ifelse</span>( <span class="fu">abs</span>(res_xy) <span class="sc">&gt;</span> <span class="fu">abs</span>(schranke), <span class="st">&quot;Shape_xy&quot;</span>, Atypisch)) <span class="sc">%&gt;%</span> </span>
-<span id="cb966-3"><a href="spezielle-themen-und-fallstudien.html#cb966-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(nr, Atypisch, <span class="fu">everything</span>())</span>
-<span id="cb966-4"><a href="spezielle-themen-und-fallstudien.html#cb966-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb966-5"><a href="spezielle-themen-und-fallstudien.html#cb966-5" aria-hidden="true" tabindex="-1"></a>dd<span class="sc">$</span>Atypisch <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(dd<span class="sc">$</span>Atypisch)</span></code></pre></div>
+<div class="sourceCode" id="cb965"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb965-1"><a href="spezielle-themen-und-fallstudien.html#cb965-1" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> dd <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Atypisch =</span> <span class="st">&quot;NONE&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb965-2"><a href="spezielle-themen-und-fallstudien.html#cb965-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Atypisch =</span> <span class="fu">ifelse</span>( <span class="fu">abs</span>(res_xy) <span class="sc">&gt;</span> <span class="fu">abs</span>(schranke), <span class="st">&quot;Shape_xy&quot;</span>, Atypisch)) <span class="sc">%&gt;%</span> </span>
+<span id="cb965-3"><a href="spezielle-themen-und-fallstudien.html#cb965-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(nr, Atypisch, <span class="fu">everything</span>())</span>
+<span id="cb965-4"><a href="spezielle-themen-und-fallstudien.html#cb965-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb965-5"><a href="spezielle-themen-und-fallstudien.html#cb965-5" aria-hidden="true" tabindex="-1"></a>dd<span class="sc">$</span>Atypisch <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(dd<span class="sc">$</span>Atypisch)</span></code></pre></div>
 <p>Die auffälligen Diamanten geordnet nach den Residuen sind dann somit:</p>
-<div class="sourceCode" id="cb967"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb967-1"><a href="spezielle-themen-und-fallstudien.html#cb967-1" aria-hidden="true" tabindex="-1"></a>dd <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Atypisch <span class="sc">!=</span> <span class="st">&quot;NONE&quot;</span> ) <span class="sc">%&gt;%</span> </span>
-<span id="cb967-2"><a href="spezielle-themen-und-fallstudien.html#cb967-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">arrange</span>(res_xy)</span></code></pre></div>
+<div class="sourceCode" id="cb966"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb966-1"><a href="spezielle-themen-und-fallstudien.html#cb966-1" aria-hidden="true" tabindex="-1"></a>dd <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Atypisch <span class="sc">!=</span> <span class="st">&quot;NONE&quot;</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb966-2"><a href="spezielle-themen-und-fallstudien.html#cb966-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">arrange</span>(res_xy)</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 13
 ##       nr Atypisch carat cut    color clarity depth table price     x     y     z
 ##    &lt;int&gt; &lt;fct&gt;    &lt;dbl&gt; &lt;ord&gt;  &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -1600,15 +1605,15 @@ Figure 7.30: Zusammenhang der <code>y</code>- und <code>x</code>-Werte mit berec
 ## # … with 1 more variable: res_xy &lt;dbl&gt;
 ## # ℹ Use `colnames()` to see all variable names</code></pre>
 <p>Die Ergebnisse können leicht visualisiert werden:</p>
-<div class="sourceCode" id="cb969"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb969-1"><a href="spezielle-themen-und-fallstudien.html#cb969-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color=</span>Atypisch)) <span class="sc">+</span></span>
-<span id="cb969-2"><a href="spezielle-themen-und-fallstudien.html#cb969-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb969-3"><a href="spezielle-themen-und-fallstudien.html#cb969-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb969-4"><a href="spezielle-themen-und-fallstudien.html#cb969-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> alpha, <span class="at">slope =</span> beta,<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb969-5"><a href="spezielle-themen-und-fallstudien.html#cb969-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Auffällige x-, und y-Werte&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb968"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb968-1"><a href="spezielle-themen-und-fallstudien.html#cb968-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color=</span>Atypisch)) <span class="sc">+</span></span>
+<span id="cb968-2"><a href="spezielle-themen-und-fallstudien.html#cb968-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb968-3"><a href="spezielle-themen-und-fallstudien.html#cb968-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb968-4"><a href="spezielle-themen-und-fallstudien.html#cb968-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> alpha, <span class="at">slope =</span> beta,<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb968-5"><a href="spezielle-themen-und-fallstudien.html#cb968-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Auffällige x-, und y-Werte&quot;</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:x-y-ausreisser"></span>
 <img src="bchwtz-rprg_files/figure-html/x-y-ausreisser-1.png" alt="Zusammenhang der y- und x-Werte inklusive farbliche Markierung der Ausreißer." width="80%" />
 <p class="caption">
-Figure 7.31: Zusammenhang der <code>y</code>- und <code>x</code>-Werte inklusive farbliche Markierung der <em>Ausreißer</em>.
+Figure 7.32: Zusammenhang der <code>y</code>- und <code>x</code>-Werte inklusive farbliche Markierung der <em>Ausreißer</em>.
 </p>
 </div>
 
@@ -1616,16 +1621,16 @@ Figure 7.31: Zusammenhang der <code>y</code>- und <code>x</code>-Werte inklusive
 <div id="vergleich-der-x--und-z-variablen" class="section level4 hasAnchor" number="7.6.1.5">
 <h4><span class="header-section-number">7.6.1.5</span> Vergleich der <code>x</code>- und <code>z</code>-Variablen<a href="spezielle-themen-und-fallstudien.html#vergleich-der-x--und-z-variablen" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Ähnlich kann nun auch beim Vergleich der <code>x</code>- und <code>z</code>-Variablen vorgegangen werden. Wie der nächste Plot zeigt, scheint es auch hier Ausreißer zu geben:</p>
-<div class="sourceCode" id="cb970"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb970-1"><a href="spezielle-themen-und-fallstudien.html#cb970-1" aria-hidden="true" tabindex="-1"></a>ddd <span class="ot">&lt;-</span> dd <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Atypisch <span class="sc">==</span> <span class="st">&quot;NONE&quot;</span> )</span>
-<span id="cb970-2"><a href="spezielle-themen-und-fallstudien.html#cb970-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb970-3"><a href="spezielle-themen-und-fallstudien.html#cb970-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ddd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> z)) <span class="sc">+</span></span>
-<span id="cb970-4"><a href="spezielle-themen-und-fallstudien.html#cb970-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb970-5"><a href="spezielle-themen-und-fallstudien.html#cb970-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&#39;lm&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb969"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb969-1"><a href="spezielle-themen-und-fallstudien.html#cb969-1" aria-hidden="true" tabindex="-1"></a>ddd <span class="ot">&lt;-</span> dd <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Atypisch <span class="sc">==</span> <span class="st">&quot;NONE&quot;</span> )</span>
+<span id="cb969-2"><a href="spezielle-themen-und-fallstudien.html#cb969-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb969-3"><a href="spezielle-themen-und-fallstudien.html#cb969-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ddd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> z)) <span class="sc">+</span></span>
+<span id="cb969-4"><a href="spezielle-themen-und-fallstudien.html#cb969-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb969-5"><a href="spezielle-themen-und-fallstudien.html#cb969-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&#39;lm&#39;</span>)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <div class="figure"><span style="display:block;" id="fig:x-z-ausreisser"></span>
 <img src="bchwtz-rprg_files/figure-html/x-z-ausreisser-1.png" alt="Zusammenhang der z- und x-Werte inklusive farbliche Markierung der Ausreißer." width="80%" />
 <p class="caption">
-Figure 7.32: Zusammenhang der <code>z</code>- und <code>x</code>-Werte inklusive farbliche Markierung der <em>Ausreißer</em>.
+Figure 7.33: Zusammenhang der <code>z</code>- und <code>x</code>-Werte inklusive farbliche Markierung der <em>Ausreißer</em>.
 </p>
 </div>
 
@@ -1635,7 +1640,7 @@ Figure 7.32: Zusammenhang der <code>z</code>- und <code>x</code>-Werte inklusive
 <div id="allgemeiner-überblick" class="section level3 hasAnchor" number="7.6.2">
 <h3><span class="header-section-number">7.6.2</span> Allgemeiner Überblick<a href="spezielle-themen-und-fallstudien.html#allgemeiner-überblick" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In diesem Kapitel wollen wir kurz verschiedene Möglichkeiten vorstellen, wie man sich relativ schnell einen ersten groben Überblick über einen Datensatz verschaffen kann. Als Beispiel benutzten wir den Datensatz <code>diamonds</code> <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>. Da <code>diamonds</code> ein Tibble ist, ist es leicht, erste Informationen zu erhalten (Für einen normalen Data Frame wäre <code>str()</code> die vielleicht bessere Lösung.):</p>
-<div class="sourceCode" id="cb972"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb972-1"><a href="spezielle-themen-und-fallstudien.html#cb972-1" aria-hidden="true" tabindex="-1"></a>diamonds</span></code></pre></div>
+<div class="sourceCode" id="cb971"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb971-1"><a href="spezielle-themen-und-fallstudien.html#cb971-1" aria-hidden="true" tabindex="-1"></a>diamonds</span></code></pre></div>
 <pre><code>## # A tibble: 53,940 × 10
 ##    carat cut       color clarity depth table price     x     y     z
 ##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -1652,7 +1657,7 @@ Figure 7.32: Zusammenhang der <code>z</code>- und <code>x</code>-Werte inklusive
 ## # … with 53,930 more rows
 ## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <p>Informativ ist auch:</p>
-<div class="sourceCode" id="cb974"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb974-1"><a href="spezielle-themen-und-fallstudien.html#cb974-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diamonds)</span></code></pre></div>
+<div class="sourceCode" id="cb973"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb973-1"><a href="spezielle-themen-und-fallstudien.html#cb973-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diamonds)</span></code></pre></div>
 <pre><code>##      carat               cut        color        clarity          depth      
 ##  Min.   :0.2000   Fair     : 1610   D: 6775   SI1    :13065   Min.   :43.00  
 ##  1st Qu.:0.4000   Good     : 4906   E: 9797   VS2    :12258   1st Qu.:61.00  
@@ -1678,11 +1683,11 @@ Figure 7.32: Zusammenhang der <code>z</code>- und <code>x</code>-Werte inklusive
 ##  Max.   :31.800  
 ## </code></pre>
 <p>Mithilfe von Korrelationen kann die lineare Abhängigkeit der einzelnen Variablen untersucht werden:</p>
-<div class="sourceCode" id="cb976"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb976-1"><a href="spezielle-themen-und-fallstudien.html#cb976-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(diamonds)</span>
-<span id="cb976-2"><a href="spezielle-themen-und-fallstudien.html#cb976-2" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; Fehler in cor(diamonds) : &#39;x&#39; muss numerisch sein</span></span></code></pre></div>
+<div class="sourceCode" id="cb975"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb975-1"><a href="spezielle-themen-und-fallstudien.html#cb975-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(diamonds)</span>
+<span id="cb975-2"><a href="spezielle-themen-und-fallstudien.html#cb975-2" aria-hidden="true" tabindex="-1"></a><span class="co">#R&gt; Fehler in cor(diamonds) : &#39;x&#39; muss numerisch sein</span></span></code></pre></div>
 <p>Also besser:</p>
-<div class="sourceCode" id="cb977"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb977-1"><a href="spezielle-themen-und-fallstudien.html#cb977-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> diamonds  <span class="sc">%&gt;%</span>  <span class="fu">select</span>(carat, depth, price,x,y,z)</span>
-<span id="cb977-2"><a href="spezielle-themen-und-fallstudien.html#cb977-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d) </span></code></pre></div>
+<div class="sourceCode" id="cb976"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb976-1"><a href="spezielle-themen-und-fallstudien.html#cb976-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> diamonds  <span class="sc">%&gt;%</span>  <span class="fu">select</span>(carat, depth, price,x,y,z)</span>
+<span id="cb976-2"><a href="spezielle-themen-und-fallstudien.html#cb976-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d) </span></code></pre></div>
 <pre><code>##            carat       depth      price           x           y          z
 ## carat 1.00000000  0.02822431  0.9215913  0.97509423  0.95172220 0.95338738
 ## depth 0.02822431  1.00000000 -0.0106474 -0.02528925 -0.02934067 0.09492388
@@ -1690,10 +1695,10 @@ Figure 7.32: Zusammenhang der <code>z</code>- und <code>x</code>-Werte inklusive
 ## x     0.97509423 -0.02528925  0.8844352  1.00000000  0.97470148 0.97077180
 ## y     0.95172220 -0.02934067  0.8654209  0.97470148  1.00000000 0.95200572
 ## z     0.95338738  0.09492388  0.8612494  0.97077180  0.95200572 1.00000000</code></pre>
-<p>Für die nächste Grafik in Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:cor-analyse">7.33</a> wollen wir das R-Paket <code>GGally</code> <span class="citation">(<a href="#ref-GGally" role="doc-biblioref">Schloerke et al. 2021</a>)</span> benutzen, das <code>ggplot2</code> <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span> erweitert. Es ist nicht Bestandteil von <code>tidyverse</code> <span class="citation">(<a href="#ref-tidyverse" role="doc-biblioref">Wickham et al. 2019</a>)</span> und muss daher getrennt installiert werden. Aus dem <code>GGally</code>-Paket wollen wir lediglich die Funktion <code>ggpairs()</code> nutzen, die in einer Matrixform je zwei Spalten vergleicht und grafisch darstellt. Insgesamt werden dabei 10×10 Teilgrafiken automatisch erzeugt. Wird der komplette Datensatz benutzt, dann braucht die Erzeugung dieser Grafik viel Zeit und manche Teilgrafiken sind auch durch die vielen Punkte nicht mehr aussagekräftig. Daher werden für die Erzeugung der Grafik lediglich 5000 zufällig ausgewählte Datensätze zugrunde gelegt (5000 ist hier ein willkürlich gewählter Wert).</p>
-<div class="sourceCode" id="cb979"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb979-1"><a href="spezielle-themen-und-fallstudien.html#cb979-1" aria-hidden="true" tabindex="-1"></a>diamondsSample <span class="ot">&lt;-</span> <span class="fu">sample_n</span>(diamonds, <span class="dv">5000</span>)</span>
-<span id="cb979-2"><a href="spezielle-themen-und-fallstudien.html#cb979-2" aria-hidden="true" tabindex="-1"></a>diamondsSample <span class="sc">%&gt;%</span>   </span>
-<span id="cb979-3"><a href="spezielle-themen-und-fallstudien.html#cb979-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>(<span class="at">title =</span> <span class="st">&quot;Diamonds&quot;</span>, <span class="at">mapping =</span>ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>))</span></code></pre></div>
+<p>Für die nächste Grafik in Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:cor-analyse">7.34</a> wollen wir das R-Paket <code>GGally</code> <span class="citation">(<a href="#ref-GGally" role="doc-biblioref">Schloerke et al. 2021</a>)</span> benutzen, das <code>ggplot2</code> <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span> erweitert. Es ist nicht Bestandteil von <code>tidyverse</code> <span class="citation">(<a href="#ref-tidyverse" role="doc-biblioref">Wickham et al. 2019</a>)</span> und muss daher getrennt installiert werden. Aus dem <code>GGally</code>-Paket wollen wir lediglich die Funktion <code>ggpairs()</code> nutzen, die in einer Matrixform je zwei Spalten vergleicht und grafisch darstellt. Insgesamt werden dabei 10×10 Teilgrafiken automatisch erzeugt. Wird der komplette Datensatz benutzt, dann braucht die Erzeugung dieser Grafik viel Zeit und manche Teilgrafiken sind auch durch die vielen Punkte nicht mehr aussagekräftig. Daher werden für die Erzeugung der Grafik lediglich 5000 zufällig ausgewählte Datensätze zugrunde gelegt (5000 ist hier ein willkürlich gewählter Wert).</p>
+<div class="sourceCode" id="cb978"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb978-1"><a href="spezielle-themen-und-fallstudien.html#cb978-1" aria-hidden="true" tabindex="-1"></a>diamondsSample <span class="ot">&lt;-</span> <span class="fu">sample_n</span>(diamonds, <span class="dv">5000</span>)</span>
+<span id="cb978-2"><a href="spezielle-themen-und-fallstudien.html#cb978-2" aria-hidden="true" tabindex="-1"></a>diamondsSample <span class="sc">%&gt;%</span>   </span>
+<span id="cb978-3"><a href="spezielle-themen-und-fallstudien.html#cb978-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>(<span class="at">title =</span> <span class="st">&quot;Diamonds&quot;</span>, <span class="at">mapping =</span>ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>))</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
@@ -1718,13 +1723,13 @@ Figure 7.32: Zusammenhang der <code>z</code>- und <code>x</code>-Werte inklusive
 <div class="figure"><span style="display:block;" id="fig:cor-analyse"></span>
 <img src="bchwtz-rprg_files/figure-html/cor-analyse-1.png" alt="Mit ggpairs() erstellte Auswertung." width="80%" />
 <p class="caption">
-Figure 7.33: Mit ggpairs() erstellte Auswertung.
+Figure 7.34: Mit ggpairs() erstellte Auswertung.
 </p>
 </div>
 
 <p><strong>Bearbeiten Sie folgende Aufgabe:</strong></p>
 <ol start="4" style="list-style-type: lower-alpha">
-<li>Erklären Sie die Grafiken in Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:cor-analyse">7.33</a>.</li>
+<li>Erklären Sie die Grafiken in Abbildung <a href="spezielle-themen-und-fallstudien.html#fig:cor-analyse">7.34</a>.</li>
 </ol>
 
 <!--
