@@ -966,9 +966,9 @@ require(tidyverse)
 ```
 
 
-### Datenanalyse der x-, y- und z-Werte
+### Datenanalyse der `x`-, `y`- und `z`-Werte
 
-Dieser Fallstudie liegt der Datensatz `diamonds` zugrunde [@ggplot2]. In einer Übung haben wir bereits Auffälligkeiten in der Verteilung der Preis-Variablen aufgedeckt. In dieser Fallstudie wollen wir nach Auffälligkeiten in den x-, y- und z-Variablen suchen und die gefundenen Werte im Datensatz kennzeichnen. 
+Dieser Fallstudie liegt der Datensatz `diamonds` zugrunde [@ggplot2]. In einer Übung haben wir bereits Auffälligkeiten in der Verteilung der Preis-Variablen aufgedeckt. In dieser Fallstudie wollen wir nach Auffälligkeiten in den `x`-, `y`- und `z`-Variablen suchen und die gefundenen Werte im Datensatz kennzeichnen. 
 
 ```{r}
 dd <- diamonds
@@ -976,7 +976,14 @@ dd <- diamonds
 
 **Bearbeiten Sie folgende Aufgabe:**
 
-a)	Fügen Sie ein weiteres Attribut `nr` dem Datensatz `dd` hinzu. Dieses Attribut soll das erste Attribut des Datensatzes dd sein und der Zeilennummer entsprechen (Hinweis: `row_number()`):
+a)	Fügen Sie ein weiteres Attribut `nr` dem Datensatz `dd` hinzu. Dieses Attribut soll das erste Attribut des Datensatzes `dd` sein und der Zeilennummer entsprechen (Hinweis: `dplyr::relocate()` [@dplyr]):
+
+```{r}
+nr <- 1:nrow(diamonds)
+dd$nr <- nr
+dd <- dd %>% relocate(nr)
+```
+
 
 ```{r}
 dd 
@@ -985,17 +992,306 @@ dd
 
 **Beantworten Sie folgende Fragen:**
 
-b)	Für wie viele Datensätze gilt x $\geq$ y und für wie viele x < y? Ändern Sie die einzelnen Datensätze, so dass stets x $\geq$ y gilt (In einer zusätzlichen Übungsaufgabe wird behandelt, wie in einem Tibble zeilenweise bezüglich mehrerer Spalten sortiert werden kann.).
+b)	Für wie viele Datensätze gilt `x` $\geq$ `y` und für wie viele `x` < `y`? Ändern Sie die einzelnen Datensätze, so dass stets `x` $\geq$ `y` gilt.
 
-c) Für welche Datensätze gilt: z > y?
+c) Für welche Datensätze gilt: `z` > `y`?
 
-In dieser Fallstudie werden wir erst einmal lediglich die Werte der Variablen x, y und z in unsere Datenanalyse einfließen lassen. Dabei sollen zunächst zwei Aspekte beleuchtet werden:
+In dieser Fallstudie werden wir erst einmal lediglich die Werte der Variablen `x`, `y` und `z` in unsere Datenanalyse einfließen lassen. Dabei sollen zunächst zwei Aspekte beleuchtet werden:
   
-    + Gibt es bezüglich der drei Variablen x, y und z Werte, die nicht definiert oder offensichtlich fehlerhaft sind? Der Datensatz soll entsprechend bereinigt und die ausgeschlossenen Datensätze do-kumentiert werden.
++ Gibt es bezüglich der drei Variablen `x`, `y` und `z` Werte, die nicht definiert oder offensichtlich fehlerhaft sind? Der Datensatz soll entsprechend bereinigt und die ausgeschlossenen Datensätze dokumentiert werden.
     
-    + Gibt es in den so bereinigten Daten noch extrem auffällige x, y oder z Werte?
++ Gibt es in den so bereinigten Daten noch *extrem* auffällige `x`, `y` oder `z` Werte?
 
 
 #### NA-Werte
 
 Zu Testzwecken wollen wir zuerst den folgenden Datensatz betrachten:
+
+```{r}
+d <- tibble(x = 1:100, y = 2*x, z = x%%7)
+d$x[99] <- NA
+d$y[22:26] <- NA
+d$z[c(23,33)] <- NA
+```
+
+Um alle Datenzeilen herauszufinden, die einen `NA`-Wert enthalten, können wir schreiben:
+
+```{r}
+d %>% filter(is.na(x)|is.na(y)|is.na(z))
+```
+
+Alternativ können wir auch die Funktion `complete.cases()` benutzen. Sie gibt einen booleschen Vektor zurück, der angibt, ob eine entsprechende Datenzeile einen `NA`-Wert enthält:
+
+```{r}
+complete.cases(d)
+```
+
+Somit erhalten wir:
+
+```{r}
+d[!complete.cases(d),]
+```
+
+```{r}
+sum(!complete.cases(d))
+```
+
+Des Weiteren gibt es die `tidyr`-Funktion `drop_na()`, die aus einem Datensatz alle Zeilen entfernt, die mindestens einen `NA`-Wert enthalten:
+
+```{r}
+d0 <- d %>% drop_na()
+sum(!complete.cases(d0))
+```
+
+Also können wir nun leicht feststellen, dass unsere Diamantendaten `dd` keine `NA`-Werte enthalten:
+
+```{r}
+sum(!complete.cases(dd))
+```
+
+#### Bereinigung der `x`-, `y`- und `z`-Werte
+
+Wie verschaffen wir uns am besten einen ersten Überblick über die Verteilung der `x`-Werte? Es folgen vier Vorschläge:
+
+```{r}
+summary(dd$x)
+```
+
+```{r ggplot-box-case6, fig.cap="(ref:box-case6)", out.width="80%"}
+ggplot(data = dd, mapping = aes(x="", y = x)) +
+  geom_boxplot()
+```
+
+(ref:box-case6) Ein erster Boxplot der `x`-Werte.
+
+```{r ggplot-box-case6-2, fig.cap="(ref:box-case6-2)", out.width="80%"}
+ggplot(dd, aes(x = x)) + geom_histogram(binwidth=0.5, boundary=0)
+```
+
+(ref:box-case6-2) Ein Histogramm der `x`-Werte.
+
+```{r}
+dd %>% count(cut_width(x, 0.5, boundary = 0))
+```
+
+Ähnlich können wir auch mit den `y`- und `z`-Werten verfahren. Es ist leicht, sich die *fraglichen* Datensätze genauer anzuschauen:
+
+```{r}
+dd %>% filter(x == 0 | y == 0 | z == 0 )
+```
+
+```{r}
+dd %>% filter(x > 30 | y > 30 | z > 30 )
+```
+
+Als Nächstes wollen wir die *fraglichen* Werte auf `NA` setzen:
+
+```{r}
+dd <- dd %>% 
+  mutate (x=ifelse(x==0 | x>30, NA, x) ) %>% 
+  mutate (y=ifelse(y==0 | y>30, NA, y) ) %>% 
+  mutate (z=ifelse(z==0 | z>30, NA, z) )
+```
+
+und danach die Daten überprüfen:
+
+```{r}
+summary(dd$x)
+summary(dd$y)
+summary(dd$z)
+```
+
+Beim Aufruf von `geom_boxplot()` erhalten wir nun die Warnung: „`Removed 9 rows containing non-finite values (stat_boxplot).`“:
+
+```{r}
+dd %>% ggplot(aes(x="", y = x)) + geom_boxplot()
+```
+
+Zu Dokumentationszwecken speichern wir die fraglichen Datensätze ab und schreiben sie in eine CSV-Datei:
+
+```{r}
+dd.na <- dd[!complete.cases(dd),]
+dd.na
+```
+
+```{r}
+write_csv2(dd.na, "diamonds_fraglich1.csv")
+```
+
+Danach bereinigen wir unsere Daten, in dem wir alle Datensätze löschen, die einen `NA`-Wert enthalten. Da dies nur einen äußerst geringen Anteil der gesamten Daten betrifft, verlieren wir hierdurch nicht viel Information.
+
+```{r}
+dd <- dd %>% drop_na()
+```
+
+#### Weitere Ausreißer
+
+Wie man z.B. in Abbildung \@ref(fig:ggplot-box-case6) sieht, gibt es in den `x`-Werten nach oben einige deutliche Ausreißer. Ob dies fehlerhafte oder fragliche Werte sind, können wir ohne spezielles Anwenderwissen nicht beurteilen. Für die weitere Analyse scheint es sinnvoll zu sein, die Zusammenhänge zwischen den `x`- und `y`-Werten genauer zu betrachten. Einen ersten Hinweis erhalten wir über die Korrelation:
+
+```{r}
+cor(dd$x, dd$y)
+```
+
+Es gibt also einen starken linearen Zusammenhang zwischen den `x`- und `y`-Werten. Dies sieht man auch im folgenden Plot:
+
+```{r cor-x-y, fig.cap="(ref:plot-cor-x-y)", out.width="80%"}
+ggplot(dd, aes(x = x, y = y)) +
+  geom_point(alpha =0.5) +
+  geom_smooth(method='lm')
+```
+
+(ref:plot-cor-x-y) Zusammenhang der `y`- und `x`-Werte mit einer Ausgleichsgeraden (``ggplot2::geom_smooth()` [@ggplot2]).
+
+Bei diesem Plot haben wir mithilfe von `geom_smooth(method='lm')` eine Ausgleichgerade erzeugt. '`lm`' steht hier für „linear regression“. Im nächsten Abschnitt wollen wir mithilfe linearer Regression untersuchen, wie wir die Ausreißer unterhalb der Geraden herausfiltern.
+
+#### Lineare Regression
+
+Mithilfe linearer Regression können wir die Ausgleichsgerade in Abbildung \@ref(fig:cor-x-y) auch direkt berechnen. Dazu nutzen wir die mächtige Funktion `lm()`:
+
+```{r}
+mod_xy <- lm(y ~ 1 + x , data = dd)
+```
+
+Der Ausdruck `y ~ x` beschreibt eine Formel (formula) in R. Eine Formel ist ein eigener Datentyp; sie ist typischerweise von der Form `y ~ model`, wobei `model` aus einer Reihe von Variablen (Einflussgrößen) besteht, die die Größe `y` beschreiben und für die entsprechenden Modell-Parameter bestimmt werden sollen (wie zum Beispiel durch Kleinste-Quadrat-Schätzer der Regressionskoeffizienten für lineare Modelle). In der folgenden Tabelle, in der einfache lineare Modelle aufgelistet sind, sind die zu bestimmenden Modell-Parameter: $\alpha$, $\beta$ und $\gamma$. 
+
+Formel         | Modell
+---------------|---------------
+`y ~ x`        | $y = \beta x + \alpha$
+`y ~ x - 1`    | $y = \beta x$
+`y ~ x, z`     | $y = \beta x + \gamma z + \alpha$
+
+
+```{r}
+mod_xy
+```
+
+Die Funktion `lm()` gibt eine Liste zurück, genauer ein Objekt der Klasse `lm`. In unserem einfachen Fall erhalten wir in der Ausgabe die Steigung und den y-Achsenabschnitt der gefundenen Ausgleichsgeraden. Im Listenelement `coefficients` sind die berechneten Modell-Parameter hinterlegt. In unserem Fall sind dies die Steigung und der y-Achsenabschnitt der berechneten Ausgleichsgeraden.
+
+```{r x-y-ausgleichsgerade, fig.cap="(ref:plot-x-y-gerade)", out.width="80%"}
+alpha <- mod_xy$coefficients[1]
+beta <- mod_xy$coefficients[2]
+
+ggplot(dd, aes(x = x, y = y)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(intercept = beta, slope = alpha, color = "magenta", size = 1) +
+  ggtitle("Berechnete Ausgleichsgerade")
+```
+
+(ref:plot-x-y-gerade) Zusammenhang der `y`- und `x`-Werte mit berechneter Ausgleichsgerade.
+
+Die *Residuen*, also die Abstände zwischen den Datenpunkten und den jeweils korrespondierenden Punkten auf der Ausgleichsgeraden erhalten wir durch: `dd$y - (beta * dd$x + alpha)`. (Zu einem Datenpunkt mit den Koordinaten (x,y) ist dies der Punkt auf der Ausgleichsgeraden mit derselben x-Koordinate.) Alternativ können wir diese Werte auch über das Objekt `mod_xy` erhalten:
+
+```{r}
+residuen_manuell <- dd$y - (beta * dd$x + alpha) # Residuen manuell berechnet
+all.equal(as.double(residuen_manuell), as.double(mod_xy$residuals))
+```
+
+Die Funktion `lm()` berechnet noch viel mehr. Dies wird deutlich beim Aufruf von `summary(mod_xy)`. Hierdurch erhält man zusätzliche Informationen über die Güte des Schätzers, die Residuen und die daraus abgeleiteten statistischen Kenngrößen (wie Standard-Fehler, t-Test- und F-Test-Werte), auf die wir aber hier nicht weiter eingehen werden: 
+
+```{r}
+summary(mod_xy)
+```
+
+In unserem Fall sehen wir, dass die Bestimmtheitsmaße `Multiple R-squared` und `Adjusted R-squared` nahe bei 1 liegen; dies bedeutet, dass das gewählte Modell (hier: ein einfaches lineares Modell) sehr gut zu den Daten passt. Dies überrascht nicht, da Abbildung \@ref(fig:cor-x-y) und Abbildung \@ref(fig:x-y-ausgleichsgerade) denselben Schluss nahelegen.
+
+Als Nächstes speichern wir die Residuen in einer neuen Spalte:
+
+```{r}
+dd <- dd %>% mutate(res_xy = y - (beta * x + alpha))
+```
+
+Im Folgenden wollen wir diejenigen Diamanten kennzeichnen, die bezüglich der Variablen `res_xy` auffällige Werte haben. Hierzu betrachten wir ähnlich wie bei einem Boxplot die Ausreißer:
+
+```{r}
+schranke <-  median(dd$res_xy) - 10 * IQR(dd$res_xy)
+dd %>% filter( abs(res_xy) > abs(schranke)) %>% count()
+```
+
+`IQR(dd$res_xy)` gibt den mittleren Quartilsabstand zurück, entspricht also der Differenz quantile(dd$res_xy, 0.75) - quantile(dd$res_xy, 0.25). Der Faktor 10 wurde hier mehr oder weniger willkürlich gewählt. Wie die obige Ausgabe zeigt, gibt es 29 Ausreißer (beim Faktor 10). In `dd` fügen wir nun eine neue Spalte ein, die die Ausreißer kennzeichnet:
+
+```{r}
+dd <- dd %>% mutate(Atypisch = "NONE") %>% 
+  mutate(Atypisch = ifelse( abs(res_xy) > abs(schranke), "Shape_xy", Atypisch)) %>% 
+  select(nr, Atypisch, everything())
+
+dd$Atypisch <- as.factor(dd$Atypisch)
+```
+
+Die auffälligen Diamanten geordnet nach den Residuen sind dann somit:
+
+```{r}
+dd %>% filter(Atypisch != "NONE" ) %>% 
+   arrange(res_xy)
+```
+
+Die Ergebnisse können leicht visualisiert werden:
+
+```{r x-y-ausreisser, fig.cap="(ref:plot-x-y-aus)", out.width="80%"}
+ggplot(dd, aes(x = x, y = y, color=Atypisch)) +
+  geom_point(alpha = 0.5) +
+  scale_colour_brewer(palette="Dark2") +
+  geom_abline(intercept = alpha, slope = beta,size = 1) +
+  ggtitle("Auffällige x-, und y-Werte")
+```
+
+(ref:plot-x-y-aus) Zusammenhang der `y`- und `x`-Werte inklusive farbliche Markierung der *Ausreißer*.
+
+#### Vergleich der `x`- und `z`-Variablen
+
+Ähnlich kann nun auch beim Vergleich der `x`- und `z`-Variablen vorgegangen werden. Wie der nächste Plot zeigt, scheint es auch hier Ausreißer zu geben:
+
+```{r x-z-ausreisser, fig.cap="(ref:plot-x-z-aus)", out.width="80%"}
+ddd <- dd %>% filter(Atypisch == "NONE" )
+
+ggplot(ddd, aes(x = x, y = z)) +
+  geom_point(alpha =0.5) +
+  geom_smooth(method='lm')
+```
+
+(ref:plot-x-z-aus) Zusammenhang der `z`- und `x`-Werte inklusive farbliche Markierung der *Ausreißer*.
+
+Die restliche Analyse der `x`- und `z`-Variablen und der `y`- und `z`-Variablen wird als zusätzliche Übungsaufgabe gestellt. 
+
+### Allgemeiner Überblick
+
+In diesem Kapitel wollen wir kurz verschiedene Möglichkeiten vorstellen, wie man sich relativ schnell einen ersten groben Überblick über einen Datensatz verschaffen kann. Als Beispiel benutzten wir den Datensatz `diamonds` [@ggplot2]. Da `diamonds` ein Tibble ist, ist es leicht, erste Informationen zu erhalten (Für einen normalen Data Frame wäre `str()` die vielleicht bessere Lösung.): 
+
+```{r}
+diamonds
+```
+
+Informativ ist auch:
+
+```{r}
+summary(diamonds)
+```
+
+Mithilfe von Korrelationen kann die lineare Abhängigkeit der einzelnen Variablen untersucht werden:
+
+```{r, eval=FALSE}
+cor(diamonds)
+#R> Fehler in cor(diamonds) : 'x' muss numerisch sein
+```
+
+
+Also besser:
+
+```{r}
+d <- diamonds  %>%  select(carat, depth, price,x,y,z)
+cor(d) 
+```
+
+
+Für die nächste Grafik in Abbildung \@ref(fig:cor-analyse) wollen wir das R-Paket `GGally` [@GGally] benutzen, das `ggplot2` [@ggplot2] erweitert. Es ist nicht Bestandteil von `tidyverse` [@tidyverse] und muss daher getrennt installiert werden. Aus dem `GGally`-Paket wollen wir lediglich die Funktion `ggpairs()` nutzen, die in einer Matrixform je zwei Spalten vergleicht und grafisch darstellt. Insgesamt werden dabei 10×10 Teilgrafiken automatisch erzeugt. Wird der komplette Datensatz benutzt, dann braucht die Erzeugung dieser Grafik viel Zeit und manche Teilgrafiken sind auch durch die vielen Punkte nicht mehr aussagekräftig. Daher werden für die Erzeugung der Grafik lediglich 5000 zufällig ausgewählte Datensätze zugrunde gelegt (5000 ist hier ein willkürlich gewählter Wert).
+
+```{r cor-analyse, fig.cap="(ref:plot-cor-analyse)", out.width="80%"}
+diamondsSample <- sample_n(diamonds, 5000)
+diamondsSample %>%   
+  ggpairs(title = "Diamonds", mapping =ggplot2::aes(alpha = 0.2))
+```
+
+(ref:plot-cor-analyse) Mit ggpairs() erstellte Auswertung.
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+d)	Erklären Sie die Grafiken in Abbildung \@ref(fig:cor-analyse).
