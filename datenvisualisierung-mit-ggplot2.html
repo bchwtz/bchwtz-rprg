@@ -617,7 +617,7 @@ Figure 6.1: Der erste Plot: Hubraum versus Verbrauch.
 <ul>
 <li><p>Die zugehörigen Daten liegen immer in Form eines Data Frame vor.</p></li>
 <li><p>Eine Grafik besteht aus mehreren Ebenen.</p></li>
-<li><p>Ein ist ein geometrisches Objekt, das die Erscheinungsform festlegt. Beispiele:</p>
+<li><p>Ein <strong>“Geom”</strong> ist ein geometrisches Objekt, das die Erscheinungsform festlegt. Beispiele:</p>
 <ul>
 <li><p>Balkendiagramm: <code>geom_bar()</code> (gut geeignet für die Visualisierung der Werte einer diskreten Variable)</p></li>
 <li><p>Histogramm: <code>geom_histogram()</code> (gut geeignet für die Visualisierung der Werte einer kontinuierlichen Variable)</p></li>
@@ -627,15 +627,15 @@ Figure 6.1: Der erste Plot: Hubraum versus Verbrauch.
 </ul>
 <div id="beispiel-ästhetische-eigenschaften-aesthetic-festlegen" class="section level3 hasAnchor" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen<a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-festlegen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Ästhetische Eigenschaften wie <code>colour</code> oder <code>size</code> können direkt mithilfe eines festen Werts fest-gelegt werden (und zwar außerhalb der Funktion <code>aes()</code>):</p>
-<div class="sourceCode" id="cb850"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb850-1"><a href="datenvisualisierung-mit-ggplot2.html#cb850-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Alle Punkte blau</span></span>
+<p>Ästhetische Eigenschaften wie <code>colour</code> oder <code>size</code> können direkt mithilfe eines festen Werts festgelegt werden (und zwar außerhalb der Funktion <code>aes()</code>):</p>
+<div class="sourceCode" id="cb850"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb850-1"><a href="datenvisualisierung-mit-ggplot2.html#cb850-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alle Punkte blau</span></span>
 <span id="cb850-2"><a href="datenvisualisierung-mit-ggplot2.html#cb850-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                          <span class="co"># outside of aes()</span></span>
 <span id="cb850-3"><a href="datenvisualisierung-mit-ggplot2.html#cb850-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p>Sie können aber auch an eine Variable gebunden werden und nehmen dann abhängig von diesem Variablenwert unterschiedliche Werte an. Dieses „Binden“ geschieht <em>innerhalb</em> der Funktion <code>aes()</code>, dessen Rückgabewert mithilfe des Arguments <code>mapping</code> an das Geom-Objekt übergeben wird:</p>
 <div class="sourceCode" id="cb851"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb851-1"><a href="datenvisualisierung-mit-ggplot2.html#cb851-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                           <span class="co"># inside aes()</span></span>
 <span id="cb851-2"><a href="datenvisualisierung-mit-ggplot2.html#cb851-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> year))</span></code></pre></div>
 <p><code>x</code> und <code>y</code> sind ebenfalls ästhetische Eigenschaften; da sie (in der Regel) an Variablen gebunden werden, stehen sie somit stets innerhalb der Funktion <code>aes()</code>.</p>
-<p>Im dem folgenden erzeugten Plot sind die Punkte zwar einfarbig, aber nicht blau! „blue“ wird hier als kategoriale Variable interpretiert, die nur einen Wert annimmt und in der erstellten Legende angezeigt wird:</p>
+<p>Im folgenden erzeugten Plot sind die Punkte zwar einfarbig, aber nicht blau! „blue“ wird hier als kategoriale Variable interpretiert, die nur einen Wert annimmt und in der erstellten Legende angezeigt wird:</p>
 <div class="sourceCode" id="cb852"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb852-1"><a href="datenvisualisierung-mit-ggplot2.html#cb852-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                         </span>
 <span id="cb852-2"><a href="datenvisualisierung-mit-ggplot2.html#cb852-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:plot-hwy-displ"></span>
@@ -677,148 +677,77 @@ Figure 6.4: Argumente <code>fill</code> und <code>colour</code>.
 <h2><span class="header-section-number">6.2</span> Statistische Transformation<a href="datenvisualisierung-mit-ggplot2.html#statistische-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Bevor Daten visualisiert werden, müssen sie in der Regel transformiert und verdichtet werden. Dazu dienen <code>stat</code>-Objekte. Jedes <code>geom</code>-Objekt ist einem Standard-<code>stat</code>-Objekt zugeordnet und umgekehrt. In der folgenden Tabelle werden die häufigsten <code>geom-stat</code>-Beziehungen aufgelistet:</p>
 
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-319">Table 6.2: </span>Gebräuchliche <code>geom-stat</code>-Beziehungen.
-</caption>
+<table>
 <thead>
-<tr>
-<th style="text-align:left;">
-geom
-</th>
-<th style="text-align:left;">
-stat
-</th>
+<tr class="header">
+<th><code>geom</code></th>
+<th><code>stat</code></th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-geom_bar()
-</td>
-<td style="text-align:left;">
-stat_count()
-</td>
+<tr class="odd">
+<td><code>geom_bar()</code></td>
+<td><code>stat_count()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_bin2d()
-</td>
-<td style="text-align:left;">
-stat_bin_2d()
-</td>
+<tr class="even">
+<td><code>geom_bin2d()</code></td>
+<td><code>stat_bin_2d()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_boxplot()
-</td>
-<td style="text-align:left;">
-stat_boxplot()
-</td>
+<tr class="odd">
+<td><code>geom_boxplot()</code></td>
+<td><code>stat_boxplot()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_contour()
-</td>
-<td style="text-align:left;">
-stat_contour()
-</td>
+<tr class="even">
+<td><code>geom_contour()</code></td>
+<td><code>stat_contour()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_count()
-</td>
-<td style="text-align:left;">
-stat_sum()
-</td>
+<tr class="odd">
+<td><code>geom_count()</code></td>
+<td><code>stat_sum()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_density()
-</td>
-<td style="text-align:left;">
-stat_density()
-</td>
+<tr class="even">
+<td><code>geom_density()</code></td>
+<td><code>stat_density()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_density_2d()
-</td>
-<td style="text-align:left;">
-stat_density_2d()
-</td>
+<tr class="odd">
+<td><code>geom_density_2d()</code></td>
+<td><code>stat_density_2d()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_hex()
-</td>
-<td style="text-align:left;">
-stat_hex()
-</td>
+<tr class="even">
+<td><code>geom_hex()</code></td>
+<td><code>stat_hex()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_freqpoly()
-</td>
-<td style="text-align:left;">
-stat_bin()
-</td>
+<tr class="odd">
+<td><code>geom_freqpoly()</code></td>
+<td><code>stat_bin()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_histogram()
-</td>
-<td style="text-align:left;">
-stat_bin()
-</td>
+<tr class="even">
+<td><code>geom_histogram()</code></td>
+<td><code>stat_bin()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_qq_line()
-</td>
-<td style="text-align:left;">
-stat_qq_line()
-</td>
+<tr class="odd">
+<td><code>geom_qq_line()</code></td>
+<td><code>stat_qq_line()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_qq()
-</td>
-<td style="text-align:left;">
-stat_qq()
-</td>
+<tr class="even">
+<td><code>geom_qq()</code></td>
+<td><code>stat_qq()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_quantile()
-</td>
-<td style="text-align:left;">
-stat_quantile()
-</td>
+<tr class="odd">
+<td><code>geom_quantile()</code></td>
+<td><code>stat_quantile()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_smooth()
-</td>
-<td style="text-align:left;">
-stat_smooth()
-</td>
+<tr class="even">
+<td><code>geom_smooth()</code></td>
+<td><code>stat_smooth()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_violin()
-</td>
-<td style="text-align:left;">
-stat_violin()
-</td>
+<tr class="odd">
+<td><code>geom_violin()</code></td>
+<td><code>stat_violin()</code></td>
 </tr>
-<tr>
-<td style="text-align:left;">
-geom_sf()
-</td>
-<td style="text-align:left;">
-stat_sf()
-</td>
+<tr class="even">
+<td><code>geom_sf()</code></td>
+<td><code>stat_sf()</code></td>
 </tr>
 </tbody>
 </table>
@@ -844,7 +773,6 @@ Figure 6.5: Farbiges Histogram.
 <span id="cb856-2"><a href="datenvisualisierung-mit-ggplot2.html#cb856-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))</span></code></pre></div>
 <div class="sourceCode" id="cb857"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb857-1"><a href="datenvisualisierung-mit-ggplot2.html#cb857-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(x,y)) <span class="sc">+</span> </span>
 <span id="cb857-2"><a href="datenvisualisierung-mit-ggplot2.html#cb857-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
-<p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-322-1.png" width="672" /></p>
 <p>Was würden Sie bevorzugen?</p>
 <p><strong>Aufgabe 3</strong></p>
 <p>Gegeben sind ähnlich wie in den Übungen zu Kapitel 5 folgende Daten:</p>
@@ -882,79 +810,51 @@ Figure 6.5: Farbiges Histogram.
 </tr>
 </tbody>
 </table>
-<p>Erzeugen Sie die folgenden zwei Grafiken unter Beachtung des folgenden Hinweises: <code>…… geom_bar(……) + scale_fill_brewer(palette="Dark2")  + theme_bw()</code></p>
+<p>Erzeugen Sie die folgenden zwei Grafiken unter Beachtung des <strong>Hinweises:</strong> <code>…… geom_bar(……) + scale_fill_brewer(palette="Dark2")  + theme_bw()</code></p>
 <div class="figure"><span style="display:block;" id="fig:grafik-noten-1"></span>
-<img src="bchwtz-rprg_files/figure-html/grafik-noten-1-1.png" alt="(ref-grafik-n1)" width="80%" />
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-1-1.png" alt="Notenspiegel (Variante 1)." width="80%" />
 <p class="caption">
-Figure 6.6: (ref-grafik-n1)
+Figure 6.6: Notenspiegel (Variante 1).
 </p>
 </div>
-<p>(ref-grafik-n1) Notenspiegel (Variante 1).</p>
+
 <div class="figure"><span style="display:block;" id="fig:grafik-noten-2"></span>
-<img src="bchwtz-rprg_files/figure-html/grafik-noten-2-1.png" alt="(ref-grafik-n2)" width="80%" />
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-2-1.png" alt="Notenspiegel (Variante 2)." width="80%" />
 <p class="caption">
-Figure 6.7: (ref-grafik-n2)
+Figure 6.7: Notenspiegel (Variante 2).
 </p>
 </div>
-<p>(ref-grafik-n2) Notenspiegel (Variante 2).</p>
+
 <p><strong>Aufgabe 4</strong></p>
 <p>Erzeugen Sie mit den Daten der letzten Übungsaufgabe die folgenden vier Grafiken:</p>
-<div class="sourceCode" id="cb859"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb859-1"><a href="datenvisualisierung-mit-ggplot2.html#cb859-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> student) <span class="sc">+</span> </span>
-<span id="cb859-2"><a href="datenvisualisierung-mit-ggplot2.html#cb859-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Note, <span class="at">fill =</span> Note)) <span class="sc">+</span></span>
-<span id="cb859-3"><a href="datenvisualisierung-mit-ggplot2.html#cb859-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Notenspiegel&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Klausur DS 2019&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb859-4"><a href="datenvisualisierung-mit-ggplot2.html#cb859-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Stdgang, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb859-5"><a href="datenvisualisierung-mit-ggplot2.html#cb859-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb859-6"><a href="datenvisualisierung-mit-ggplot2.html#cb859-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:grafik-noten-A4-1"></span>
-<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-1-1.png" alt="(ref-graf-not-A4-1)" width="80%" />
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-1-1.png" alt="Notenspiegel mit Facetten (Variante 1)." width="80%" />
 <p class="caption">
-Figure 6.8: (ref-graf-not-A4-1)
+Figure 6.8: Notenspiegel mit Facetten (Variante 1).
 </p>
 </div>
-<p>(ref-graf-not-A4-1) Notenspiegel mit Facetten (Variante 1).</p>
-<div class="sourceCode" id="cb860"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb860-1"><a href="datenvisualisierung-mit-ggplot2.html#cb860-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> student) <span class="sc">+</span> </span>
-<span id="cb860-2"><a href="datenvisualisierung-mit-ggplot2.html#cb860-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Note, <span class="at">fill =</span> Stdgang), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)<span class="sc">+</span></span>
-<span id="cb860-3"><a href="datenvisualisierung-mit-ggplot2.html#cb860-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Notenspiegel&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Klausur DS 2019&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb860-4"><a href="datenvisualisierung-mit-ggplot2.html#cb860-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Note, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb860-5"><a href="datenvisualisierung-mit-ggplot2.html#cb860-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb860-6"><a href="datenvisualisierung-mit-ggplot2.html#cb860-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+
 <div class="figure"><span style="display:block;" id="fig:grafik-noten-A4-2"></span>
-<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-2-1.png" alt="(ref-graf-not-A4-2)" width="80%" />
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-2-1.png" alt="Notenspiegel mit Facetten (Variante 2)." width="80%" />
 <p class="caption">
-Figure 6.9: (ref-graf-not-A4-2)
+Figure 6.9: Notenspiegel mit Facetten (Variante 2).
 </p>
 </div>
-<p>(ref-graf-not-A4-2) Notenspiegel mit Facetten (Variante 2).</p>
-<div class="sourceCode" id="cb861"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb861-1"><a href="datenvisualisierung-mit-ggplot2.html#cb861-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">factor</span>(student<span class="sc">$</span>Punkte <span class="sc">&gt;=</span> <span class="dv">50</span>)</span>
-<span id="cb861-2"><a href="datenvisualisierung-mit-ggplot2.html#cb861-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(f) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;durchgefallen&quot;</span>, <span class="st">&quot;bestanden&quot;</span>)</span>
-<span id="cb861-3"><a href="datenvisualisierung-mit-ggplot2.html#cb861-3" aria-hidden="true" tabindex="-1"></a>student<span class="sc">$</span>Bestanden <span class="ot">&lt;-</span> f</span>
-<span id="cb861-4"><a href="datenvisualisierung-mit-ggplot2.html#cb861-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb861-5"><a href="datenvisualisierung-mit-ggplot2.html#cb861-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> student) <span class="sc">+</span> </span>
-<span id="cb861-6"><a href="datenvisualisierung-mit-ggplot2.html#cb861-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Note, <span class="at">fill=</span> Stdgang), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
-<span id="cb861-7"><a href="datenvisualisierung-mit-ggplot2.html#cb861-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Notenspiegel&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Klausur DS 2019&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb861-8"><a href="datenvisualisierung-mit-ggplot2.html#cb861-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( Stdgang <span class="sc">~</span> Bestanden, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb861-9"><a href="datenvisualisierung-mit-ggplot2.html#cb861-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb861-10"><a href="datenvisualisierung-mit-ggplot2.html#cb861-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+
 <div class="figure"><span style="display:block;" id="fig:grafik-noten-A4-3"></span>
-<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-3-1.png" alt="(ref-graf-not-A4-3)" width="80%" />
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-3-1.png" alt="Noten aufgeteilt in „bestanden“ und „durchgefallen“ (Variante 1)." width="80%" />
 <p class="caption">
-Figure 6.10: (ref-graf-not-A4-3)
+Figure 6.10: Noten aufgeteilt in „bestanden“ und „durchgefallen“ (Variante 1).
 </p>
 </div>
-<p>(ref-graf-not-A4-3) Noten aufgeteilt in „bestanden“ und „durchgefallen“ (Variante 1).</p>
-<div class="sourceCode" id="cb862"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb862-1"><a href="datenvisualisierung-mit-ggplot2.html#cb862-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> student) <span class="sc">+</span> </span>
-<span id="cb862-2"><a href="datenvisualisierung-mit-ggplot2.html#cb862-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Note, <span class="at">fill=</span> Stdgang), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
-<span id="cb862-3"><a href="datenvisualisierung-mit-ggplot2.html#cb862-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Notenspiegel&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Klausur DS 2019&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb862-4"><a href="datenvisualisierung-mit-ggplot2.html#cb862-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(  Bestanden <span class="sc">~</span> Stdgang , <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb862-5"><a href="datenvisualisierung-mit-ggplot2.html#cb862-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb862-6"><a href="datenvisualisierung-mit-ggplot2.html#cb862-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+
 <div class="figure"><span style="display:block;" id="fig:grafik-noten-A4-4"></span>
-<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-4-1.png" alt="(ref-graf-not-A4-4)" width="80%" />
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-4-1.png" alt="Noten aufgeteilt in „bestanden“ und „durchgefallen“ (Variante 2)." width="80%" />
 <p class="caption">
-Figure 6.11: (ref-graf-not-A4-4)
+Figure 6.11: Noten aufgeteilt in „bestanden“ und „durchgefallen“ (Variante 2).
 </p>
 </div>
-<p>(ref-graf-not-A4-4) Noten aufgeteilt in „bestanden“ und „durchgefallen“ (Variante 2).</p>
+
 
 <!--
 # (PART\*) Übungen - Tidy data, Relational data, Iteration {-}
