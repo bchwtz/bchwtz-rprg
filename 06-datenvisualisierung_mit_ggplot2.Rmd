@@ -78,7 +78,7 @@ Wir gehen vom Folgenden aus:
 
 + Eine Grafik besteht aus mehreren Ebenen.
 
-+	Ein \textbf{\emph{„Geom“}} ist ein geometrisches Objekt, das die Erscheinungsform festlegt. Beispiele:
++	Ein **"Geom"** ist ein geometrisches Objekt, das die Erscheinungsform festlegt. Beispiele:
 
     -	Balkendiagramm: `geom_bar()` (gut geeignet für die Visualisierung der Werte einer diskreten Variable)
     
@@ -91,10 +91,10 @@ Wir gehen vom Folgenden aus:
 
 ### Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen
 
-Ästhetische Eigenschaften wie `colour` oder `size` können direkt mithilfe eines festen Werts fest-gelegt werden (und zwar außerhalb der Funktion `aes()`):
+Ästhetische Eigenschaften wie `colour` oder `size` können direkt mithilfe eines festen Werts festgelegt werden (und zwar außerhalb der Funktion `aes()`):
 
 ```{r, eval=FALSE}
-### Alle Punkte blau
+# Alle Punkte blau
 ggplot(data = mpg) +                          # outside of aes()
   geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
 ```
@@ -108,7 +108,7 @@ ggplot(data = mpg) +                           # inside aes()
 
 `x` und `y` sind ebenfalls ästhetische Eigenschaften; da sie (in der Regel) an Variablen gebunden werden, stehen sie somit stets innerhalb der Funktion `aes()`.
 
-Im dem folgenden erzeugten Plot sind die Punkte zwar einfarbig, aber nicht blau! „blue“ wird hier als kategoriale Variable interpretiert, die nur einen Wert annimmt und in der erstellten Legende angezeigt wird: 
+Im folgenden erzeugten Plot sind die Punkte zwar einfarbig, aber nicht blau! „blue“ wird hier als kategoriale Variable interpretiert, die nur einen Wert annimmt und in der erstellten Legende angezeigt wird: 
 
 ```{r plot-hwy-displ, fig.cap="(ref:hwy-displ)"}
 ggplot(data = mpg) +                         
@@ -145,12 +145,24 @@ Bevor Daten visualisiert werden, müssen sie in der Regel transformiert und verd
 
 (ref:geom-stat) Gebräuchliche `geom-stat`-Beziehungen.
 
-```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(geom = c("geom_bar()", "geom_bin2d()", "geom_boxplot()", "geom_contour()", "geom_count()", "geom_density()", "geom_density_2d()", "geom_hex()", "geom_freqpoly()", "geom_histogram()", "geom_qq_line()", "geom_qq()", "geom_quantile()", "geom_smooth()", "geom_violin()", "geom_sf()"),
-                 stat = c("stat_count()", "stat_bin_2d()", "stat_boxplot()", "stat_contour()", "stat_sum()", "stat_density()", "stat_density_2d()", "stat_hex()", "stat_bin()", "stat_bin()", "stat_qq_line()", "stat_qq()", "stat_quantile()", "stat_smooth()", "stat_violin()", "stat_sf()"))
-knitr::kable(df, booktabs = T, caption = "(ref:geom-stat)")%>%
- kableExtra::kable_styling(latex_options = "hold_position")
-```
+`geom`    | `stat`
+----------|------------------
+`geom_bar()` | `stat_count()`
+`geom_bin2d()` | `stat_bin_2d()`
+`geom_boxplot()` | `stat_boxplot()`
+`geom_contour()` | `stat_contour()`
+`geom_count()` | `stat_sum()`
+`geom_density()` | `stat_density()`
+`geom_density_2d()` | `stat_density_2d()`
+`geom_hex()` | `stat_hex()`
+`geom_freqpoly()` | `stat_bin()`
+`geom_histogram()` | `stat_bin()`
+`geom_qq_line()` | `stat_qq_line()`
+`geom_qq()` | `stat_qq()`
+`geom_quantile()` | `stat_quantile()`
+`geom_smooth()` | `stat_smooth()`
+`geom_violin()` | `stat_violin()`
+`geom_sf()` | `stat_sf()`
 
 
 ## Übungen {-}
@@ -197,7 +209,7 @@ ggplot(data = data.frame(x,y)) +
   geom_point(mapping = aes(x = x, y = y))
 ```
 
-```{r}
+```{r, eval=FALSE}
 ggplot(data = data.frame(x,y)) + 
   geom_point(mapping = aes(x = x, y = y), position = "jitter")
 ```
@@ -228,9 +240,9 @@ Note     | Punkte  |
 1        |  >= 81  |
 
 
-Erzeugen Sie die folgenden zwei Grafiken unter Beachtung des folgenden Hinweises: `…… geom_bar(……) + scale_fill_brewer(palette="Dark2")  + theme_bw()`
+Erzeugen Sie die folgenden zwei Grafiken unter Beachtung des **Hinweises:** `…… geom_bar(……) + scale_fill_brewer(palette="Dark2")  + theme_bw()`
 
-```{r grafik-noten-1, echo=FALSE, fig.cap="(ref-grafik-n1)", out.width="80%"}
+```{r grafik-noten-1, echo=FALSE, fig.cap="(ref:grafik-n1)", out.width="80%"}
 notenFaktor <- cut(student$Punkte,  breaks=c(0, 49, 58, 69, 80, Inf), labels = 5:1)
 student$Note <- notenFaktor
 student$Note <-  factor(student$Note,levels <- 1:5)
@@ -245,10 +257,10 @@ ggplot(data = student) +
   theme_bw()
 ```
 
-(ref-grafik-n1) Notenspiegel (Variante 1).
+(ref:grafik-n1) Notenspiegel (Variante 1).
 
 
-```{r grafik-noten-2, echo=FALSE, fig.cap="(ref-grafik-n2)", out.width="80%"}
+```{r grafik-noten-2, echo=FALSE, fig.cap="(ref:grafik-n2)", out.width="80%"}
 ggplot(data = student) + 
   geom_bar(mapping = aes(x = Note, fill = Stdgang), position = "dodge")+
   labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") +
@@ -256,13 +268,13 @@ ggplot(data = student) +
   theme_bw()
 ```
 
-(ref-grafik-n2) Notenspiegel (Variante 2).
+(ref:grafik-n2) Notenspiegel (Variante 2).
 
 **Aufgabe 4**
 
 Erzeugen Sie mit den Daten der letzten Übungsaufgabe die folgenden vier Grafiken:
 
-```{r grafik-noten-A4-1, echo=TRUE, fig.cap="(ref-graf-not-A4-1)", out.width="80%"}
+```{r grafik-noten-A4-1, echo=FALSE, fig.cap="(ref:graf-not-A4-1)", out.width="80%"}
 ggplot(data = student) + 
   geom_bar(mapping = aes(x = Note, fill = Note)) +
   labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") + 
@@ -271,10 +283,10 @@ ggplot(data = student) +
   theme_bw()
 ```
 
-(ref-graf-not-A4-1) Notenspiegel mit Facetten (Variante 1). 
+(ref:graf-not-A4-1) Notenspiegel mit Facetten (Variante 1). 
 
 
-```{r grafik-noten-A4-2, echo=TRUE, fig.cap="(ref-graf-not-A4-2)", out.width="80%"}
+```{r grafik-noten-A4-2, echo=FALSE, fig.cap="(ref:graf-not-A4-2)", out.width="80%"}
 ggplot(data = student) + 
   geom_bar(mapping = aes(x = Note, fill = Stdgang), position = "dodge")+
   labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") + 
@@ -283,9 +295,9 @@ ggplot(data = student) +
   theme_bw()
 ```
 
-(ref-graf-not-A4-2) Notenspiegel mit Facetten (Variante 2). 
+(ref:graf-not-A4-2) Notenspiegel mit Facetten (Variante 2). 
 
-```{r grafik-noten-A4-3, echo=TRUE, fig.cap="(ref-graf-not-A4-3)", out.width="80%"}
+```{r grafik-noten-A4-3, echo=FALSE, fig.cap="(ref:graf-not-A4-3)", out.width="80%"}
 f <- factor(student$Punkte >= 50)
 levels(f) <- c("durchgefallen", "bestanden")
 student$Bestanden <- f
@@ -298,10 +310,10 @@ ggplot(data = student) +
   theme_bw()
 ```
 
-(ref-graf-not-A4-3) Noten aufgeteilt in „bestanden“ und  „durchgefallen“ (Variante 1). 
+(ref:graf-not-A4-3) Noten aufgeteilt in „bestanden“ und  „durchgefallen“ (Variante 1). 
 
 
-```{r grafik-noten-A4-4, echo=TRUE, fig.cap="(ref-graf-not-A4-4)", out.width="80%"}
+```{r grafik-noten-A4-4, echo=FALSE, fig.cap="(ref:graf-not-A4-4)", out.width="80%"}
 ggplot(data = student) + 
   geom_bar(mapping = aes(x = Note, fill= Stdgang), position = "dodge") +
   labs(title = "Notenspiegel", subtitle = "Klausur DS 2019") + 
@@ -310,4 +322,4 @@ ggplot(data = student) +
   theme_bw()
 ```
 
-(ref-graf-not-A4-4) Noten aufgeteilt in „bestanden“ und  „durchgefallen“ (Variante 2).
+(ref:graf-not-A4-4) Noten aufgeteilt in „bestanden“ und  „durchgefallen“ (Variante 2).
