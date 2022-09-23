@@ -315,7 +315,16 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#kurzzusammenfassung-3"><i class="fa fa-check"></i>Kurzzusammenfassung</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Datenvisualisierung mit <code>ggplot2</code></a></li>
+<li class="chapter" data-level="6" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Datenvisualisierung mit <code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#erste-beispiele"><i class="fa fa-check"></i><b>6.1</b> Erste Beispiele</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-festlegen"><i class="fa fa-check"></i><b>6.1.1</b> Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen</a></li>
+<li class="chapter" data-level="6.1.2" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-für-geom_point"><i class="fa fa-check"></i><b>6.1.2</b> Beispiel: Ästhetische Eigenschaften (aesthetic) für <code>geom_point()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#statistische-transformation"><i class="fa fa-check"></i><b>6.2</b> Statistische Transformation</a></li>
+<li class="chapter" data-level="" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#übungen-4"><i class="fa fa-check"></i>Übungen</a></li>
+</ul></li>
 <li class="chapter" data-level="7" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html"><i class="fa fa-check"></i><b>7</b> Spezielle Themen und Fallstudien</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-1"><i class="fa fa-check"></i><b>7.1</b> Fallstudie 1</a>
@@ -379,6 +388,573 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="datenvisualisierung-mit-ggplot2" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Datenvisualisierung mit <code>ggplot2</code><a href="datenvisualisierung-mit-ggplot2.html#datenvisualisierung-mit-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Parallel zu diesem Kapitel sollen Sie das Kapitel “3 Data visualisation” aus <em>“R for Data Sciences”</em> durcharbeiten. <em>“R for Data Sciences”</em> gibt es in mindestens drei Versionen:</p>
+<ul>
+<li><p> ist die Webseite zu dem Buch; im Folgenden werden wir diese Quelle mit [R4DS] bezeichnen.</p></li>
+<li><p>Wickham, Hadley and Grolemund, Garrett: <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. Sebastopol: O’Reilly Media, Inc., 2016.</p></li>
+<li><p>Mittlerweile gibt es auch eine deutsche Übersetzung:
+Wickham, Hadley und Grolemund, Garrett: <em>R für Data Science : Daten importieren, be-reinigen, umformen, modellieren und visualisieren</em>. Sebastopol: O’Reilly, 2017</p></li>
+</ul>
+<p>Es gibt mehrere Möglichkeiten, Grafiken in R zu erstellen. Bis jetzt haben wir die im Base-R enthaltenen Funktionen wie <code>plot()</code>, <code>barplot()</code>, <code>boxplot()</code> und <code>hist()</code> benutzt, um einfache Grafiken zu erstellen. Das <code>ggplot2</code>-Package bietet darüber hinaus viele interessante Möglichkeiten, mit relativ wenig Aufwand aussagekräftige Grafiken zu erstellen. Nicht umsonst ist es mittlerweile weit verbreitet. Allerdings unterstützt <code>ggplot2</code> keine dreidimensionalen Grafiken. Wie wir sehen werden, ist die <code>ggplot2</code> zugrunde liegende Idee, die einzelnen Komponenten einer Grafik durch eine spezielle Grammatik zu beschreiben.</p>
+<div id="erste-beispiele" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Erste Beispiele<a href="datenvisualisierung-mit-ggplot2.html#erste-beispiele" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Das Data Frame <code>mpg</code> ist Teil des <code>ggplot2</code>-Packages (siehe <code>?mpg</code>). Es besteht aus 234 Datensät-zen mit jeweils 11 Variablen. Es enthält u. a. Informationen über den Energieverbrauch von unter-schiedlichen Automodellen aus den Jahren 1999 und 2008, die von der US Environment Protec-tion Agency gesammelt wurden.</p>
+<div class="sourceCode" id="cb841"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb841-1"><a href="datenvisualisierung-mit-ggplot2.html#cb841-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb841-2"><a href="datenvisualisierung-mit-ggplot2.html#cb841-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mpg)</span></code></pre></div>
+<pre><code>## tibble [234 × 11] (S3: tbl_df/tbl/data.frame)
+##  $ manufacturer: chr [1:234] &quot;audi&quot; &quot;audi&quot; &quot;audi&quot; &quot;audi&quot; ...
+##  $ model       : chr [1:234] &quot;a4&quot; &quot;a4&quot; &quot;a4&quot; &quot;a4&quot; ...
+##  $ displ       : num [1:234] 1.8 1.8 2 2 2.8 2.8 3.1 1.8 1.8 2 ...
+##  $ year        : int [1:234] 1999 1999 2008 2008 1999 1999 2008 1999 1999 2008 ...
+##  $ cyl         : int [1:234] 4 4 4 4 6 6 6 4 4 4 ...
+##  $ trans       : chr [1:234] &quot;auto(l5)&quot; &quot;manual(m5)&quot; &quot;manual(m6)&quot; &quot;auto(av)&quot; ...
+##  $ drv         : chr [1:234] &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;f&quot; ...
+##  $ cty         : int [1:234] 18 21 20 21 16 18 18 18 16 20 ...
+##  $ hwy         : int [1:234] 29 29 31 30 26 26 27 26 25 28 ...
+##  $ fl          : chr [1:234] &quot;p&quot; &quot;p&quot; &quot;p&quot; &quot;p&quot; ...
+##  $ class       : chr [1:234] &quot;compact&quot; &quot;compact&quot; &quot;compact&quot; &quot;compact&quot; ...</code></pre>
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-312">Table 6.1: </span>Variablen des Datensatzes <code>mpg</code>.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+manufacturer
+</td>
+<td style="text-align:left;">
+Manufacturer/brand name
+</td>
+<td style="text-align:left;">
+Hersteller
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+model
+</td>
+<td style="text-align:left;">
+Car model name
+</td>
+<td style="text-align:left;">
+Modell-Name
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+displ
+</td>
+<td style="text-align:left;">
+Engine displacement, in litres
+</td>
+<td style="text-align:left;">
+Hubraum in Litern
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+year
+</td>
+<td style="text-align:left;">
+Year of manufacture
+</td>
+<td style="text-align:left;">
+Baujahr
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cyl
+</td>
+<td style="text-align:left;">
+Number of cylinders
+</td>
+<td style="text-align:left;">
+Anzahl der Zylinder
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+trans
+</td>
+<td style="text-align:left;">
+Type of transmission
+</td>
+<td style="text-align:left;">
+Schaltung (Automatik / Anzahl der Gänge
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+drv
+</td>
+<td style="text-align:left;">
+f = front-wheel drive, r = rear wheel drive, 4 = 4wd
+</td>
+<td style="text-align:left;">
+Antrieb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cty
+</td>
+<td style="text-align:left;">
+City miles per gallon
+</td>
+<td style="text-align:left;">
+Verbrauch: Stadt
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hwy
+</td>
+<td style="text-align:left;">
+Highway miles per gallon
+</td>
+<td style="text-align:left;">
+Verbrauch: Autobahn
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fl
+</td>
+<td style="text-align:left;">
+Fuel type. e = ethanol, d = diesel, r = regular, p = premium, c = natural gas
+</td>
+<td style="text-align:left;">
+Antriebsart
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+class
+</td>
+<td style="text-align:left;">
+The ‘type’ of car
+</td>
+<td style="text-align:left;">
+Fahrzeugtyp
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Umrechnung: miles per gallon (mpg) nach Liter pro 100 km</strong></p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10 mpg entsprechen 23,5 l/100 km
+</td>
+<td style="text-align:left;">
+15 mpg entsprechen 15,7 l/100 km
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+20 mpg entsprechen 11,8 l/100 km
+</td>
+<td style="text-align:left;">
+25 mpg entsprechen 9,4 l/100 km
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30 mpg entsprechen 7,8 l/100 km
+</td>
+<td style="text-align:left;">
+35 mpg entsprechen 6,7 l/100 km
+</td>
+</tr>
+</tbody>
+</table>
+<p>Die Umrechnung von Miles per Gallon (mpg) nach Liter pro 100 km kann z. B. durch eine Funk-tion geschehen:</p>
+<div class="sourceCode" id="cb843"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb843-1"><a href="datenvisualisierung-mit-ggplot2.html#cb843-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Umrechnung von Miles per Gallon (mpg) nach Liter pro 100 km</span></span>
+<span id="cb843-2"><a href="datenvisualisierung-mit-ggplot2.html#cb843-2" aria-hidden="true" tabindex="-1"></a>literPer100km <span class="ot">&lt;-</span> <span class="cf">function</span>(mpg) {</span>
+<span id="cb843-3"><a href="datenvisualisierung-mit-ggplot2.html#cb843-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">round</span>(<span class="fl">235.195</span> <span class="sc">/</span> mpg, <span class="at">digits =</span> <span class="dv">1</span>))</span>
+<span id="cb843-4"><a href="datenvisualisierung-mit-ggplot2.html#cb843-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Wir erhalten dann die obigen Werte:</p>
+<div class="sourceCode" id="cb844"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb844-1"><a href="datenvisualisierung-mit-ggplot2.html#cb844-1" aria-hidden="true" tabindex="-1"></a>fuel.mpg <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">10</span>, <span class="at">to =</span> <span class="dv">40</span>,<span class="at">by=</span><span class="dv">5</span>)</span>
+<span id="cb844-2"><a href="datenvisualisierung-mit-ggplot2.html#cb844-2" aria-hidden="true" tabindex="-1"></a>fuel.mpg</span></code></pre></div>
+<pre><code>## [1] 10 15 20 25 30 35 40</code></pre>
+<div class="sourceCode" id="cb846"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb846-1"><a href="datenvisualisierung-mit-ggplot2.html#cb846-1" aria-hidden="true" tabindex="-1"></a><span class="fu">literPer100km</span>(fuel.mpg)</span></code></pre></div>
+<pre><code>## [1] 23.5 15.7 11.8  9.4  7.8  6.7  5.9</code></pre>
+<p>Wie wir sehen, hat der Datensatz <code>mpg</code> einigermaßen vernünftige „sprechende“ Bezeichnungen für die verschiedenen Variablen (Spaltennamen) ; ebenso haben die nicht nominal skalierten Daten aussagekräftige Werte. Dies wird uns bei der Erstellung der unterschiedlichen Plots helfen.</p>
+<p>Der erste Plot in Kapitel 3 in [R4DS] wurde erzeugt durch:</p>
+<div class="sourceCode" id="cb848"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb848-1"><a href="datenvisualisierung-mit-ggplot2.html#cb848-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy))</span></code></pre></div>
+<p>Es geht mithilfe der <code>qplot</code>-Funktion sogar noch kürzer:</p>
+<div class="sourceCode" id="cb849"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb849-1"><a href="datenvisualisierung-mit-ggplot2.html#cb849-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(displ, hwy, <span class="at">data =</span> mpg)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:qplot-mpg"></span>
+<img src="bchwtz-rprg_files/figure-html/qplot-mpg-1.png" alt="Der erste Plot: Hubraum versus Verbrauch." width="672" />
+<p class="caption">
+Figure 6.1: Der erste Plot: Hubraum versus Verbrauch.
+</p>
+</div>
+
+<p>Allerdings bezeichnet selbst Hadley Wickham, der <code>ggplot2</code> entwickelt hat, die Funktion <code>qplot</code> als „Krücke“, die zwar in vielen Situationen vernünftige Defaultwerte benutzt, empfiehlt aber das konzeptionell übersichtlichere <code>ggplot</code> für komplizierte Grafiken zu benutzen.</p>
+<p>Wir gehen vom Folgenden aus:</p>
+<ul>
+<li><p>Die zugehörigen Daten liegen immer in Form eines Data Frame vor.</p></li>
+<li><p>Eine Grafik besteht aus mehreren Ebenen.</p></li>
+<li><p>Ein ist ein geometrisches Objekt, das die Erscheinungsform festlegt. Beispiele:</p>
+<ul>
+<li><p>Balkendiagramm: <code>geom_bar()</code> (gut geeignet für die Visualisierung der Werte einer diskreten Variable)</p></li>
+<li><p>Histogramm: <code>geom_histogram()</code> (gut geeignet für die Visualisierung der Werte einer kontinuierlichen Variable)</p></li>
+<li><p>Boxplot: <code>geom_boxplot()</code> (gut geeignet für die Visualisierung des Zusammenhangs einer diskreten und einer kontinuierli-chen Variable)</p></li>
+<li><p>x-y-Plot (scatterplot): <code>geom_point()</code> (gut geeignet für die Visualisierung des Zusammenhangs zweier kontinuierlicher Variable)</p></li>
+</ul></li>
+</ul>
+<div id="beispiel-ästhetische-eigenschaften-aesthetic-festlegen" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen<a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-festlegen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ästhetische Eigenschaften wie <code>colour</code> oder <code>size</code> können direkt mithilfe eines festen Werts fest-gelegt werden (und zwar außerhalb der Funktion <code>aes()</code>):</p>
+<div class="sourceCode" id="cb850"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb850-1"><a href="datenvisualisierung-mit-ggplot2.html#cb850-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Alle Punkte blau</span></span>
+<span id="cb850-2"><a href="datenvisualisierung-mit-ggplot2.html#cb850-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                          <span class="co"># outside of aes()</span></span>
+<span id="cb850-3"><a href="datenvisualisierung-mit-ggplot2.html#cb850-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p>Sie können aber auch an eine Variable gebunden werden und nehmen dann abhängig von diesem Variablenwert unterschiedliche Werte an. Dieses „Binden“ geschieht <em>innerhalb</em> der Funktion <code>aes()</code>, dessen Rückgabewert mithilfe des Arguments <code>mapping</code> an das Geom-Objekt übergeben wird:</p>
+<div class="sourceCode" id="cb851"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb851-1"><a href="datenvisualisierung-mit-ggplot2.html#cb851-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                           <span class="co"># inside aes()</span></span>
+<span id="cb851-2"><a href="datenvisualisierung-mit-ggplot2.html#cb851-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> year))</span></code></pre></div>
+<p><code>x</code> und <code>y</code> sind ebenfalls ästhetische Eigenschaften; da sie (in der Regel) an Variablen gebunden werden, stehen sie somit stets innerhalb der Funktion <code>aes()</code>.</p>
+<p>Im dem folgenden erzeugten Plot sind die Punkte zwar einfarbig, aber nicht blau! „blue“ wird hier als kategoriale Variable interpretiert, die nur einen Wert annimmt und in der erstellten Legende angezeigt wird:</p>
+<div class="sourceCode" id="cb852"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb852-1"><a href="datenvisualisierung-mit-ggplot2.html#cb852-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                         </span>
+<span id="cb852-2"><a href="datenvisualisierung-mit-ggplot2.html#cb852-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:plot-hwy-displ"></span>
+<img src="bchwtz-rprg_files/figure-html/plot-hwy-displ-1.png" alt="Unerwartete Farbe." width="672" />
+<p class="caption">
+Figure 6.2: Unerwartete Farbe.
+</p>
+</div>
+
+<p>Entsprechend erhält man durch den folgenden Plot eine Vielzahl von Farbtönen und eine entspre-chende Legende:</p>
+<div class="sourceCode" id="cb853"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb853-1"><a href="datenvisualisierung-mit-ggplot2.html#cb853-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                          </span>
+<span id="cb853-2"><a href="datenvisualisierung-mit-ggplot2.html#cb853-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">234</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:plot-hwy-displ-legend"></span>
+<img src="bchwtz-rprg_files/figure-html/plot-hwy-displ-legend-1.png" alt="Vielzahl von Farben." width="672" />
+<p class="caption">
+Figure 6.3: Vielzahl von Farben.
+</p>
+</div>
+
+</div>
+<div id="beispiel-ästhetische-eigenschaften-aesthetic-für-geom_point" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Beispiel: Ästhetische Eigenschaften (aesthetic) für <code>geom_point()</code><a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-für-geom_point" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>geom_point()</code> versteht folgende ästhetische Eigenschaften (<code>x</code> und <code>y</code> müssen immer gesetzt werden):
+<code>x</code>, <code>y</code>, <code>alpha</code>, <code>colour</code>, <code>fill</code>, <code>group</code>, <code>shape</code>, <code>size</code>, <code>stroke</code></p>
+<p>Beispielsweise erzeugt den folgenden Plot:</p>
+<div class="sourceCode" id="cb854"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb854-1"><a href="datenvisualisierung-mit-ggplot2.html#cb854-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                         </span>
+<span id="cb854-2"><a href="datenvisualisierung-mit-ggplot2.html#cb854-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), </span>
+<span id="cb854-3"><a href="datenvisualisierung-mit-ggplot2.html#cb854-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">size =</span> <span class="dv">3</span>, <span class="at">stroke =</span> <span class="fl">1.5</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">color =</span><span class="st">&quot;orange&quot;</span>) </span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:plot-hwy-displ-fill-colour"></span>
+<img src="bchwtz-rprg_files/figure-html/plot-hwy-displ-fill-colour-1.png" alt="Argumente fill und colour." width="672" />
+<p class="caption">
+Figure 6.4: Argumente <code>fill</code> und <code>colour</code>.
+</p>
+</div>
+
+</div>
+</div>
+<div id="statistische-transformation" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Statistische Transformation<a href="datenvisualisierung-mit-ggplot2.html#statistische-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Bevor Daten visualisiert werden, müssen sie in der Regel transformiert und verdichtet werden. Dazu dienen <code>stat</code>-Objekte. Jedes <code>geom</code>-Objekt ist einem Standard-<code>stat</code>-Objekt zugeordnet und umgekehrt. In der folgenden Tabelle werden die häufigsten <code>geom-stat</code>-Beziehungen aufgelistet:</p>
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-319">Table 6.2: </span>Gebräuchliche <code>geom-stat</code>-Beziehungen.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+geom
+</th>
+<th style="text-align:left;">
+stat
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+geom_bar()
+</td>
+<td style="text-align:left;">
+stat_count()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_bin2d()
+</td>
+<td style="text-align:left;">
+stat_bin_2d()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_boxplot()
+</td>
+<td style="text-align:left;">
+stat_boxplot()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_contour()
+</td>
+<td style="text-align:left;">
+stat_contour()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_count()
+</td>
+<td style="text-align:left;">
+stat_sum()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_density()
+</td>
+<td style="text-align:left;">
+stat_density()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_density_2d()
+</td>
+<td style="text-align:left;">
+stat_density_2d()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_hex()
+</td>
+<td style="text-align:left;">
+stat_hex()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_freqpoly()
+</td>
+<td style="text-align:left;">
+stat_bin()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_histogram()
+</td>
+<td style="text-align:left;">
+stat_bin()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_qq_line()
+</td>
+<td style="text-align:left;">
+stat_qq_line()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_qq()
+</td>
+<td style="text-align:left;">
+stat_qq()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_quantile()
+</td>
+<td style="text-align:left;">
+stat_quantile()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_smooth()
+</td>
+<td style="text-align:left;">
+stat_smooth()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_violin()
+</td>
+<td style="text-align:left;">
+stat_violin()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+geom_sf()
+</td>
+<td style="text-align:left;">
+stat_sf()
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="übungen-4" class="section level2 unnumbered hasAnchor">
+<h2>Übungen<a href="datenvisualisierung-mit-ggplot2.html#übungen-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Aufgabe 1</strong></p>
+<p>Basierend auf folgendem Hinweis, erstellen Sie die folgende Grafik:</p>
+<p><strong>Hinweis:</strong> <code>anzahl &lt;- c(5,10,14,3,7)</code></p>
+<div class="figure"><span style="display:block;" id="fig:ggplot-notenspiegel"></span>
+<img src="bchwtz-rprg_files/figure-html/ggplot-notenspiegel-1.png" alt="Farbiges Histogram." width="80%" />
+<p class="caption">
+Figure 6.5: Farbiges Histogram.
+</p>
+</div>
+
+<p><strong>Aufgabe 2</strong></p>
+<p>Gegeben sind folgende Daten:</p>
+<div class="sourceCode" id="cb855"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb855-1"><a href="datenvisualisierung-mit-ggplot2.html#cb855-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">32</span></span>
+<span id="cb855-2"><a href="datenvisualisierung-mit-ggplot2.html#cb855-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="dv">1</span><span class="sc">:</span>n, <span class="dv">1</span><span class="sc">:</span>(n<span class="sc">/</span><span class="dv">2</span>), <span class="dv">1</span><span class="sc">:</span>(n<span class="sc">/</span><span class="dv">4</span>)) </span></code></pre></div>
+<p>Was ist der Unterschied zwischen den beiden Plots:</p>
+<div class="sourceCode" id="cb856"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb856-1"><a href="datenvisualisierung-mit-ggplot2.html#cb856-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(x,y)) <span class="sc">+</span> </span>
+<span id="cb856-2"><a href="datenvisualisierung-mit-ggplot2.html#cb856-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))</span></code></pre></div>
+<div class="sourceCode" id="cb857"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb857-1"><a href="datenvisualisierung-mit-ggplot2.html#cb857-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(x,y)) <span class="sc">+</span> </span>
+<span id="cb857-2"><a href="datenvisualisierung-mit-ggplot2.html#cb857-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
+<p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-322-1.png" width="672" /></p>
+<p>Was würden Sie bevorzugen?</p>
+<p><strong>Aufgabe 3</strong></p>
+<p>Gegeben sind ähnlich wie in den Übungen zu Kapitel 5 folgende Daten:</p>
+<div class="sourceCode" id="cb858"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb858-1"><a href="datenvisualisierung-mit-ggplot2.html#cb858-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb858-2"><a href="datenvisualisierung-mit-ggplot2.html#cb858-2" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span>  <span class="dv">100</span></span>
+<span id="cb858-3"><a href="datenvisualisierung-mit-ggplot2.html#cb858-3" aria-hidden="true" tabindex="-1"></a>MatNr <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fl">1E6</span><span class="sc">:</span><span class="fl">1E7</span><span class="dv">-1</span>, anzahl)</span>
+<span id="cb858-4"><a href="datenvisualisierung-mit-ggplot2.html#cb858-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(MatNr) <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;ET&quot;</span>,<span class="st">&quot;MB&quot;</span>, <span class="st">&quot;WIng&quot;</span>, <span class="st">&quot;WInfo&quot;</span>), anzahl, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb858-5"><a href="datenvisualisierung-mit-ggplot2.html#cb858-5" aria-hidden="true" tabindex="-1"></a>student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(MatNr)</span>
+<span id="cb858-6"><a href="datenvisualisierung-mit-ggplot2.html#cb858-6" aria-hidden="true" tabindex="-1"></a>student<span class="sc">$</span>Stdgang <span class="ot">&lt;-</span> <span class="fu">names</span>(MatNr)</span>
+<span id="cb858-7"><a href="datenvisualisierung-mit-ggplot2.html#cb858-7" aria-hidden="true" tabindex="-1"></a>student<span class="sc">$</span>Punkte <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">rnorm</span>(anzahl, <span class="at">mean =</span> <span class="dv">68</span>, <span class="at">sd =</span> <span class="dv">12</span>))</span></code></pre></div>
+<p>Es soll wieder das folgende Notenschema zugrunde liegen:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Note</th>
+<th>Punkte</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4</td>
+<td>50–58</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>59–69</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>70–80</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>&gt;= 81</td>
+</tr>
+</tbody>
+</table>
+<p>Erzeugen Sie die folgenden zwei Grafiken unter Beachtung des folgenden Hinweises: <code>…… geom_bar(……) + scale_fill_brewer(palette="Dark2")  + theme_bw()</code></p>
+<div class="figure"><span style="display:block;" id="fig:grafik-noten-1"></span>
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-1-1.png" alt="(ref-grafik-n1)" width="80%" />
+<p class="caption">
+Figure 6.6: (ref-grafik-n1)
+</p>
+</div>
+<p>(ref-grafik-n1) Notenspiegel (Variante 1).</p>
+<div class="figure"><span style="display:block;" id="fig:grafik-noten-2"></span>
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-2-1.png" alt="(ref-grafik-n2)" width="80%" />
+<p class="caption">
+Figure 6.7: (ref-grafik-n2)
+</p>
+</div>
+<p>(ref-grafik-n2) Notenspiegel (Variante 2).</p>
+<p><strong>Aufgabe 4</strong></p>
+<p>Erzeugen Sie mit den Daten der letzten Übungsaufgabe die folgenden vier Grafiken:</p>
+<div class="sourceCode" id="cb859"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb859-1"><a href="datenvisualisierung-mit-ggplot2.html#cb859-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> student) <span class="sc">+</span> </span>
+<span id="cb859-2"><a href="datenvisualisierung-mit-ggplot2.html#cb859-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Note, <span class="at">fill =</span> Note)) <span class="sc">+</span></span>
+<span id="cb859-3"><a href="datenvisualisierung-mit-ggplot2.html#cb859-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Notenspiegel&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Klausur DS 2019&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb859-4"><a href="datenvisualisierung-mit-ggplot2.html#cb859-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Stdgang, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb859-5"><a href="datenvisualisierung-mit-ggplot2.html#cb859-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb859-6"><a href="datenvisualisierung-mit-ggplot2.html#cb859-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:grafik-noten-A4-1"></span>
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-1-1.png" alt="(ref-graf-not-A4-1)" width="80%" />
+<p class="caption">
+Figure 6.8: (ref-graf-not-A4-1)
+</p>
+</div>
+<p>(ref-graf-not-A4-1) Notenspiegel mit Facetten (Variante 1).</p>
+<div class="sourceCode" id="cb860"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb860-1"><a href="datenvisualisierung-mit-ggplot2.html#cb860-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> student) <span class="sc">+</span> </span>
+<span id="cb860-2"><a href="datenvisualisierung-mit-ggplot2.html#cb860-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Note, <span class="at">fill =</span> Stdgang), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)<span class="sc">+</span></span>
+<span id="cb860-3"><a href="datenvisualisierung-mit-ggplot2.html#cb860-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Notenspiegel&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Klausur DS 2019&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb860-4"><a href="datenvisualisierung-mit-ggplot2.html#cb860-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Note, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb860-5"><a href="datenvisualisierung-mit-ggplot2.html#cb860-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb860-6"><a href="datenvisualisierung-mit-ggplot2.html#cb860-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:grafik-noten-A4-2"></span>
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-2-1.png" alt="(ref-graf-not-A4-2)" width="80%" />
+<p class="caption">
+Figure 6.9: (ref-graf-not-A4-2)
+</p>
+</div>
+<p>(ref-graf-not-A4-2) Notenspiegel mit Facetten (Variante 2).</p>
+<div class="sourceCode" id="cb861"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb861-1"><a href="datenvisualisierung-mit-ggplot2.html#cb861-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">factor</span>(student<span class="sc">$</span>Punkte <span class="sc">&gt;=</span> <span class="dv">50</span>)</span>
+<span id="cb861-2"><a href="datenvisualisierung-mit-ggplot2.html#cb861-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(f) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;durchgefallen&quot;</span>, <span class="st">&quot;bestanden&quot;</span>)</span>
+<span id="cb861-3"><a href="datenvisualisierung-mit-ggplot2.html#cb861-3" aria-hidden="true" tabindex="-1"></a>student<span class="sc">$</span>Bestanden <span class="ot">&lt;-</span> f</span>
+<span id="cb861-4"><a href="datenvisualisierung-mit-ggplot2.html#cb861-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb861-5"><a href="datenvisualisierung-mit-ggplot2.html#cb861-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> student) <span class="sc">+</span> </span>
+<span id="cb861-6"><a href="datenvisualisierung-mit-ggplot2.html#cb861-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Note, <span class="at">fill=</span> Stdgang), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb861-7"><a href="datenvisualisierung-mit-ggplot2.html#cb861-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Notenspiegel&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Klausur DS 2019&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb861-8"><a href="datenvisualisierung-mit-ggplot2.html#cb861-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( Stdgang <span class="sc">~</span> Bestanden, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb861-9"><a href="datenvisualisierung-mit-ggplot2.html#cb861-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb861-10"><a href="datenvisualisierung-mit-ggplot2.html#cb861-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:grafik-noten-A4-3"></span>
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-3-1.png" alt="(ref-graf-not-A4-3)" width="80%" />
+<p class="caption">
+Figure 6.10: (ref-graf-not-A4-3)
+</p>
+</div>
+<p>(ref-graf-not-A4-3) Noten aufgeteilt in „bestanden“ und „durchgefallen“ (Variante 1).</p>
+<div class="sourceCode" id="cb862"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb862-1"><a href="datenvisualisierung-mit-ggplot2.html#cb862-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> student) <span class="sc">+</span> </span>
+<span id="cb862-2"><a href="datenvisualisierung-mit-ggplot2.html#cb862-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Note, <span class="at">fill=</span> Stdgang), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb862-3"><a href="datenvisualisierung-mit-ggplot2.html#cb862-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Notenspiegel&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Klausur DS 2019&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb862-4"><a href="datenvisualisierung-mit-ggplot2.html#cb862-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(  Bestanden <span class="sc">~</span> Stdgang , <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb862-5"><a href="datenvisualisierung-mit-ggplot2.html#cb862-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb862-6"><a href="datenvisualisierung-mit-ggplot2.html#cb862-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:grafik-noten-A4-4"></span>
+<img src="bchwtz-rprg_files/figure-html/grafik-noten-A4-4-1.png" alt="(ref-graf-not-A4-4)" width="80%" />
+<p class="caption">
+Figure 6.11: (ref-graf-not-A4-4)
+</p>
+</div>
+<p>(ref-graf-not-A4-4) Noten aufgeteilt in „bestanden“ und „durchgefallen“ (Variante 2).</p>
 
 <!--
 # (PART\*) Übungen - Tidy data, Relational data, Iteration {-}
@@ -839,6 +1415,7 @@ foo3(x, rm.na=TRUE)
 Das in R wichtige Konzept `environment` haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf [https://adv-r.hadley.nz/environments.html](https://adv-r.hadley.nz/environments.html).
 
 
+</div>
 </div>
             </section>
 

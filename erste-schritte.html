@@ -315,7 +315,16 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="weitere-datenstrukturen.html"><a href="weitere-datenstrukturen.html#kurzzusammenfassung-3"><i class="fa fa-check"></i>Kurzzusammenfassung</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Datenvisualisierung mit <code>ggplot2</code></a></li>
+<li class="chapter" data-level="6" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Datenvisualisierung mit <code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#erste-beispiele"><i class="fa fa-check"></i><b>6.1</b> Erste Beispiele</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-festlegen"><i class="fa fa-check"></i><b>6.1.1</b> Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen</a></li>
+<li class="chapter" data-level="6.1.2" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-für-geom_point"><i class="fa fa-check"></i><b>6.1.2</b> Beispiel: Ästhetische Eigenschaften (aesthetic) für <code>geom_point()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#statistische-transformation"><i class="fa fa-check"></i><b>6.2</b> Statistische Transformation</a></li>
+<li class="chapter" data-level="" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#übungen-4"><i class="fa fa-check"></i>Übungen</a></li>
+</ul></li>
 <li class="chapter" data-level="7" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html"><i class="fa fa-check"></i><b>7</b> Spezielle Themen und Fallstudien</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-1"><i class="fa fa-check"></i><b>7.1</b> Fallstudie 1</a>
@@ -733,21 +742,21 @@ Figure 2.4: Plot in RStudio.
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>In R sind bereits viele Funktionen zu häufig verwendeten Wahrscheinlichkeitsverteilungen implementiert. Exemplarisch wollen wir an dieser Stelle die Funktionen <code>rnorm()</code> und <code>runif()</code> betrachten (siehe <code>?rnorm</code> und <code>?runif</code>). Beide Funktionen geben Pseudozufallszahlen gemäß der Normalverteilung bzw. der Gleichverteilung zurück. Werden keine weiteren Argumente spezifiziert, dann wird bei der Normalverteilung Mittelwert 0 und Standardabweichung 1 angenommen; entsprechend gibt <code>rnorm(n)</code> einen Vektor mit <code>n</code> normalverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="erste-schritte.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1]  0.11557352  0.06209028 -0.91209819 -1.06282139 -0.02027408  0.04931890
-##  [7]  1.07670582 -2.02139298 -0.96925107 -0.93325113</code></pre>
+<pre><code>##  [1]  0.05153496  0.12821197 -0.26543390 -0.15994350  0.40308510 -0.79912325
+##  [7]  0.61005621 -0.45345138 -0.49639098  0.17839115</code></pre>
 <p>Bei der Gleichverteilung wird standardmäßig vom Intervall [0,1] ausgegangen; entsprechend gibt <code>runiform(n)</code> einen Vektor mit <code>n</code> in [0,1] gleichverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="erste-schritte.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.4996571 0.1899506 0.4856239 0.3728157 0.3972993 0.4009691 0.6268964
-##  [8] 0.5892827 0.8523758 0.8418668</code></pre>
+<pre><code>##  [1] 0.8589485 0.1135436 0.8550248 0.8226306 0.4367858 0.2781246 0.6105610
+##  [8] 0.7691140 0.1886645 0.5932722</code></pre>
 <p>Wenn wir im Folgenden von erzeugten Zufallszahlen (oder zufälligen Werten) sprechen, dann meinen wir stets <em>Pseudozufallszahlen</em>.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="erste-schritte.html#cb93-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
 <span id="cb93-2"><a href="erste-schritte.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -2.96261 -0.67860 -0.02341 -0.01250  0.65789  3.09272</code></pre>
+## -3.80075 -0.69193 -0.09069 -0.03431  0.61742  3.05772</code></pre>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="erste-schritte.html#cb95-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>)</span>
 <span id="cb95-2"><a href="erste-schritte.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
 <pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## -3.516223 -0.668593 -0.002276  0.002649  0.679125  3.687073</code></pre>
+## -4.323076 -0.672274  0.007798 -0.004151  0.644540  3.638730</code></pre>
 <p>Um zu prüfen, ob die erzeugten Zufallszahlen einer Normalverteilung genügen, können wir als ersten Test ein Histogramm erzeugen:</p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="erste-schritte.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
@@ -761,12 +770,12 @@ Figure 2.4: Plot in RStudio.
 <p>Das Gleiche wollen wir mit zufällig erzeugten gleichverteilten Werten wiederholen:</p>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="erste-schritte.html#cb100-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
 <span id="cb100-2"><a href="erste-schritte.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
-<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## 0.0003946 0.2478268 0.4983994 0.5036081 0.7605044 0.9993346</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.001668 0.227580 0.473301 0.483116 0.730527 0.998590</code></pre>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="erste-schritte.html#cb102-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10000</span>)</span>
 <span id="cb102-2"><a href="erste-schritte.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
-<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## 0.000016 0.252244 0.499814 0.500721 0.749639 0.999962</code></pre>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## 0.0000509 0.2500160 0.4958345 0.4984044 0.7493675 0.9999583</code></pre>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="erste-schritte.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <p><img src="bchwtz-rprg_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="erste-schritte.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x, <span class="at">breaks =</span> <span class="dv">100</span>)</span></code></pre></div>
