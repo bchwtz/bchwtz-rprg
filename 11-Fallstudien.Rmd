@@ -244,7 +244,7 @@ Im letzten Beispielplot haben wir ein anderes „Theme“ benutzt. `ggplot2()` u
 
 **Bearbeiten Sie folgende Aufgabe:**
 
-a) Die $\chi^2$-Verteilung ist ein Spezialfall der Gamma-Verteilung. Zeigen Sie, dass Sie Abbildung \ref{fig:ggplot-chisq} auch mit `dgamma()` statt mit `dchisq()` erzeugen können.
+a) Die $\chi^2$-Verteilung ist ein Spezialfall der Gamma-Verteilung. Zeigen Sie, dass Sie Abbildung \@ref(fig:ggplot-chisq) auch mit `dgamma()` statt mit `dchisq()` erzeugen können.
 
 
 ### Histogramme
@@ -560,7 +560,7 @@ gridExtra::grid.arrange(z1, z2, ncol = 2)
 
 (ref:annaeh-norm) Annäherung an die Normalverteilung.
 
-Abbildung \ref{fig:annaeh-norm-plot} zeigt in der Tat, dass die beiden Verteilungen recht gut durch die Normalverteilung 
+Abbildung \@ref(fig:annaeh-norm-plot) zeigt in der Tat, dass die beiden Verteilungen recht gut durch die Normalverteilung 
 `N(n/3; 2/9n)` approximiert werden können.
 
 
@@ -802,7 +802,7 @@ myPlot <- function(titel, nWerte, Anteil){
 
 Wir haben hier den Funktionsaufruf `scale_y_continuous(labels = scales::percent)` benutzt, um die y-Achse mit den entsprechenden Prozentzahlen zu skalieren. Neu ist auch 
 `expression('H'[0]*': Normalverteilung liegt vor'))`.
-Damit wird der folgende Text im Plot erzeugt: \texttt{„$H_0$ : Normalverteilung liegt vor“.} Der mit `[]` umschlossene Buchstabe wird also tiefergestellt (Um einen Buchstaben hoch zu stellen, wird `^` statt `[]` benutzt.). Auf die genaue Syntax wollen wir an dieser Stelle nicht eingehen, sondern lediglich ein weiteres Beispiel anführen, das in Abbildung \ref{fig:ggplot-expression} resultiert:
+Damit wird der folgende Text im Plot erzeugt: \texttt{„$H_0$ : Normalverteilung liegt vor“.} Der mit `[]` umschlossene Buchstabe wird also tiefergestellt (Um einen Buchstaben hoch zu stellen, wird `^` statt `[]` benutzt.). Auf die genaue Syntax wollen wir an dieser Stelle nicht eingehen, sondern lediglich ein weiteres Beispiel anführen, das in Abbildung \@ref(fig:ggplot-expression) resultiert:
 
 ```{r ggplot-expression, fig.cap="(ref:ggplot-expr)", out.width="60%"}
 ggplot() + ggtitle(expression('Beispiel: A'['1,2']* ' und B' ^'1,2'* 
@@ -831,24 +831,24 @@ Die dritte Funktion `replicateTest()` ruft `nTest`-mal die übergebene Funktion 
 # FUN: Testfunktion (Default: pShapiroTest)
 # nTest: Anzahl der Tests (Wiederholungen) 
 # alpha: entspricht dem Signifikanzniveau
-replicateTest <- function(n, FUN=pShapiroTest, nTest, alpha){
+replicateTest <- function(n, FUN = pShapiroTest, nTest, alpha){
   res <- replicate(nTest, FUN(n))
   return(sum(res <= alpha)/nTest)
 }
 ```
 
 
-In der vierten Funktion `testShapiro()` schließlich wird festgelegt:
+In der vierten Funktion `testShapiro()` wird schließlich
 
-+	die Stichprobengröße `n`
++	die Stichprobengröße `n`,
 
-+	welcher Test benutzt werden soll (der Defaultwert ist die Funktion `pShapiroTest()`)
++	welcher Test benutzt werden soll (der Defaultwert ist die Funktion `pShapiroTest()`),
 
-+	wie oft (bei gegebener Stichprobengröße) ein Test ausgeführt werden soll (`nTest`)
++	wie oft (bei gegebener Stichprobengröße) ein Test ausgeführt werden soll (`nTest`) und
 
 +	das Signifikanzniveau `alpha`
 
-und es wird die Funktion `replicateTest()` aufgerufen: 
+festgelegt. Außerdem wird die Funktion `replicateTest()` aufgerufen: 
 
 ```{r}
 testShapiro <- function(n){
@@ -859,7 +859,7 @@ testShapiro <- function(n){
 
 ### Testgüte des Shapiro-Wilk-Tests bei Gleichverteilung
 
-Nun können wir sehr leicht die Testgüte des Shapiro-Wilk-Tests untersuchen und die Ergebnisse visuell darstellen. Nach wie vor lautet die Nullhypothese $H_0$: *Die Daten der Grundgesamtheit sind normalverteilt.* Die Alternativhypothese H1 lautet somit: Die Daten der Grundgesamtheit sind nicht normalverteilt. Wir wissen, dass die Stichproben aus einer gleichverteilten Grundgesamtheit stammen, also ist die Nullhypothese $H_0$ falsch. Wir wollen nun untersuchen, wie oft die Nullhypothese $H_0$ durch den Test tatsächlich verworfen wird. Welche qualitativen Ergebnisse erwarten wir? Für relativ große Stichprobengrößen sollte ein Test in der Lage sein, in fast 100% der Fälle die Nullhypothese $H_0$ zu verwerfen. Je kleiner die Stichprobengröße hingegen ist, desto öfter erwarten wir, dass aufgrund des p-Wertes die Nullhypothese $H_0$ nicht abgelehnt wird. Dies können wir nun leicht nachprüfen. Als Stichprobengröße `n` wählen wir 
+Nun können wir sehr leicht die Testgüte des Shapiro-Wilk-Tests untersuchen und die Ergebnisse visuell darstellen. Nach wie vor lautet die Nullhypothese $H_0$: *Die Daten der Grundgesamtheit sind normalverteilt.* Die Alternativhypothese $H_1$ lautet somit: *Die Daten der Grundgesamtheit sind nicht normalverteilt.* Wir wissen, dass die Stichproben aus einer gleichverteilten Grundgesamtheit stammen, also ist die Nullhypothese $H_0$ falsch. Wir wollen nun untersuchen, wie oft die Nullhypothese $H_0$ durch den Test tatsächlich verworfen wird. Welche qualitativen Ergebnisse erwarten wir? Für relativ große Stichprobengrößen sollte ein Test in der Lage sein, in fast 100% der Fälle die Nullhypothese $H_0$ zu verwerfen. Je kleiner die Stichprobengröße hingegen ist, desto öfter erwarten wir, dass aufgrund des p-Wertes die Nullhypothese $H_0$ nicht abgelehnt wird. Dies können wir nun leicht nachprüfen. Als Stichprobengröße `n` wählen wir 
 `n = 3, 4, 5,…,100`:
 
 ```{r ggplot-shapiro-wilk1, fig.cap="(ref:shapwilk1)", out.width="80%"}
@@ -867,8 +867,7 @@ set.seed(17122019)
 nWerte <- 3:100 
 AnteilShapiro <- sapply(nWerte, testShapiro)
 
-myPlot("Shapiro-Wilk-Test: gleichverteilte Stichproben (nTest=1000)", 
-                                                    nWerte, AnteilShapiro)+
+myPlot("Shapiro-Wilk-Test: gleichverteilte Stichproben (nTest=1000)", nWerte, AnteilShapiro)+
   geom_point() + geom_smooth()
 ```
 
@@ -923,13 +922,15 @@ AnteilKS <- sapply(nWerte, testKS)
 
 ```{r plot-shapiro-wilk-kolmog-simple, fig.cap="(ref:shw-k0)", out.width="80%"}
 df <- data.frame(nWerte, AnteilKS)
-ggplot(df, aes(x = nWerte, y = AnteilKS))+
+#ggplot(df, aes(x = nWerte, y = AnteilKS))+
+ # geom_point(color = "red")
+myPlot("Kolmogorov-Smirnov-Test: gleichverteilte Stichproben (nTest = 1000)", nWerte, AnteilKS)+
   geom_point(color = "red")
 ```
 
 (ref:shw-k0) Testgüte des Kolmogorov-Smirnov-Tests.
 
-Um die Ergebnisse besser vergleichen zu können, erweitern wir Abbildung \@ref(fig:ggplot-shapiro-wilk1) um die neu berechneten roten Punkte und erhalten Abbildung \ref{fig:plot-shapiro-wilk-kolmog}.
+Um die Ergebnisse besser vergleichen zu können, erweitern wir Abbildung \@ref(fig:ggplot-shapiro-wilk1) um die neu berechneten roten Punkte und erhalten Abbildung \@ref(fig:plot-shapiro-wilk-kolmog).
 
 ```{r plot-shapiro-wilk-kolmog, fig.cap="(ref:shw-k1)", out.width="80%"}
 myPlot("Gleichverteilte Stichproben (nTest=1000)", 
@@ -940,10 +941,10 @@ myPlot("Gleichverteilte Stichproben (nTest=1000)",
 
 (ref:shw-k1) Vergleich der Testgüte: Shapiro-Wilk-Test (schwarz) und Kolmogorov-Smirnov-Tests (rot).
 
-Wir können die Ergebnisse auch in Abbildung \ref{fig:ggplot-shapiro-wilk2} einfügen, sollten dann aber auch eine entsprechende Legende hinzufügen:
+Wir können die Ergebnisse auch in Abbildung \@ref(fig:ggplot-shapiro-wilk2) einfügen, sollten dann aber auch eine entsprechende Legende hinzufügen:
 
 ```{r plot-gleichvert, fig.cap="(ref:gleich-swk)", out.width="80%"}
-myPlot("Gleichverteilte Stichproben (nTest=1000)", nWerte, AnteilShapiro)  +
+myPlot("Gleichverteilte Stichproben (nTest = 1000)", nWerte, AnteilShapiro)  +
   geom_point(aes(color = "Shapiro 1")) + geom_smooth() +
   geom_point(aes(x = nWerte, y = AnteilShapiro2, color = "Shapiro 2")) +
   geom_point(aes(x = nWerte, y = AnteilKS, color = "KS")) +
