@@ -495,8 +495,8 @@ Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkop
 <p>Im Gegensatz zu C und C++ gibt es in R einen <em>Garbage Collector</em>, kurz auch mit GC bezeichnet. Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z.B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund, ohne dass der GC explizit aufgerufen werden muss (siehe auch <code>?gc</code>). Man kann den GC explizit mit <code>gc()</code> aufrufen (siehe <code>?gc</code>), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe <code>used</code>) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe <code>gc trigger</code>).</p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="kontrollstrukturen-und-funktionen.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1254686 67.1    2269024 121.2  1837874 98.2
-## Vcells 2440012 18.7    8388608  64.0  6769436 51.7</code></pre>
+## Ncells 1254689 67.1    2269918 121.3  1836102 98.1
+## Vcells 2440039 18.7    8388608  64.0  6770003 51.7</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
 <ul>
@@ -567,7 +567,7 @@ Ein einfaches Beispiel mit drei formalen Funktionsparametern <code>x</code>, <co
 <span id="cb181-2"><a href="kontrollstrukturen-und-funktionen.html#cb181-2" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(a, a, a)</span></code></pre></div>
 <pre><code>##  [1]  6 12 18 24 30 36 42 48 54 60</code></pre>
 <p>Wie wir schon bei der Funktion <code>sqrt()</code> in Abschnitt <a href="erste-schritte.html#vektoren">2.3</a> gesehen haben, wird nun die Funktion elementweise angewandt und als Ergebnis wird ein Vektor gleicher Länge zurückgegeben.
-Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann tritt automatisch Recyling ein (siehe Abschnitt 2.3.1):</p>
+Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann tritt automatisch Recyling ein (siehe Abschnitt <a href="erste-schritte.html#recycling">2.4</a>):</p>
 <div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="kontrollstrukturen-und-funktionen.html#cb183-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
 <span id="cb183-2"><a href="kontrollstrukturen-und-funktionen.html#cb183-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span></span>
 <span id="cb183-3"><a href="kontrollstrukturen-und-funktionen.html#cb183-3" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(a, a, b)</span></code></pre></div>
@@ -586,13 +586,13 @@ Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann trit
 ##   tmp &lt;- 2 * y + 3 * z
 ##   return(x + tmp)
 ## }
-## &lt;bytecode: 0x55d193272a00&gt;</code></pre>
+## &lt;bytecode: 0x55fee144bc28&gt;</code></pre>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="kontrollstrukturen-und-funktionen.html#cb193-1" aria-hidden="true" tabindex="-1"></a>sqrt</span></code></pre></div>
 <pre><code>## function (x)  .Primitive(&quot;sqrt&quot;)</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="kontrollstrukturen-und-funktionen.html#cb195-1" aria-hidden="true" tabindex="-1"></a>atan2</span></code></pre></div>
 <pre><code>## function (y, x) 
 ## .Internal(atan2(y, x))
-## &lt;bytecode: 0x55d18fab1db8&gt;
+## &lt;bytecode: 0x55feddcaf730&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
@@ -694,7 +694,7 @@ Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider bei
 <p>Abgesehen von der Syntax gibt es keinen Unterschied zwischen einem Operatorausdruck und einem entsprechenden Funktionsaufruf; das Operatorsymbol dient dann als Funktionsname (s. [R-lang], S. 11). So kann unser erstes Beispiel <code>6*7</code> auch folgendermaßen geschrieben werden:</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="kontrollstrukturen-und-funktionen.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;*&#39;</span> (<span class="dv">6</span>, <span class="dv">7</span>)</span></code></pre></div>
 <pre><code>## [1] 42</code></pre>
-<p>Da <code>*</code> kein erlaubter Namen ist (<code>non-syntatic</code>, siehe Abschnitt 2.2), muss es allerdings in Anführungszeichen gesetzt werden.</p>
+<p>Da <code>*</code> kein erlaubter Namen ist (<code>non-syntatic</code>, siehe Abschnitt <a href="erste-schritte.html#variablen">2.2</a>), muss es allerdings in Anführungszeichen gesetzt werden.</p>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
 <ul>
@@ -717,7 +717,7 @@ Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider bei
 <h2><span class="header-section-number">3.3</span> Kontrollstrukturen<a href="kontrollstrukturen-und-funktionen.html#kontrollstrukturen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Einzelne Anweisungen werden in R üblicherweise durch einen Zeilenumbruch getrennt; sie können aber auch durch ein Semikolon abgegrenzt werden. Wie in C auch, können Anweisungen zu einem <em>Block</em> (auch <em>Blockanweisung</em> genannt) mithilfe geschweifter Klammern gruppiert werden. Syntaktisch ist ein Block äquivalent zu einer einzelnen Anweisung.</p>
 <p>Da die elementaren Kontrollstrukturen in R sehr ähnlich zu den Kontrollstrukturen in Sprachen wie C, C++, C#, Java, JavaScript, … sind, werden wir sie an dieser Stelle nicht detailliert behandeln (siehe auch <code>?Control</code> oder <code>?while</code>). Einen großen Unterschied gibt es allerdings: In R werden Kontrollstrukturen intern durch Funktionen realisiert!</p>
-<p>Schleifen haben in R den Ruf, recht langsam zu sein und viele Autoren empfehlen deshalb, sie wenn möglich zu vermeiden. Wie wir gesehen haben (siehe Abschnitt 2.3), können viele Funktionen und Operatoren direkt auf Vektoren angewandt werden, so dass in diesem Fall keine expliziten Schleifen notwendig sind:</p>
+<p>Schleifen haben in R den Ruf, recht langsam zu sein und viele Autoren empfehlen deshalb, sie wenn möglich zu vermeiden. Wie wir gesehen haben (siehe Abschnitt <a href="erste-schritte.html#vektoren">2.3</a>), können viele Funktionen und Operatoren direkt auf Vektoren angewandt werden, so dass in diesem Fall keine expliziten Schleifen notwendig sind:</p>
 <div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="kontrollstrukturen-und-funktionen.html#cb222-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span></span>
 <span id="cb222-2"><a href="kontrollstrukturen-und-funktionen.html#cb222-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sin</span>(x <span class="sc">^</span> <span class="dv">3</span> <span class="sc">-</span> x <span class="sc">^</span> <span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span> <span class="sc">*</span> pi))</span></code></pre></div>
 <pre><code>##  [1]  0.7452069  0.8820497  0.4212873 -0.9815359  0.9975643  0.2146034
@@ -739,7 +739,7 @@ Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider bei
 <span id="cb224-5"><a href="kontrollstrukturen-und-funktionen.html#cb224-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>kann daher auch kürzer geschrieben werden:</p>
 <div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="kontrollstrukturen-und-funktionen.html#cb225-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) x <span class="cf">else</span> x <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div>
-<p>Wie in C bezeichnet <code>==</code> den Vergleichsoperator! Der Operator <code>=</code> entspricht hingegen einer Zuweisung (siehe Abschnitt 2.2). Und zur Erinnerung: <code>%%</code> bezeichnet den Modulo-Operator (siehe Abschnitt 2.3)</p>
+<p>Wie in C bezeichnet <code>==</code> den Vergleichsoperator! Der Operator <code>=</code> entspricht hingegen einer Zuweisung (siehe Abschnitt <a href="erste-schritte.html#variablen">2.2</a>). Und zur Erinnerung: <code>%%</code> bezeichnet den Modulo-Operator (siehe Abschnitt <a href="erste-schritte.html#vektoren">2.3</a>)</p>
 <p>Genau wie in C sind auch „else-if“-Ketten erlaubt:</p>
 <p><code>if( statement1 ){</code></p>
 <p><code>statement2</code></p>
@@ -771,7 +771,7 @@ Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider bei
 <span id="cb228-2"><a href="kontrollstrukturen-und-funktionen.html#cb228-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, x, x <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb228-3"><a href="kontrollstrukturen-und-funktionen.html#cb228-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
 <pre><code>##  [1]  2  2  4  4  6  6  8  8 10 10</code></pre>
-<p>Entsprechend ergibt sich mithilfe von Recycling (siehe Abschnitt 2.3.1):</p>
+<p>Entsprechend ergibt sich mithilfe von Recycling (siehe Abschnitt <a href="erste-schritte.html#recycling">2.4</a>):</p>
 <div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="kontrollstrukturen-und-funktionen.html#cb230-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">13</span></span>
 <span id="cb230-2"><a href="kontrollstrukturen-und-funktionen.html#cb230-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">9</span>)</span>
 <span id="cb230-3"><a href="kontrollstrukturen-und-funktionen.html#cb230-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
