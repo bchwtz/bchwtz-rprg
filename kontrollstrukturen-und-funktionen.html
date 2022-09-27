@@ -402,12 +402,12 @@ div.csl-indent {
 <p>Hier und im Folgenden werden wir den Begriff <em>„Objekt“</em> benutzen. Damit meinen wir nicht ein Objekt im objektorientierten Sinn (also eine Instanz einer Klasse), sondern wollen damit einen Speicherbereich in der Ausführungsumgebung bezeichnen, der neben eventuell zusätzlichen Metadaten Bitfolgen enthält, die als Werte eines bestimmten Datentyps interpretiert werden können.</p>
 <p>In C:</p>
 <div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="kontrollstrukturen-und-funktionen.html#cb115-1" aria-hidden="true" tabindex="-1"></a>int n <span class="ot">=</span> <span class="dv">5</span>;</span></code></pre></div>
-<p>Es wird ein Objekt im Speicher angelegt, das groß genug ist, einen <code>int</code>-Wert zu repräsentieren, aber nicht größer. Auf einem üblichen PC ist das so erzeugte Objekte genau 4 Byte groß und der entsprechende Speicherbereich enthält die Dualdarstellung von 5 (also 29 Nullen gefolgt von 101). Der Variablenname <code>n</code> ist nun der Bezeichner für dieses Objekt (oder Speicherbereich); man kann auch sagen: das so erzeugte Objekt hat den Namen <code>n</code>.</p>
-<p>Solange <code>n</code> gültig (und sichtbar) ist, ist <code>n</code> immer ein Bezeichner für einen <code>int</code>-Wert, dessen Binärdarstellung stets im selben Speicherbereich hinterlegt ist. Also bezieht sich n immer auf denselben Speicherbereich.</p>
-<p>Der zugehörige Wert von <code>n</code> kann sich ändern, z. B. durch eine Zuweisung oder eine Anweisung wie <code>n++</code>. Nicht ändern kann sich aber der Datentyp (in unserem Fall <code>int</code>). Bereits beim Kompilieren wird <code>n</code> an den Datentyp <code>int</code> gebunden. Man spricht in diesem Zusammenhang vom <em>frühen Binden (early binding)</em> im Gegensatz zum <em>späten Binden (late binding)</em>, die wir in R vorfinden.</p>
+<p>Es wird ein Objekt im Speicher angelegt, das groß genug ist, einen <code>int</code>-Wert zu repräsentieren, aber nicht größer. Auf einem üblichen PC ist das so erzeugte Objekte genau 4 Byte groß und der entsprechende Speicherbereich enthält die Dualdarstellung von 5 (also 29 Nullen gefolgt von 101). Der Variablenname <code>n</code> ist nun der Bezeichner für dieses Objekt (oder Speicherbereich); man kann auch sagen: Das so erzeugte Objekt hat den Namen <code>n</code>.</p>
+<p>Solange <code>n</code> gültig (und sichtbar) ist, ist <code>n</code> immer ein Bezeichner für einen <code>int</code>-Wert, dessen Binärdarstellung stets im selben Speicherbereich hinterlegt ist. Also bezieht sich <code>n</code> immer auf denselben Speicherbereich.</p>
+<p>Der zugehörige Wert von <code>n</code> kann sich ändern, z.B. durch eine Zuweisung oder eine Anweisung wie <code>n++</code>. Nicht ändern kann sich aber der Datentyp (in unserem Fall <code>int</code>). Bereits beim Kompilieren wird <code>n</code> an den Datentyp <code>int</code> gebunden. Man spricht in diesem Zusammenhang vom <em>frühen Binden (early binding)</em> im Gegensatz zum <em>späten Binden (late binding)</em>, die wir in R vorfinden.</p>
 <p>In R:</p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="kontrollstrukturen-und-funktionen.html#cb116-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div>
-<p>Auch hier wird ein Objekt in einem Speicherbereich erzeugt. Im Gegensatz zu C kann man aber in R nicht direkt auf diesen Speicherbereich zugreifen. Auch ist der benutzte Speicherbereich viel größer: auf dem hier benutzten System sind dies 56 Byte für eine 64-Bit-Version von R; eine 32-Bit-Version von R braucht ein paar Byte weniger (wieso?), vielleicht 32 Byte:</p>
+<p>Auch hier wird ein Objekt in einem Speicherbereich erzeugt. Im Gegensatz zu C kann man aber in R nicht direkt auf diesen Speicherbereich zugreifen. Auch ist der benutzte Speicherbereich viel größer: Auf dem hier benutzten System sind dies 56 Byte für eine 64-Bit-Version von R; eine 32-Bit-Version von R braucht ein paar Byte weniger (wieso?), vielleicht 32 Byte:</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="kontrollstrukturen-und-funktionen.html#cb117-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
 <span id="cb117-2"><a href="kontrollstrukturen-und-funktionen.html#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(n)</span></code></pre></div>
 <pre><code>##  num 5</code></pre>
@@ -467,12 +467,12 @@ Während in C und C++ dieser Verweis (ähnlich wie eine Referenz) dauerhaft ist,
 <pre><code>##  chr [1:3] &quot;eins&quot; &quot;zwei&quot; &quot;drei&quot;</code></pre>
 <p><code>1:1000</code> ist ein Vektor vom Typ <code>integer</code>, der die ganzen Zahlen von 1 bis 1000 umfasst; dies ist identisch zu <code>seq(from = 1, to = 1000, by = 1)</code> (was wiederum identisch zu <code>seq(from = 1, to = 1000)</code> ist, siehe <code>?seq</code>).</p>
 <p>Durch <code>x &lt;- c("eins", "zwei", "drei")</code> wird <code>x</code> an einen Vektor vom Typ <code>character</code> gebunden, der die Länge 3 hat. Variablen werden in R erst während der Laufzeit (und nicht schon beim Kompilieren) an ein Objekt gebunden (<em>late binding</em>). Somit hat eine Variable keinen festen Datentyp, sondern eine Variable ist an ein Objekt gebunden, dem ein fester Datentyp zugeordnet ist. Wir sagen in diesem Zusammenhang auch, dass die Variable auf das Objekt <em>verweist</em>.</p>
-<p>Im Gegensatz zu C enthält in R jedes Objekt zusätzlich sogenannte <em>Metadaten</em>, die u. a. den Typ des Objekts beschreiben (siehe z. B. [Wickham_AdvR], Abschnitt 18.1: Object size, Seite 379 oder [R_ints], Abschnitt 1.1).
+<p>Im Gegensatz zu C enthält in R jedes Objekt zusätzlich sogenannte <em>Metadaten</em>, die u.a. den Typ des Objekts beschreiben (siehe z. B. <span class="citation">(<a href="#ref-Wickham2019book" role="doc-biblioref">Wickham 2019a</a>)</span>, Abschnitt 18.1: Object size, Seite 379 oder [R_ints], Abschnitt 1.1).
 Zwei oder mehrere Variablen können auf dasselbe Objekt verweisen (d.h. an dasselbe Objekt gebunden sein):</p>
 <div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="kontrollstrukturen-und-funktionen.html#cb153-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
 <span id="cb153-2"><a href="kontrollstrukturen-und-funktionen.html#cb153-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> a</span></code></pre></div>
 <p>Durch die Zuweisung <code>b &lt;- a</code> wird kein neues Objekt erzeugt (<code>a</code> wird also nicht in <code>b</code> kopiert)!
-Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkopiert und die Variablen <code>a</code> und <code>b</code> zeigen dann auf unterschiedliche Objekte</p>
+Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkopiert und die Variablen <code>a</code> und <code>b</code> zeigen dann auf unterschiedliche Objekte (Dies kann z.B. mithilfe der Funktion <code>tracemem()</code> verfolgt werden; siehe <code>?tracemem</code>.).</p>
 <div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="kontrollstrukturen-und-funktionen.html#cb154-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
 <span id="cb154-2"><a href="kontrollstrukturen-und-funktionen.html#cb154-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> a</span>
 <span id="cb154-3"><a href="kontrollstrukturen-und-funktionen.html#cb154-3" aria-hidden="true" tabindex="-1"></a>b[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
@@ -495,8 +495,8 @@ Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkop
 <p>Im Gegensatz zu C und C++ gibt es in R einen <em>Garbage Collector</em>, kurz auch mit GC bezeichnet. Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z.B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund, ohne dass der GC explizit aufgerufen werden muss (siehe auch <code>?gc</code>). Man kann den GC explizit mit <code>gc()</code> aufrufen (siehe <code>?gc</code>), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe <code>used</code>) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe <code>gc trigger</code>).</p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="kontrollstrukturen-und-funktionen.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1254687 67.1    2269025 121.2  1837811 98.2
-## Vcells 2440006 18.7    8388608  64.0  6765758 51.7</code></pre>
+## Ncells 1254687 67.1    2269050 121.2  1837807 98.2
+## Vcells 2440040 18.7    8388608  64.0  6769077 51.7</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
 <ul>
@@ -518,12 +518,12 @@ Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkop
 </div>
 <div id="funktionen" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Funktionen<a href="kontrollstrukturen-und-funktionen.html#funktionen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Neben Objekten sind Funktionen ein zentraler Bestandteil von R. Mit Funktionen können Anweisungen zu einer Einheit zusammengefasst werden. Dadurch kann Quelltext strukturiert werden und die durch die Funktion beschriebene Funktionalität mehrfach in einem Programm verwandt werden. Funktion sind in R sogenannte <em>„first-class-objects“</em>; d.h. es sind in der Tat Objekte, die fast immer wie andere „Datenobjekte“ (Vektoren, Tabellen, Listen, …) benutzt werden können.</p>
+<p>Neben Objekten sind Funktionen ein zentraler Bestandteil von R. Mit Funktionen können Anweisungen zu einer Einheit zusammengefasst werden. Dadurch kann Quelltext strukturiert und die durch die Funktion beschriebene Funktionalität mehrfach in einem Programm verwandt werden. Funktionen sind in R sogenannte <em>„first-class-objects“</em>; d.h. es sind in der Tat Objekte, die fast immer wie andere „Datenobjekte“ (Vektoren, Tabellen, Listen, …) benutzt werden können.</p>
 <p>Im Folgenden gehen wir davon aus, dass Sie mit dem Konzept einer Funktion vertraut sind, so wie es zum Beispiel in C, C++ oder Java verwandt wird.
 Ähnlich wie in anderen Programmiersprachen wird in R eine Funktion durch eine Anweisung der folgenden Form definiert:</p>
-<p><code>function(arg_1, arg_2, ...) epxression</code></p>
-<p>Hierbei bezeichnet <code>arg_1, arg_2, ...</code> eine Liste der <em>formalen Funktionsparameter</em> und <code>expression</code> den <em>Funktionskörper</em>, der in der Regel aus einem durch geschweifte Klammern begrenzten Block von Anweisungen besteht. Insgesamt wird hierdurch ein Objekt erzeugt (eine sogenannte <em>anonyme Funktion</em>), das aber an keinem Namen gebunden ist. Ein Name wird aber gebraucht, wenn man die Funktion aufrufen will! Daher wird in der Regel eine Funktion in einer Zuweisung definiert, die dann folgende Form hat:
-<code>name &lt;-function(arg_1, arg_2, ...) expression</code></p>
+<p><code>function(arg_1, arg_2, ...) expression</code></p>
+<p>Hierbei bezeichnet <code>arg_1, arg_2, ...</code> eine Liste der <em>formalen Funktionsparameter</em> und <code>expression</code> den <em>Funktionskörper</em>, der in der Regel aus einem durch geschweifte Klammern begrenzten Block von Anweisungen besteht. Insgesamt wird hierdurch ein Objekt erzeugt (eine sogenannte <em>anonyme Funktion</em>), das aber an keinem Namen gebunden ist. Ein Name wird aber gebraucht, wenn man die Funktion aufrufen will! Daher wird in der Regel eine Funktion in einer Zuweisung definiert, die dann folgende Form hat:</p>
+<p><code>name &lt;- function(arg_1, arg_2, ...) expression</code></p>
 <p>Solange die Variable <code>name</code> an das Funktionsobjekt gebunden ist, kann die Funktion dann durch <code>name(arg_1, arg_2, ...)</code> aufgerufen werden.
 Ein einfaches Beispiel mit drei formalen Funktionsparametern <code>x</code>, <code>y</code> und <code>z</code> soll dies illustrieren:</p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="kontrollstrukturen-und-funktionen.html#cb161-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, z){</span>
@@ -566,7 +566,7 @@ Ein einfaches Beispiel mit drei formalen Funktionsparametern <code>x</code>, <co
 <div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="kontrollstrukturen-und-funktionen.html#cb181-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
 <span id="cb181-2"><a href="kontrollstrukturen-und-funktionen.html#cb181-2" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(a, a, a)</span></code></pre></div>
 <pre><code>##  [1]  6 12 18 24 30 36 42 48 54 60</code></pre>
-<p>Wie wir schon bei der Funktion <code>sqrt()</code> in Abschnitt 2.3 gesehen haben, wird nun die Funktion elementweise angewandt und als Ergebnis wird ein Vektor gleicher Länge zurückgegeben.
+<p>Wie wir schon bei der Funktion <code>sqrt()</code> in Abschnitt <span class="math inline">\(\ref{sec:vektoren}\)</span> gesehen haben, wird nun die Funktion elementweise angewandt und als Ergebnis wird ein Vektor gleicher Länge zurückgegeben.
 Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann tritt automatisch Recyling ein (siehe Abschnitt 2.3.1):</p>
 <div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="kontrollstrukturen-und-funktionen.html#cb183-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
 <span id="cb183-2"><a href="kontrollstrukturen-und-funktionen.html#cb183-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span></span>
@@ -586,13 +586,13 @@ Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann trit
 ##   tmp &lt;- 2 * y + 3 * z
 ##   return(x + tmp)
 ## }
-## &lt;bytecode: 0x5639e4f9f8f0&gt;</code></pre>
+## &lt;bytecode: 0x55558b510258&gt;</code></pre>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="kontrollstrukturen-und-funktionen.html#cb193-1" aria-hidden="true" tabindex="-1"></a>sqrt</span></code></pre></div>
 <pre><code>## function (x)  .Primitive(&quot;sqrt&quot;)</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="kontrollstrukturen-und-funktionen.html#cb195-1" aria-hidden="true" tabindex="-1"></a>atan2</span></code></pre></div>
 <pre><code>## function (y, x) 
 ## .Internal(atan2(y, x))
-## &lt;bytecode: 0x5639e173a828&gt;
+## &lt;bytecode: 0x555587d3a2d8&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
@@ -1069,6 +1069,12 @@ Figure 3.2: Histogramm der <em>durchschnittlichen</em> Strecke.
 </blockquote>
 
 </div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Wickham2019book" class="csl-entry">
+———. 2019a. <em>Advanced r</em>. 2nd ed. Boca Raton, Florida: CRC Press.
 </div>
 </div>
             </section>
