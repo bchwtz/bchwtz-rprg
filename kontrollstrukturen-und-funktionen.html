@@ -495,8 +495,8 @@ Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkop
 <p>Im Gegensatz zu C und C++ gibt es in R einen <em>Garbage Collector</em>, kurz auch mit GC bezeichnet. Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z.B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund, ohne dass der GC explizit aufgerufen werden muss (siehe auch <code>?gc</code>). Man kann den GC explizit mit <code>gc()</code> aufrufen (siehe <code>?gc</code>), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe <code>used</code>) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe <code>gc trigger</code>).</p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="kontrollstrukturen-und-funktionen.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1254687 67.1    2269050 121.2  1837807 98.2
-## Vcells 2440040 18.7    8388608  64.0  6769077 51.7</code></pre>
+## Ncells 1254687 67.1    2269050 121.2  1837860 98.2
+## Vcells 2440037 18.7    8388608  64.0  6769609 51.7</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
 <ul>
@@ -566,7 +566,7 @@ Ein einfaches Beispiel mit drei formalen Funktionsparametern <code>x</code>, <co
 <div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="kontrollstrukturen-und-funktionen.html#cb181-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
 <span id="cb181-2"><a href="kontrollstrukturen-und-funktionen.html#cb181-2" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(a, a, a)</span></code></pre></div>
 <pre><code>##  [1]  6 12 18 24 30 36 42 48 54 60</code></pre>
-<p>Wie wir schon bei der Funktion <code>sqrt()</code> in Abschnitt <span class="math inline">\(\ref{sec:vektoren}\)</span> gesehen haben, wird nun die Funktion elementweise angewandt und als Ergebnis wird ein Vektor gleicher Länge zurückgegeben.
+<p>Wie wir schon bei der Funktion <code>sqrt()</code> in Abschnitt <a href="#sec:vektoren"><strong>??</strong></a> gesehen haben, wird nun die Funktion elementweise angewandt und als Ergebnis wird ein Vektor gleicher Länge zurückgegeben.
 Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann tritt automatisch Recyling ein (siehe Abschnitt 2.3.1):</p>
 <div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="kontrollstrukturen-und-funktionen.html#cb183-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
 <span id="cb183-2"><a href="kontrollstrukturen-und-funktionen.html#cb183-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span></span>
@@ -586,13 +586,13 @@ Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann trit
 ##   tmp &lt;- 2 * y + 3 * z
 ##   return(x + tmp)
 ## }
-## &lt;bytecode: 0x55558b510258&gt;</code></pre>
+## &lt;bytecode: 0x5648e1422440&gt;</code></pre>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="kontrollstrukturen-und-funktionen.html#cb193-1" aria-hidden="true" tabindex="-1"></a>sqrt</span></code></pre></div>
 <pre><code>## function (x)  .Primitive(&quot;sqrt&quot;)</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="kontrollstrukturen-und-funktionen.html#cb195-1" aria-hidden="true" tabindex="-1"></a>atan2</span></code></pre></div>
 <pre><code>## function (y, x) 
 ## .Internal(atan2(y, x))
-## &lt;bytecode: 0x555587d3a2d8&gt;
+## &lt;bytecode: 0x5648ddc7cf10&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
@@ -628,9 +628,9 @@ Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann trit
 <pre><code>##  [1]  6 10 14 18 22 26 30 34 38 42</code></pre>
 <div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="kontrollstrukturen-und-funktionen.html#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f4</span>(a, <span class="dv">1</span>, a)</span></code></pre></div>
 <pre><code>##  [1]  6 10 14 18 22 26 30 34 38 42</code></pre>
-<p>Benannte Argumente werden sehr häufig benutzt. Ein einfaches und hoffentlich selbsterklärendes Beispiel sind folgende Funktionen:
-<code>rnorm(n, mean = 0, sd = 1)</code>
-<code>runif(n, min = 0, max = 1)</code></p>
+<p>Benannte Argumente werden sehr häufig benutzt. Ein einfaches und hoffentlich selbsterklärendes Beispiel sind folgende Funktionen:</p>
+<p><code>rnorm(n, mean = 0, sd = 1)</code></p>
+<p><code>runif(n, min = 0, max = 1)</code></p>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
 <ul>
