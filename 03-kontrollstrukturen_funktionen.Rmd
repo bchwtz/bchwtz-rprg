@@ -24,11 +24,11 @@ In C:
 int n = 5;
 ```
 
-Es wird ein Objekt im Speicher angelegt, das groß genug ist, einen `int`-Wert zu repräsentieren, aber nicht größer. Auf einem üblichen PC ist das so erzeugte Objekte genau 4 Byte groß und der entsprechende Speicherbereich enthält die Dualdarstellung von 5 (also 29 Nullen gefolgt von 101). Der Variablenname `n` ist nun der Bezeichner für dieses Objekt (oder Speicherbereich); man kann auch sagen: das so erzeugte Objekt hat den Namen `n`.
+Es wird ein Objekt im Speicher angelegt, das groß genug ist, einen `int`-Wert zu repräsentieren, aber nicht größer. Auf einem üblichen PC ist das so erzeugte Objekte genau 4 Byte groß und der entsprechende Speicherbereich enthält die Dualdarstellung von 5 (also 29 Nullen gefolgt von 101). Der Variablenname `n` ist nun der Bezeichner für dieses Objekt (oder Speicherbereich); man kann auch sagen: Das so erzeugte Objekt hat den Namen `n`.
 
-Solange `n` gültig (und sichtbar) ist, ist `n` immer ein Bezeichner für einen `int`-Wert, dessen Binärdarstellung stets im selben Speicherbereich hinterlegt ist. Also bezieht sich n immer auf denselben Speicherbereich.
+Solange `n` gültig (und sichtbar) ist, ist `n` immer ein Bezeichner für einen `int`-Wert, dessen Binärdarstellung stets im selben Speicherbereich hinterlegt ist. Also bezieht sich `n` immer auf denselben Speicherbereich.
 
-Der zugehörige Wert von `n` kann sich ändern, z. B. durch eine Zuweisung oder eine Anweisung wie `n++`. Nicht ändern kann sich aber der Datentyp (in unserem Fall `int`). Bereits beim Kompilieren wird `n` an den Datentyp `int` gebunden. Man spricht in diesem Zusammenhang vom *frühen Binden (early binding)* im Gegensatz zum *späten Binden (late binding)*, die wir in R vorfinden.
+Der zugehörige Wert von `n` kann sich ändern, z.B. durch eine Zuweisung oder eine Anweisung wie `n++`. Nicht ändern kann sich aber der Datentyp (in unserem Fall `int`). Bereits beim Kompilieren wird `n` an den Datentyp `int` gebunden. Man spricht in diesem Zusammenhang vom *frühen Binden (early binding)* im Gegensatz zum *späten Binden (late binding)*, die wir in R vorfinden.
 
 In R:
 
@@ -36,7 +36,7 @@ In R:
 n <- 5
 ```
 
-Auch hier wird ein Objekt in einem Speicherbereich erzeugt. Im Gegensatz zu C kann man aber in R nicht direkt auf diesen Speicherbereich zugreifen. Auch ist der benutzte Speicherbereich viel größer: auf dem hier benutzten System sind dies 56 Byte für eine 64-Bit-Version von R; eine 32-Bit-Version von R braucht ein paar Byte weniger (wieso?), vielleicht 32 Byte:
+Auch hier wird ein Objekt in einem Speicherbereich erzeugt. Im Gegensatz zu C kann man aber in R nicht direkt auf diesen Speicherbereich zugreifen. Auch ist der benutzte Speicherbereich viel größer: Auf dem hier benutzten System sind dies 56 Byte für eine 64-Bit-Version von R; eine 32-Bit-Version von R braucht ein paar Byte weniger (wieso?), vielleicht 32 Byte:
 
 ```{r, echo=TRUE, eval=TRUE}
 n <- 5
@@ -97,7 +97,7 @@ str(x)
 
 Durch `x <- c("eins", "zwei", "drei")` wird `x` an einen Vektor vom Typ `character` gebunden, der die Länge 3 hat. Variablen werden in R erst während der Laufzeit (und nicht schon beim Kompilieren) an ein Objekt gebunden (*late binding*). Somit hat eine Variable keinen festen Datentyp, sondern eine Variable ist an ein Objekt gebunden, dem ein fester Datentyp zugeordnet ist. Wir sagen in diesem Zusammenhang auch, dass die Variable auf das Objekt *verweist*.
 
-Im Gegensatz zu C enthält in R jedes Objekt zusätzlich sogenannte *Metadaten*, die u. a. den Typ des Objekts beschreiben (siehe z. B. [Wickham_AdvR], Abschnitt 18.1: Object size, Seite 379 oder [R_ints], Abschnitt 1.1).
+Im Gegensatz zu C enthält in R jedes Objekt zusätzlich sogenannte *Metadaten*, die u.a. den Typ des Objekts beschreiben (siehe z. B. [@Wickham2019book], Abschnitt 18.1: Object size, Seite 379 oder [R_ints], Abschnitt 1.1).
 Zwei oder mehrere Variablen können auf dasselbe Objekt verweisen (d.h. an dasselbe Objekt gebunden sein):
 
 ```{r, echo=TRUE, eval=TRUE}
@@ -106,7 +106,7 @@ b <- a
 ```
 
 Durch die Zuweisung `b <- a` wird kein neues Objekt erzeugt (`a` wird also nicht in `b` kopiert)!\newline
-Werden allerdings `a` oder `b` verändert, dann wird umkopiert und die Variablen `a` und `b` zeigen dann auf unterschiedliche Objekte
+Werden allerdings `a` oder `b` verändert, dann wird umkopiert und die Variablen `a` und `b` zeigen dann auf unterschiedliche Objekte (Dies kann z.B. mithilfe der Funktion `tracemem()` verfolgt werden; siehe `?tracemem`.).
 
 ```{r, echo=TRUE, eval=TRUE}
 a <- c(1, 5, 3, 2)
@@ -171,15 +171,16 @@ knitr::kable(t(df), booktabs = T, col.names = c("", "used", "(Mb)", "gc (trigger
 
 ## Funktionen
 
-Neben Objekten sind Funktionen ein zentraler Bestandteil von R. Mit Funktionen können Anweisungen zu einer Einheit zusammengefasst werden. Dadurch kann Quelltext strukturiert werden und die durch die Funktion beschriebene Funktionalität mehrfach in einem Programm verwandt werden. Funktion sind in R sogenannte *„first-class-objects“*; d.h. es sind in der Tat Objekte, die fast immer wie andere „Datenobjekte“ (Vektoren, Tabellen, Listen, …) benutzt werden können.
+Neben Objekten sind Funktionen ein zentraler Bestandteil von R. Mit Funktionen können Anweisungen zu einer Einheit zusammengefasst werden. Dadurch kann Quelltext strukturiert und die durch die Funktion beschriebene Funktionalität mehrfach in einem Programm verwandt werden. Funktionen sind in R sogenannte *„first-class-objects“*; d.h. es sind in der Tat Objekte, die fast immer wie andere „Datenobjekte“ (Vektoren, Tabellen, Listen, …) benutzt werden können.
 
 Im Folgenden gehen wir davon aus, dass Sie mit dem Konzept einer Funktion vertraut sind, so wie es zum Beispiel in C, C++ oder Java verwandt wird.   \newline
 Ähnlich wie in anderen Programmiersprachen wird in R eine Funktion durch eine Anweisung der folgenden Form definiert:
 
-`function(arg_1, arg_2, ...) epxression`
+`function(arg_1, arg_2, ...) expression`
 
-Hierbei bezeichnet `arg_1, arg_2, ...` eine Liste der *formalen Funktionsparameter* und `expression` den *Funktionskörper*, der in der Regel aus einem durch geschweifte Klammern begrenzten Block von Anweisungen besteht. Insgesamt wird hierdurch ein Objekt erzeugt (eine sogenannte *anonyme Funktion*), das aber an keinem Namen gebunden ist. Ein Name wird aber gebraucht, wenn man die Funktion aufrufen will! Daher wird in der Regel eine Funktion in einer Zuweisung definiert, die dann folgende Form hat:\newline
-`name <-function(arg_1, arg_2, ...) expression`
+Hierbei bezeichnet `arg_1, arg_2, ...` eine Liste der *formalen Funktionsparameter* und `expression` den *Funktionskörper*, der in der Regel aus einem durch geschweifte Klammern begrenzten Block von Anweisungen besteht. Insgesamt wird hierdurch ein Objekt erzeugt (eine sogenannte *anonyme Funktion*), das aber an keinem Namen gebunden ist. Ein Name wird aber gebraucht, wenn man die Funktion aufrufen will! Daher wird in der Regel eine Funktion in einer Zuweisung definiert, die dann folgende Form hat:
+
+`name <- function(arg_1, arg_2, ...) expression`
 
 Solange die Variable `name` an das Funktionsobjekt gebunden ist, kann die Funktion dann durch `name(arg_1, arg_2, ...)` aufgerufen werden.\newline
 Ein einfaches Beispiel mit drei formalen Funktionsparametern `x`, `y` und `z` soll dies illustrieren:
@@ -247,7 +248,7 @@ a <- 1:10
 f1(a, a, a)
 ```
 
-Wie wir schon bei der Funktion `sqrt()` in Abschnitt  2.3 gesehen haben, wird nun die Funktion elementweise angewandt und als Ergebnis wird ein Vektor gleicher Länge zurückgegeben.
+Wie wir schon bei der Funktion `sqrt()` in Abschnitt \ref{sec:vektoren} gesehen haben, wird nun die Funktion elementweise angewandt und als Ergebnis wird ein Vektor gleicher Länge zurückgegeben.
 Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann tritt automatisch Recyling ein (siehe Abschnitt 2.3.1):
 ```{r, echo=TRUE, eval=TRUE}
 a <- 1:10
