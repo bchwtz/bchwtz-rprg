@@ -495,8 +495,8 @@ Werden allerdings <code>a</code> oder <code>b</code> verändert, dann wird umkop
 <p>Im Gegensatz zu C und C++ gibt es in R einen <em>Garbage Collector</em>, kurz auch mit GC bezeichnet. Er ist für die Speicherverwaltung von R zuständig. So fordert er zum Beispiel zusätzlichen Speicher vom Betriebssystem an, falls der interne vom GC verwaltete Memory-Pool nicht mehr ausreicht. Wenn Speicherbereiche nicht mehr benutzt werden, z.B. weil sie Objekte enthalten, die an keinen Namen mehr gebunden sind, dann gibt sie der GC bei Bedarf wieder frei. Dies alles passiert automatisch im Hintergrund, ohne dass der GC explizit aufgerufen werden muss (siehe auch <code>?gc</code>). Man kann den GC explizit mit <code>gc()</code> aufrufen (siehe <code>?gc</code>), aber dies ist eigentlich nie wirklich erforderlich; als Seiteneffekt erhält man allerdings Informationen über den Status des GCs: u. a. über die Größe des aktuell benutzten Speichers (siehe <code>used</code>) und wie viel Speicher benutzt werden kann, bevor ein neuer GC-Aufruf gestartet wird (siehe <code>gc trigger</code>).</p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="kontrollstrukturen-und-funktionen.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1254689 67.1    2269918 121.3  1836102 98.1
-## Vcells 2440039 18.7    8388608  64.0  6770003 51.7</code></pre>
+## Ncells 1254693 67.1    2269934 121.3  1836128 98.1
+## Vcells 2440057 18.7    8388608  64.0  6769909 51.7</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
 <ul>
@@ -586,13 +586,13 @@ Bestehen die Funktionsargumente aus Vektoren unterschiedlicher Länge, dann trit
 ##   tmp &lt;- 2 * y + 3 * z
 ##   return(x + tmp)
 ## }
-## &lt;bytecode: 0x55fee144bc28&gt;</code></pre>
+## &lt;bytecode: 0x557e58a4eb38&gt;</code></pre>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="kontrollstrukturen-und-funktionen.html#cb193-1" aria-hidden="true" tabindex="-1"></a>sqrt</span></code></pre></div>
 <pre><code>## function (x)  .Primitive(&quot;sqrt&quot;)</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="kontrollstrukturen-und-funktionen.html#cb195-1" aria-hidden="true" tabindex="-1"></a>atan2</span></code></pre></div>
 <pre><code>## function (y, x) 
 ## .Internal(atan2(y, x))
-## &lt;bytecode: 0x55feddcaf730&gt;
+## &lt;bytecode: 0x557e552a0368&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p><strong>Kurzzusammenfassung</strong></p>
 <blockquote>
@@ -758,23 +758,27 @@ Was würde man stattdessen in R machen? Die Antwort ist einfach, aber leider bei
 <span id="cb226-3"><a href="kontrollstrukturen-und-funktionen.html#cb226-3" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x</span>
 <span id="cb226-4"><a href="kontrollstrukturen-und-funktionen.html#cb226-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
 <span id="cb226-5"><a href="kontrollstrukturen-und-funktionen.html#cb226-5" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb226-6"><a href="kontrollstrukturen-und-funktionen.html#cb226-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb226-7"><a href="kontrollstrukturen-und-funktionen.html#cb226-7" aria-hidden="true" tabindex="-1"></a>z </span></code></pre></div>
+<span id="cb226-6"><a href="kontrollstrukturen-und-funktionen.html#cb226-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## Error in if (x%%2 == 0) {: the condition has length &gt; 1</code></pre>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="kontrollstrukturen-und-funktionen.html#cb228-1" aria-hidden="true" tabindex="-1"></a>z </span></code></pre></div>
+<pre><code>## [1] 2 1 3 4</code></pre>
 <p>Ebenso:</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="kontrollstrukturen-und-funktionen.html#cb227-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb227-2"><a href="kontrollstrukturen-und-funktionen.html#cb227-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="cf">if</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) x <span class="cf">else</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb227-3"><a href="kontrollstrukturen-und-funktionen.html#cb227-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="kontrollstrukturen-und-funktionen.html#cb230-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb230-2"><a href="kontrollstrukturen-und-funktionen.html#cb230-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="cf">if</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) x <span class="cf">else</span> x <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div>
+<pre><code>## Error in if (x%%2 == 0) x else x + 1: the condition has length &gt; 1</code></pre>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="kontrollstrukturen-und-funktionen.html#cb232-1" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<pre><code>## [1] 2 1 3 4</code></pre>
 <p>Für diesen Zweck gibt es die Funktion <code>ifelse()</code>:</p>
 <p><code>ifelse(test, wahr, falsch)</code></p>
 <p>Zurückgegeben wird ein Objekt der gleichen Größe und Form wie <code>test</code>, der abhängig vom Wahrheitswert von <code>test</code> elementweise gefüllt wird von den entsprechenden Elementen aus <code>wahr</code> bzw. <code>falsch</code>.</p>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="kontrollstrukturen-und-funktionen.html#cb228-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb228-2"><a href="kontrollstrukturen-und-funktionen.html#cb228-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, x, x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb228-3"><a href="kontrollstrukturen-und-funktionen.html#cb228-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="kontrollstrukturen-und-funktionen.html#cb234-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb234-2"><a href="kontrollstrukturen-und-funktionen.html#cb234-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, x, x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb234-3"><a href="kontrollstrukturen-und-funktionen.html#cb234-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
 <pre><code>##  [1]  2  2  4  4  6  6  8  8 10 10</code></pre>
 <p>Entsprechend ergibt sich mithilfe von Recycling (siehe Abschnitt <a href="erste-schritte.html#recycling">2.4</a>):</p>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="kontrollstrukturen-und-funktionen.html#cb230-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">13</span></span>
-<span id="cb230-2"><a href="kontrollstrukturen-und-funktionen.html#cb230-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">9</span>)</span>
-<span id="cb230-3"><a href="kontrollstrukturen-und-funktionen.html#cb230-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="kontrollstrukturen-und-funktionen.html#cb236-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">13</span></span>
+<span id="cb236-2"><a href="kontrollstrukturen-und-funktionen.html#cb236-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">9</span>)</span>
+<span id="cb236-3"><a href="kontrollstrukturen-und-funktionen.html#cb236-3" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
 <pre><code>##  [1] 5 9 5 9 5 9 5 9 5 9 5 9</code></pre>
 </div>
 <div id="schleife-while-und-repeat" class="section level3 hasAnchor" number="3.3.3">
@@ -790,8 +794,8 @@ Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code
 <p><code>for ( name in vector )</code></p>
 <p><code>statement1</code></p>
 <p>Hierzu ein kleines Beispiel:</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="kontrollstrukturen-und-funktionen.html#cb232-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">15</span></span>
-<span id="cb232-2"><a href="kontrollstrukturen-und-funktionen.html#cb232-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(idx <span class="cf">in</span> x) <span class="fu">print</span>(idx <span class="sc">^</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="kontrollstrukturen-und-funktionen.html#cb238-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">15</span></span>
+<span id="cb238-2"><a href="kontrollstrukturen-und-funktionen.html#cb238-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(idx <span class="cf">in</span> x) <span class="fu">print</span>(idx <span class="sc">^</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1] 121
 ## [1] 144
 ## [1] 169
@@ -804,9 +808,9 @@ Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code
 <p>In R gibt es auch eine <code>switch</code>-Anweisung für eine Mehrfachverzweigung, deren Syntax sich aber nicht an C anlehnt. Die Syntax ist unterschiedlich zu C und zeigt aber auch deutlich, dass es sich intern um einen Funktionsaufruf handelt:</p>
 <p><code>switch(statement, list)</code></p>
 <p>Zuerst wird <code>statement</code> ausgewertet und der erhaltene Wert als Index der Liste <code>list</code> interpretiert. Ist er kein gültiger Indexwert, dann wird <code>NULL</code> zurückgegeben.</p>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="kontrollstrukturen-und-funktionen.html#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">1</span>, <span class="st">&quot;eins&quot;</span>, <span class="st">&quot;zwei&quot;</span>, <span class="st">&quot;drei&quot;</span>, <span class="st">&quot;vier&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="kontrollstrukturen-und-funktionen.html#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">1</span>, <span class="st">&quot;eins&quot;</span>, <span class="st">&quot;zwei&quot;</span>, <span class="st">&quot;drei&quot;</span>, <span class="st">&quot;vier&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;eins&quot;</code></pre>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="kontrollstrukturen-und-funktionen.html#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">3</span>, <span class="st">&quot;eins&quot;</span>, <span class="st">&quot;zwei&quot;</span>, <span class="st">&quot;drei&quot;</span>, <span class="st">&quot;vier&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="kontrollstrukturen-und-funktionen.html#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span>(<span class="dv">3</span>, <span class="st">&quot;eins&quot;</span>, <span class="st">&quot;zwei&quot;</span>, <span class="st">&quot;drei&quot;</span>, <span class="st">&quot;vier&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;drei&quot;</code></pre>
 <p><code>NULL</code> ist ein spezielles Objekt in R, das nur einmal in R existiert. Es wird in der Regel benutzt, um anzuzeigen, dass es kein entsprechendes Objekt gibt (im Gegensatz zu <code>NA</code>, das anzeigt, dass kein Wert verfügbar ist).</p>
 <p><strong>Kurzzusammenfassung</strong></p>
@@ -840,14 +844,14 @@ Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code
 <div id="aufgabe-2-1" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 2<a href="kontrollstrukturen-und-funktionen.html#aufgabe-2-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Welchen Wert haben die folgenden Vektoren und was ist ihr Typ?</p>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="kontrollstrukturen-und-funktionen.html#cb238-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb238-2"><a href="kontrollstrukturen-und-funktionen.html#cb238-2" aria-hidden="true" tabindex="-1"></a>gerade <span class="ot">&lt;-</span>  <span class="cf">function</span>(x){</span>
-<span id="cb238-3"><a href="kontrollstrukturen-und-funktionen.html#cb238-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span></span>
-<span id="cb238-4"><a href="kontrollstrukturen-und-funktionen.html#cb238-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="kontrollstrukturen-und-funktionen.html#cb239-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">gerade</span>(i)</span>
-<span id="cb239-2"><a href="kontrollstrukturen-und-funktionen.html#cb239-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fl">2.1</span> <span class="sc">*</span> i</span>
-<span id="cb239-3"><a href="kontrollstrukturen-und-funktionen.html#cb239-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">*</span>x <span class="sc">+</span> 1i<span class="sc">*</span>x</span>
-<span id="cb239-4"><a href="kontrollstrukturen-und-funktionen.html#cb239-4" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">as.character</span>(i)     <span class="co"># Nicht im Skript</span></span></code></pre></div>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="kontrollstrukturen-und-funktionen.html#cb244-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb244-2"><a href="kontrollstrukturen-und-funktionen.html#cb244-2" aria-hidden="true" tabindex="-1"></a>gerade <span class="ot">&lt;-</span>  <span class="cf">function</span>(x){</span>
+<span id="cb244-3"><a href="kontrollstrukturen-und-funktionen.html#cb244-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb244-4"><a href="kontrollstrukturen-und-funktionen.html#cb244-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="kontrollstrukturen-und-funktionen.html#cb245-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">gerade</span>(i)</span>
+<span id="cb245-2"><a href="kontrollstrukturen-und-funktionen.html#cb245-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fl">2.1</span> <span class="sc">*</span> i</span>
+<span id="cb245-3"><a href="kontrollstrukturen-und-funktionen.html#cb245-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">*</span>x <span class="sc">+</span> 1i<span class="sc">*</span>x</span>
+<span id="cb245-4"><a href="kontrollstrukturen-und-funktionen.html#cb245-4" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">as.character</span>(i)     <span class="co"># Nicht im Skript</span></span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -903,20 +907,20 @@ Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code
 <div id="aufgabe-5-1" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 5<a href="kontrollstrukturen-und-funktionen.html#aufgabe-5-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Vereinfachen Sie folgende Schleife:</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="kontrollstrukturen-und-funktionen.html#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="cf">repeat</span> {</span>
-<span id="cb240-2"><a href="kontrollstrukturen-und-funktionen.html#cb240-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(n <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;&amp;</span> count <span class="sc">&gt;=</span> <span class="dv">6</span> ) <span class="cf">break</span></span>
-<span id="cb240-3"><a href="kontrollstrukturen-und-funktionen.html#cb240-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(n<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb240-4"><a href="kontrollstrukturen-und-funktionen.html#cb240-4" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">2</span></span>
-<span id="cb240-5"><a href="kontrollstrukturen-und-funktionen.html#cb240-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="kontrollstrukturen-und-funktionen.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="cf">repeat</span> {</span>
+<span id="cb246-2"><a href="kontrollstrukturen-und-funktionen.html#cb246-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(n <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;&amp;</span> count <span class="sc">&gt;=</span> <span class="dv">6</span> ) <span class="cf">break</span></span>
+<span id="cb246-3"><a href="kontrollstrukturen-und-funktionen.html#cb246-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(n<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb246-4"><a href="kontrollstrukturen-und-funktionen.html#cb246-4" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">2</span></span>
+<span id="cb246-5"><a href="kontrollstrukturen-und-funktionen.html#cb246-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p><strong>Hinweis</strong>: Der Operator <code>&amp;&amp;</code> bezieht sich bei Vektoren nur auf das erste Element; bei Vektoren sollte man statt <code>&amp;&amp;</code> den Operator <code>&amp;</code> benutzen! Ähnliches gilt für die Operatoren <code>||</code> und <code>|</code> (siehe z.B. <code>?‘&amp;‘</code>).</p>
 </div>
 <div id="aufgabe-6-1" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 6<a href="kontrollstrukturen-und-funktionen.html#aufgabe-6-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: lower-alpha">
 <li><p>Implementieren Sie eine Funktion <code>skalierenW()</code>, die einen nichtnegativen numerischen Vektor <code>x</code> als Häufigkeiten interpretiert und den entsprechenden Wahrscheinlichkeitsvektor <code>p</code> zurückgibt, d. h. folgende Aussagen sind dann wahr:</p>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="kontrollstrukturen-und-funktionen.html#cb241-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(p <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
-<span id="cb241-2"><a href="kontrollstrukturen-und-funktionen.html#cb241-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(p) <span class="sc">==</span> <span class="dv">1</span></span>
-<span id="cb241-3"><a href="kontrollstrukturen-und-funktionen.html#cb241-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(x <span class="sc">/</span> <span class="fu">sum</span>(x) <span class="sc">==</span> p)</span></code></pre></div></li>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="kontrollstrukturen-und-funktionen.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(p <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb247-2"><a href="kontrollstrukturen-und-funktionen.html#cb247-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(p) <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb247-3"><a href="kontrollstrukturen-und-funktionen.html#cb247-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(x <span class="sc">/</span> <span class="fu">sum</span>(x) <span class="sc">==</span> p)</span></code></pre></div></li>
 <li><p>Implementieren Sie eine Funktion <code>skalierenAffin()</code>, die einen numerischen Vektor <code>x</code> folgendermaßen linear skaliert (d.h. mithilfe einer affinen Abbildung):</p>
 <ul>
 <li>Bezeichne mit <span class="math inline">\(x_{min}\)</span> und <span class="math inline">\(x_{max}\)</span> den kleinsten bzw. größten Wert von <code>x</code>.</li>
@@ -925,20 +929,20 @@ Weiterhin entspricht <code>repeat</code> im Wesentlichen <code>while(TRUE)</code
 </ul>
 <p>
 <strong>Beispiele:</strong></p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="kontrollstrukturen-und-funktionen.html#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="kontrollstrukturen-und-funktionen.html#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [1] 0.00 0.25 0.50 0.75 1.00</code></pre>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="kontrollstrukturen-und-funktionen.html#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="kontrollstrukturen-und-funktionen.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## [1] 0.00 0.25 0.50 0.75 1.00</code></pre>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="kontrollstrukturen-und-funktionen.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">20</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="kontrollstrukturen-und-funktionen.html#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">20</span>))</span></code></pre></div>
 <pre><code>## [1] 0.00 0.05 1.00</code></pre>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="kontrollstrukturen-und-funktionen.html#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">20</span>)<span class="sc">+</span><span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="kontrollstrukturen-und-funktionen.html#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">20</span>)<span class="sc">+</span><span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## [1] 0.00 0.05 1.00</code></pre>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="kontrollstrukturen-und-funktionen.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="kontrollstrukturen-und-funktionen.html#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))</span></code></pre></div>
 <pre><code>## [1] 0.25 0.00 1.00 0.75</code></pre>
 <p>Testen Sie Ihre Lösung auch mit folgenden problematischen Eingabewerten. Wie sieht Ihre Lösung aus?</p>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="kontrollstrukturen-und-funktionen.html#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>((<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), <span class="cn">NA</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="kontrollstrukturen-und-funktionen.html#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="fu">c</span>((<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), <span class="cn">NA</span>))</span></code></pre></div>
 <pre><code>## [1] 0.00 0.25 0.50 0.75 1.00   NA</code></pre>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="kontrollstrukturen-und-funktionen.html#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">1</span><span class="sc">/</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="kontrollstrukturen-und-funktionen.html#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skalierenAffin</span>(<span class="dv">1</span><span class="sc">/</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span>))</span></code></pre></div>
 <pre><code>## [1] 0.25 0.00  Inf 1.00 0.75</code></pre></li>
 </ol>
 </div>
@@ -1035,19 +1039,19 @@ Figure 3.2: Histogramm der <em>durchschnittlichen</em> Strecke.
 </tbody>
 </table></li>
 <li><p>Testen Sie Ihre implementierten Funktionen mithilfe der folgenden Funktion:</p>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="kontrollstrukturen-und-funktionen.html#cb256-1" aria-hidden="true" tabindex="-1"></a>testLaufLaenge <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">anzahl =</span> 16L, <span class="at">maxLaenge =</span> <span class="dv">12</span>) {</span>
-<span id="cb256-2"><a href="kontrollstrukturen-und-funktionen.html#cb256-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>anzahl){ </span>
-<span id="cb256-3"><a href="kontrollstrukturen-und-funktionen.html#cb256-3" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>maxLaenge, <span class="dv">1</span>)</span>
-<span id="cb256-4"><a href="kontrollstrukturen-und-funktionen.html#cb256-4" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(0L,1L), n, <span class="cn">TRUE</span>)</span>
-<span id="cb256-5"><a href="kontrollstrukturen-und-funktionen.html#cb256-5" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">llaenge</span>(x)</span>
-<span id="cb256-6"><a href="kontrollstrukturen-und-funktionen.html#cb256-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(r)</span>
-<span id="cb256-7"><a href="kontrollstrukturen-und-funktionen.html#cb256-7" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="fu">llaengeInverse</span>(r, 1L, 0L)</span>
-<span id="cb256-8"><a href="kontrollstrukturen-und-funktionen.html#cb256-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(y[<span class="dv">1</span>] <span class="sc">!=</span> x[<span class="dv">1</span>])</span>
-<span id="cb256-9"><a href="kontrollstrukturen-und-funktionen.html#cb256-9" aria-hidden="true" tabindex="-1"></a>      y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> y</span>
-<span id="cb256-10"><a href="kontrollstrukturen-und-funktionen.html#cb256-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">any</span>(x <span class="sc">!=</span> y))  </span>
-<span id="cb256-11"><a href="kontrollstrukturen-und-funktionen.html#cb256-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="st">&quot;Test nicht bestanden: &quot;</span>, x)</span>
-<span id="cb256-12"><a href="kontrollstrukturen-und-funktionen.html#cb256-12" aria-hidden="true" tabindex="-1"></a>  }  </span>
-<span id="cb256-13"><a href="kontrollstrukturen-und-funktionen.html#cb256-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="kontrollstrukturen-und-funktionen.html#cb262-1" aria-hidden="true" tabindex="-1"></a>testLaufLaenge <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">anzahl =</span> 16L, <span class="at">maxLaenge =</span> <span class="dv">12</span>) {</span>
+<span id="cb262-2"><a href="kontrollstrukturen-und-funktionen.html#cb262-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>anzahl){ </span>
+<span id="cb262-3"><a href="kontrollstrukturen-und-funktionen.html#cb262-3" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>maxLaenge, <span class="dv">1</span>)</span>
+<span id="cb262-4"><a href="kontrollstrukturen-und-funktionen.html#cb262-4" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(0L,1L), n, <span class="cn">TRUE</span>)</span>
+<span id="cb262-5"><a href="kontrollstrukturen-und-funktionen.html#cb262-5" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">llaenge</span>(x)</span>
+<span id="cb262-6"><a href="kontrollstrukturen-und-funktionen.html#cb262-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(r)</span>
+<span id="cb262-7"><a href="kontrollstrukturen-und-funktionen.html#cb262-7" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="fu">llaengeInverse</span>(r, 1L, 0L)</span>
+<span id="cb262-8"><a href="kontrollstrukturen-und-funktionen.html#cb262-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(y[<span class="dv">1</span>] <span class="sc">!=</span> x[<span class="dv">1</span>])</span>
+<span id="cb262-9"><a href="kontrollstrukturen-und-funktionen.html#cb262-9" aria-hidden="true" tabindex="-1"></a>      y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> y</span>
+<span id="cb262-10"><a href="kontrollstrukturen-und-funktionen.html#cb262-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">any</span>(x <span class="sc">!=</span> y))  </span>
+<span id="cb262-11"><a href="kontrollstrukturen-und-funktionen.html#cb262-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="st">&quot;Test nicht bestanden: &quot;</span>, x)</span>
+<span id="cb262-12"><a href="kontrollstrukturen-und-funktionen.html#cb262-12" aria-hidden="true" tabindex="-1"></a>  }  </span>
+<span id="cb262-13"><a href="kontrollstrukturen-und-funktionen.html#cb262-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p><strong>Hinweis:</strong></p>
 <p><code>stop()</code>: Stoppt die Ausführung der aktuellen Anweisung und gibt eine entsprechende Fehlermeldung aus</p></li>
 </ol>
