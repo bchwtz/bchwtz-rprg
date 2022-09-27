@@ -464,6 +464,8 @@ Genau wie in C sind auch „else-if“-Ketten erlaubt:
 
 Die Auswertung der `if`-Bedingung in der Kontrollstruktur `if-else` berücksichtigt lediglich das erste Element eines Vektors. `if-else` ist daher nur bedingt für Vektoren geeignet. Insbesondere sind Funktionen, die im Funktionsrumpf ein `if-else` benutzen, nicht vektorisierbar!
 
+In neueren R Versionen wie z.B. R-4.2.1 wird eine Error-Meldung ausgegeben:
+
 ```{r, echo=TRUE, eval=TRUE, error=TRUE}
 x <- 1:10
 if(x%%2 == 0){
@@ -471,7 +473,7 @@ if(x%%2 == 0){
 } else {
   z <- x + 1
 }
-z 
+# z 
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
@@ -483,8 +485,15 @@ Ebenso:
 ```{r, echo=TRUE, eval=TRUE, error=TRUE}
 x <- 1:10
 z <- if(x %% 2 == 0) x else x + 1
-z
+# z
 ```
+
+In älteren R Versionen wie z.B. R-4.1.1 wird *nur* eine Warnmeldung erhalten und die `ifelse`-Verzweigung trotzdem durchlaufen:
+
+```{r}
+#R> Warnung: the condition has length > 1 and only the first element will be used [1]  2  3  4  5  6  7  8  9 10 11
+```
+
 
 ```{r, echo=FALSE, eval=FALSE}
 ## Error-Meldung? (Im Skript steht Warnmeldung)
