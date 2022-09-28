@@ -1,6 +1,6 @@
 # Spezielle Themen und Fallstudien 
 
-## Fallstudie 1
+## Fallstudie 1 - Boxplots und MNIST-Daten
 
 ### Boxplots
 
@@ -88,7 +88,7 @@ par(op)  # stellt die ursprüngliche Grafikeinstellung wieder her
 
 ### MNIST-Bilddaten
 
-Wir wollen das Beispiel aus dem Skript vertiefen, das am Ende des Kapitels 4 besprochen wurde. Grundlage für dieses Beispiel war die MNIST-Datensammlung, die Grauwertbilder der Ziffern von 0 bis 9 in ganz unterschiedlichen handgeschriebenen Varianten enthält und deren Daten wir über `dslabs::read_mnist()` erhalten. 
+Wir wollen das Beispiel aus dem Skript vertiefen, das am Ende des Kapitels 4 besprochen wurde. Grundlage für dieses Beispiel war die MNIST-Datensammlung, die Grauwertbilder der Ziffern von 0 bis 9 in ganz unterschiedlichen handgeschriebenen Varianten enthält und deren Daten wir über `dslabs::read_mnist()` [@dslabs] erhalten. 
 
 Zur Erinnerung: Jedes Grauwertbild besteht dabei aus 28×28 Pixeln und jeder Pixelwert liegt zwischen 0 und 255. 
 
@@ -96,6 +96,7 @@ Zur Erinnerung: Jedes Grauwertbild besteht dabei aus 28×28 Pixeln und jeder Pix
 ziffern <- mnist$train$images
 dim(ziffern) # 60.000 Bilder (28*28 = 784 Pixel pro Bild)
 ```
+Mithilfe folgender Funktion können die ersten neun Ziffern wie folgt geplottet werden:
 
 ```{r}
 # Funktion, um die einzelnen Ziffern zu plotten
@@ -114,25 +115,38 @@ for(z in 1:9){ # Plotten der ersten neun Ziffern
 
 (ref:plot-ziffern) Plots der ersten neun Ziffern aus dem Ziffern-Trainingsdatensatz [@dslabs].
 
-Bislang haben wir außer Acht gelassen, dass der Trainings- und Testdatensatz jeweils aus einem eindimensionalen Array namens `labels` bestehen. In `labels` ist gespeichert, welche der zehn Ziffern von den jeweiligen Bildern dargestellt werden.
-Das x-te Bild (also `mnist$train$images[x,]`) stellt die Ziffer `labels[x]` dar. Also stellen die ersten neun Bilder die Ziffern 5, 0, 4, 1, 9, 2, 1, 3 und 1 während die letzten neun Bilder die Ziffern 2, 9, 5, 1, 8, 3, 5, 6 und 8 darstellen. Vergleichen Sie die Werte von `labels` mit der vorherigen Abbildung.
+Bislang haben wir außer Acht gelassen, dass der Trainings- und Testdatensatz jeweils aus einem eindimensionalen Array namens `labels` bestehen. In `labels` ist gespeichert, welche der zehn Ziffern von den jeweiligen Bildern dargestellt werden. [@dslabs]
+Das x-te Bild (also `mnist$train$images[x,]`) stellt die Ziffer `labels[x]` dar. Also stellen die ersten neun Bilder die Ziffern 5, 0, 4, 1, 9, 2, 1, 3 und 1 dar 
 
 ```{r}
 labels <- mnist$train$labels
 head(labels, n = 9)
+```
+
+während die letzten neun Bilder die Ziffern 2, 9, 5, 1, 8, 3, 5, 6 und 8 präsentieren:
+
+```{r}
 tail(labels, n = 9)
 ```
 
+Vergleichen Sie die Werte von `labels` mit der Abbildung \@ref(fig:plot-zif).
 
 **Beantworten Sie folgende Fragen:**
 
 a) Bestimmen Sie mithilfe von `labels`, wie viele Bilder es von jeder Ziffer gibt.
 
 ```{r, echo=FALSE, eval=FALSE}
+# solution:
 table(labels)
 ```
 
 b) Wie ist die Anzahl an Bildern pro Ziffer verteilt?
+
+```{r, echo=FALSE}
+# solution:
+# etwa gleichverteilt
+```
+
 
 c) Extrahieren Sie alle Bilder der Ziffer 3. Plotten Sie die ersten neun extrahierten Bilder der Ziffer 3, sodass Sie folgendes Ergebnis erhalten:
 
@@ -143,14 +157,14 @@ ziffer3 <- ziffern[which(labels == 3),]
 ```{r plot-zif3, fig.cap="(ref:plot-ziffer3)"}
 par(mfrow = c(3, 3))
 for(x in 1:9){ # Plotten der ersten neun Ziffern
-  plotZiffer(ziffer3, z)
+  plotZiffer(ziffer3, x)
 }
 ```
 
 (ref:plot-ziffer3) Plots der ersten neun extrahierten Bilder der Ziffer 3 aus dem Ziffern-Trainingsdatensatz [@dslabs].
 
 
-## Fallstudie 2
+## Fallstudie 2 - Zeichenketten
 
 **Lernziel(e):**
 
@@ -205,11 +219,11 @@ as.data.frame(table(words_letters))
 
 
 g) Suchen Sie zufälligerweise fünf Wörter aus und verbinden Sie diese zu einem Titel. Macht der Titel Sinn?
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE, eval=TRUE}
 # solution:
 words_sample <- sample(words_letters, size = 5, replace = FALSE)
 
-paste(words_sample, collapse = " ")
+# paste(words_sample, collapse = " ")
 ```
 
 h) Fassen Sie die Schritte aus Aufgabenteil 1g) in Form einer Funktion zusammen, indem die Funktion als Argumente
@@ -243,6 +257,7 @@ j) Erweitern Sie Ihre Funktion aus Aufgabenteil h), indem Sie ein weiteres Argum
 Die Funktion soll einen Vektor zurückgeben, der die `nsample` Title enthält.
 
 ```{r, echo=FALSE}
+# solution:
 random_words <- function(words, nwords, nsample){
   movie_title <- c()
   
@@ -260,7 +275,7 @@ random_words <- function(words, nwords, nsample){
 
 k) Wählen Sie `words = words_letters`, `nwords = 5` und `nsample = 10` und wenden Sie die Funktion aus Aufgabenteil j) an.
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 # solution:
 rw <- random_words(words = words_letters, nwords = 5, nsample = 10)
 ```
