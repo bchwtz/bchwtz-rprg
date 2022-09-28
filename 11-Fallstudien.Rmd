@@ -178,14 +178,14 @@ In dieser Fallstudie geht es um Filmtitel, die im Zuge des *Internet movie* Date
 ### Aufgabe 1
 
 a) Erstellen Sie einen Vektor aller Wörter, die in der Variablen "title" gespeichert sind.
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # solution:
 words <- unlist(str_split(movies$title, pattern = " "))
 ```
 
 
 b) Bestimmen Sie die (absolute) Häufigkeit der einzelnen Wörter mittels `table()`.
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # solution:
 table_words <- as.data.frame(table(words))
 ```
@@ -199,13 +199,13 @@ table_words[which.max(table_words$Freq),]
 
 
 d) Substituieren Sie das von Ihnen am häufigsten bestimmte Wort durch den unbestimmten Artikel "A".
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # solution:
 sub_words <- gsub("The", replacement = "A", words)
 ```
 
 e) Extrahieren Sie aus dem Vektor der modifizierten Wörter diejenigen, die mindestens einen Buchstaben enthalten und nennen Sie diesen Vektor `words_letters`. (Dadurch werden Zahlen und Symbole, die als einzelne Wörter (character) abgespeichert sind, entfernt.) Nutzen Sie z.B. die Funktion `str_detect()`.
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # solution:
 words_letters <- sub_words[str_detect(sub_words, "[A-Z][a-z]")]
 ```
@@ -219,7 +219,7 @@ as.data.frame(table(words_letters))
 
 
 g) Suchen Sie zufälligerweise fünf Wörter aus und verbinden Sie diese zu einem Titel. Macht der Titel Sinn?
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=FALSE}
 # solution:
 words_sample <- sample(words_letters, size = 5, replace = FALSE)
 
@@ -234,7 +234,7 @@ h) Fassen Sie die Schritte aus Aufgabenteil 1g) in Form einer Funktion zusammen,
   
 Der Rückgabewert der Funktion ist die Zeichenkette, die sich aus den zufällig ausgewählten Wörtern zusammensetzt.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # solution:
 random_words <- function(words, nwords){
   words_sample <- sample(words_letters, size = nwords, replace = FALSE)
@@ -256,7 +256,7 @@ random_words(words_letters, 5)
 j) Erweitern Sie Ihre Funktion aus Aufgabenteil h), indem Sie ein weiteres Argument namens `nsample` einfügen, mithilfe dessen angegeben werden kann, *wie oft* fünf Wörter zufällig ausgesucht werden, die jeweils zu einem Titel zusammengefügt werden.
 Die Funktion soll einen Vektor zurückgeben, der die `nsample` Title enthält.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # solution:
 random_words <- function(words, nwords, nsample){
   movie_title <- c()
@@ -275,7 +275,7 @@ random_words <- function(words, nwords, nsample){
 
 k) Wählen Sie `words = words_letters`, `nwords = 5` und `nsample = 10` und wenden Sie die Funktion aus Aufgabenteil j) an.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # solution:
 rw <- random_words(words = words_letters, nwords = 5, nsample = 10)
 ```
