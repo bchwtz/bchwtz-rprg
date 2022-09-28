@@ -4,7 +4,7 @@ Bevor wir auf die wesentlichen Strukturen für Daten eingehen werden, wollen wir
 
 ## Wichtige Eigenschaften von Objekten
 
-Wie bereits gesehen gilt laut John M. Chambers: *„alles, was [in R] existiert, ist ein Objekt“*. Dies trifft sowohl für Datencontainer zu wie z. B. Vektoren als auch für Funktionen oder Namen.
+Wie bereits gesehen, gilt laut John M. Chambers: *„alles, was [in R] existiert, ist ein Objekt“*. Dies trifft sowohl für Datencontainer zu wie z. B. Vektoren als auch für Funktionen oder Namen.
 
 ### `typeof()`
 
@@ -48,7 +48,7 @@ x <- 1:10
 length(x)
 ```
 
-Für manche Objekttypen wie z. B. Funktionsobjekte beinhaltet die Längeninformation allerdings keine zusätzlichen Informationen. Die Eigenschaften Typ und Länge werden oft auch „intrinsische Attribute“ genannt [@RInternals, S. 13]. 
+Für manche Objekttypen wie z.B. Funktionsobjekte beinhaltet die Längeninformation allerdings keine zusätzlichen Informationen. Die Eigenschaften Typ und Länge werden oft auch „intrinsische Attribute“ genannt [@RInternals, S. 13]. 
 
 ### Attribute
 
@@ -67,7 +67,7 @@ attributes(Nile)
 
 Das Objekt `Nile` hat also zwei Attribute: „tsp“, das Anfangs- und Endzeit und Frequenz beschreibt, und „class“, das den Wert „ts“ hat (und für *time series* steht).  
 
-Wie wir später ebenfalls sehen werden, können mithilfe der Funktion `attr()` Attribute gesetzt und verändert werden. Einige Attribute nehmen dabei jedoch eine Sonderrolle  ein [@RInternals, S. 7], nämlich  „class“, „comment“, „dim“, „dimnames“, „names“, „row.names“ und „tsp“. Für diese Attribute gibt es auch bestimmte Einschränkungen und in der Regel werden spezielle Funktionen bereitgestellt (wie z. B. `names()` oder `class()`), um das entsprechende Attribut zu verändern oder zu setzen. 
+Wie wir später ebenfalls sehen werden, können mithilfe der Funktion `attr()` Attribute gesetzt und verändert werden. Einige Attribute nehmen dabei jedoch eine Sonderrolle  ein [@RInternals, S. 7], nämlich  „class“, „comment“, „dim“, „dimnames“, „names“, „row.names“ und „tsp“. Für diese Attribute gibt es auch bestimmte Einschränkungen und in der Regel werden spezielle Funktionen bereitgestellt (wie z.B. `names()` oder `class()`), um das entsprechende Attribut zu verändern oder zu setzen. 
 
 Das Attribut „class“ spielt eine zentrale Rolle bei der objektorientierten Programmierung; es ist ein `character`-Vektor, der die Namen der Oberklassen enthält. Genau genommen unterstützt R unterschiedliche objektorientierte Systeme, das gebräuchlichste ist S3.
 
@@ -93,13 +93,13 @@ class(Nile)
 > - `attributes()`
 > - `class()`
 
-## (Atomic) Vector
+## (Atomic) Vector{#atomicvector}
 
 Vektoren haben wir bereits kennengelernt. Streng genommen gibt es zwei Arten von Vektoren: *atomare Vektoren* und *Listen*. Im Folgenden meinen wir jedoch immer atomare Vektoren, wenn wir von Vektoren reden! 
 
 Ein Vektor ist wie ein Feld (array) eine Datenstruktur, die eine Folge von Elementen desselben Typs enthält, die in aufeinander folgenden Speicherbereichen abgelegt sind. Wie in C haben wir mithilfe des Indexoperators `[]` wahlfreien Zugriff auf die einzelnen Elemente des Vektors. Aber im Gegensatz zu C und vielen anderen Programmiersprachen beginnt die Indexierung in R nicht bei 0, sondern bei 1!
 
-Es gibt sechs unterschiedliche Vektor-Datentypen: `logical`, `integer`, `double`, `complex`,  `character` und `raw`, die den jeweils zugrundeliegenden Datentyp (d. h. den Typ eines Vektorelements) charakterisieren.
+Es gibt sechs unterschiedliche Vektor-Datentypen: `logical`, `integer`, `double`, `complex`,  `character` und `raw`, die den jeweils zugrundeliegenden Datentyp (d.h. den Typ eines Vektorelements) charakterisieren.
 
 Auf `raw` werden wir im Folgenden nicht weiter eingehen. Im nächsten Quelltextbeispiel sehen wir Vektoren der Länge 2, die jeweils einen unterschiedlichen Vektor-Datentypen haben:
 
@@ -115,15 +115,15 @@ Dabei wurden die Abkürzungen `T` und `F` für `TRUE` und `FALSE` benutzt. `char
 
 Aus zum Teil historischen Gründen sind die Bezeichnungen nicht immer konsistent. Aus Kompatibilitätsgründen mit S gibt es neben `typeof()` auch die ähnlichen Funktionen `mode()` und `storage.mode()`, die aber zum Teil unterschiedliche Bezeichnungen zurückgeben, wie aus der folgenden Tabelle hervorgeht:
 
-(ref:typeofmodestor) Die Funktionen `typeof()`, `mode()` und `storage.mode()` im Überblick.
+`typeof` | `mode`  | `storage.mode`
+---------|---------|----------------
+`logical`  | `logical` | `logical`
+`integer` | `numeric` | `integer`
+`double` | `numeric` | `double`
+`complex` | `complex` | `complex`
+`character` | `character` | `character`
+`raw` | `raw` | `raw`
 
-```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(typeof = c("logical", "integer", "double", "complex", "character", "raw"),
-                 mode = c("logical", "numeric", "numeric", "complex", "character", "raw"),
-                 storage.mode = c("logical", "integer", "double", "complex", "character", "raw"))
-knitr::kable(df, booktabs = T, caption = "(ref:typeofmodestor)")%>%
- kableExtra::kable_styling(latex_options = "hold_position")
-```
 
 `numeric` kann also sowohl für `integer` als auch für `double` stehen. Die Inkonsistenz der Bezeichnung wird auch bei `str()` deutlich: 
 
@@ -133,7 +133,7 @@ str(x2)
 str(x3)
 ```
 
-Ein Vektor ist *homogen*, d. h. alle Elemente haben den gleichen zugrundeliegenden Datentyp. Was passiert aber, wenn wir versuchen, einen `integer`-Wert wie 3L und einen `double`-Wert wie 5.1 zu einem neuen Vektor zusammenzufassen?
+Ein Vektor ist *homogen*, d.h. alle Elemente haben den gleichen zugrundeliegenden Datentyp. Was passiert aber, wenn wir versuchen, einen `integer`-Wert wie 3L und einen `double`-Wert wie 5.1 zu einem neuen Vektor zusammenzufassen?
 
 ```{r, echo=TRUE, eval=TRUE}
 typeof(x)
@@ -151,7 +151,7 @@ str(z)
 ```
 
 
-### Filter und Vektor-Indizierung
+### Filter und Vektor-Indizierung{#vektorindizierung}
 
 Wir haben bereits gesehen, dass durch `x[n]` das `n`-te Element im Vektor `x` angesprochen wird, falls `n` eine natürliche Zahl ist. Dies ist in R verallgemeinert worden: `n` kann auch ein Vektor sein, wie man aus der folgenden Tabelle entnehmen kann:
 
@@ -176,7 +176,7 @@ Beispielhaft wollen wir die drittletzte Zeile kurz erläutern. Was bedeutet `x >
 
 Ganz ähnlich ergibt sich das Beispiel in der letzten Zeile; hierzu sei angemerkt, dass  `x %in% u` den Vektor `(T, T, F, F, F, F)` (wie in R üblich steht `T` für `TRUE` und `F` für `FALSE`) zurückgibt.
 
-Auf eine weitere Möglichkeit der Vektor-Indizierung mithilfe des Namens (also der Form `x["einNamen"]`) werden wir in 4.2.4 eingehen.
+Auf eine weitere Möglichkeit der Vektor-Indizierung mithilfe des Namens (also der Form `x["einNamen"]`) werden wir in Abschnitt \@ref(elementnamen) eingehen.
 
 Die Funktion `subset()` bietet eine ähnliche Filterfunktion wie `x[x > 7]`, unterscheidet sich jedoch dadurch, dass sie automatisch NA-Werte ausschließt. In unserem Fall liefert sie ein identisches Ergebnis:
 
@@ -184,7 +184,7 @@ Die Funktion `subset()` bietet eine ähnliche Filterfunktion wie `x[x > 7]`, unt
 subset(x, x > 7)
 ```
 
-Die Funktion `which()` kann ebenfalls für Filteraufgaben benutzt werden. Im Gegensatz zu `x[x > 7]` gibt `which(x > 7)` nicht die entsprechenden Elemente von `x` sondern die korrespondierenden Indexwerte zurück:
+Die Funktion `which()` kann ebenfalls für Filteraufgaben benutzt werden. Im Gegensatz zu `x[x > 7]` gibt `which(x > 7)` nicht die entsprechenden Elemente von `x`, sondern die korrespondierenden Indexwerte zurück:
 
 ```{r, echo=TRUE, eval=TRUE}
 which(x > 7)
@@ -195,7 +195,7 @@ Ein Sonderfall sollte vielleicht noch an dieser Stelle erwähnt werden: `x[0]` l
 Nützlich sind auch die Funktionen `any()` und `all()`. Sie geben zurück, ob mindestens ein Element oder alle Elemente die übergebene Bedingung erfüllen (eine detaillierte Erklärung benutzt wieder Recycling):
 
 ```{r, echo=TRUE, eval=TRUE}
-any( x %% 4 == 0)
+any(x %% 4 == 0)
 all(x > 4)
 ```
 
@@ -227,7 +227,7 @@ identical(u, v)
 
 Die Vektoren `u` und `v` haben zwar gleiche Werte aber unterschiedliche Datentypen; daher liefert `identical(u,v)` den Wert `FALSE` zurück, im Gegensatz zu `u == v`, das den Vektor `(TRUE, TRUE, TRUE)` zurückgibt.
 
-### Elementnamen
+### Elementnamen{#elementnamen}
 
 Den Elementen eines Vektors können optional Namen zugeordnet werden:
 
@@ -297,7 +297,9 @@ x["H"]
 
 Matrizen sind aus der Mathematik bekannt; in Sprachen wie C entsprechen sie zweidimensionalen Feldern. In R sind Matrizen einfach Vektoren, die mit einem zusätzlichen Attribut „dim“ (und einem optionalen Attribut „dimnames“) versehen sind; das Attribut „dim“ ist ein numerischer Vektor der Länge zwei, der die Matrixdimensionen festlegt: die Anzahl der Zeilen und die Anzahl der Spalten. Wie wir sehen werden gilt:
 
-Matrix = Vektor + Attribut: dim (Vektor der Länge 2) + Attribut (class = "matrix") + Optionales Attribut: "dimnames"
+\begin{equation}
+\text{Matrix = Vektor + Attribut: dim (Vektor der Länge 2) + Attribut (class = "matrix") + Optionales Attribut: "dimnames"}
+\end{equation}
 
 
 ### Matrizen einfügen
@@ -306,14 +308,14 @@ In R können Matrizen u. a. erzeugt werden durch:
 
 `matrix(data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL)`
 
-(ref:argmatrix) Argumente der Funktion `matrix()`.
+Argumente | Bedeutung
+----------|-------------
+`data`  | zugrundeliegender Datenvektor
+`nrow` | Anzahl der Zeilen
+`ncol` | Anzahl der Spalten
+`byrow` | Falls TRUE, wird der Datenvektor zeilenweise interpretiert, sonst spaltenweise
+`dimnames` | Setzt das Attribut 'dimnames', mit dem Namen für die Matrixdimensionen gesetzt werden können: siehe ?matrix
 
-```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(Argumente = c("data", "nrow", "ncol", "byrow", "dimnames"),
-                 Bedeutung = c("zugrundeliegender Datenvektor", "Anzahl der Zeilen", "Anzahl der Spalten", "Falls TRUE, wird der Datenvektor zeilenweise interpretiert, sonst spaltenweise", "Setzt das Attribut 'dimnames', mit dem Namen für die Matrixdimensionen gesetzt werden können: siehe ?matrix"))
-knitr::kable(df, booktabs = T, caption = "(ref:argmatrix)")%>%
- kableExtra::kable_styling(latex_options = "hold_position")
-```
 
 Da in `matrix()` alle Argumente optional sind, ergibt sich im einfachsten Fall:
 ```{r, echo=TRUE, eval=TRUE}
@@ -384,7 +386,7 @@ str(A)
 typeof(A)
 ```
 
-Welche Attribute hat `A` und zu welcher Klasse und Typ gehört es?
+Welche Attribute hat `A` und zu welcher Klasse und zu welchem Typ gehört es?
 
 ```{r, echo=TRUE, eval=TRUE}
 attributes(A)
@@ -396,7 +398,9 @@ Die Funktion `attributes()` zeigt lediglich ein Attribut an, nämlich „dim“:
 
 Um zu zeigen, dass folgende Gleichung gilt:
 
-Matrix = Vektor + Attribut: dim (Vektor der Länge 2) + Attribut (class = "matrix") + Optionales Attribut: "dimnames"
+\begin{equation}
+\text{Matrix = Vektor + Attribut: dim (Vektor der Länge 2) + Attribut (class = "matrix") + Optionales Attribut: "dimnames"}
+\end{equation}
 
 wollen wir einen Vektor in eine Matrix umwandeln:
 
@@ -430,14 +434,14 @@ z3 <- F[3,] # 3. Zeile
 z3
 ```
 
-Hierbei sollte beachtet werden, dass `c2` und `z3` keine Objekte der Klasse Matrix - sondern einfache Vektoren - sind:
+Hierbei sollte beachtet werden, dass `c2` und `z3` keine Objekte der Klasse Matrix, sondern einfache Vektoren sind:
 
 ```{r, echo=TRUE, eval=TRUE}
 class(c2)
 class(z3)
 ```
 
-Da in R Matrizen erweiterte Vektoren sind, können Filter und Index-Operationen für Vektoren (siehe Abschnitt 1.2.1) direkt auf Matrizen übertragen werden:
+Da in R Matrizen erweiterte Vektoren sind, können Filter und Index-Operationen für Vektoren (siehe Abschnitte \@ref(vektoren) und \@ref(vektorindizierung)) direkt auf Matrizen übertragen werden:
 
 ```{r, echo=TRUE, eval=TRUE}
 F[1:2, 5:6] # Matrix
@@ -455,7 +459,7 @@ Mithilfe des zusätzlichen Arguments `drop = FALSE` kann jedoch dieses Umwandeln
 F[1:2, 6, drop = FALSE] # Matrix
 ```
 
-Wie in Abschnitt 1.2.1 besprochen, können negative Indexwerte benutzt werden, um Bereiche auszuschließen. Die folgende Anweisung gibt `F` ohne die erste Zeile zurück:
+Wie in Abschnitt \@ref(vektorindizierung) besprochen, können negative Indexwerte benutzt werden, um Bereiche auszuschließen. Die folgende Anweisung gibt `F` ohne die erste Zeile zurück:
 ```{r, echo=TRUE, eval=TRUE}
 F[-1,]
 ```
@@ -492,7 +496,7 @@ Entsprechend werden daher in `F[F[,3]< 13,]` nur die ersten beiden Zeilen von `F
 
 ### Zeilen- und Spaltennamen
 
-Wir haben in Abschnitt 4.2.4 gesehen, dass Elemente eines Vektors optional Namen erhalten können. Ähnlich können Namen für die Zeilen und Spalten einer Matrix vergeben werden. Hierzu betrachten wir folgendes Beispiel:
+Wir haben in Abschnitt \@ref(elementnamen) gesehen, dass Elemente eines Vektors optional Namen erhalten können. Ähnlich können Namen für die Zeilen und Spalten einer Matrix vergeben werden. Hierzu betrachten wir folgendes Beispiel:
 
 ```{r, echo=TRUE, eval=TRUE}
 A <- matrix(1:6, nrow = 2)
@@ -638,7 +642,7 @@ Wie wir sehen, ist `b` eine 3×1-Matrix. Im Ausdruck `A %*% x` ist `A` eine Matr
 as.matrix(x) 
 ```
 
-Wir haben `b` so konstruiert, dass `x` die eindeutige Lösung des linearen Gleichungssystems `Ax = b` ist. Dies können wir in R auch umgekehrt verifizieren: die Lösung des durch `A` und `b` gegebenen linearen Gleichungssystems `Ax = b` muss gleich `x` sein:
+Wir haben `b` so konstruiert, dass `x` die eindeutige Lösung des linearen Gleichungssystems `Ax = b` ist. Dies können wir in R auch umgekehrt verifizieren: Die Lösung des durch `A` und `b` gegebenen linearen Gleichungssystems `Ax = b` muss gleich `x` sein:
 
 ```{r, echo=TRUE, eval=TRUE}
 solve(A, b) 
@@ -661,8 +665,11 @@ B %*% A
 Aufgrund von Rundungsfehlern sehen wir hier allerdings keine exakte Übereinstimmung. Wenn wir jedoch das Ergebnis mit `round()` runden (zum Beispiel auf 12 Dezimalstellen), erhalten wir das erwartete Ergebnis:
 
 ```{r, echo=TRUE, eval=TRUE}
-E <- B %*% A
-round(E, 12)
+E1 <- A %*% B
+round(E1, 12)
+
+E2 <- B %*% A
+round(E2, 12)
 ```
 
 ### Eigenwerte und Eigenvektoren
@@ -715,7 +722,7 @@ Grundsätzlich sollten aus Laufzeitgründen in R Schleifen vermieden werden, wen
 A %*% E
 ```
 
-Das Ergebnis muss dann mit der Matrix übereinstimmen, die man erhält, wenn die erste Spalte von `E` mit `e[1]`, die zweite Spalte von `E` mit `e[2]` und schließlich die dritte Spalte von `E` mit `e[3]` skalar multipliziert wird. Um dies in R zu erreichen, ist die Funktion `rep()` hilfreich, die im Kapitel 2 bereits kurz besprochen wurde (siehe auch `?rep`):
+Das Ergebnis muss dann mit der Matrix übereinstimmen, die man erhält, wenn die erste Spalte von `E` mit `e[1]`, die zweite Spalte von `E` mit `e[2]` und schließlich die dritte Spalte von `E` mit `e[3]` skalar multipliziert wird. Um dies in R zu erreichen, ist die Funktion `rep()` hilfreich, die im Kapitel \@ref(ersteschritte) bereits kurz besprochen wurde (siehe auch `?rep`):
 
 ```{r, echo=TRUE, eval=TRUE}
 rep(1:3, 3)
@@ -732,16 +739,15 @@ In R gibt es eine Reihe von „apply“-Funktionen (wie `apply()`, `lapply()`, `
 
 Wir beschränken uns hier erst einmal auf die Funktion `apply()`. Mit `apply()` können vektorisierbare Funktionen auf jede Spalte oder Zeile einer Matrix angewendet werden, ohne dass explizit Schleifen benutzt werden. Dies hat neben einer häufig besseren Laufzeit auch den Vorteil, übersichtlicheren und klaren Quelltext zu erzeugen. Die Funktion `apply()` hat die folgende allgemeine Form:
 
-`apply(A, margin, f, ...)`
+`apply(A, margin, f, ...)`, wobei seine Argumente folgendes bedeuten:
 
-(ref:Argapply) Argumente von `apply()`.
+Argument | Bedeutung
+---------|--------------
+`A` | Matrix (oder Array)
+`margin` | 1:Zeilen  2:Spalten
+`f` | Die anzuwendende Funktion
+`...` | Weitere Argumente, die an die anzuwendende Funktion weitergegeben werden
 
-```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(col1 = c("A", "margin", "f", "..."),
-                 col2 = c("Matrix (oder Array)", "1:Zeilen  2:Spalten", "Die anzuwendende Funktion", "Weitere Argumente, die an die anzuwendende Funktion weitergegeben werden"))
-knitr::kable(df, booktabs = T, col.names = c("", ""), caption = "(ref:Argapply)")%>%
- kableExtra::kable_styling(latex_options = "hold_position")
-```
 
 In den nächsten Beispielen wollen wir die folgende 3×5 Matrix `A` zugrunde legen:
 ```{r, echo=TRUE, eval=TRUE}
@@ -787,7 +793,7 @@ apply(X = A, MARGIN = 2, FUN = quadraticMean)
 
 Im Folgenden gehen wir immer davon aus, dass `A` eine Matrix ist. Die anzuwendende Funktion `f` wird dann auf die einzelnen Zeilen bzw. Spalten von `A` angewandt.
 
-Gibt `f` wie in den oberen Beispielen einen skalaren Wert zurück, dann gibt `apply()` einen Vektor zurück, dessen Länge der Anzahl der Zeilen bzw. Spalten entspricht.
+Gibt `f` - wie in den oberen Beispielen - einen skalaren Wert zurück, dann gibt `apply()` einen Vektor zurück, dessen Länge der Anzahl der Zeilen bzw. Spalten entspricht.
 
 Gibt hingegen `f` einen Vektor der Länge k zurück, dann gibt `apply()` eine Matrix `B` mit k Zeilen zurück. Dabei ist die erste Spalte von `B` das Ergebnis von `f` angewandt auf die erste Zeile bzw. Spalte. Hierzu wollen wir folgendes Beispiel betrachten:
 
@@ -806,7 +812,9 @@ Statt unserer Funktion `bereich()`, hätten wir auch die Funktion `range()` benu
 
 Matrizen sind konzeptionell zweidimensionale Datenstrukturen; intern sind es aber (eindimensionale) Vektoren mit einem zusätzlichen Attribut „dim“. Dies kann in natürlicherweise auf höhere Dimensionen verallgemeinert werden:
 
-Array = Vektor + Attribut: "dim" (Vektor der Länge größer 0) + Attribut (class = "array") + Optionales Attribut: "dimnames"
+\begin{equation}
+\text{Array = Vektor + Attribut: "dim" (Vektor der Länge größer 0) + Attribut (class = "array") + Optionales Attribut: "dimnames"}
+\end{equation}
 
 In R können Matrizen erzeugt werden durch:
 
@@ -855,7 +863,7 @@ str(C)
 identical(B, C)
 ```
 
-Dies zeigt auch, dass das class-Attribut bei zweidimensionalen Arrays überraschenderweise den Wert "`matrix`" hat (und nicht wie vermutet "`array`").
+In neueren R-Versionen wie z.B. R-4.2.1 wird das class-Attribut von zweidimensionalen Arrays wie z.B. hier von `B` als Matrix als auch als Array definiert.
 
 In TensorFlow, einer populären Deep-Learning-Plattform, sind Tensoren grundlegende Datenstrukturen. Tensoren werden gemäß der Anzahl $N$ der *Achsen* unterschieden. Ein $N$-D-Tensor $A$ besitzt genau $N$ Achsen und entspricht in R einem $N$-dimensionalen Array `A`.
 
@@ -876,7 +884,7 @@ str(mnist)
 object.size(mnist)
 ```
 
-zu entnehmen sind, wurden Trainings- und Testdaten der MNIST-Datensammlung (siehe z.B. https://en.wikipedia.org/wiki/MNIST_database) (ca. 220 MB) importiert. [@dslabs] Im Folgenden werden wir die Trainingsdaten betrachten, die aus 60.000 Grauwertbildern bestehen und die die Ziffern von 0 bis 9 in ganz unterschiedlichen handgeschriebenen Varianten zeigen (siehe `str(mnist)` und [@dslabs]). Wie dem Manual-Eintrag von `read_mnist()` zu entnehmen ist, besteht jedes Grauwertbild aus 28×28 Pixeln, jeder Pixelwert liegt zwischen 0 und 255 und die Dimensionswerte geben die Pixelpositionen im entsprechenden Bild an. [@dslabs] Die MNIST-Datensammlung wird sehr häufig als Referenzbeispiel für Machine-Learning-Algorithmen benutzt.
+zu entnehmen ist, wurden Trainings- und Testdaten der MNIST-Datensammlung (siehe z.B. https://en.wikipedia.org/wiki/MNIST_database) (ca. 220 MB) importiert. [@dslabs] Im Folgenden werden wir die Trainingsdaten betrachten, die aus 60.000 Grauwertbildern bestehen und die die Ziffern von 0 bis 9 in ganz unterschiedlichen handgeschriebenen Varianten zeigen (siehe `str(mnist)` und [@dslabs]). Wie dem Manual-Eintrag von `read_mnist()` zu entnehmen ist, besteht jedes Grauwertbild aus 28×28 Pixeln, jeder Pixelwert liegt zwischen 0 und 255 und die Dimensionswerte geben die Pixelpositionen im entsprechenden Bild an. [@dslabs] Die MNIST-Datensammlung wird sehr häufig als Referenzbeispiel für Machine-Learning-Algorithmen benutzt.
 
 ```{r}
 # Jede Zeile ist ein 28x28 Pixel Bild
@@ -903,7 +911,7 @@ plot(as.raster(m2, max = 255))
 
 (ref:ziffer0) Grauwertbild der Ziffer 0.
 
-Das erste Bild zeigt die Ziffer 5, während das zweite die Ziffer 0 darstellt. Wie erhält man die folgenden zwei Bilder?
+Abbildung \@ref(fig:plot-5-1) zeigt die Ziffer 5, während Abbildung \@ref(fig:plot-0-1) die Ziffer 0 darstellt. Wie erhält man die folgenden zwei Bilder?
 
 ```{r plot-5-2, echo = FALSE, out.width="50%", fig.cap="(ref:mziffer5)"}
 plot(as.raster(255 - m1, max = 255))

@@ -164,8 +164,130 @@ for(x in 1:9){ # Plotten der ersten neun Ziffern
 (ref:plot-ziffer3) Plots der ersten neun extrahierten Bilder der Ziffer 3 aus dem Ziffern-Trainingsdatensatz [@dslabs].
 
 
-## Fallstudie 2
+## Fallstudie 2 - Zeichenketten
 
+**Lernziel(e):**
+
+> - Nach Durchführung dieser Fallstudie sind Sie in der Lage, mithilfe des R-Pakets `stringr` [@stringr] Zeichenketten zu modifizieren.
+> - Außerdem können Sie basierend auf den erhaltenen Zeichenketten (statistische) Auswertungen durchführen.
+> - Ebenso dient diese Fallstudie der Wiederholung vorangegangener Konzepte wie z.B. der Anwendung und Erschaffung von Funktionen.
+
+In dieser Fallstudie geht es um Filmtitel, die im Zuge des *Internet movie* Datensatzes ([*internet movie database* (*IMDB*)](http://imdb.com/)) gesammelt worden sind. Auf diesen Datensatz kann über das Paket `ggplot2movies` [@ggplot2movies] in R zugegriffen werden. Entsprechend ist eine Beschreibung des Datensatzes über `?movies` erhältlich.
+
+ 
+### Aufgabe 1
+
+a) Erstellen Sie einen Vektor aller Wörter, die in der Variablen "title" gespeichert sind.
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+words <- unlist(str_split(movies$title, pattern = " "))
+```
+
+
+b) Bestimmen Sie die (absolute) Häufigkeit der einzelnen Wörter mittels `table()`.
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+table_words <- as.data.frame(table(words))
+```
+
+
+c) Welches Wort is am häufigsten vertreten?
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+table_words[which.max(table_words$Freq),]
+```
+
+
+d) Substituieren Sie das von Ihnen am häufigsten bestimmte Wort durch den unbestimmten Artikel "A".
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+sub_words <- gsub("The", replacement = "A", words)
+```
+
+e) Extrahieren Sie aus dem Vektor der modifizierten Wörter diejenigen, die mindestens einen Buchstaben enthalten und nennen Sie diesen Vektor `words_letters`. (Dadurch werden Zahlen und Symbole, die als einzelne Wörter (character) abgespeichert sind, entfernt.) Nutzen Sie z.B. die Funktion `str_detect()`.
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+words_letters <- sub_words[str_detect(sub_words, "[A-Z][a-z]")]
+```
+
+
+f) Zählen Sie erneut die Häufigkeit der einzelnen Wörter.
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+as.data.frame(table(words_letters))
+```
+
+
+g) Suchen Sie zufälligerweise fünf Wörter aus und verbinden Sie diese zu einem Titel. Macht der Titel Sinn?
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+words_sample <- sample(words_letters, size = 5, replace = FALSE)
+
+# paste(words_sample, collapse = " ")
+```
+
+h) Fassen Sie die Schritte aus Aufgabenteil 1g) in Form einer Funktion zusammen, indem die Funktion als Argumente
+
+  + die Anzahl an zufälligen Wörtern (`nwords`) sowie
+  
+  + einen Vektor aus Wörtern (`words`)(in unserem Beispiel: `words = words_letters`) enthält.
+  
+Der Rückgabewert der Funktion ist die Zeichenkette, die sich aus den zufällig ausgewählten Wörtern zusammensetzt.
+
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+random_words <- function(words, nwords){
+  words_sample <- sample(words_letters, size = nwords, replace = FALSE)
+
+  random_title <- paste(words_sample, collapse = " ")
+  return(random_title)
+}
+```
+
+i) Wenden Sie die Funktion aus h) auf den Vektor `words_letters` an und wählen Sie für `nwords = 5`. Warum erhalten Sie nicht dieselben Ergebnisse wie im Aufgabenteil g?
+
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+random_words(words_letters, 5)
+
+# es wird nicht derselbe zufällige Titel erhalten, da kein set.seed() gesetzt wurde
+```
+
+j) Erweitern Sie Ihre Funktion aus Aufgabenteil h), indem Sie ein weiteres Argument namens `nsample` einfügen, mithilfe dessen angegeben werden kann, *wie oft* fünf Wörter zufällig ausgesucht werden, die jeweils zu einem Titel zusammengefügt werden.
+Die Funktion soll einen Vektor zurückgeben, der die `nsample` Title enthält.
+
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+random_words <- function(words, nwords, nsample){
+  movie_title <- c()
+  
+  for(idx in 1:nsample){
+  words_sample <- sample(words_letters, size = nwords, 
+                         replace = FALSE)
+
+  random_title <- paste(words_sample, collapse = " ")
+  
+  movie_title <- c(movie_title, random_title)
+  }
+  return(movie_title)
+}
+```
+
+k) Wählen Sie `words = words_letters`, `nwords = 5` und `nsample = 10` und wenden Sie die Funktion aus Aufgabenteil j) an.
+
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+rw <- random_words(words = words_letters, nwords = 5, nsample = 10)
+```
+
+l) Basierend auf Ihren Ergebnissen aus Aufgabenteil k): Welches Wort ist nun am häufigsten vertreten? *Dominiert* ein Wort? Wenn ja, welches?
+
+```{r, echo=FALSE, eval=FALSE}
+# solution:
+words_sample <- unlist(str_split(rw, pattern = " "))
+table(as.data.frame(words_sample))
+# in einem Beispiel: Gleichverteilung!
+```
 
 ## Fallstudie 3: Visualisierung mit `ggplot2` [@ggplot2]
 
