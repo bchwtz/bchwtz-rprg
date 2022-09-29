@@ -1,34 +1,41 @@
 # Datenvisualisierung mit `ggplot2`
 
-Parallel zu diesem Kapitel sollen Sie das Kapitel "3 Data visualisation"  aus *"R for Data Sciences"* durcharbeiten. *"R for Data Sciences"* gibt es in mindestens drei Versionen:
+Parallel zu diesem Kapitel sollen Sie das Kapitel "[3 Data visualisation](https://r4ds.had.co.nz/data-visualisation.html)"  aus *"R for Data Sciences"* durcharbeiten. *"R for Data Sciences"* gibt es in mindestens drei Versionen:
 
-+ \url{https://r4ds.had.co.nz} ist die Webseite zu dem Buch; im Folgenden werden wir diese Quelle mit [R4DS] bezeichnen.
++ https://r4ds.had.co.nz ist die Webseite zum Buch [@Wickhamny].
 
 + Wickham, Hadley and Grolemund, Garrett: *R for Data Science: Import, Tidy, Transform, Visualize, and Model Data*.  Sebastopol: O'Reilly Media, Inc., 2016.
 
 + Mittlerweile gibt es auch eine deutsche Übersetzung:
 Wickham, Hadley und Grolemund, Garrett: *R für Data Science : Daten importieren, be-reinigen, umformen, modellieren und visualisieren*. Sebastopol: O'Reilly, 2017
 
-Es gibt mehrere Möglichkeiten, Grafiken in R zu erstellen. Bis jetzt haben wir die im Base-R enthaltenen Funktionen wie `plot()`, `barplot()`, `boxplot()` und `hist()` benutzt, um einfache Grafiken zu erstellen. Das `ggplot2`-Package bietet darüber hinaus viele interessante Möglichkeiten, mit relativ wenig Aufwand aussagekräftige Grafiken zu erstellen. Nicht umsonst ist es mittlerweile weit verbreitet. Allerdings unterstützt `ggplot2` keine dreidimensionalen Grafiken. Wie wir sehen werden, ist die `ggplot2` zugrunde liegende Idee, die einzelnen Komponenten einer Grafik durch eine spezielle Grammatik zu beschreiben.   
+Es gibt mehrere Möglichkeiten, Grafiken in R zu erstellen. Bis jetzt haben wir die im Base-R enthaltenen Funktionen wie `plot()`, `barplot()`, `boxplot()` und `hist()` benutzt, um einfache Grafiken zu erstellen. Das `ggplot2`-Package [@ggplot2] (siehe auch: https://cran.r-project.org/web/packages/ggplot2/index.html) bietet darüber hinaus viele interessante Möglichkeiten, mit relativ wenig Aufwand aussagekräftige Grafiken zu erstellen. Nicht umsonst ist es mittlerweile weit verbreitet. Allerdings unterstützt `ggplot2` keine dreidimensionalen Grafiken. Wie wir sehen werden, ist die `ggplot2` zugrunde liegende Idee, die einzelnen Komponenten einer Grafik durch eine spezielle Grammatik zu beschreiben. [@layered-grammar]
 
 ## Erste Beispiele
 
-Das Data Frame `mpg` ist Teil des `ggplot2`-Packages (siehe `?mpg`). Es besteht aus 234 Datensät-zen mit jeweils 11 Variablen. Es enthält u. a. Informationen über den Energieverbrauch von unter-schiedlichen Automodellen aus den Jahren 1999 und 2008, die von der US Environment Protec-tion Agency gesammelt wurden. 
+Das Data Frame `mpg` ist Teil des `ggplot2`-Packages (siehe `?mpg`). Es besteht aus 234 Datensätzen mit jeweils 11 Variablen. Es enthält u. a. Informationen über den Energieverbrauch von unterschiedlichen Automodellen aus den Jahren 1999 und 2008, die von der US Environment Protection Agency gesammelt wurden. [@ggplot2] (siehe auch: http://fueleconomy.gov) 
 
 ```{r}
 library(ggplot2)
 str(mpg)
 ```
 
-(ref:Varmpg) Variablen des Datensatzes `mpg`.
+Dabei haben die Variablen des Datensatzes `mpg` folgende Bedeutungen:
 
-```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(col1 = c("manufacturer", "model", "displ", "year", "cyl", "trans", "drv", "cty", "hwy", "fl", "class"),
-                 col2 = c("Manufacturer/brand name", "Car model name", "Engine displacement, in litres", "Year of manufacture", "Number of cylinders", "Type of transmission", "f = front-wheel drive, r = rear wheel drive, 4 = 4wd", "City miles per gallon", "Highway miles per gallon", "Fuel type. e = ethanol, d = diesel, r = regular, p = premium, c = natural gas", "The 'type' of car"),
-                 col3 = c("Hersteller", "Modell-Name", "Hubraum in Litern", "Baujahr", "Anzahl der Zylinder", "Schaltung (Automatik / Anzahl der Gänge", "Antrieb", "Verbrauch: Stadt", "Verbrauch: Autobahn", "Antriebsart", "Fahrzeugtyp"))
-knitr::kable(df, booktabs = T, col.names = c("", "", ""), caption = "(ref:Varmpg)")%>%
- kableExtra::kable_styling(latex_options = "hold_position")
-```
+Variable | Bedeutung (engl.) | Bedeutung (dt.)
+---------|-------------------|------------------
+`manufacturer` | Manufacturer/brand name | Hersteller
+`model` | Car model name | Modell-Name
+`displ` | Engine displacement, in litres | Hubraum in Litern
+year | Year of manufacture | Baujahr
+cyl | Number of cylinders | Anzahl der Zylinder
+trans | Type of transmission | Schaltung (Automatik / Anzahl der Gänge)
+drv | f = front-wheel drive, r = rear wheel drive, 4 = 4wd | Antrieb
+cty | City miles per gallon | Verbrauch: Stadt
+hwy | Highway miles per gallon | Verbrauch: Autobahn
+fl | Fuel type. e = ethanol, d = diesel, r = regular, p = premium, c = natural gas | Antriebsart
+class | The 'type' of car  | Fahrzeugtyp
+
 
 **Umrechnung: miles per gallon (mpg) nach Liter pro 100 km**
 
@@ -51,14 +58,14 @@ literPer100km <- function(mpg) {
 Wir erhalten dann die obigen Werte:
 
 ```{r}
-fuel.mpg <- seq(from = 10, to = 40,by=5)
+fuel.mpg <- seq(from = 10, to = 40, by = 5)
 fuel.mpg
 literPer100km(fuel.mpg)
 ```
 
-Wie wir sehen, hat der Datensatz `mpg` einigermaßen vernünftige „sprechende“ Bezeichnungen für die verschiedenen Variablen (Spaltennamen) ; ebenso haben die nicht nominal skalierten Daten aussagekräftige Werte. Dies wird uns bei der Erstellung der unterschiedlichen Plots helfen.
+Wie wir sehen, hat der Datensatz `mpg` einigermaßen vernünftige „sprechende“ Bezeichnungen für die verschiedenen Variablen (Spaltennamen) (für Europäer manchmal vielleicht zu sehr abgekürzt); ebenso haben die nicht nominal skalierten Daten aussagekräftige Werte. Dies wird uns bei der Erstellung der unterschiedlichen Plots helfen.
 
-Der erste Plot in Kapitel 3 in [R4DS] wurde erzeugt durch:
+Der erste Plot in Kapitel 3 in @Wickhamny wurde erzeugt durch:
 ```{r, eval=FALSE}
 ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy))
 ```
@@ -84,9 +91,9 @@ Wir gehen vom Folgenden aus:
     
     -	Histogramm: `geom_histogram()` (gut geeignet für die Visualisierung der Werte einer kontinuierlichen Variable)
     
-    -	Boxplot: `geom_boxplot()` (gut geeignet für die Visualisierung des Zusammenhangs einer diskreten und einer kontinuierli-chen Variable)
+    -	Boxplot: `geom_boxplot()` (gut geeignet für die Visualisierung des Zusammenhangs einer diskreten und einer kontinuierlichen Variable)
 
-    -	x-y-Plot (scatterplot): `geom_point()` (gut geeignet für die Visualisierung des Zusammenhangs zweier kontinuierlicher Variable)
+    -	x-y-Plot (scatterplot): `geom_point()` (gut geeignet für die Visualisierung des Zusammenhangs zweier kontinuierlicher Variablen)
   
 
 ### Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen
@@ -117,7 +124,7 @@ ggplot(data = mpg) +
 
 (ref:hwy-displ) Unerwartete Farbe.
 
-Entsprechend erhält man durch den folgenden Plot eine Vielzahl von Farbtönen und eine entspre-chende Legende:
+Entsprechend erhält man durch den folgenden Plot eine Vielzahl von Farbtönen und eine entsprechende Legende:
 ```{r plot-hwy-displ-legend, fig.cap="(ref:hwy-displ-legend)"}
 ggplot(data = mpg) +                          
   geom_point(mapping = aes(x = displ, y = hwy, color = 1:234))
@@ -130,20 +137,19 @@ ggplot(data = mpg) +
 `geom_point()` versteht folgende ästhetische Eigenschaften (`x` und `y` müssen immer gesetzt werden):\newline
 `x`, `y`, `alpha`, `colour`, `fill`, `group`, `shape`, `size`, `stroke` 
 
-Beispielsweise erzeugt den folgenden Plot:
+Beispielsweise erzeugt folgender Code die Abbildung \@ref(fig:plot-hwy-displ-fill-colour):
 ```{r plot-hwy-displ-fill-colour, fig.cap="(ref:hwy-displ-fill-colour)"}
 ggplot(data = mpg) +                         
   geom_point(mapping = aes(x = displ, y = hwy), 
        size = 3, stroke = 1.5, shape = 21, fill = "blue", color ="orange") 
 ```
 
-(ref:hwy-displ-fill-colour) Argumente `fill` und `colour`.
+(ref:hwy-displ-fill-colour) Argumente `fill` und `colour` wurden definiert.
 
 ## Statistische Transformation
 
-Bevor Daten visualisiert werden, müssen sie in der Regel transformiert und verdichtet werden. Dazu dienen `stat`-Objekte. Jedes `geom`-Objekt ist einem Standard-`stat`-Objekt zugeordnet und umgekehrt. In der folgenden Tabelle werden die häufigsten `geom-stat`-Beziehungen aufgelistet:
+Bevor Daten visualisiert werden, müssen sie in der Regel transformiert und verdichtet werden. Dazu dienen `stat`-Objekte. Jedes `geom`-Objekt ist einem Standard-`stat`-Objekt zugeordnet und umgekehrt. In der folgenden Übersicht werden die häufigsten `geom-stat`-Beziehungen, die @Arnold2020 entnommen wurden, aufgelistet:
 
-(ref:geom-stat) Gebräuchliche `geom-stat`-Beziehungen.
 
 `geom`    | `stat`
 ----------|------------------
