@@ -1,6 +1,6 @@
 # Weitere Datenstrukturen
 
-Als Nächstes betrachten wir weitere grundlegende Datenstrukturen in R; im Vordergrund hierbei stehen *Listen* und *Data Frames*. Die bisher besprochenen Datenstrukturen *(atomare) Vektoren*, *Matrizen* und *Arrays* sind homogene Datenstrukturen: alle Elemente haben den gleichen zugrun-deliegenden Datentyp, der nicht weiter unterteilt werden kann. Er ist entweder `logical`, `integer`, `double`, `complex`, `character` oder `raw`. 
+Als Nächstes betrachten wir weitere grundlegende Datenstrukturen in R; im Vordergrund hierbei stehen *Listen* und *Data Frames*. Die bisher besprochenen Datenstrukturen *(atomare) Vektoren*, *Matrizen* und *Arrays* sind homogene Datenstrukturen: alle Elemente haben den gleichen zugrundeliegenden Datentyp, der nicht weiter unterteilt werden kann. Er ist entweder `logical`, `integer`, `double`, `complex`, `character` oder `raw`. 
 
 Listen und Data Frames sind hingegen heterogen: in ihnen können Objekte unterschiedlicher Datentypen gespeichert werden. Das erste Listenelement kann z. B. ein Vektor der Länge 10 sein, während das zweite Listenelement eine 28×28-Matrix sein kann. 
 
@@ -10,7 +10,7 @@ Wie wir gesehen haben, können in einem einzelnen (atomaren) Vektor nicht Objekt
 
 ### Erzeugung von Listen und Indexierung
 
-Als erstes einfaches Beispiel soll eine Liste in R erzeugt werden, die Prüfungsdaten eines Studenten enthält:
+Als erstes einfaches Beispiel soll eine Liste in R erzeugt werden, die Prüfungsdaten eines Studierenden enthält:
 
 ```{r}
 x <- list(nachname = "Meier", matNr = 123456, noten = c (1.3, 2.7))
@@ -22,7 +22,7 @@ Es empfiehlt sich, `str()` zu benutzen, um eine kompakte und übersichtliche Aus
 str(x)
 ```
 
-`x` ist also eine Liste mit drei Elementen; jedes Element hat dabei einen Namen.  Das dritte Listenelement zeigt auf einen numerischen Vektor der Länge 2. Weiterhin erhalten wir:
+`x` ist also eine Liste mit drei Elementen; jedes Element hat dabei einen Namen (Daher oft auch *named* list (oder *benannte* Liste) genannt.). Die Namen werden auch als „Tags“ bezeichnet..  Das dritte Listenelement zeigt auf einen numerischen Vektor der Länge 2. Weiterhin erhalten wir:
 
 ```{r}
 length(x)
@@ -33,9 +33,8 @@ attributes(x)
 ```
 
 In vielen Programmiersprachen kann mithilfe der Punktnotation auf ein Listenelement zugegriffen werden. Dies ist in R nicht möglich! In R wird stattdessen das Dollarzeichen benutzt, um über den Namen auf ein Listenelement zuzugreifen:
-```{r, echo=TRUE, eval=FALSE}
-x.noten
-#R> Error: object 'x.noten' not found
+```{r, echo=TRUE, eval=TRUE, error=TRUE}
+x.noten # funktioniert nicht!
 ```
 
 ```{r}
@@ -67,7 +66,7 @@ Identische Ergebnisse erhält man jeweils durch:
 
 + `x["noten"]` und `x[3]`.
 
-Überraschenderweise geben `x["noten"]` und `x[3]` eine Liste zurück. Der einfache Indexopera-tor angewandt auf eine Liste gibt immer eine Teilliste zurück! Will man also das Element einer Liste erhalten, so muss der doppelte Indexoperator benutzt werden. Aus Konsistenzgründen emp-fehlen daher manche Autoren sogar, auch bei Vektoren den doppelten Indexoperator zu benutzen, da es bei Vektoren keinen Unterschied zwischen beiden Schreibweisen gibt:
+Überraschenderweise geben `x["noten"]` und `x[3]` eine Liste zurück. Der einfache Indexoperator angewandt auf eine Liste gibt immer eine Teilliste zurück! Will man also das Element einer Liste erhalten, so muss der doppelte Indexoperator benutzt werden. Aus Konsistenzgründen empfehlen daher manche Autoren sogar, auch bei Vektoren den doppelten Indexoperator zu benutzen, da es bei Vektoren keinen Unterschied zwischen beiden Schreibweisen gibt:
 
 ```{r, echo=TRUE, eval=TRUE}
 v <- 1:4
@@ -86,9 +85,8 @@ x[1:2]
 ```
 
 Hingegen:
-```{r, echo=TRUE, eval=FALSE}
+```{r, echo=TRUE, eval=TRUE, error=TRUE}
 x[[1:2]]
-#R> Error in x[[1:2]] : subscript out of bounds
 ```
 
 Unser erstes Listenbeispiel hätte auch ohne Namen erzeugt werden können:
@@ -176,7 +174,7 @@ Frage:
 
 ### Vergleich: Liste versus Vektor
 
-Wir wollen noch einmal kurz Listen und Vektoren gegenüberstellen und dabei insbesondere den Effekt von Copy-on-modify betrachten. Die im Folgenden benutzten Diagramme und die zugehörigen Beispiele sind aus @Wickham2019, Kapitel 2 entnommen. 
+Wir wollen noch einmal kurz Listen und Vektoren gegenüberstellen und dabei insbesondere den Effekt von Copy-on-modify betrachten. Die im Folgenden benutzten Diagramme und die zugehörigen Beispiele sind aus @Wickham2019, Kapitel 2 entnommen. @Wickham2019 ist empfehlenswert, wenn man R genauer verstehen möchte.
 
 ```{r}
 x <- c(1, 2, 3)
@@ -185,7 +183,7 @@ y <- x
 
 Wie wir bereits in Kapitel 3 erläutert haben, sind nun beide Namen (`x` und `y`) an dasselbe Objekt gebunden:
 
-```{r, echo=FALSE, fig.cap="(ref:figlist-vektor-1)", out.width="80%"}
+```{r, echo=FALSE, fig.cap="(ref:figlist-vektor-1)", out.width="60%"}
 knitr::include_graphics("gfx/abb_liste_vs_vektor.png")
 ```
 
@@ -198,7 +196,7 @@ y[3] <- 4
 
 dann „zeigen“ `x` und `y` auf verschiedene Objekte:
 
-```{r, echo=FALSE, fig.cap="(ref:figlist-vektor-2)", out.width="80%"}
+```{r, echo=FALSE, fig.cap="(ref:figlist-vektor-2)", out.width="60%"}
 knitr::include_graphics("gfx/abb_liste_vs_vektor2.png")
 ```
 
@@ -211,7 +209,7 @@ l1 <- list(1, 2, 3)
 l2 <- l1
 ```
 
-Da eine Liste ein linear angeordneter Datencontainer ist, dessen Elemente auf andere Objekte verweisen und der als ein Vektor von Referenzen aufgefasst werden kann, ergibt sich im Ver-gleich zum Vektor eine andere interne Implementierung. Dies wird im folgenden Diagramm deutlich:
+Da eine Liste ein linear angeordneter Datencontainer ist, dessen Elemente auf andere Objekte verweisen und der als ein Vektor von Referenzen aufgefasst werden kann, ergibt sich im Vergleich zum Vektor eine andere interne Implementierung. Dies wird im folgenden Diagramm deutlich:
 
 ```{r, echo=FALSE, fig.cap="(ref:figlist-vektor-3)", out.width="80%"}
 knitr::include_graphics("gfx/abb_liste_vs_vektor3.png")
@@ -233,7 +231,7 @@ knitr::include_graphics("gfx/abb_liste_vs_vektor4.png")
 
 ### `lapply()` und `sapply()`
 
-Die Funktion `lapply()` (für *list apply*) bezieht sich auf Listen und entspricht der Funktion `apply()`. Sie wird auf Listen angewandt (oder auf Vektoren die in Listen umgewandelt werden), während `apply()` auf Matrizen angewandt wird. Zur Illustration wollen wir folgendes Beispiel betrachten:
+Die Funktion `lapply()` (für *list apply*) bezieht sich auf Listen und entspricht der Funktion `apply()`. Sie wird auf Listen angewandt (oder auf Vektoren, die in Listen umgewandelt werden), während `apply()` auf Matrizen angewandt wird. Zur Illustration wollen wir folgendes Beispiel betrachten:
 ```{r}
 l <- list(9:0, 1:100, 4)
 str(l)
@@ -271,9 +269,9 @@ lapply(X = l, FUN = range)
 
 ## Factor
 
-Mithilfe von Faktoren ist es in R möglich, nominalskalierte oder ordinalskalierte Daten  zu bearbeiten.
+Mithilfe von Faktoren ist es in R möglich, nominalskalierte oder ordinalskalierte Daten (Oft wird in diesem Zusammenhang auch von kategorialen Variablen gesprochen.) zu bearbeiten.
 
-Fragen:
+**Fragen:**
 
 +	Was sind nominalskalierte Daten?
 
@@ -281,7 +279,7 @@ Fragen:
 
 +	Was sind kardinalskalierte Daten?
 
-Als Beispiel wollen wir einen Datensatz `data` betrachten, der aus 30 nominalskalierten Werten besteht, die den belegten Studiengang Maschinenbau (MB), Elektrotechnik (ET), Wirtschaftsinge-nieur (WIng) und Wirtschaftsinformatik (WInfo) von 30 Studierenden angibt:
+Als Beispiel wollen wir einen Datensatz `data` betrachten, der aus 30 nominalskalierten Werten besteht, die den belegten Studiengang Maschinenbau (MB), Elektrotechnik (ET), Wirtschaftsingenieur (WIng) und Wirtschaftsinformatik (WInfo) von 30 Studierenden angibt:
 
 ```{r}
 studiengang <- c("MB", "ET", "WIng", "WInfo")
@@ -299,7 +297,7 @@ levels(f1)
 attributes(f1)
 ```
 
-Mit der Funktion `levels()` können wir die entsprechenden Level erhalten, die bei der Umwand-lung automatisch erzeugt wurden. Wenn wir wollen, dass "MB" für 1, "ET" für 2, "WIng" für 3 und "WInfo" für 4 steht, dann müssen wir die Level explizit in der entsprechenden Reihenfolge angeben: 
+Mit der Funktion `levels()` können wir die entsprechenden Level erhalten, die bei der Umwandlung automatisch erzeugt wurden. Wenn wir wollen, dass "MB" für 1, "ET" für 2, "WIng" für 3 und "WInfo" für 4 steht, dann müssen wir die Level explizit in der entsprechenden Reihenfolge angeben: 
 ```{r}
 f2 <- factor(data, c("MB", "ET", "WIng", "WInfo"))
 str(f2)
@@ -318,12 +316,12 @@ str(as.numeric(f1))
 str(levels(f1)[f1])
 ```
 
-Mithilfe der Funktion `table()` kann ein Faktor auch in Tabellenform angezeigt werden:
+Mithilfe der Funktion `table()` (siehe Übungen zu Kapitel \@ref(homogenedatenstrukturen), Abschnitt \@ref(chap4uebungen)) kann ein Faktor auch in Tabellenform angezeigt werden:
 ```{r}
 table(f1)
 ```
 
-Ein ähnliches Ergebnis erhält man auch mit der generischen Funktion `summary()`:
+Ein ähnliches Ergebnis erhält man auch mit der generischen Funktion `summary()` (Die erzeugten Ausgaben sind fast identisch, aber die Rückgabewerte sind unterschiedlich: Während `table()` ein Objekt der Klasse `table` zurückgibt, gibt in diesem Fall `summary()` einen benannten Vektor zurück.):
 ```{r}
 summary(f1)
 ```
@@ -335,12 +333,10 @@ barplot(table(f1), xlab = "Studiengänge", ylab = "Absolute Häufigkeit")
 
 (ref:barplotf1) Balkendiagramm basierend auf der Variablen `f1`.
 
-Die Daten in `f1` sind nominalskaliert, jedoch nicht ordinalskaliert. Daher ist die folgende Fehler-meldung nicht überraschend:
+Die Daten in `f1` sind nominalskaliert, jedoch nicht ordinalskaliert. Daher ist die folgende Fehlermeldung nicht überraschend:
 
-```{r, eval=FALSE}
+```{r, eval=TRUE, error=TRUE}
 min(f1)
-#R> Error in Summary.factor(c(2L, 4L, 2L, 4L, 1L, 4L, 4L, 2L, 1L, 4L, 3L,  :
-#R> ‘min’ not meaningful for factors
 ```
 
 Allerdings ist R hier nicht konsequent, da `f1` sortiert werden kann:
@@ -351,10 +347,10 @@ sort(f1)
 
 Ein Faktor kann aber auch mit ordinalskalierten Daten umgehen. Angenommen wir haben in unseren Studiengängen eine feste Reihenfolge vorgegeben, wie\newline
 "ET"  <  "WIng"  <  "MB"  <  "WInfo".\newline
-Mit der option `ordered = TRUE` können wir dies mit einbringen:
+Mit der Option `ordered = TRUE` können wir dies mit einbringen:
 
 ```{r}
-f4 <- factor(data, levels= c( "ET", "WIng","MB", "WInfo"), ordered = TRUE)
+f4 <- factor(data, levels= c("ET", "WIng","MB", "WInfo"), ordered = TRUE)
 ```
 
 und erhalten dann:
@@ -414,21 +410,17 @@ barplot(table(c2), ylab = "Absolute Häufigkeit")
 
 ## Data Frame
 
-Viele Datensätze liegen in Form von Tabellen vor, da Tabellen oft als grundlegende Datenstruktur eingesetzt werden. Dies ist zum Beispiel der Fall bei relationalen Datenbanken: aus konzeptioneller oder externer Sicht betrachtet, bestehen Datensätze in relationalen Datenbanken aus Tabellen . Auch in der Statistik werden Tabellen betrachtet: üblich ist es, dass dann die Spalten Variablen und die Zeilen Beobachtungen (Observationen) entsprechen.
+Viele Datensätze liegen in Form von Tabellen vor, da Tabellen oft als grundlegende Datenstruktur eingesetzt werden. Dies ist zum Beispiel bei relationalen Datenbanken der Fall: Aus konzeptioneller oder externer Sicht betrachtet, bestehen Datensätze in relationalen Datenbanken aus Tabellen (streng genommen eigentlich aus Relationen). Auch in der Statistik werden Tabellen betrachtet: Üblich ist es, dass dann die Spalten Variablen und die Zeilen Beobachtungen (Observationen) entsprechen.
 
-Wie wir sehen werden, besitzt R mit Data Frame eine mächtige Datenstruktur, die aus konzeptio-neller Sicht einer Tabelle entspricht. Da eine Tabelle (und somit ein Data Frame) aus Zeilen und Spalten besteht, also zweidimensional ist, ist sie ähnlich zu einer Matrix. Aber es gibt einen be-deutenden Unterschied zwischen einer Matrix und einer Tabelle: in einer Tabelle können den einzelnen Spalten unterschiedliche Datentypen zugrunde liegen; eine Matrix hingegen ist homogen. Intern ist ein Data Frame im einfachsten Fall eine Liste mit der einschränkenden Bedingung, dass jedes Listenelement ein Vektor gleicher Länge ist. Insgesamt finden wir in R also folgende grundlegende Datenstrukturen vor:
+Wie wir sehen werden, besitzt R mit Data Frame eine mächtige Datenstruktur, die aus konzeptioneller Sicht einer Tabelle entspricht. Da eine Tabelle (und somit ein Data Frame) aus Zeilen und Spalten besteht, also zweidimensional ist, ist sie ähnlich zu einer Matrix. Aber es gibt einen bedeutenden Unterschied zwischen einer Matrix und einer Tabelle: In einer Tabelle können den einzelnen Spalten unterschiedliche Datentypen zugrunde liegen; eine Matrix hingegen ist homogen. Intern ist ein Data Frame im einfachsten Fall eine Liste mit der einschränkenden Bedingung, dass jedes Listenelement ein Vektor gleicher Länge ist. Insgesamt finden wir in R also folgende grundlegende Datenstrukturen vor:
 
-(ref:Datenstrukturen) Vergleich von Datenstrukturen in R.
+Dimension | homogen | heterogen
+----------|---------|-----------
+`1` | `vector` (wie üblich meinen wir dabei einen atomaren Vektor), `factor` | `list`
+`2` | `matrix` | `data frame`
+`n` | `array` |
 
-```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(Dimension = c("1", "2", "n"),
-                 homogen = c("vector, factor", "matrix", "array"),
-                 storage.mode = c("list", "data frame", ""))
-knitr::kable(df, booktabs = T, caption = "(ref:Datenstrukturen)")%>%
- kableExtra::kable_styling(latex_options = "hold_position")
-```
-
-Wir unterscheiden hier zwischen Dimension  und Länge! Zum Beispiel betrachten wir einen (atomaren) Vektor als eine eindimensionale Datenstruktur, der allerdings eine beliebig große Länge haben kann.
+Wir unterscheiden hier zwischen Dimension (Wie bereits am Ende von Kapitel \@ref(homogenedatenstrukturen) erläutert, wird statt Dimension manchmal auch der Begriff „Anzahl der Achsen“ verwendet.) und Länge! Zum Beispiel betrachten wir einen (atomaren) Vektor als eine eindimensionale Datenstruktur, der allerdings eine beliebig große Länge haben kann.
 
 ### Data Frame erzeugen
 
@@ -446,18 +438,18 @@ knitr::kable(df, booktabs = T, col.names = c("n", "Messung 1", "Messung 2", "Mes
  kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
-Dieser Datensatz enthält für sechs unterschiedliche $n$-Werte jeweils vier Zeitmessungen. Gemessen wurde dabei, wie lange eine bestimmte Implementierung des Quicksort-Algorithmus auf einem gegebenen Rechner braucht, um $n$ ganze Zahlen zu sortieren. Die zu sortierenden Daten wurden vor jeder einzelnen Zeitmessung „zufällig“ erzeugt. 
+Dieser Datensatz enthält für sechs unterschiedliche $n$-Werte jeweils vier Zeitmessungen. Gemessen wurde dabei, wie lange eine bestimmte Implementierung des Quicksort-Algorithmus auf einem gegebenen Rechner braucht, um $n$ ganze Zahlen zu sortieren. Die zu sortierenden Daten wurden vor jeder einzelnen Zeitmessung „zufällig“ (mithilfe eines Pseudo-Zufallsgenerators) erzeugt. 
 
 Die entsprechenden Werte wurden in einer CSV-Datei „zeiten1.csv“ hinterlegt.
 
-Wir können den Datensatz dieser Datei leicht in R einlesen, vorausgesetzt die Datei „zeiten1.csv“ befindet sich im Arbeitsverzeichnis:
+Wir können den Datensatz dieser Datei leicht in R einlesen, vorausgesetzt die Datei „[zeiten1.csv](data/zeiten1.csv)“ befindet sich im Arbeitsverzeichnis:
 
 ```{r}
 df1 <- read.csv2("zeiten1.csv")
 df1
 ```
 
-Zum Einlesen wurde die Funktion `read.csv2()` benutzt, eine Variante der Funktion `read.table()`. Die Funktion `read.table()` ist die Standardfunktion in R zum Einlesen von Tabellendaten. Abgesehen von bereits für CSV-Dateien  geeignet gesetzten Defaultwerten, sind die beiden Varianten `read.csv()` und `read.csv2()` identisch zu `read.table()`. Die Funktion `read.csv2()` eignet sich besonders für Dateien, in denen das Komma als Dezimaltrennzeichen und das Semikolon als Datentrennzeichen benutzt wird; genau dies ist bei unserer Datendatei „zeiten1.csv“ der Fall.
+Zum Einlesen wurde die Funktion `read.csv2()` benutzt, eine Variante der Funktion `read.table()`. Die Funktion `read.table()` ist die Standardfunktion in R zum Einlesen von Tabellendaten. Abgesehen von bereits für CSV-Dateien (comma separated values) geeignet gesetzten Defaultwerten, sind die beiden Varianten `read.csv()` und `read.csv2()` identisch zu `read.table()`. Die Funktion `read.csv2()` eignet sich besonders für Dateien, in denen das Komma als Dezimaltrennzeichen und das Semikolon als Datentrennzeichen benutzt wird; genau dies ist bei unserer Datendatei „zeiten1.csv“ der Fall.
 
 `df1` ist nun ein Data Frame bestehend aus 5 Variablen (der Anzahl „n“ plus vier Messvariablen) und 6 Observationen: 
 ```{r}
@@ -490,7 +482,8 @@ Sie unterscheiden sich lediglich in den Namen:
 names(df2)
 ```
 
-Allerdings muss bei der Funktion `data.frame()` eine Besonderheit beachtet werden: in der Standardeinstellung werden `character`-Vektoren stets in Faktoren umgewandelt! Wir wollen hierzu folgendes Beispiel betrachten:
+Seit neueren R-Versionen wie z.B. R-4.2.1 ist in der Standardeinstellung von `data.frame()` `stringsAsFactors = FALSE` angegeben, wodurch verhindert wird, dass `character`-Vektoren in Faktoren umgewandelt werden (in früheren R-Versionen war dies z.T. noch nicht der Fall.), siehe folgendes Beispiel.
+
 ```{r}
 bezeichnung <- paste("M", 1:6, sep = "")
 str(bezeichnung)
@@ -498,10 +491,10 @@ df_a <- data.frame(n, bezeichnung, mess1)
 str(df_a)
 ```
 
-In diesem Beispiel wird ein Data Frame erzeugt, bestehend aus den Variablen `n`, `bezeichnung` und `mess1`. Allerdings wurde der `character`-Vektor `bezeichnung` in einen Faktor umgewandelt! Dies kann durch das benannte Argument `stringsAsFactors` verhindert werden:
+Hier wird ein Data Frame erzeugt, bestehend aus den Variablen `n`, `bezeichnung` und `mess1`.
 
 ```{r}
-df_b <- data.frame(n, bezeichnung, mess1, stringsAsFactors = FALSE)
+df_b <- data.frame(n, bezeichnung, mess1, stringsAsFactors = TRUE)
 str(df_b)
 ```
 
@@ -549,7 +542,7 @@ identical(df1[-1], df1[2:5])
 
 ### `apply()`
 
-Mithilfe von `apply()` können wir die Mittelwerte der gemessenen Zeiten ermitteln. Allgemein kann `apply()` angewandt werden, wenn die beteiligten Spalten denselben Datentyp haben. Die Mittelwerte für die 6 Observationen erhalten wir durch:
+Mithilfe von `apply()` können wir die Mittelwerte der gemessenen Zeiten ermitteln. Allgemein kann `apply()` angewandt werden, wenn die beteiligten Spalten denselben Datentyp haben. Die Mittelwerte für die 6 Observationen erhalten wir durch (Zur Erinnerung: bei `apply()` steht 1 für Zeilen und 2 für Spalten.):
 
 ```{r}
 apply(X = df1[-1], MARGIN = 1, FUN = mean)
@@ -590,7 +583,7 @@ df3$diff1 <- df2$mess2 -df2$mess1
 str(df3)
 ```
 
-Wie bei Matrizen können auch `cbind()` und `rbind()` benutzt werden, um neuen Daten an jeder beliebigen Stelle einzufügen:
+Wie bei Matrizen können auch `cbind()` und `rbind()` benutzt werden, um neue Daten an jeder beliebigen Stelle einzufügen:
 
 ```{r}
 Nummer <- 1:6
@@ -831,7 +824,7 @@ e) Um die Klausur zu bestehen, reichen 50 Punkte. Ändern Sie `student` entsprec
 
 ### Aufgabe 12 {-}
 
-In den Übungen zu Kapitel 4 haben wir bereits die Funktion `order()` kennengelernt.
+In den Übungen zu Kapitel \@ref(homogenedatenstrukturen) (siehe Abschnitt \@ref(chap4uebungen)) haben wir bereits die Funktion `order()` kennengelernt.
 
 a)	Was geben die Funktionen zurück:
 
