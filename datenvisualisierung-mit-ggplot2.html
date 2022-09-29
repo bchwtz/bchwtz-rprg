@@ -384,17 +384,17 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="datenvisualisierung-mit-ggplot2" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Datenvisualisierung mit <code>ggplot2</code><a href="datenvisualisierung-mit-ggplot2.html#datenvisualisierung-mit-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Parallel zu diesem Kapitel sollen Sie das Kapitel “3 Data visualisation” aus <em>“R for Data Sciences”</em> durcharbeiten. <em>“R for Data Sciences”</em> gibt es in mindestens drei Versionen:</p>
+<p>Parallel zu diesem Kapitel sollen Sie das Kapitel “<a href="https://r4ds.had.co.nz/data-visualisation.html">3 Data visualisation</a>” aus <em>“R for Data Sciences”</em> durcharbeiten. <em>“R for Data Sciences”</em> gibt es in mindestens drei Versionen:</p>
 <ul>
-<li><p> ist die Webseite zu dem Buch; im Folgenden werden wir diese Quelle mit [R4DS] bezeichnen.</p></li>
+<li><p><a href="https://r4ds.had.co.nz" class="uri">https://r4ds.had.co.nz</a> ist die Webseite zum Buch <span class="citation">(<a href="#ref-Wickhamny" role="doc-biblioref">Wickham and Grolemund ny</a>)</span>.</p></li>
 <li><p>Wickham, Hadley and Grolemund, Garrett: <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. Sebastopol: O’Reilly Media, Inc., 2016.</p></li>
 <li><p>Mittlerweile gibt es auch eine deutsche Übersetzung:
 Wickham, Hadley und Grolemund, Garrett: <em>R für Data Science : Daten importieren, be-reinigen, umformen, modellieren und visualisieren</em>. Sebastopol: O’Reilly, 2017</p></li>
 </ul>
-<p>Es gibt mehrere Möglichkeiten, Grafiken in R zu erstellen. Bis jetzt haben wir die im Base-R enthaltenen Funktionen wie <code>plot()</code>, <code>barplot()</code>, <code>boxplot()</code> und <code>hist()</code> benutzt, um einfache Grafiken zu erstellen. Das <code>ggplot2</code>-Package bietet darüber hinaus viele interessante Möglichkeiten, mit relativ wenig Aufwand aussagekräftige Grafiken zu erstellen. Nicht umsonst ist es mittlerweile weit verbreitet. Allerdings unterstützt <code>ggplot2</code> keine dreidimensionalen Grafiken. Wie wir sehen werden, ist die <code>ggplot2</code> zugrunde liegende Idee, die einzelnen Komponenten einer Grafik durch eine spezielle Grammatik zu beschreiben.</p>
+<p>Es gibt mehrere Möglichkeiten, Grafiken in R zu erstellen. Bis jetzt haben wir die im Base-R enthaltenen Funktionen wie <code>plot()</code>, <code>barplot()</code>, <code>boxplot()</code> und <code>hist()</code> benutzt, um einfache Grafiken zu erstellen. Das <code>ggplot2</code>-Package <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span> (siehe auch: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html" class="uri">https://cran.r-project.org/web/packages/ggplot2/index.html</a>) bietet darüber hinaus viele interessante Möglichkeiten, mit relativ wenig Aufwand aussagekräftige Grafiken zu erstellen. Nicht umsonst ist es mittlerweile weit verbreitet. Allerdings unterstützt <code>ggplot2</code> keine dreidimensionalen Grafiken. Wie wir sehen werden, ist die <code>ggplot2</code> zugrunde liegende Idee, die einzelnen Komponenten einer Grafik durch eine spezielle Grammatik zu beschreiben. <span class="citation">(<a href="#ref-layered-grammar" role="doc-biblioref">Wickham 2010</a>)</span></p>
 <div id="erste-beispiele" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Erste Beispiele<a href="datenvisualisierung-mit-ggplot2.html#erste-beispiele" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Das Data Frame <code>mpg</code> ist Teil des <code>ggplot2</code>-Packages (siehe <code>?mpg</code>). Es besteht aus 234 Datensät-zen mit jeweils 11 Variablen. Es enthält u. a. Informationen über den Energieverbrauch von unter-schiedlichen Automodellen aus den Jahren 1999 und 2008, die von der US Environment Protec-tion Agency gesammelt wurden.</p>
+<p>Das Data Frame <code>mpg</code> ist Teil des <code>ggplot2</code>-Packages (siehe <code>?mpg</code>). Es besteht aus 234 Datensätzen mit jeweils 11 Variablen. Es enthält u. a. Informationen über den Energieverbrauch von unterschiedlichen Automodellen aus den Jahren 1999 und 2008, die von der US Environment Protection Agency gesammelt wurden. <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span> (siehe auch: <a href="http://fueleconomy.gov" class="uri">http://fueleconomy.gov</a>)</p>
 <div class="sourceCode" id="cb849"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb849-1"><a href="datenvisualisierung-mit-ggplot2.html#cb849-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb849-2"><a href="datenvisualisierung-mit-ggplot2.html#cb849-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mpg)</span></code></pre></div>
 <pre><code>## tibble [234 × 11] (S3: tbl_df/tbl/data.frame)
@@ -409,142 +409,75 @@ Wickham, Hadley und Grolemund, Garrett: <em>R für Data Science : Daten importie
 ##  $ hwy         : int [1:234] 29 29 31 30 26 26 27 26 25 28 ...
 ##  $ fl          : chr [1:234] &quot;p&quot; &quot;p&quot; &quot;p&quot; &quot;p&quot; ...
 ##  $ class       : chr [1:234] &quot;compact&quot; &quot;compact&quot; &quot;compact&quot; &quot;compact&quot; ...</code></pre>
-
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-302">Table 6.1: </span>Variablen des Datensatzes <code>mpg</code>.
-</caption>
+<p>Dabei haben die Variablen des Datensatzes <code>mpg</code> folgende Bedeutungen:</p>
+<table>
+<colgroup>
+<col width="19%" />
+<col width="41%" />
+<col width="39%" />
+</colgroup>
 <thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:left;">
-</th>
-<th style="text-align:left;">
-</th>
+<tr class="header">
+<th>Variable</th>
+<th>Bedeutung (engl.)</th>
+<th>Bedeutung (dt.)</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-manufacturer
-</td>
-<td style="text-align:left;">
-Manufacturer/brand name
-</td>
-<td style="text-align:left;">
-Hersteller
-</td>
+<tr class="odd">
+<td><code>manufacturer</code></td>
+<td>Manufacturer/brand name</td>
+<td>Hersteller</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-model
-</td>
-<td style="text-align:left;">
-Car model name
-</td>
-<td style="text-align:left;">
-Modell-Name
-</td>
+<tr class="even">
+<td><code>model</code></td>
+<td>Car model name</td>
+<td>Modell-Name</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-displ
-</td>
-<td style="text-align:left;">
-Engine displacement, in litres
-</td>
-<td style="text-align:left;">
-Hubraum in Litern
-</td>
+<tr class="odd">
+<td><code>displ</code></td>
+<td>Engine displacement, in litres</td>
+<td>Hubraum in Litern</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-year
-</td>
-<td style="text-align:left;">
-Year of manufacture
-</td>
-<td style="text-align:left;">
-Baujahr
-</td>
+<tr class="even">
+<td>year</td>
+<td>Year of manufacture</td>
+<td>Baujahr</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-cyl
-</td>
-<td style="text-align:left;">
-Number of cylinders
-</td>
-<td style="text-align:left;">
-Anzahl der Zylinder
-</td>
+<tr class="odd">
+<td>cyl</td>
+<td>Number of cylinders</td>
+<td>Anzahl der Zylinder</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-trans
-</td>
-<td style="text-align:left;">
-Type of transmission
-</td>
-<td style="text-align:left;">
-Schaltung (Automatik / Anzahl der Gänge
-</td>
+<tr class="even">
+<td>trans</td>
+<td>Type of transmission</td>
+<td>Schaltung (Automatik / Anzahl der Gänge)</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-drv
-</td>
-<td style="text-align:left;">
-f = front-wheel drive, r = rear wheel drive, 4 = 4wd
-</td>
-<td style="text-align:left;">
-Antrieb
-</td>
+<tr class="odd">
+<td>drv</td>
+<td>f = front-wheel drive, r = rear wheel drive, 4 = 4wd</td>
+<td>Antrieb</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-cty
-</td>
-<td style="text-align:left;">
-City miles per gallon
-</td>
-<td style="text-align:left;">
-Verbrauch: Stadt
-</td>
+<tr class="even">
+<td>cty</td>
+<td>City miles per gallon</td>
+<td>Verbrauch: Stadt</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-hwy
-</td>
-<td style="text-align:left;">
-Highway miles per gallon
-</td>
-<td style="text-align:left;">
-Verbrauch: Autobahn
-</td>
+<tr class="odd">
+<td>hwy</td>
+<td>Highway miles per gallon</td>
+<td>Verbrauch: Autobahn</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-fl
-</td>
-<td style="text-align:left;">
-Fuel type. e = ethanol, d = diesel, r = regular, p = premium, c = natural gas
-</td>
-<td style="text-align:left;">
-Antriebsart
-</td>
+<tr class="even">
+<td>fl</td>
+<td>Fuel type. e = ethanol, d = diesel, r = regular, p = premium, c = natural gas</td>
+<td>Antriebsart</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-class
-</td>
-<td style="text-align:left;">
-The ‘type’ of car
-</td>
-<td style="text-align:left;">
-Fahrzeugtyp
-</td>
+<tr class="odd">
+<td>class</td>
+<td>The ‘type’ of car</td>
+<td>Fahrzeugtyp</td>
 </tr>
 </tbody>
 </table>
@@ -591,13 +524,13 @@ Fahrzeugtyp
 <span id="cb851-3"><a href="datenvisualisierung-mit-ggplot2.html#cb851-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">round</span>(<span class="fl">235.195</span> <span class="sc">/</span> mpg, <span class="at">digits =</span> <span class="dv">1</span>))</span>
 <span id="cb851-4"><a href="datenvisualisierung-mit-ggplot2.html#cb851-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Wir erhalten dann die obigen Werte:</p>
-<div class="sourceCode" id="cb852"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb852-1"><a href="datenvisualisierung-mit-ggplot2.html#cb852-1" aria-hidden="true" tabindex="-1"></a>fuel.mpg <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">10</span>, <span class="at">to =</span> <span class="dv">40</span>,<span class="at">by=</span><span class="dv">5</span>)</span>
+<div class="sourceCode" id="cb852"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb852-1"><a href="datenvisualisierung-mit-ggplot2.html#cb852-1" aria-hidden="true" tabindex="-1"></a>fuel.mpg <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">10</span>, <span class="at">to =</span> <span class="dv">40</span>, <span class="at">by =</span> <span class="dv">5</span>)</span>
 <span id="cb852-2"><a href="datenvisualisierung-mit-ggplot2.html#cb852-2" aria-hidden="true" tabindex="-1"></a>fuel.mpg</span></code></pre></div>
 <pre><code>## [1] 10 15 20 25 30 35 40</code></pre>
 <div class="sourceCode" id="cb854"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb854-1"><a href="datenvisualisierung-mit-ggplot2.html#cb854-1" aria-hidden="true" tabindex="-1"></a><span class="fu">literPer100km</span>(fuel.mpg)</span></code></pre></div>
 <pre><code>## [1] 23.5 15.7 11.8  9.4  7.8  6.7  5.9</code></pre>
-<p>Wie wir sehen, hat der Datensatz <code>mpg</code> einigermaßen vernünftige „sprechende“ Bezeichnungen für die verschiedenen Variablen (Spaltennamen) ; ebenso haben die nicht nominal skalierten Daten aussagekräftige Werte. Dies wird uns bei der Erstellung der unterschiedlichen Plots helfen.</p>
-<p>Der erste Plot in Kapitel 3 in [R4DS] wurde erzeugt durch:</p>
+<p>Wie wir sehen, hat der Datensatz <code>mpg</code> einigermaßen vernünftige „sprechende“ Bezeichnungen für die verschiedenen Variablen (Spaltennamen) (für Europäer manchmal vielleicht zu sehr abgekürzt); ebenso haben die nicht nominal skalierten Daten aussagekräftige Werte. Dies wird uns bei der Erstellung der unterschiedlichen Plots helfen.</p>
+<p>Der erste Plot in Kapitel 3 in <span class="citation">Wickham and Grolemund (<a href="#ref-Wickhamny" role="doc-biblioref">ny</a>)</span> wurde erzeugt durch:</p>
 <div class="sourceCode" id="cb856"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb856-1"><a href="datenvisualisierung-mit-ggplot2.html#cb856-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy))</span></code></pre></div>
 <p>Es geht mithilfe der <code>qplot</code>-Funktion sogar noch kürzer:</p>
 <div class="sourceCode" id="cb857"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb857-1"><a href="datenvisualisierung-mit-ggplot2.html#cb857-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(displ, hwy, <span class="at">data =</span> mpg)</span></code></pre></div>
@@ -617,8 +550,8 @@ Figure 6.1: Der erste Plot: Hubraum versus Verbrauch.
 <ul>
 <li><p>Balkendiagramm: <code>geom_bar()</code> (gut geeignet für die Visualisierung der Werte einer diskreten Variable)</p></li>
 <li><p>Histogramm: <code>geom_histogram()</code> (gut geeignet für die Visualisierung der Werte einer kontinuierlichen Variable)</p></li>
-<li><p>Boxplot: <code>geom_boxplot()</code> (gut geeignet für die Visualisierung des Zusammenhangs einer diskreten und einer kontinuierli-chen Variable)</p></li>
-<li><p>x-y-Plot (scatterplot): <code>geom_point()</code> (gut geeignet für die Visualisierung des Zusammenhangs zweier kontinuierlicher Variable)</p></li>
+<li><p>Boxplot: <code>geom_boxplot()</code> (gut geeignet für die Visualisierung des Zusammenhangs einer diskreten und einer kontinuierlichen Variable)</p></li>
+<li><p>x-y-Plot (scatterplot): <code>geom_point()</code> (gut geeignet für die Visualisierung des Zusammenhangs zweier kontinuierlicher Variablen)</p></li>
 </ul></li>
 </ul>
 <div id="beispiel-ästhetische-eigenschaften-aesthetic-festlegen" class="section level3 hasAnchor" number="6.1.1">
@@ -641,7 +574,7 @@ Figure 6.2: Unerwartete Farbe.
 </p>
 </div>
 
-<p>Entsprechend erhält man durch den folgenden Plot eine Vielzahl von Farbtönen und eine entspre-chende Legende:</p>
+<p>Entsprechend erhält man durch den folgenden Plot eine Vielzahl von Farbtönen und eine entsprechende Legende:</p>
 <div class="sourceCode" id="cb861"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb861-1"><a href="datenvisualisierung-mit-ggplot2.html#cb861-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                          </span>
 <span id="cb861-2"><a href="datenvisualisierung-mit-ggplot2.html#cb861-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">234</span>))</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:plot-hwy-displ-legend"></span>
@@ -656,14 +589,14 @@ Figure 6.3: Vielzahl von Farben.
 <h3><span class="header-section-number">6.1.2</span> Beispiel: Ästhetische Eigenschaften (aesthetic) für <code>geom_point()</code><a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-für-geom_point" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>geom_point()</code> versteht folgende ästhetische Eigenschaften (<code>x</code> und <code>y</code> müssen immer gesetzt werden):
 <code>x</code>, <code>y</code>, <code>alpha</code>, <code>colour</code>, <code>fill</code>, <code>group</code>, <code>shape</code>, <code>size</code>, <code>stroke</code></p>
-<p>Beispielsweise erzeugt den folgenden Plot:</p>
+<p>Beispielsweise erzeugt folgender Code die Abbildung <a href="datenvisualisierung-mit-ggplot2.html#fig:plot-hwy-displ-fill-colour">6.4</a>:</p>
 <div class="sourceCode" id="cb862"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb862-1"><a href="datenvisualisierung-mit-ggplot2.html#cb862-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                         </span>
 <span id="cb862-2"><a href="datenvisualisierung-mit-ggplot2.html#cb862-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), </span>
 <span id="cb862-3"><a href="datenvisualisierung-mit-ggplot2.html#cb862-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">size =</span> <span class="dv">3</span>, <span class="at">stroke =</span> <span class="fl">1.5</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">color =</span><span class="st">&quot;orange&quot;</span>) </span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:plot-hwy-displ-fill-colour"></span>
-<img src="bchwtz-rprg_files/figure-html/plot-hwy-displ-fill-colour-1.png" alt="Argumente fill und colour." width="672" />
+<img src="bchwtz-rprg_files/figure-html/plot-hwy-displ-fill-colour-1.png" alt="Argumente fill und colour wurden definiert." width="672" />
 <p class="caption">
-Figure 6.4: Argumente <code>fill</code> und <code>colour</code>.
+Figure 6.4: Argumente <code>fill</code> und <code>colour</code> wurden definiert.
 </p>
 </div>
 
@@ -671,8 +604,7 @@ Figure 6.4: Argumente <code>fill</code> und <code>colour</code>.
 </div>
 <div id="statistische-transformation" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Statistische Transformation<a href="datenvisualisierung-mit-ggplot2.html#statistische-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Bevor Daten visualisiert werden, müssen sie in der Regel transformiert und verdichtet werden. Dazu dienen <code>stat</code>-Objekte. Jedes <code>geom</code>-Objekt ist einem Standard-<code>stat</code>-Objekt zugeordnet und umgekehrt. In der folgenden Tabelle werden die häufigsten <code>geom-stat</code>-Beziehungen aufgelistet:</p>
-
+<p>Bevor Daten visualisiert werden, müssen sie in der Regel transformiert und verdichtet werden. Dazu dienen <code>stat</code>-Objekte. Jedes <code>geom</code>-Objekt ist einem Standard-<code>stat</code>-Objekt zugeordnet und umgekehrt. In der folgenden Übersicht werden die häufigsten <code>geom-stat</code>-Beziehungen, die <span class="citation">Arnold (<a href="#ref-Arnold2020" role="doc-biblioref">2020</a>)</span> entnommen wurden, aufgelistet:</p>
 <table>
 <thead>
 <tr class="header">
@@ -1311,6 +1243,21 @@ foo3(x, rm.na=TRUE)
 Das in R wichtige Konzept `environment` haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf [https://adv-r.hadley.nz/environments.html](https://adv-r.hadley.nz/environments.html).
 
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Arnold2020" class="csl-entry">
+Arnold, Jeffrey B. 2020. <em>R for Data Science: Exercise Solutions. Chapter 3.7: Statistical Transformations.</em> <a href="https://jrnold.github.io/r4ds-exercise-solutions/data-visualisation.html#statistical-transformations">https://jrnold.github.io/r4ds-exercise-solutions/data-visualisation.html#statistical-transformations</a>.
+</div>
+<div id="ref-layered-grammar" class="csl-entry">
+Wickham, Hadley. 2010. <span>“A Layered Grammar of Graphics.”</span> <em>Journal of Computational and Graphical Statistics</em> 19 (1): 3–28. <a href="https://doi.org/10.1198/jcgs.2009.07098">https://doi.org/10.1198/jcgs.2009.07098</a>.
+</div>
+<div id="ref-ggplot2" class="csl-entry">
+———. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
+</div>
+<div id="ref-Wickhamny" class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. ny. <em>R for Data Science</em>. <a href="https://r4ds.had.co.nz/index.html">https://r4ds.had.co.nz/index.html</a>.
 </div>
 </div>
             </section>
