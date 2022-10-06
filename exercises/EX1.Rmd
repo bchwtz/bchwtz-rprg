@@ -1,0 +1,447 @@
+---
+title: "Programmierung für statistische Datenanalyse - Übungsblatt 1"
+author: "Prof. Dr. Benjamin Buchwitz, Hannah Behrens"
+output: pdf_document
+date: "2022-10-06"
+biblio-style: authoryear-comp
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, attr.source='.numberLines')
+```
+
+
+# Aufgabe 1 
+
+a) Was bedeutet *Recycling*? Beschreiben und erklären Sie diesen Begriff in eigenen Worten!
+
+```{r}
+# solution:
+# periodische Wiederholung der Elemente des kürzeren Vektors, wenn zwei oder mehr Vektoren miteinander "verrechnet" werden sollen, die unterschiedlich lang sind
+# Bewertungsvorschlag: 2 P 
+```
+
+
+b) Aus wie vielen Elementen bestehen die Vektoren `y` und `z` jeweils?
+
+    ```{r, echo=TRUE}
+    y <- 1:10
+    z <- c(22:12, 12:22)
+    ```
+    
+```{r, eval=FALSE}
+length(y) # [1] 10
+length(z) # [1] 22
+
+# Bewertungsvorschlag: jeweils 1 P pro Längenbestimmtung (2 * 1 P = 2 P)
+```
+    
+
+c) Gegeben sind vier Fälle (a)-d)), in denen `y` und `z` miteinander verrechnet werden. Begründen Sie, wann *Recycling* vorliegt und wann nicht. Zeigen Sie für alle vier Fälle, wie jeweils der letzte angegebene Wert berechnet wurde.
+
+```{r}
+# Bewertungsvorschlag: 
+# für Begründung: jeweils 2 P (4 * 2 P = 8 P)
+# für die Berechnung des zuletzt angegebenen Werts: jeweils 1 P (4 * 1 P = 4 P)
+# insgesamt: 12 P
+```
+
+
+    ```{r, echo=TRUE, warning=FALSE}
+    ## Fall a):
+    y + z
+    ```
+
+```{r}
+## Recycling liegt vor; die Elemente von y werden periodisch wiederholt
+# y: 1 2 3 4 5 6 7 8 9 10 1 2 3 4 5 6 7 8 9 10 1 2
+# z: 22 21 20 19 18 17 16 15 14 13 12 12 13 14 15 16 17 18 19 20 21 22
+# letzter Wert: 2 + 22 = 24 (y ist kürzer als z)
+```
+
+
+    ```{r, echo=TRUE, warning=FALSE}
+    ## Fall b):
+    y * z
+    ```
+
+```{r}
+## Recycling liegt vor
+# y: 1 2 3 4 5 6 7 8 9 10 1 2 3 4 5 6 7 8 9 10 1 2
+# z: 22 21 20 19 18 17 16 15 14 13 12 12 13 14 15 16 17 18 19 20 21 22
+# letzter Wert: 2 * 22 = 44 (y ist kürzer als z)
+``` 
+
+
+    ```{r, echo=TRUE, warning=FALSE}
+    ## Fall c):
+    y[1:5] + z[16:20]
+    ```
+
+```{r}
+## Recycling liegt NICHT vor; die ersten fünf Elemente von y und fünf Elemente von z mit den Indizes 16, 17, 18, 19, 20 werden elementweise miteinander addiert, d.h. keine periodische Wiederholung des Vektors y oder z (hier: beide miteinander verrechneten Vektoren sind gleich lang)
+# y: 1 2 3 4 5
+# z: 16 17 18 19 20
+# 5 + 20 = 25
+``` 
+
+    ```{r, echo=TRUE, warning=FALSE}
+    ## Fall d):
+    y[1:5] + z[15:20]
+    ```
+
+```{r}
+## Recycling liegt vor
+# im Gegensatz zu Fall c) wird auf sechs Elemente von z zugegriffen und diese werden mit den ersten fünf Elementen von y verrechnet; damit die miteinader zu verrechnenden Vektoren gleich lang sind, wird y[1:5] periodisch wiederholt:
+# y: 1 2 3 4 5 1
+# z: 15 16 17 18 19 20
+# 1 + 20 = 21
+``` 
+
+\newpage
+
+# Aufgabe 2
+
+Gegeben ist:
+
+```{r, echo=TRUE, eval=FALSE}
+x <- c(2, 1:2.5, 3)
+x[2] <- 0
+x
+y <- c(2, 4, c(1:3), 7) 
+y[2] <- y[1] + y[2]
+y
+z <- c(x, y, 8)
+z <- c(z, z)
+length(z)
+```
+
+Was wird in
+
+a) Codezeile 3,
+
+b) Codezeile 6 und
+
+c) Codezeile 9
+
+ausgegeben und wieso? Seien Sie bei Ihrer Begründung ausführlich!
+
+```{r}
+# Bewertungsvorschlag: 
+# für finalen Rückgabewert: jeweils 1 P für "was wird zurückgegeben?" (3 * 1 P = 3 P)
+# für Begründung: jeweils 2 P (3 * 2 P = 6 P)
+# insgesamt: 9 P
+
+# Codezeile 3: x = 2, 0, 2, 3
+# -> Zu Beginn besteht x aus den Elementen 2, 1, 2 und 3 (durch 1:2.5 werden die Elemente 1 und 2 erhalten (2.5 wird hier "ignoriert", da durch die Notation ":" um 1 hochgezählt wird)), in Codezeile 2 wird das 2. Element von x durch 0 ersetzt --> 2, 0, 2, 3 werden erhalten
+
+# Codezeile 6: y = 2, 6, 1, 2, 3, 7
+# -> zu Beginn besteht y aus den Elementen 2, 4, 1, 2, 3 und 7 (durch 1:3 werden 1, 2 und 3 erhalten (siehe vorherige Erklärung)), in Codezeile 2 wird das 2. Element von y, d.h. die 4 durch die Summe aus den ersten beiden Elementen von y, d.h. 2 + 4 substituiert, weshalb: 2, 6, 1, 2, 3, 7 folgt
+
+# Codezeile 9: length(z) = 22
+# -> zu Beginn (Zeile 8) besteht z aus den Elementen von x (Codezeile 3) und y (Codezeile 6) und der Zahl 8, weshalb folgt: 2, 0, 2, 3, 2, 6, 1, 2, 3, 7, 8; in Codezeile 8 werden die Elemente von z einmal periodisch wiederholt, sodass für z resultiert: 2, 0, 2, 3, 2, 6, 1, 2, 3, 7, 8, 2, 0, 2, 3, 2, 6, 1, 2, 3, 7, 8; entsprechend besteht z aus insgesamt 22 Elementen, was in Zeile 9 abgefragt wird
+```
+
+
+# Aufgabe 3
+
+Mittels `rnorm(100)` werden 100 normalverteilte Zufallszahlen erzeugt. 
+
+a) Welchen Mittelwert $\mu$ und welche Standardabweichung $\sigma$ besitzen diese *Zufallszahlen*? Was müssen Sie tun, um eine Antwort auf diese Frage zu erhalten?
+
+```{r}
+# Bewertungsvorschlag:
+# Was müssen Sie tun? Manual-Eintrag anschauen: 1 P
+# Werte von mu und sigma: jeweils 0,5 P (2 * 0,5 P = 1 P)
+# insgesamt: 2 P
+```
+
+
+b) Erzeugen Sie einen Vektor `x`, der aus 100 normalverteilten Zufallszahlen mit $\mu = 1$ und $\sigma = 0,5$, besteht. Setzen Sie `set.seed(1)`.
+
+```{r}
+# solution:
+set.seed(1)
+x <- rnorm(100, mean = 1, sd = 0.5)
+# Bewertungsvorschlag: 1 P
+```
+
+
+c) Beträgt das arithmetische Mittel von `x` *wirklich* 1 und die Standardabweichung 0,5? Geben Sie die Werte gerundet auf fünf Nachkommastellen an!
+
+```{r, eval=FALSE}
+# Bewertungsvorschlag:
+round(mean(x), 5) # 1 P
+round(sd(x), 5)  # 1 P
+
+# Antwortsatz (Nein, das arithmetische Mittel von x beträgt nicht exakt 1 und die Standardabweichung nicht 0,5.): 1 P
+# insgesamt: 3 P
+```
+
+
+d) Erzeugen Sie basierend auf den Vorgaben in Aufgabe 3b) anstelle von 100 Zufallszahlen jeweils 1.000 und 10.000 normalverteilte Zufallszahlen und benennen Sie die Vektoren `x2` und `x3`. Setzen Sie `set.seed(1)`. Berechnen Sie erneut jeweils das arithmetische Mittel und die Standardabweichung (auf fünf Nachkommastellen gerundet angeben). Was stellen Sie fest? Welche (statistische) Erklärung haben Sie hierfür?
+
+```{r}
+# Bewertungsvorschlag: 
+set.seed(1)
+x2 <- rnorm(1000, mean = 1, sd = 0.5) # 1 P
+x3 <- rnorm(10000, mean = 1, sd = 0.5) # 1 P
+```
+
+```{r, eval=FALSE}
+# Berechnung: 2 P
+round(mean(x2), 5)
+round(sd(x2), 5)
+round(mean(x3), 5)
+round(sd(x3), 5)
+```
+
+```{r}
+# solution:
+# mit größer werdender Stichprobengröße: mu und sigma nähern sich dem "wahren" Wert mu bzw. sigma an (Feststellung: 1 P)
+# statistische Begründung: Eigenschaften eines Schätzers: Konsistenz (1 P)
+# insgesamt: 6 P
+```
+
+\newpage
+
+# Aufgabe 4
+
+a) Schreiben Sie eine Funktion namens `standardabweichung()` mit dem Argument `x` (ein Vektor) sowie dem Rückgabewert `sigma`, die die Standardabweichung nach folgender Gleichung berechnet:
+
+$$ \sigma = \sqrt{\frac{1}{n} \sum_{i = 1}^n (x_i - \bar{x})^2}. $$
+
+
+```{r}
+standardabweichung <- function(x){
+  n <- length(x)
+  xquer <- mean(x)
+  sigma <- sqrt((1/n) * sum((x - xquer)^2))
+  return(sigma)
+}
+# Bewertungsvorschlag: 2 P
+```
+
+b) Um was für einen Datentyp handelt es sich beim Rückgabewert der Funktion `standardabweichung()` und warum?
+
+```{r, eval=FALSE}
+sigma <- standardabweichung(c(1:10)) # e.g.
+typeof(sigma) # numeric; double; Fließkommazahl
+# Bewertungsvorschlag: 1 P für den Datentyp
+# 1 P für die Begründung (Rückgabewert muss numerisch sein, da sigma auf den Elementen (diese sind numerisch) des Vektors x basiert)
+# insgesamt: 2 P
+```
+
+
+c) Wenden Sie Ihre Funktion `standardabweichung()` auf die Vektoren `x`, `x2` und `x3` aus Aufgabe 3 an. Geben Sie die Werte auf fünf Nachkommastellen genau an.\newline
+Erhalten Sie die gleichen Werte für $\sigma$, wenn Sie `standardabweichung()` anstelle von `sd()` für die Berechnung nutzen? Falls nein, worin besteht der Unterschied zwischen diesen beiden Funktionen und was hat er zu bedeuten? (*Hinweis:* Es ist **nicht** das Argument `na.rm` gemeint!)
+
+```{r, eval=FALSE}
+# Vektor x
+round(standardabweichung(x), 5)
+round(sd(x), 5) # wurde in Aufgabe 3 bereits berechnet
+# Vektor x2
+round(standardabweichung(x2), 5)
+round(sd(x2), 5) # wurde in Aufgabe 3 bereits berechnet
+# Vektor x3
+round(standardabweichung(x3), 5)
+round(sd(x3), 5) # wurde in Aufgabe 3 bereits berechnet
+
+# Bewertungsvorschlag:
+# Anwendung der selbst implementierten Funktion auf die drei Vektoren: jeweils 1 P (3 * 1 P = 3 P)
+# Antwortsatz, ob die gleichen Werte erhalten werden: 1 P
+# Unterschied: in Faktor (1/n) bzw. (1/(n-1)): 1 P
+# Bedeutung: Eigenschaft von Schätzern: (1/(n-1)): unbiased Schätzer: 1 P 
+# insgesamt: 6 P
+```
+
+
+# Aufgabe 5
+
+Gegeben ist der Vektor `eur`, der fiktive Euro-Beträge enthält:
+
+```{r, echo=TRUE, eval=TRUE}
+eur <- c(123, 450, 300, 266, 321, 324, 255, 267, 220, 202, 124)
+```
+
+Die Funktion `eur_text()` gibt für Vektorelemente mit spezifischen Eigenschaften folgenden Text aus:
+
+```{r, eval=TRUE}
+eur_text <- function(eur){
+  for(idx in 1:length(eur)){
+  if(eur[idx] > 255){
+    print(paste("Sie haben ", eur[idx], " Euro gespart. Glückwunsch!"))
+  }
+  }
+}
+
+eur_text(eur)
+
+# Bewertungsvorschlag: 6 P
+
+# mögliche Lösungen: Vektor filtern (ohne if-Bedingung)
+
+# solution 2 (von bchwtz):
+# eur <- c(123,43,777,636,111,3637,939390)
+# eur_txt <- function(eur){
+#  eur <- eur[eur > 255]
+#  txt <- paste('[1] "Sie haben', eur, 'Euro gespart. Glückwunsch!\n')
+#  cat(txt)
+# }
+# eur_txt(eur)
+```
+
+Wie könnte der Code der Funktion `eur_text()` aussehen? Implementieren Sie eine mögliche Funktion `eur_text()` und wenden Sie diese auf den Vektor `eur` an. **Hinweis:** `paste()`.
+
+\newpage
+
+# Aufgabe 6
+
+Was bedeuten die Begriffe *Syntax* und *Semantik* und worin unterscheiden Sie sich? Erklären Sie beide Begriffe anhand des folgenden Beispiels und seien Sie ausführlich:
+
+```{r, echo=TRUE}
+set.seed(1)
+x <- rnorm(10)
+xquer <- mean(x)
+v <- 0
+n <- length(x)
+
+for(idx in 1:n){
+  v <- v + (x[idx] - xquer)^2
+}
+
+(1/(n - 1)) * v
+```
+
+```{r, echo=FALSE}
+## solution: Syntax = "Grammatik" z.B. '+' für Addition
+
+## Semantik = Bedeutung; quadrat. Abweichungen werden summiert und durch n-1 dividiert (Varianz)
+
+# Bewertungsvorschlag: 2 P für jede Definition (2 * 2 P = 4 P)
+```
+
+
+# Aufgabe 7
+
+Gegeben sind die folgenden drei Fälle (a)--c)) bzw. drei Code-Ausschnitte. Entscheiden Sie für jeden Fall, ob die integrierte `for`- oder `while`-Schleife und ggf. die Verzweigung notwendig ist (sind) oder ob durch Veränderung des Codes auf die entsprechende Schleife und ggf. die Verzweigung verzichtet werden kann. Begründen Sie Ihre Entscheidung.\newline
+Wenn auf die Schleife und ggf. auf die Verzweigung verzichtet werden kann, geben Sie einen entsprechenden alternativen Code an. Ändern Sie nur so viel wie nötig!
+*Hinweis:* Schauen Sie sich Abschnitt 4.2.1 in den Vorlesungsunterlagen \url{https://bchwtz.github.io/bchwtz-rprg/} an.
+
+```{r, echo=TRUE, eval=FALSE}
+# Fall a):
+
+set.seed(5)
+v <- round(sample(x = seq(1, 100, by = 0.1), size = 25, replace = TRUE))
+vres <- v
+vi <- 1:length(v)
+
+for(e in vi){
+  if((v[e] %% 2) != 0){
+    vres[e] <- v[e] + 1
+  }else{
+    vres[e] <- v[e]
+  }
+}
+vres
+```
+
+\newpage
+
+```{r, eval=FALSE}
+# Fall a) - solution:
+# 
+# Ja, auf die for-Schleife und die Verzweigung kann verzichtet werden!
+# Vereinfachung: 
+set.seed(5)
+v <- round(sample(x = seq(1, 100, by = 0.1), size = 25, replace = TRUE))
+vres2 <- v
+
+vres2[(vres2 %% 2) != 0] <- vres2[(vres2 %% 2) != 0] + 1
+# sum(vres2 != vres)
+```
+
+
+```{r, echo=TRUE, eval=FALSE}
+# Fall b):
+
+x <- seq(from = -4, to = 4, by = 0.1)
+sigma <- 1
+mu <- 1
+y <- 0
+
+for(idx in 1:length(x)){
+  factor1 <- (1/sqrt(2 * pi * sigma^2))
+  factor2 <- exp(-(x[idx] - mu)^2 /(2 * sigma^2))
+  res <- factor1 * factor2
+  y <- c(y, res)
+}
+y <- y[-1]
+y
+```
+
+```{r}
+# Fall b) - solution:
+
+x <- seq(from = -4, to = 4, by = 0.1)
+sigma <- 1
+mu <- 1
+factor1 <- (1/sqrt(2 * pi * sigma^2))
+
+y2 <- factor1 *  exp(-(x - mu)^2 /(2 * sigma^2))
+
+# For-Schleife kann weggelassen werden; alternativer Code notwendig
+# sum(y != y2)
+# sum(y != dnorm(x, mean = 1, sd = 1))
+#R> 0
+```
+
+
+```{r, echo=TRUE, eval=FALSE}
+# Fall c):
+
+x <- seq(from = 4, to = 0, by = -0.1)
+sigma <- 1
+mu <- 1
+y <- 0
+idx <- 1
+
+while(x[idx] >= 2){
+  factor1 <- (1/sqrt(2 * pi * sigma^2))
+  factor2 <- exp(-(x[idx] - mu)^2 /(2 * sigma^2))
+  res <- factor1 * factor2
+  y <- c(y, res) 
+  idx <- idx + 1
+}
+y <- y[-1]
+y
+```
+
+
+
+```{r, eval=FALSE}
+# Fall c) - solution (advanced):
+
+x <- seq(from = 4, to = 0, by = -0.1)
+sigma <- 1
+mu <- 1
+factor1 <- (1/sqrt(2 * pi * sigma^2))
+
+y2 <- factor1 *  exp(-(x[x >= 2] - mu)^2 /(2 * sigma^2))
+
+# x2 <- seq(from = 4, to = 2, by = -0.1)
+
+# sum(y != y2)
+# Schleife kann weggelassen werden, aber irgendeine Form von Abfrage
+# alternativer Code notwendig:
+```
+
+```{r}
+# Bewertungsvorschlag:
+
+# für begründete Entscheidung: jeweils 3 P (da vorheriges Verständnis des Codes notwendig ist) (3 * 3 P = 9 P)
+# alternativer Code für jeden der drei Fälle: jeweils 3 P (3 * 3 P =  9 P)
+# insgesamt: 18 P
+```
+
+
