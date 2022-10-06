@@ -1,29 +1,33 @@
 # Data Transformation
 
-Parallel zu diesem Kapitel sollen Sie das Kapitel „5 Data transformation“  aus *„R for Data Sciences“* [R4DS] durcharbeiten, das sich mit dem dplyr -Paket auseinandersetzt, einer weiteren Kernkomponente der `tidyverse`-Welt.
+Parallel zu diesem Kapitel sollen Sie das Kapitel „5 Data transformation“  aus *„R for Data Sciences“* [@Wickhamny] durcharbeiten, das sich mit dem `dplyr`-Paket (dplyr steht für “**d**ata frame ap**plyer**”) auseinandersetzt, einer weiteren Kernkomponente der `tidyverse`-Welt.
 
 Im Folgenden setzen wir voraus:
 ```{r, eval=FALSE}
 library(tidyverse)
 ```
 
-Dadurch werden die folgenden Pakete (packages) geladen:\newline
+Dadurch werden die folgenden Pakete (packages) (in der Version: `tidyverse` 1.2.1) geladen:\newline
 `ggplot2`, `purrr`, `tibble`, `dplyr`, `tidyr`, `stringr`, `readr`, `forcats`.
 
-In diesem Kapitel wollen wir mit der großen Datensammlung `flights` arbeiten, die im `nycflights13`-Paket enthalten ist; daher setzen wir zusätzlich voraus:
+In diesem Kapitel wollen wir mit der großen Datensammlung `flights` arbeiten, die im `nycflights13`-Paket [@nycflights13] enthalten ist; daher setzen wir zusätzlich voraus:
 ```{r, eval=FALSE}
 library(nycflights13)
 ```
 
 ## Der Datensatz `flights`
 
-Der Datensatz `flights` beschreibt alle Flüge, die 2013 von einem der drei New Yorker Flughäfen (JFK, LGA or EWR) gestartet sind. 
+Der Datensatz `flights` beschreibt alle Flüge, die 2013 von einem der drei New Yorker Flughäfen (JFK, LGA or EWR) gestartet sind (siehe: `?flights`). [@nycflights13] 
 
 ```{r}
 str(flights)
 ```
 
-Der Datensatz `flights` ist ein „*Tibble*“. Ein Tibble ist ein leicht angepasster Data Frame, der besser mit `tidyverse` zusammenarbeitet. Im Vergleich zu einem Data Frame ist bei einem Tibble die Ausgabe eines großen Datensatzes viel besser gelöst. Auch ist der Zugriff auf Teilbereiche der Daten mit Tibbles konsistenter und strenger: mehr Warnungen werden ausgegeben, wenn angesprochene Spalten nicht existieren.  Im Gegensatz zu einem Data Frame wird bei der Erzeugung eines Tibbles nicht automatisch ein `character`-Vektor in einen Faktor umgewandelt.
+Der Datensatz `flights` ist ein „*Tibble*“. Ein Tibble ist ein leicht angepasster Data Frame, der besser mit `tidyverse` zusammenarbeitet. Im Vergleich zu einem Data Frame ist bei einem Tibble die Ausgabe eines großen Datensatzes viel besser gelöst. Auch ist der Zugriff auf Teilbereiche der Daten mit Tibbles konsistenter und strenger: mehr Warnungen werden ausgegeben, wenn angesprochene Spalten nicht existieren.
+
+> "A concise, and fun, way to summarise the main differences is that tibbles are lazy and surly: they do less and complain more. You’ll see what that means as you work through this section." [@Wickham2019, Abschnitt 3.6]
+
+Im Gegensatz zu einem Data Frame wird bei der Erzeugung eines Tibbles nicht automatisch ein `character`-Vektor in einen Faktor umgewandelt, was bei früheren R-Versionen der Fall war; siehe Abschnitt \@ref(dataframeerzeugen).
 
 Mithilfe von `as_tibble()` kann ein Data Frame leicht in einen Tibble umgewandelt werden. Ein Tibble kann auch direkt mit `tibble()` erzeugt werden. Auf Tibbles werden wir später zurückkommen.
 
@@ -32,21 +36,27 @@ Die Ausgabe des Tibbles `flights` ist in der Tat recht übersichtlich:
 flights
 ```
 
-`flights` beschreibt also 336 776 Flüge mithilfe 19 Variablen.
+`flights` beschreibt also 336 776 Flüge mithilfe der folgenden 19 Variablen:
 
-(ref:varflights) Variablen des Datensatzes `flights`.
+Variable | Bedeutung
+---------|------------
+`year, month, day` | Date of departure.
+`dep_time`, `arr_time` | Actual departure and arrival times (format HHMM or HMM), local tz.
+`sched_dep_time`, `sched_arr_time` | Scheduled departure and arrival times (format HHMM or HMM), local tz.
+`dep_delay`, `arr_delay` | Departure and arrival delays, in minutes. Negative times represent early departures/arrivals.
+`carrier` | Two letter carrier abbreviation. See airlines to get name.
+`flight` | Flight number.
+`tailnum` | Plane tail number. See planes for additional metadata.
+`origin`,  `dest` | Origin and destination. See airports for additional metadata.
+`air_time` | Amount of time spent in the air, in minutes.
+`distance` | Distance between airports, in miles.
+`hour`, `minute` | Time of scheduled departure broken into hour and minutes.
+`time_hour` | Scheduled date and hour of the flight as a POSIXct date. Along with  origin, can be used to join flights data to weather data.
 
-```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(col1 = c("year, month, day", "dep_time, arr_time", "sched_dep_time, sched_arr_time", "dep_delay, arr_dely", "carrier", "flight", "tailnum", "origin, dest", "air_time", "distance", "hour, minute", "time_hour"),
-                 col2 = c("Date of departure.", "Actual departure and arrival times (format HHMM or HMM), local tz.", "Scheduled departure and arrival times (format HHMM or HMM), local tz.", "Departure and arrival delays, in minutes. Negative times represent early departures/arrivals.", "Two letter carrier abbreviation. See airlines to get name.", "Flight number.", "Plane tail number. See planes for additional metadata.", "Origin and destination. See airports for additional metadata.", "Amount of time spent in the air, in minutes.", "Distance between airports, in miles.", "Time of scheduled departure broken into hour and minutes.", "Scheduled date and hour of the flight as a POSIXct date. Along with 
-origin, can be used to join flights data to weather data."))
-knitr::kable(df, booktabs = T, col.names = c("", ""), caption = "(ref:varflights)")%>%
- kableExtra::kable_styling(latex_options = "hold_position")
-```
 
 ## `dplyr`-Grundlagen
 
-In `dplyr` gibt es fünf Schlüsselfunktionen , die jeweils ein Tibble (bzw. ein Data Frame) als erstes Element erwarten und als Resultat ein Tibble (bzw. ein Data Frame) zurückgeben.
+In `dplyr` gibt es fünf Schlüsselfunktionen (In [@Wickhamny] werden diese Schlüsselfunktionen auch als „Verben“ bezeichnet.), die jeweils ein Tibble (bzw. ein Data Frame) als erstes Element erwarten und als Resultat ein Tibble (bzw. ein Data Frame) zurückgeben.
 
 (ref:dplyr-grundlagen) Schlüsselfunktionen in `dplyr`.
 
@@ -65,23 +75,23 @@ Daneben gibt es noch Variationen dieser fünf Schlüsselfunktionen wie `rename()
 knitr::include_graphics("gfx/chap_7.2.1_filter.PNG")
 ```
 
-Mit `filter()` können gemäß einer Filterbedingung bestimmte Zeilen ausgewählt werden. Meh-rere Filterbedingungen werden dabei logisch mit „Und“ (also mit `&`) verknüpft.
+Mit `filter()` können gemäß einer Filterbedingung bestimmte Zeilen ausgewählt werden. Mehrere Filterbedingungen werden dabei logisch mit „Und“ (also mit `&`) verknüpft.
 
-`filter()` gibt:
+`filter()` gibt
 
-+	komplette Datenzeilen zurück
++	komplette Datenzeilen zurück.
 
-+	nur Datenzeilen zurück, bei denen die Filterbedingung wahr ist; NA-Werte werden ausge-schlossen, es sei denn, sie tauchen explizit in der Filterbedingung auf.
++	nur Datenzeilen zurück, bei denen die Filterbedingung wahr ist; NA-Werte werden ausgeschlossen, es sei denn, sie tauchen explizit in der Filterbedingung auf.
 
 **Beispiele**
 
 ```{r, eval=FALSE}
 filter(flights, month == 1, day == 1)
-filter(flights, month == 1 | month = 12)
+filter(flights, month == 11 | month = 12)
 filter(flights, month %in% c(11, 12))
 ```
 
-**Hinweis:**
+**Hinweis:** (Dies ist der Hinweis aus den Übungen zu Kapitel \@ref(chap3):
 
 Der Operator `&&` bezieht sich bei Vektoren nur auf das erste Element; bei Vektoren sollte man statt `&&` den Operator `&` benutzen! Ähnliches gilt für die Operatoren `||` und `|` (siehe z. B. `?‘&‘`).
 
@@ -116,14 +126,15 @@ knitr::include_graphics("gfx/chap_7.2.3_select.PNG")
 
 Mit `select()` wird der Datensatz reduziert, indem nur bestimmte Spalten ausgewählt werden.
 
-(ref:hilfsfunktionen) Nützliche Hilfsfunktionen.
+Nützliche Hilfsfunktionen sind folgende:
 
-```{r, echo=FALSE, eval=TRUE}
-df <- data.frame(col1 = c("starts_with('abc')", "ends_with('xyz')", "contains('ijk')", "everything()"),
-                 col2 = c("sucht nach Namen, die mit „abc“ beginnen", "sucht nach Namen, die mit „xyz“ beginnen", "sucht nach Namen, die „ijk“ enthalten", "Alle Variablen"))
-knitr::kable(df, booktabs = T, col.names = c("", ""), caption = "(ref:hilfsfunktionen)")%>%
- kableExtra::kable_styling(latex_options = "hold_position")
-```
+Funktion | Zweck
+---------|---------------
+`starts_with("abc")` | sucht nach Namen, die mit "abc" beginnen
+`ends_with("xyz")` | sucht nach Namen, die mit "xyz" beginnen
+`contains("ijk")` | sucht nach Namen, die "ijk" enthalten
+`everything()` | Alle Variablen
+ 
 
 Um Spaltennamen zu ändern, sollte die Funktion `rename()` benutzt werden.
 
@@ -160,7 +171,8 @@ Mit `mutate()` wird der Datensatz durch neue Spalten erweitert, die aus bestehen
 mutate(flights_sml, gain = dep_delay - arr_delay, speed = distance / air_time * 60)
 mutate(flights_sml, gain = dep_delay - arr_delay, hours = air_time / 60, 
        gain_per_hour = gain / hours)   
-transmute(flights, year, gain = dep_delay - arr_delay,hours = air_time / 60, gain_per_hour = gain / hours) 
+transmute(flights, year, gain = dep_delay - arr_delay, hours = air_time / 60, 
+          gain_per_hour = gain / hours) 
 ```
 
 
@@ -172,7 +184,7 @@ transmute(flights, year, gain = dep_delay - arr_delay,hours = air_time / 60, gai
 knitr::include_graphics("gfx/chap_7.2.5_summarize.PNG")
 ```
 
-Mit `summarize()` kann ein Datensatz auf eine einzelne Zeile reduziert werden, indem ausge-wählte Spalten verdichtet werden. `summarise()` und `summarize()` sind Synonyme.
+Mit `summarize()` kann ein Datensatz auf eine einzelne Zeile reduziert werden, indem ausgewählte Spalten verdichtet werden. `summarise()` und `summarize()` sind Synonyme.
 
 **Beispiele**
 
@@ -182,12 +194,12 @@ summarize(flights, delay = mean(dep_delay, na.rm = TRUE),
  	sd = sd(dep_delay, na.rm = TRUE))
 ```
 
-`summarize()` wird sehr häufig im Zusammenspiel mit `group_by()` verwendet. Wir werden weiter untern hierauf detaillierter eingehen.
+`summarize()` wird sehr häufig im Zusammenspiel mit `group_by()` verwendet. Wir werden weiter unten hierauf detaillierter eingehen.
 
 
 ### Der Pipe-Operator `%>%`
 
-Der Pipe-Operator `%>%`  ist nicht Bestandteil von Base-R; er wird durch das `tidyverse`-Paket automatisch eingeführt und spielt in der `tidyverse`-Welt eine wichtige Rolle.
+Der Pipe-Operator `%>%` (In Visual Studio R fügt `Strg+Shift+m` den `%>%` ein) ist nicht Bestandteil von Base-R; er wird durch das `tidyverse`-Paket [@tidyverse] automatisch eingeführt und spielt in der `tidyverse`-Welt eine wichtige Rolle.
 
 Allgemein gilt, dass 
 ```{r, eval=FALSE}
@@ -238,7 +250,7 @@ res
 ```
 
 
-In der dritten Variante nutzen wir schließlich den Pipe-Mechanismus  (ersetzt allerdings voraus, dass Base-R durch ein Paket wie `tidyverse` erweitert worden ist):
+In der dritten Variante nutzen wir schließlich den Pipe-Mechanismus (Wie `+` darf `%>%` nicht am Anfang einer Zeile stehen.) (er setzt allerdings voraus, dass Base-R durch ein Paket wie `tidyverse` erweitert worden ist; Wir hätten dies auch durch die Anweisung `require(tidyverse)` verdeutlichen können. Ursprünglich stammt der Pipe-Mechanismus aus dem Paket `magrittr`.):
 
 ```{r}
 d %>% 
@@ -252,7 +264,7 @@ In komplexen Situationen kann der Pipe-Mechanismus die Lesbarkeit des Quelltexte
 
 ### Gruppierungen mit `group_by()`
 
-Die Funktion `group_by()` und ihr Gegenstück `ungroup()` ist für sich aus gesehen nicht besonders nützlich. Erst im Zusammenspiel mit Funktionen wie `summarize()`, die die erstellten Gruppierungen berücksichtigen, entfalten sie ihr Potential. Wir wollen dies an einem Beispiel verdeut-lichen. Aus Gründen der Übersichtlichkeit wollen wir hierbei nur einen Teil des Datensatzes `flights` benutzen:
+Die Funktion `group_by()` und ihr Gegenstück `ungroup()` ist für sich aus gesehen nicht besonders nützlich. Erst im Zusammenspiel mit Funktionen wie `summarize()`, die die erstellten Gruppierungen berücksichtigen, entfalten sie ihr Potential. Wir wollen dies an einem Beispiel verdeutlichen. Aus Gründen der Übersichtlichkeit wollen wir hierbei nur einen Teil des Datensatzes `flights` benutzen:
 
 ```{r}
 fluege <- select(flights, month, day, contains("delay"))
@@ -291,12 +303,12 @@ summarize(ungroup(fluege_month), delay = mean(arr_delay))
 ```
 
 Möglich sind auch Gruppierungen nach mehreren Variablen. Dies zeigt das nächste Beispiel:
-```{r}
+```{r, warning=FALSE}
 fluege_monthDay <- group_by(fluege, month, day)
 summarize(fluege_monthDay, delay = mean(dep_delay))
 ```
 
-Gruppierungen sind in Verbindung mit `summarize()` sehr nützlich, werden oft auch bei `mutate()` and `filter()` eingesetzt. Im nächsten Beispiel wird zu `fluege_month` eine zusätzliche Variable hinzugefügt, die in jeder Zeile die entsprechende monatliche durchschnittliche Ver-spätung bei der Ankunft angibt (vgl. `summarize(fluege_month, delay = me-an(arr_delay))`, siehe oben):
+Gruppierungen sind in Verbindung mit `summarize()` sehr nützlich, werden oft auch bei `mutate()` and `filter()` eingesetzt. Im nächsten Beispiel wird zu `fluege_month` eine zusätzliche Variable hinzugefügt, die in jeder Zeile die entsprechende monatliche durchschnittliche Verspätung bei der Ankunft angibt (vgl. `summarize(fluege_month, delay = mean(arr_delay))`, siehe oben):
 
 ```{r}
 fluege_month  %>%
@@ -322,7 +334,13 @@ Die spezielle Funktion `n()` kann nur in den Funktionen `summarize()`, `mutate()
 
 ## Übungen {-}
 
-Die folgenden Aufgaben beziehen sich auf den Datensatz `flights` aus dem Paket `nycflights13`.
+Die folgenden Aufgaben beziehen sich auf den Datensatz `flights` aus dem Paket `nycflights13` [@nycflights13].
+
+```{r, echo=TRUE, eval=FALSE}
+require(tidyverse)
+require(nycflights13)
+```
+
 
 **Aufgabe 1**
 
@@ -341,7 +359,7 @@ a)	Gesucht sind alle Flüge, die mehr als 150 Minuten verspätet den Zielflughaf
 
 b)	Gesucht sind alle Flüge, die mehr als 150 Minuten verspätet den Zielflughafen erreichten, obwohl sie pünktlich gestartet waren.
 
-c)	Alle Flüge in den Monaten September, Oktober, November und Dezember, die mit mehr als 150 Minuten Verspätung den Zielflughafen erreichten.
+c)	Gesucht sind alle Flüge in den Monaten September, Oktober, November und Dezember, die mit mehr als 150 Minuten Verspätung den Zielflughafen erreichten.
 
 
 **Aufgabe 3**
@@ -414,8 +432,7 @@ flights %>%
 
 **Aufgabe 9**
 
-Die Zeitformate `dep_time` und `sched_dep_time` in `flights` benutzen das Format HHMM oder HMM; 1607 entspricht also 16:07 Uhr. Erstellen Sie eine Tabelle mit allen Flüge mit den Spalten\newline
- 	    `year`, `month`, `day`, `flight`, `dep_time`, `sched_dep_time` 
+Die Zeitformate `dep_time` und `sched_dep_time` in `flights` benutzen das Format HHMM oder HMM; 1607 entspricht also 16:07 Uhr. Erstellen Sie eine Tabelle mit allen Flügen mit den Spalten: `year`, `month`, `day`, `flight`, `dep_time` und `sched_dep_time` 
  	    
 Dabei sollen `dep_time` und `sched_dep_time` eine Darstellung haben, die der Anzahl der Minuten nach Mitternacht entspricht. Schreiben Sie hierfür eine Funktion `zeitInMinuten()`. Die mögliche Zeitangabe 2400 für Mitternacht soll dabei auf 0 Minuten abgebildet werden (d.h. `zeitInMinuten(2400)` soll den Wert 0 zurückgeben).
 
