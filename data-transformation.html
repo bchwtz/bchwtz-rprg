@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Data Transformation | Statistical Programming</title>
+  <meta name="description" content="Chapter 7 Data Transformation | Statistical Programming Course Notes" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Data Transformation | Statistical Programming" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Chapter 7 Data Transformation | Statistical Programming Course Notes" />
+  <meta name="github-repo" content="bchwtz/bchwtz-rprg" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Data Transformation | Statistical Programming" />
+  
+  <meta name="twitter:description" content="Chapter 7 Data Transformation | Statistical Programming Course Notes" />
+  
+
+<meta name="author" content="Benjamin Buchwitz" />
+
+
+<meta name="date" content="2022-10-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="datenvisualisierung-mit-ggplot2.html"/>
+<link rel="next" href="spezielle-themen-und-fallstudien.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><b>Statistical Programming</b></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="part"><span><b>Teil 1</b></span></li>
+<li class="chapter" data-level="1" data-path="einführung.html"><a href="einführung.html"><i class="fa fa-check"></i><b>1</b> Einführung</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#zielgruppe"><i class="fa fa-check"></i><b>1.1</b> Zielgruppe</a></li>
+<li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#überblick"><i class="fa fa-check"></i><b>1.2</b> Überblick</a></li>
+<li class="chapter" data-level="1.3" data-path="einführung.html"><a href="einführung.html#software"><i class="fa fa-check"></i><b>1.3</b> Software</a></li>
+<li class="chapter" data-level="" data-path="einführung.html"><a href="einführung.html#übungen"><i class="fa fa-check"></i>Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ersteschritte.html"><a href="ersteschritte.html"><i class="fa fa-check"></i><b>2</b> Erste Schritte</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ersteschritte.html"><a href="ersteschritte.html#numerische-ausdrücke"><i class="fa fa-check"></i><b>2.1</b> Numerische Ausdrücke</a></li>
+<li class="chapter" data-level="2.2" data-path="ersteschritte.html"><a href="ersteschritte.html#variablen"><i class="fa fa-check"></i><b>2.2</b> Variablen</a></li>
+<li class="chapter" data-level="2.3" data-path="ersteschritte.html"><a href="ersteschritte.html#vektoren"><i class="fa fa-check"></i><b>2.3</b> Vektoren</a></li>
+<li class="chapter" data-level="2.4" data-path="ersteschritte.html"><a href="ersteschritte.html#recycling"><i class="fa fa-check"></i><b>2.4</b> Recycling</a></li>
+<li class="chapter" data-level="2.5" data-path="ersteschritte.html"><a href="ersteschritte.html#rstudio"><i class="fa fa-check"></i><b>2.5</b> RStudio</a></li>
+<li class="chapter" data-level="2.6" data-path="ersteschritte.html"><a href="ersteschritte.html#demos"><i class="fa fa-check"></i><b>2.6</b> Demos</a></li>
+<li class="chapter" data-level="2.7" data-path="ersteschritte.html"><a href="ersteschritte.html#skripte"><i class="fa fa-check"></i><b>2.7</b> Skripte</a></li>
+<li class="chapter" data-level="2.8" data-path="ersteschritte.html"><a href="ersteschritte.html#einführung-in-die-entwicklungsumgebung-von-r-fortgeschritten"><i class="fa fa-check"></i><b>2.8</b> Einführung in die Entwicklungsumgebung von R (fortgeschritten)</a></li>
+<li class="chapter" data-level="" data-path="ersteschritte.html"><a href="ersteschritte.html#übungen-1"><i class="fa fa-check"></i>Übungen</a>
+<ul>
+<li class="chapter" data-level="" data-path="ersteschritte.html"><a href="ersteschritte.html#aufgabe-1"><i class="fa fa-check"></i>Aufgabe 1</a></li>
+<li class="chapter" data-level="" data-path="ersteschritte.html"><a href="ersteschritte.html#aufgabe-2"><i class="fa fa-check"></i>Aufgabe 2</a></li>
+<li class="chapter" data-level="" data-path="ersteschritte.html"><a href="ersteschritte.html#aufgabe-3"><i class="fa fa-check"></i>Aufgabe 3</a></li>
+<li class="chapter" data-level="" data-path="ersteschritte.html"><a href="ersteschritte.html#aufgabe-4"><i class="fa fa-check"></i>Aufgabe 4</a></li>
+<li class="chapter" data-level="" data-path="ersteschritte.html"><a href="ersteschritte.html#aufgabe-5"><i class="fa fa-check"></i>Aufgabe 5</a></li>
+<li class="chapter" data-level="" data-path="ersteschritte.html"><a href="ersteschritte.html#aufgabe-6"><i class="fa fa-check"></i>Aufgabe 6</a></li>
+<li class="chapter" data-level="" data-path="ersteschritte.html"><a href="ersteschritte.html#kurzzusammenfassung"><i class="fa fa-check"></i>Kurzzusammenfassung</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html"><i class="fa fa-check"></i><b>3</b> Kontrollstrukturen und Funktionen</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#namen-und-objekte-ein-erster-vergleich-mit-c-und-c"><i class="fa fa-check"></i><b>3.1</b> Namen und Objekte: Ein erster Vergleich mit C und C++</a></li>
+<li class="chapter" data-level="3.2" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#funktionen"><i class="fa fa-check"></i><b>3.2</b> Funktionen</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#benannte-und-optionale-argumente"><i class="fa fa-check"></i><b>3.2.1</b> Benannte und optionale Argumente</a></li>
+<li class="chapter" data-level="3.2.2" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#call-by-value-und-copy-on-modify"><i class="fa fa-check"></i><b>3.2.2</b> Call-by-value und Copy-on-modify</a></li>
+<li class="chapter" data-level="3.2.3" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#keine-zeiger-und-kein-call-by-reference"><i class="fa fa-check"></i><b>3.2.3</b> Keine Zeiger und kein Call-by-reference</a></li>
+<li class="chapter" data-level="3.2.4" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#operator-versus-funktionsaufruf"><i class="fa fa-check"></i><b>3.2.4</b> Operator versus Funktionsaufruf</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#kontrollstrukturen"><i class="fa fa-check"></i><b>3.3</b> Kontrollstrukturen</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#verzweigung-if-else"><i class="fa fa-check"></i><b>3.3.1</b> Verzweigung: <code>if-else</code></a></li>
+<li class="chapter" data-level="3.3.2" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#verzweigung-ifelse"><i class="fa fa-check"></i><b>3.3.2</b> Verzweigung: <code>ifelse</code></a></li>
+<li class="chapter" data-level="3.3.3" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#schleife-while-und-repeat"><i class="fa fa-check"></i><b>3.3.3</b> Schleife: <code>while</code> und <code>repeat</code></a></li>
+<li class="chapter" data-level="3.3.4" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#schleife-for"><i class="fa fa-check"></i><b>3.3.4</b> Schleife: <code>for</code></a></li>
+<li class="chapter" data-level="3.3.5" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#mehrfachzweigung-switch"><i class="fa fa-check"></i><b>3.3.5</b> Mehrfachzweigung: <code>switch</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#übungen-2"><i class="fa fa-check"></i>Übungen</a>
+<ul>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#aufgabe-1-1"><i class="fa fa-check"></i>Aufgabe 1</a></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#aufgabe-2-1"><i class="fa fa-check"></i>Aufgabe 2</a></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#aufgabe-3-1"><i class="fa fa-check"></i>Aufgabe 3</a></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#aufgabe-4-1"><i class="fa fa-check"></i>Aufgabe 4</a></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#aufgabe-5-1"><i class="fa fa-check"></i>Aufgabe 5</a></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#aufgabe-6-1"><i class="fa fa-check"></i>Aufgabe 6</a></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#aufgabe-7"><i class="fa fa-check"></i>Aufgabe 7</a></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#aufgabe-8"><i class="fa fa-check"></i>Aufgabe 8</a></li>
+<li class="chapter" data-level="" data-path="kontrollstrukturen-und-funktionen.html"><a href="kontrollstrukturen-und-funktionen.html#kurzzusammenfassung-1"><i class="fa fa-check"></i>Kurzzusammenfassung</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html"><i class="fa fa-check"></i><b>4</b> Homogene Datenstrukturen</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#wichtige-eigenschaften-von-objekten"><i class="fa fa-check"></i><b>4.1</b> Wichtige Eigenschaften von Objekten</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#typeof"><i class="fa fa-check"></i><b>4.1.1</b> <code>typeof()</code></a></li>
+<li class="chapter" data-level="4.1.2" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#length"><i class="fa fa-check"></i><b>4.1.2</b> <code>length()</code></a></li>
+<li class="chapter" data-level="4.1.3" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#attribute"><i class="fa fa-check"></i><b>4.1.3</b> Attribute</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#atomicvector"><i class="fa fa-check"></i><b>4.2</b> (Atomic) Vector</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#vektorindizierung"><i class="fa fa-check"></i><b>4.2.1</b> Filter und Vektor-Indizierung</a></li>
+<li class="chapter" data-level="4.2.2" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#elemente-einfügen"><i class="fa fa-check"></i><b>4.2.2</b> Elemente einfügen</a></li>
+<li class="chapter" data-level="4.2.3" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#test-auf-gleichheit"><i class="fa fa-check"></i><b>4.2.3</b> Test auf Gleichheit</a></li>
+<li class="chapter" data-level="4.2.4" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#elementnamen"><i class="fa fa-check"></i><b>4.2.4</b> Elementnamen</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#matrix-und-array"><i class="fa fa-check"></i><b>4.3</b> Matrix und Array</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#matrizen-einfügen"><i class="fa fa-check"></i><b>4.3.1</b> Matrizen einfügen</a></li>
+<li class="chapter" data-level="4.3.2" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#indizierung"><i class="fa fa-check"></i><b>4.3.2</b> Indizierung</a></li>
+<li class="chapter" data-level="4.3.3" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#zeilen--und-spaltennamen"><i class="fa fa-check"></i><b>4.3.3</b> Zeilen- und Spaltennamen</a></li>
+<li class="chapter" data-level="4.3.4" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#einfügen-und-löschen-von-zeilen-und-spalten"><i class="fa fa-check"></i><b>4.3.4</b> Einfügen und Löschen von Zeilen und Spalten</a></li>
+<li class="chapter" data-level="4.3.5" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#matrixoperationen"><i class="fa fa-check"></i><b>4.3.5</b> Matrixoperationen</a></li>
+<li class="chapter" data-level="4.3.6" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#lineare-gleichungssysteme"><i class="fa fa-check"></i><b>4.3.6</b> Lineare Gleichungssysteme</a></li>
+<li class="chapter" data-level="4.3.7" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#eigenwerte-und-eigenvektoren"><i class="fa fa-check"></i><b>4.3.7</b> Eigenwerte und Eigenvektoren</a></li>
+<li class="chapter" data-level="4.3.8" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#apply"><i class="fa fa-check"></i><b>4.3.8</b> <code>apply()</code></a></li>
+<li class="chapter" data-level="4.3.9" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#array"><i class="fa fa-check"></i><b>4.3.9</b> Array</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#übungen-3"><i class="fa fa-check"></i>Übungen</a>
+<ul>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-1-2"><i class="fa fa-check"></i>Aufgabe 1</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-2-2"><i class="fa fa-check"></i>Aufgabe 2</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-3-2"><i class="fa fa-check"></i>Aufgabe 3</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-4-2"><i class="fa fa-check"></i>Aufgabe 4</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-5-2"><i class="fa fa-check"></i>Aufgabe 5</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-6-2"><i class="fa fa-check"></i>Aufgabe 6</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-7-1"><i class="fa fa-check"></i>Aufgabe 7</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-8-1"><i class="fa fa-check"></i>Aufgabe 8</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-9"><i class="fa fa-check"></i>Aufgabe 9</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-10"><i class="fa fa-check"></i>Aufgabe 10</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-11"><i class="fa fa-check"></i>Aufgabe 11</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-12"><i class="fa fa-check"></i>Aufgabe 12</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-13"><i class="fa fa-check"></i>Aufgabe 13</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-14"><i class="fa fa-check"></i>Aufgabe 14</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-15"><i class="fa fa-check"></i>Aufgabe 15</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-16"><i class="fa fa-check"></i>Aufgabe 16</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-17"><i class="fa fa-check"></i>Aufgabe 17</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-18"><i class="fa fa-check"></i>Aufgabe 18</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-19"><i class="fa fa-check"></i>Aufgabe 19</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-20"><i class="fa fa-check"></i>Aufgabe 20</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-21"><i class="fa fa-check"></i>Aufgabe 21</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#aufgabe-22"><i class="fa fa-check"></i>Aufgabe 22</a></li>
+<li class="chapter" data-level="" data-path="homogenedatenstrukturen.html"><a href="homogenedatenstrukturen.html#kurzzusammenfassung-2"><i class="fa fa-check"></i>Kurzzusammenfassung</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="chap5.html"><a href="chap5.html"><i class="fa fa-check"></i><b>5</b> Weitere Datenstrukturen</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="chap5.html"><a href="chap5.html#listen"><i class="fa fa-check"></i><b>5.1</b> Listen</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="chap5.html"><a href="chap5.html#erzeugung-von-listen-und-indexierung"><i class="fa fa-check"></i><b>5.1.1</b> Erzeugung von Listen und Indexierung</a></li>
+<li class="chapter" data-level="5.1.2" data-path="chap5.html"><a href="chap5.html#listen-ändern"><i class="fa fa-check"></i><b>5.1.2</b> Listen ändern</a></li>
+<li class="chapter" data-level="5.1.3" data-path="chap5.html"><a href="chap5.html#vergleich-liste-versus-vektor"><i class="fa fa-check"></i><b>5.1.3</b> Vergleich: Liste versus Vektor</a></li>
+<li class="chapter" data-level="5.1.4" data-path="chap5.html"><a href="chap5.html#lapply-und-sapply"><i class="fa fa-check"></i><b>5.1.4</b> <code>lapply()</code> und <code>sapply()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="chap5.html"><a href="chap5.html#factor"><i class="fa fa-check"></i><b>5.2</b> Factor</a></li>
+<li class="chapter" data-level="5.3" data-path="chap5.html"><a href="chap5.html#data-frame"><i class="fa fa-check"></i><b>5.3</b> Data Frame</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="chap5.html"><a href="chap5.html#data-frame-erzeugen"><i class="fa fa-check"></i><b>5.3.1</b> Data Frame erzeugen</a></li>
+<li class="chapter" data-level="5.3.2" data-path="chap5.html"><a href="chap5.html#der-indexoperator"><i class="fa fa-check"></i><b>5.3.2</b> Der Indexoperator</a></li>
+<li class="chapter" data-level="5.3.3" data-path="chap5.html"><a href="chap5.html#apply-1"><i class="fa fa-check"></i><b>5.3.3</b> <code>apply()</code></a></li>
+<li class="chapter" data-level="5.3.4" data-path="chap5.html"><a href="chap5.html#filtern-einfügen-und-löschen"><i class="fa fa-check"></i><b>5.3.4</b> Filtern, Einfügen und Löschen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#übungen---teil-1"><i class="fa fa-check"></i>Übungen - Teil 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-1-3"><i class="fa fa-check"></i>Aufgabe 1</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-2-3"><i class="fa fa-check"></i>Aufgabe 2</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-3-3"><i class="fa fa-check"></i>Aufgabe 3</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-4-3"><i class="fa fa-check"></i>Aufgabe 4</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-5-3"><i class="fa fa-check"></i>Aufgabe 5</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-6-3"><i class="fa fa-check"></i>Aufgabe 6</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-7-2"><i class="fa fa-check"></i>Aufgabe 7</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-8-2"><i class="fa fa-check"></i>Aufgabe 8</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-9-1"><i class="fa fa-check"></i>Aufgabe 9</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-10-1"><i class="fa fa-check"></i>Aufgabe 10</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#übungen---teil-2"><i class="fa fa-check"></i>Übungen - Teil 2</a>
+<ul>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-11-1"><i class="fa fa-check"></i>Aufgabe 11</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-12-1"><i class="fa fa-check"></i>Aufgabe 12</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#aufgabe-13-1"><i class="fa fa-check"></i>Aufgabe 13</a></li>
+<li class="chapter" data-level="" data-path="chap5.html"><a href="chap5.html#kurzzusammenfassung-3"><i class="fa fa-check"></i>Kurzzusammenfassung</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Datenvisualisierung mit <code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#erste-beispiele"><i class="fa fa-check"></i><b>6.1</b> Erste Beispiele</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-festlegen"><i class="fa fa-check"></i><b>6.1.1</b> Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen</a></li>
+<li class="chapter" data-level="6.1.2" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#beispiel-ästhetische-eigenschaften-aesthetic-für-geom_point"><i class="fa fa-check"></i><b>6.1.2</b> Beispiel: Ästhetische Eigenschaften (aesthetic) für <code>geom_point()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#statistische-transformation"><i class="fa fa-check"></i><b>6.2</b> Statistische Transformation</a></li>
+<li class="chapter" data-level="" data-path="datenvisualisierung-mit-ggplot2.html"><a href="datenvisualisierung-mit-ggplot2.html#übungen-4"><i class="fa fa-check"></i>Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>7</b> Data Transformation</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="data-transformation.html"><a href="data-transformation.html#der-datensatz-flights"><i class="fa fa-check"></i><b>7.1</b> Der Datensatz <code>flights</code></a></li>
+<li class="chapter" data-level="7.2" data-path="data-transformation.html"><a href="data-transformation.html#dplyr-grundlagen"><i class="fa fa-check"></i><b>7.2</b> <code>dplyr</code>-Grundlagen</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="data-transformation.html"><a href="data-transformation.html#filter-zeilen-auswählen"><i class="fa fa-check"></i><b>7.2.1</b> <code>filter()</code>: Zeilen auswählen</a></li>
+<li class="chapter" data-level="7.2.2" data-path="data-transformation.html"><a href="data-transformation.html#arrange-nach-spalten-sortieren"><i class="fa fa-check"></i><b>7.2.2</b> <code>arrange()</code>: nach Spalten sortieren</a></li>
+<li class="chapter" data-level="7.2.3" data-path="data-transformation.html"><a href="data-transformation.html#select-spalten-auswählen"><i class="fa fa-check"></i><b>7.2.3</b> <code>select()</code>: Spalten auswählen</a></li>
+<li class="chapter" data-level="7.2.4" data-path="data-transformation.html"><a href="data-transformation.html#mutate-neue-spalten-erzeugen"><i class="fa fa-check"></i><b>7.2.4</b> <code>mutate()</code>: neue Spalten erzeugen</a></li>
+<li class="chapter" data-level="7.2.5" data-path="data-transformation.html"><a href="data-transformation.html#summarize-spalten-verdichten"><i class="fa fa-check"></i><b>7.2.5</b> <code>summarize()</code>: Spalten verdichten</a></li>
+<li class="chapter" data-level="7.2.6" data-path="data-transformation.html"><a href="data-transformation.html#der-pipe-operator"><i class="fa fa-check"></i><b>7.2.6</b> Der Pipe-Operator <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="7.2.7" data-path="data-transformation.html"><a href="data-transformation.html#gruppierungen-mit-group_by"><i class="fa fa-check"></i><b>7.2.7</b> Gruppierungen mit <code>group_by()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data-transformation.html"><a href="data-transformation.html#übungen-5"><i class="fa fa-check"></i>Übungen</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html"><i class="fa fa-check"></i><b>8</b> Spezielle Themen und Fallstudien</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-1---boxplots-und-mnist-daten"><i class="fa fa-check"></i><b>8.1</b> Fallstudie 1 - Boxplots und MNIST-Daten</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#boxplots"><i class="fa fa-check"></i><b>8.1.1</b> Boxplots</a></li>
+<li class="chapter" data-level="8.1.2" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#mnist-bilddaten"><i class="fa fa-check"></i><b>8.1.2</b> MNIST-Bilddaten</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-2---zeichenketten"><i class="fa fa-check"></i><b>8.2</b> Fallstudie 2 - Zeichenketten</a></li>
+<li class="chapter" data-level="8.3" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-3-visualisierung-mit-ggplot2-ggplot2"><i class="fa fa-check"></i><b>8.3</b> Fallstudie 3: Visualisierung mit <code>ggplot2</code> <span class="citation">(<span>Wickham 2016</span>)</span></a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#wahrscheinlichkeitsverteilungen-in-r"><i class="fa fa-check"></i><b>8.3.1</b> Wahrscheinlichkeitsverteilungen in R</a></li>
+<li class="chapter" data-level="8.3.2" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#funktionsplot"><i class="fa fa-check"></i><b>8.3.2</b> Funktionsplot</a></li>
+<li class="chapter" data-level="8.3.3" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#histogramme"><i class="fa fa-check"></i><b>8.3.3</b> Histogramme</a></li>
+<li class="chapter" data-level="8.3.4" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#zentraler-grenzwertsatz"><i class="fa fa-check"></i><b>8.3.4</b> Zentraler Grenzwertsatz</a></li>
+<li class="chapter" data-level="8.3.5" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#quantilplot"><i class="fa fa-check"></i><b>8.3.5</b> Quantilplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-4-datenimport--manipulation-und--speicherung"><i class="fa fa-check"></i><b>8.4</b> Fallstudie 4: Datenimport, -manipulation und -speicherung</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#aufgabe-1-4"><i class="fa fa-check"></i><b>8.4.1</b> Aufgabe 1</a></li>
+<li class="chapter" data-level="8.4.2" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#aufgabe-2-4"><i class="fa fa-check"></i><b>8.4.2</b> Aufgabe 2</a></li>
+<li class="chapter" data-level="8.4.3" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#aufgabe-3-4"><i class="fa fa-check"></i><b>8.4.3</b> Aufgabe 3</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-5-shapiro-wilk-test-und-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>8.5</b> Fallstudie 5: Shapiro-Wilk-Test und Kolmogorov-Smirnov-Test</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#shapiro-wilk-test"><i class="fa fa-check"></i><b>8.5.1</b> Shapiro-Wilk-Test</a></li>
+<li class="chapter" data-level="8.5.2" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#funktionen-zur-mehrfachen-wiederholung-des-shapiro-wilk-tests"><i class="fa fa-check"></i><b>8.5.2</b> Funktionen zur mehrfachen Wiederholung des Shapiro-Wilk-Tests</a></li>
+<li class="chapter" data-level="8.5.3" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#testgüte-des-shapiro-wilk-tests-bei-gleichverteilung"><i class="fa fa-check"></i><b>8.5.3</b> Testgüte des Shapiro-Wilk-Tests bei Gleichverteilung</a></li>
+<li class="chapter" data-level="8.5.4" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#vergleich-mit-dem-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>8.5.4</b> Vergleich mit dem Kolmogorov-Smirnov-Test</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#fallstudie-6-datenanalyse"><i class="fa fa-check"></i><b>8.6</b> Fallstudie 6: Datenanalyse</a>
+<ul>
+<li class="chapter" data-level="8.6.1" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#datenanalyse-der-x--y--und-z-werte"><i class="fa fa-check"></i><b>8.6.1</b> Datenanalyse der <code>x</code>-, <code>y</code>- und <code>z</code>-Werte</a></li>
+<li class="chapter" data-level="8.6.2" data-path="spezielle-themen-und-fallstudien.html"><a href="spezielle-themen-und-fallstudien.html#allgemeiner-überblick"><i class="fa fa-check"></i><b>8.6.2</b> Allgemeiner Überblick</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="prüfungsleistungen.html"><a href="prüfungsleistungen.html"><i class="fa fa-check"></i>Prüfungsleistungen</a>
+<ul>
+<li class="chapter" data-level="8.7" data-path="prüfungsleistungen.html"><a href="prüfungsleistungen.html#übungsblätter"><i class="fa fa-check"></i><b>8.7</b> Übungsblätter</a></li>
+<li class="chapter" data-level="8.8" data-path="prüfungsleistungen.html"><a href="prüfungsleistungen.html#implementierungsaufgabe"><i class="fa fa-check"></i><b>8.8</b> Implementierungsaufgabe</a></li>
+</ul></li>
+<li class="part"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="" data-path="system-info.html"><a href="system-info.html"><i class="fa fa-check"></i>System Info</a></li>
+<li class="divider"></li>
+<li><a href="http://www.bchwtz.de" target="blank"><center>www.<b>BCHWTZ</b>.de</center></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Programming</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-transformation" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Data Transformation<a href="data-transformation.html#data-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Parallel zu diesem Kapitel sollen Sie das Kapitel „5 Data transformation“ aus <em>„R for Data Sciences“</em> [R4DS] durcharbeiten, das sich mit dem dplyr -Paket auseinandersetzt, einer weiteren Kernkomponente der <code>tidyverse</code>-Welt.</p>
+<p>Im Folgenden setzen wir voraus:</p>
+<div class="sourceCode" id="cb871"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb871-1"><a href="data-transformation.html#cb871-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<p>Dadurch werden die folgenden Pakete (packages) geladen:
+<code>ggplot2</code>, <code>purrr</code>, <code>tibble</code>, <code>dplyr</code>, <code>tidyr</code>, <code>stringr</code>, <code>readr</code>, <code>forcats</code>.</p>
+<p>In diesem Kapitel wollen wir mit der großen Datensammlung <code>flights</code> arbeiten, die im <code>nycflights13</code>-Paket enthalten ist; daher setzen wir zusätzlich voraus:</p>
+<div class="sourceCode" id="cb872"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb872-1"><a href="data-transformation.html#cb872-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span></code></pre></div>
+<div id="der-datensatz-flights" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Der Datensatz <code>flights</code><a href="data-transformation.html#der-datensatz-flights" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Der Datensatz <code>flights</code> beschreibt alle Flüge, die 2013 von einem der drei New Yorker Flughäfen (JFK, LGA or EWR) gestartet sind.</p>
+<div class="sourceCode" id="cb873"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb873-1"><a href="data-transformation.html#cb873-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(flights)</span></code></pre></div>
+<pre><code>## tibble [336,776 × 19] (S3: tbl_df/tbl/data.frame)
+##  $ year          : int [1:336776] 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 ...
+##  $ month         : int [1:336776] 1 1 1 1 1 1 1 1 1 1 ...
+##  $ day           : int [1:336776] 1 1 1 1 1 1 1 1 1 1 ...
+##  $ dep_time      : int [1:336776] 517 533 542 544 554 554 555 557 557 558 ...
+##  $ sched_dep_time: int [1:336776] 515 529 540 545 600 558 600 600 600 600 ...
+##  $ dep_delay     : num [1:336776] 2 4 2 -1 -6 -4 -5 -3 -3 -2 ...
+##  $ arr_time      : int [1:336776] 830 850 923 1004 812 740 913 709 838 753 ...
+##  $ sched_arr_time: int [1:336776] 819 830 850 1022 837 728 854 723 846 745 ...
+##  $ arr_delay     : num [1:336776] 11 20 33 -18 -25 12 19 -14 -8 8 ...
+##  $ carrier       : chr [1:336776] &quot;UA&quot; &quot;UA&quot; &quot;AA&quot; &quot;B6&quot; ...
+##  $ flight        : int [1:336776] 1545 1714 1141 725 461 1696 507 5708 79 301 ...
+##  $ tailnum       : chr [1:336776] &quot;N14228&quot; &quot;N24211&quot; &quot;N619AA&quot; &quot;N804JB&quot; ...
+##  $ origin        : chr [1:336776] &quot;EWR&quot; &quot;LGA&quot; &quot;JFK&quot; &quot;JFK&quot; ...
+##  $ dest          : chr [1:336776] &quot;IAH&quot; &quot;IAH&quot; &quot;MIA&quot; &quot;BQN&quot; ...
+##  $ air_time      : num [1:336776] 227 227 160 183 116 150 158 53 140 138 ...
+##  $ distance      : num [1:336776] 1400 1416 1089 1576 762 ...
+##  $ hour          : num [1:336776] 5 5 5 5 6 5 6 6 6 6 ...
+##  $ minute        : num [1:336776] 15 29 40 45 0 58 0 0 0 0 ...
+##  $ time_hour     : POSIXct[1:336776], format: &quot;2013-01-01 10:00:00&quot; &quot;2013-01-01 10:00:00&quot; ...</code></pre>
+<p>Der Datensatz <code>flights</code> ist ein „<em>Tibble</em>“. Ein Tibble ist ein leicht angepasster Data Frame, der besser mit <code>tidyverse</code> zusammenarbeitet. Im Vergleich zu einem Data Frame ist bei einem Tibble die Ausgabe eines großen Datensatzes viel besser gelöst. Auch ist der Zugriff auf Teilbereiche der Daten mit Tibbles konsistenter und strenger: mehr Warnungen werden ausgegeben, wenn angesprochene Spalten nicht existieren. Im Gegensatz zu einem Data Frame wird bei der Erzeugung eines Tibbles nicht automatisch ein <code>character</code>-Vektor in einen Faktor umgewandelt.</p>
+<p>Mithilfe von <code>as_tibble()</code> kann ein Data Frame leicht in einen Tibble umgewandelt werden. Ein Tibble kann auch direkt mit <code>tibble()</code> erzeugt werden. Auf Tibbles werden wir später zurückkommen.</p>
+<p>Die Ausgabe des Tibbles <code>flights</code> ist in der Tat recht übersichtlich:</p>
+<div class="sourceCode" id="cb875"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb875-1"><a href="data-transformation.html#cb875-1" aria-hidden="true" tabindex="-1"></a>flights</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+##  1  2013     1     1      517        515       2     830     819      11 UA     
+##  2  2013     1     1      533        529       4     850     830      20 UA     
+##  3  2013     1     1      542        540       2     923     850      33 AA     
+##  4  2013     1     1      544        545      -1    1004    1022     -18 B6     
+##  5  2013     1     1      554        600      -6     812     837     -25 DL     
+##  6  2013     1     1      554        558      -4     740     728      12 UA     
+##  7  2013     1     1      555        600      -5     913     854      19 B6     
+##  8  2013     1     1      557        600      -3     709     723     -14 EV     
+##  9  2013     1     1      557        600      -3     838     846      -8 B6     
+## 10  2013     1     1      558        600      -2     753     745       8 AA     
+## # … with 336,766 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names
+## #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay
+## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
+<p><code>flights</code> beschreibt also 336 776 Flüge mithilfe 19 Variablen.</p>
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-317">Table 7.1: </span>Variablen des Datensatzes <code>flights</code>.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+year, month, day
+</td>
+<td style="text-align:left;">
+Date of departure.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dep_time, arr_time
+</td>
+<td style="text-align:left;">
+Actual departure and arrival times (format HHMM or HMM), local tz.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sched_dep_time, sched_arr_time
+</td>
+<td style="text-align:left;">
+Scheduled departure and arrival times (format HHMM or HMM), local tz.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dep_delay, arr_dely
+</td>
+<td style="text-align:left;">
+Departure and arrival delays, in minutes. Negative times represent early departures/arrivals.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+carrier
+</td>
+<td style="text-align:left;">
+Two letter carrier abbreviation. See airlines to get name.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+flight
+</td>
+<td style="text-align:left;">
+Flight number.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tailnum
+</td>
+<td style="text-align:left;">
+Plane tail number. See planes for additional metadata.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+origin, dest
+</td>
+<td style="text-align:left;">
+Origin and destination. See airports for additional metadata.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+air_time
+</td>
+<td style="text-align:left;">
+Amount of time spent in the air, in minutes.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+distance
+</td>
+<td style="text-align:left;">
+Distance between airports, in miles.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hour, minute
+</td>
+<td style="text-align:left;">
+Time of scheduled departure broken into hour and minutes.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+time_hour
+</td>
+<td style="text-align:left;">
+Scheduled date and hour of the flight as a POSIXct date. Along with
+origin, can be used to join flights data to weather data.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="dplyr-grundlagen" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> <code>dplyr</code>-Grundlagen<a href="data-transformation.html#dplyr-grundlagen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In <code>dplyr</code> gibt es fünf Schlüsselfunktionen , die jeweils ein Tibble (bzw. ein Data Frame) als erstes Element erwarten und als Resultat ein Tibble (bzw. ein Data Frame) zurückgeben.</p>
+
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-318"></span>
+<img src="gfx/chap_7.2_juergen_willms.PNG" alt="Schlüsselfunktionen in dplyr." width="100%" />
+<p class="caption">
+Figure 7.1: Schlüsselfunktionen in <code>dplyr</code>.
+</p>
+</div>
+<p>Daneben gibt es noch Variationen dieser fünf Schlüsselfunktionen wie <code>rename()</code> oder <code>transmute()</code>. Viele dieser Funktionen berücksichtigen Gruppierungen, die mit der Funktion <code>group_by()</code> erstellt werden können. Anstatt auf dem gesamten Datensatz zu arbeiten, operieren sie dann auf den erstellten Gruppen. Dies wird insbesondere mit der Funktion <code>summarize()</code> häufig ausgenutzt. Wir werden hierauf weiter unten eingehen.</p>
+<div id="filter-zeilen-auswählen" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> <code>filter()</code>: Zeilen auswählen<a href="data-transformation.html#filter-zeilen-auswählen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-319"></span>
+<img src="gfx/chap_7.2.1_filter.PNG" alt="Funktion filter() des R-Pakets dplyr." width="100%" />
+<p class="caption">
+Figure 7.2: Funktion <code>filter()</code> des R-Pakets <code>dplyr</code>.
+</p>
+</div>
+<p>Mit <code>filter()</code> können gemäß einer Filterbedingung bestimmte Zeilen ausgewählt werden. Meh-rere Filterbedingungen werden dabei logisch mit „Und“ (also mit <code>&amp;</code>) verknüpft.</p>
+<p><code>filter()</code> gibt:</p>
+<ul>
+<li><p>komplette Datenzeilen zurück</p></li>
+<li><p>nur Datenzeilen zurück, bei denen die Filterbedingung wahr ist; NA-Werte werden ausge-schlossen, es sei denn, sie tauchen explizit in der Filterbedingung auf.</p></li>
+</ul>
+<p><strong>Beispiele</strong></p>
+<div class="sourceCode" id="cb877"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb877-1"><a href="data-transformation.html#cb877-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb877-2"><a href="data-transformation.html#cb877-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> <span class="at">month =</span> <span class="dv">12</span>)</span>
+<span id="cb877-3"><a href="data-transformation.html#cb877-3" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>))</span></code></pre></div>
+<p><strong>Hinweis:</strong></p>
+<p>Der Operator <code>&amp;&amp;</code> bezieht sich bei Vektoren nur auf das erste Element; bei Vektoren sollte man statt <code>&amp;&amp;</code> den Operator <code>&amp;</code> benutzen! Ähnliches gilt für die Operatoren <code>||</code> und <code>|</code> (siehe z. B. <code>?‘&amp;‘</code>).</p>
+</div>
+<div id="arrange-nach-spalten-sortieren" class="section level3 hasAnchor" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> <code>arrange()</code>: nach Spalten sortieren<a href="data-transformation.html#arrange-nach-spalten-sortieren" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-321"></span>
+<img src="gfx/chap_7.2.2_arrange.PNG" alt="Funktion arrange() des R-Pakets dplyr." width="100%" />
+<p class="caption">
+Figure 7.3: Funktion <code>arrange()</code> des R-Pakets <code>dplyr</code>.
+</p>
+</div>
+<p>Mit <code>arrange()</code> kann nach Spalten sortiert werden. Mithilfe der Funktion <code>desc()</code> kann in absteigender Reihenfolge sortiert werden.</p>
+<p><strong>Beispiele</strong></p>
+<div class="sourceCode" id="cb878"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb878-1"><a href="data-transformation.html#cb878-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, year, month, day)</span>
+<span id="cb878-2"><a href="data-transformation.html#cb878-2" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="fu">desc</span>(dep_delay))</span></code></pre></div>
+</div>
+<div id="select-spalten-auswählen" class="section level3 hasAnchor" number="7.2.3">
+<h3><span class="header-section-number">7.2.3</span> <code>select()</code>: Spalten auswählen<a href="data-transformation.html#select-spalten-auswählen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-323"></span>
+<img src="gfx/chap_7.2.3_select.PNG" alt="Funktion select() des R-Pakets dplyr." width="100%" />
+<p class="caption">
+Figure 7.4: Funktion <code>select()</code> des R-Pakets <code>dplyr</code>.
+</p>
+</div>
+<p>Mit <code>select()</code> wird der Datensatz reduziert, indem nur bestimmte Spalten ausgewählt werden.</p>
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-324">Table 7.2: </span>Nützliche Hilfsfunktionen.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+starts_with(‘abc’)
+</td>
+<td style="text-align:left;">
+sucht nach Namen, die mit „abc“ beginnen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ends_with(‘xyz’)
+</td>
+<td style="text-align:left;">
+sucht nach Namen, die mit „xyz“ beginnen
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+contains(‘ijk’)
+</td>
+<td style="text-align:left;">
+sucht nach Namen, die „ijk“ enthalten
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+everything()
+</td>
+<td style="text-align:left;">
+Alle Variablen
+</td>
+</tr>
+</tbody>
+</table>
+<p>Um Spaltennamen zu ändern, sollte die Funktion <code>rename()</code> benutzt werden.</p>
+<p><strong>Beispiele</strong></p>
+<div class="sourceCode" id="cb879"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb879-1"><a href="data-transformation.html#cb879-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span>
+<span id="cb879-2"><a href="data-transformation.html#cb879-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, year<span class="sc">:</span>day)</span>
+<span id="cb879-3"><a href="data-transformation.html#cb879-3" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="sc">-</span>(year<span class="sc">:</span>day))</span>
+<span id="cb879-4"><a href="data-transformation.html#cb879-4" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span>
+<span id="cb879-5"><a href="data-transformation.html#cb879-5" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, year<span class="sc">:</span>day)</span>
+<span id="cb879-6"><a href="data-transformation.html#cb879-6" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="sc">-</span>(year<span class="sc">:</span>day))</span>
+<span id="cb879-7"><a href="data-transformation.html#cb879-7" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">starts_with</span>(<span class="st">&quot;dep&quot;</span>))</span>
+<span id="cb879-8"><a href="data-transformation.html#cb879-8" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">ends_with</span>(<span class="st">&quot;time&quot;</span>))</span>
+<span id="cb879-9"><a href="data-transformation.html#cb879-9" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">contains</span>(<span class="st">&quot;dep&quot;</span>))</span>
+<span id="cb879-10"><a href="data-transformation.html#cb879-10" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, time_hour, air_time, <span class="fu">everything</span>())</span></code></pre></div>
+</div>
+<div id="mutate-neue-spalten-erzeugen" class="section level3 hasAnchor" number="7.2.4">
+<h3><span class="header-section-number">7.2.4</span> <code>mutate()</code>: neue Spalten erzeugen<a href="data-transformation.html#mutate-neue-spalten-erzeugen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-326"></span>
+<img src="gfx/chap_7.2.4_mutate.PNG" alt="Funktion mutate() des R-Pakets dplyr." width="100%" />
+<p class="caption">
+Figure 7.5: Funktion <code>mutate()</code> des R-Pakets <code>dplyr</code>.
+</p>
+</div>
+<p>Mit <code>mutate()</code> wird der Datensatz durch neue Spalten erweitert, die aus bestehenden Variablen erzeugt werden. Bei Namensgleichheit werden bereits existierende Variablen überschrieben. <code>transmute()</code> lässt zusätzlich alle nicht genannten Spalten weg.</p>
+<p><strong>Beispiele</strong></p>
+<div class="sourceCode" id="cb880"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb880-1"><a href="data-transformation.html#cb880-1" aria-hidden="true" tabindex="-1"></a>(flights_sml <span class="ot">&lt;-</span> <span class="fu">select</span>(flights, year<span class="sc">:</span>day, <span class="fu">ends_with</span>(<span class="st">&quot;delay&quot;</span>), distance, air_time))</span>
+<span id="cb880-2"><a href="data-transformation.html#cb880-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(flights_sml, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay, <span class="at">speed =</span> distance <span class="sc">/</span> air_time <span class="sc">*</span> <span class="dv">60</span>)</span>
+<span id="cb880-3"><a href="data-transformation.html#cb880-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(flights_sml, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay, <span class="at">hours =</span> air_time <span class="sc">/</span> <span class="dv">60</span>, </span>
+<span id="cb880-4"><a href="data-transformation.html#cb880-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">gain_per_hour =</span> gain <span class="sc">/</span> hours)   </span>
+<span id="cb880-5"><a href="data-transformation.html#cb880-5" aria-hidden="true" tabindex="-1"></a><span class="fu">transmute</span>(flights, year, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay,<span class="at">hours =</span> air_time <span class="sc">/</span> <span class="dv">60</span>, <span class="at">gain_per_hour =</span> gain <span class="sc">/</span> hours) </span></code></pre></div>
+</div>
+<div id="summarize-spalten-verdichten" class="section level3 hasAnchor" number="7.2.5">
+<h3><span class="header-section-number">7.2.5</span> <code>summarize()</code>: Spalten verdichten<a href="data-transformation.html#summarize-spalten-verdichten" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-328"></span>
+<img src="gfx/chap_7.2.5_summarize.PNG" alt="Funktion summarize() des R-Pakets dplyr." width="100%" />
+<p class="caption">
+Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
+</p>
+</div>
+<p>Mit <code>summarize()</code> kann ein Datensatz auf eine einzelne Zeile reduziert werden, indem ausge-wählte Spalten verdichtet werden. <code>summarise()</code> und <code>summarize()</code> sind Synonyme.</p>
+<p><strong>Beispiele</strong></p>
+<div class="sourceCode" id="cb881"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb881-1"><a href="data-transformation.html#cb881-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(flights, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb881-2"><a href="data-transformation.html#cb881-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(flights, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb881-3"><a href="data-transformation.html#cb881-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<p><code>summarize()</code> wird sehr häufig im Zusammenspiel mit <code>group_by()</code> verwendet. Wir werden weiter untern hierauf detaillierter eingehen.</p>
+</div>
+<div id="der-pipe-operator" class="section level3 hasAnchor" number="7.2.6">
+<h3><span class="header-section-number">7.2.6</span> Der Pipe-Operator <code>%&gt;%</code><a href="data-transformation.html#der-pipe-operator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Der Pipe-Operator <code>%&gt;%</code> ist nicht Bestandteil von Base-R; er wird durch das <code>tidyverse</code>-Paket automatisch eingeführt und spielt in der <code>tidyverse</code>-Welt eine wichtige Rolle.</p>
+<p>Allgemein gilt, dass</p>
+<div class="sourceCode" id="cb882"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb882-1"><a href="data-transformation.html#cb882-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">%&gt;%</span> <span class="fu">f</span>(y)</span></code></pre></div>
+<p>äquivalent ist zu</p>
+<div class="sourceCode" id="cb883"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb883-1"><a href="data-transformation.html#cb883-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f</span>(x, y)</span></code></pre></div>
+<p>Folglich entspricht:</p>
+<div class="sourceCode" id="cb884"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb884-1"><a href="data-transformation.html#cb884-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">%&gt;%</span> <span class="fu">f</span>(y) <span class="sc">%&gt;%</span> <span class="fu">g</span>(z) </span></code></pre></div>
+<p>dem Ausdruck:</p>
+<div class="sourceCode" id="cb885"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb885-1"><a href="data-transformation.html#cb885-1" aria-hidden="true" tabindex="-1"></a><span class="fu">g</span>(<span class="fu">f</span>(x, y), z)</span></code></pre></div>
+<p>Als Beispiel wollen wir die Ausgabe der Funktion <code>sd()</code> auf drei verschiedene Arten nachrechnen. Dazu wollen wir die folgenden drei Funktionen nutzen:</p>
+<div class="sourceCode" id="cb886"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb886-1"><a href="data-transformation.html#cb886-1" aria-hidden="true" tabindex="-1"></a>potenz <span class="ot">&lt;-</span> <span class="cf">function</span>(x,n) <span class="fu">return</span>(x<span class="sc">^</span>n)</span>
+<span id="cb886-2"><a href="data-transformation.html#cb886-2" aria-hidden="true" tabindex="-1"></a>zentriere <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">return</span>(x <span class="sc">-</span> <span class="fu">mean</span>(x))</span>
+<span id="cb886-3"><a href="data-transformation.html#cb886-3" aria-hidden="true" tabindex="-1"></a>mittel <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">return</span>( <span class="fu">sum</span>(x)<span class="sc">/</span> (<span class="fu">length</span>(x)<span class="sc">-</span><span class="dv">1</span>)) <span class="co"># Precondition: length(x) &gt; 1</span></span></code></pre></div>
+<p>Es gilt:</p>
+<div class="sourceCode" id="cb887"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb887-1"><a href="data-transformation.html#cb887-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb887-2"><a href="data-transformation.html#cb887-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(d)</span></code></pre></div>
+<pre><code>## [1] 3.02765</code></pre>
+<p>In unserer ersten Variante rufen wir die Funktionen geschachtelt auf:</p>
+<div class="sourceCode" id="cb889"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb889-1"><a href="data-transformation.html#cb889-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mittel</span>(<span class="fu">potenz</span>(<span class="fu">zentriere</span>(d),<span class="dv">2</span>)))</span></code></pre></div>
+<pre><code>## [1] 3.02765</code></pre>
+<p>In der zweiten Variante gehen wir schrittweise vor:</p>
+<div class="sourceCode" id="cb891"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb891-1"><a href="data-transformation.html#cb891-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">zentriere</span>(d)</span>
+<span id="cb891-2"><a href="data-transformation.html#cb891-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">potenz</span>(res,<span class="dv">2</span>)</span>
+<span id="cb891-3"><a href="data-transformation.html#cb891-3" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">mittel</span>(res)</span>
+<span id="cb891-4"><a href="data-transformation.html#cb891-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(res)</span>
+<span id="cb891-5"><a href="data-transformation.html#cb891-5" aria-hidden="true" tabindex="-1"></a>res</span></code></pre></div>
+<pre><code>## [1] 3.02765</code></pre>
+<p>In der dritten Variante nutzen wir schließlich den Pipe-Mechanismus (ersetzt allerdings voraus, dass Base-R durch ein Paket wie <code>tidyverse</code> erweitert worden ist):</p>
+<div class="sourceCode" id="cb893"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb893-1"><a href="data-transformation.html#cb893-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb893-2"><a href="data-transformation.html#cb893-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zentriere</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb893-3"><a href="data-transformation.html#cb893-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">potenz</span>(<span class="dv">2</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb893-4"><a href="data-transformation.html#cb893-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mittel</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb893-5"><a href="data-transformation.html#cb893-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>()  </span></code></pre></div>
+<pre><code>## [1] 3.02765</code></pre>
+<p>In komplexen Situationen kann der Pipe-Mechanismus die Lesbarkeit des Quelltextes deutlich erhöhen. Insbesondere in der <code>tidyverse</code>-Welt wird hiervon viel Gebrauch gemacht. Eine Ausnahme bildet <code>ggplot2</code>: es benutzt das gleiche Prinzip, nur wird dort leider <code>+</code> statt <code>%&gt;%</code> benutzt!</p>
+</div>
+<div id="gruppierungen-mit-group_by" class="section level3 hasAnchor" number="7.2.7">
+<h3><span class="header-section-number">7.2.7</span> Gruppierungen mit <code>group_by()</code><a href="data-transformation.html#gruppierungen-mit-group_by" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Die Funktion <code>group_by()</code> und ihr Gegenstück <code>ungroup()</code> ist für sich aus gesehen nicht besonders nützlich. Erst im Zusammenspiel mit Funktionen wie <code>summarize()</code>, die die erstellten Gruppierungen berücksichtigen, entfalten sie ihr Potential. Wir wollen dies an einem Beispiel verdeut-lichen. Aus Gründen der Übersichtlichkeit wollen wir hierbei nur einen Teil des Datensatzes <code>flights</code> benutzen:</p>
+<div class="sourceCode" id="cb895"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb895-1"><a href="data-transformation.html#cb895-1" aria-hidden="true" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> <span class="fu">select</span>(flights, month, day, <span class="fu">contains</span>(<span class="st">&quot;delay&quot;</span>))</span>
+<span id="cb895-2"><a href="data-transformation.html#cb895-2" aria-hidden="true" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> <span class="fu">filter</span>(fluege, <span class="sc">!</span><span class="fu">is.na</span>(arr_delay), <span class="sc">!</span><span class="fu">is.na</span>(dep_delay))</span>
+<span id="cb895-3"><a href="data-transformation.html#cb895-3" aria-hidden="true" tabindex="-1"></a>fluege</span></code></pre></div>
+<pre><code>## # A tibble: 327,346 × 4
+##    month   day dep_delay arr_delay
+##    &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1     1     1         2        11
+##  2     1     1         4        20
+##  3     1     1         2        33
+##  4     1     1        -1       -18
+##  5     1     1        -6       -25
+##  6     1     1        -4        12
+##  7     1     1        -5        19
+##  8     1     1        -3       -14
+##  9     1     1        -3        -8
+## 10     1     1        -2         8
+## # … with 327,336 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>Durch die beiden Filterbedingungen <code>!is.na(arr_delay)</code> und <code>!is.na(dep_delay)</code> schließen wir NA-Werte bei den Verspätungen aus.</p>
+<p>Mithilfe des Pipe-Operators können wir stattdessen auch alternativ schreiben:</p>
+<div class="sourceCode" id="cb897"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb897-1"><a href="data-transformation.html#cb897-1" aria-hidden="true" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb897-2"><a href="data-transformation.html#cb897-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(month, day, <span class="fu">contains</span>(<span class="st">&quot;delay&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb897-3"><a href="data-transformation.html#cb897-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(arr_delay), <span class="sc">!</span><span class="fu">is.na</span>(dep_delay))</span></code></pre></div>
+<p>Als Nächstes wollen wir die Funktion <code>group_by()</code> auf <code>fluege</code> anwenden:</p>
+<div class="sourceCode" id="cb898"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb898-1"><a href="data-transformation.html#cb898-1" aria-hidden="true" tabindex="-1"></a>fluege_month <span class="ot">&lt;-</span> <span class="fu">group_by</span>(fluege, month)</span>
+<span id="cb898-2"><a href="data-transformation.html#cb898-2" aria-hidden="true" tabindex="-1"></a>fluege_month</span></code></pre></div>
+<pre><code>## # A tibble: 327,346 × 4
+## # Groups:   month [12]
+##    month   day dep_delay arr_delay
+##    &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1     1     1         2        11
+##  2     1     1         4        20
+##  3     1     1         2        33
+##  4     1     1        -1       -18
+##  5     1     1        -6       -25
+##  6     1     1        -4        12
+##  7     1     1        -5        19
+##  8     1     1        -3       -14
+##  9     1     1        -3        -8
+## 10     1     1        -2         8
+## # … with 327,336 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>Wie man sieht, ist jetzt eine Gruppierung hinzugekommen, bestehend aus 12 Gruppen. Funktionen wie <code>summarize()</code> berücksichtigen diese Gruppierung:</p>
+<div class="sourceCode" id="cb900"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb900-1"><a href="data-transformation.html#cb900-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(fluege, <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   delay
+##   &lt;dbl&gt;
+## 1  6.90</code></pre>
+<div class="sourceCode" id="cb902"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb902-1"><a href="data-transformation.html#cb902-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(fluege_month, <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
+<pre><code>## # A tibble: 12 × 2
+##    month  delay
+##    &lt;int&gt;  &lt;dbl&gt;
+##  1     1  6.13 
+##  2     2  5.61 
+##  3     3  5.81 
+##  4     4 11.2  
+##  5     5  3.52 
+##  6     6 16.5  
+##  7     7 16.7  
+##  8     8  6.04 
+##  9     9 -4.02 
+## 10    10 -0.167
+## 11    11  0.461
+## 12    12 14.9</code></pre>
+<p><code>summarize()</code> berücksichtigt die Gruppierung in <code>fluege_month</code>: die Mittelwerte werden nun pro Monat berechnet. Da hingegen <code>fluege</code> keine Gruppierung besitzt, wird im ersten Aufruf
+<code>summarize(fluege, delay = mean(arr_delay))</code> der Mittelwert über alle Daten berechnet.</p>
+<p>Mit <code>ungroup()</code> kann die Gruppierung wieder rückgängig gemacht werden:</p>
+<div class="sourceCode" id="cb904"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb904-1"><a href="data-transformation.html#cb904-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(<span class="fu">ungroup</span>(fluege_month), <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   delay
+##   &lt;dbl&gt;
+## 1  6.90</code></pre>
+<p>Möglich sind auch Gruppierungen nach mehreren Variablen. Dies zeigt das nächste Beispiel:</p>
+<div class="sourceCode" id="cb906"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb906-1"><a href="data-transformation.html#cb906-1" aria-hidden="true" tabindex="-1"></a>fluege_monthDay <span class="ot">&lt;-</span> <span class="fu">group_by</span>(fluege, month, day)</span>
+<span id="cb906-2"><a href="data-transformation.html#cb906-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(fluege_monthDay, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;month&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 3
+## # Groups:   month [12]
+##    month   day delay
+##    &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+##  1     1     1 11.4 
+##  2     1     2 13.7 
+##  3     1     3 10.9 
+##  4     1     4  8.97
+##  5     1     5  5.73
+##  6     1     6  7.15
+##  7     1     7  5.42
+##  8     1     8  2.56
+##  9     1     9  2.30
+## 10     1    10  2.84
+## # … with 355 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>Gruppierungen sind in Verbindung mit <code>summarize()</code> sehr nützlich, werden oft auch bei <code>mutate()</code> and <code>filter()</code> eingesetzt. Im nächsten Beispiel wird zu <code>fluege_month</code> eine zusätzliche Variable hinzugefügt, die in jeder Zeile die entsprechende monatliche durchschnittliche Ver-spätung bei der Ankunft angibt (vgl. <code>summarize(fluege_month, delay = me-an(arr_delay))</code>, siehe oben):</p>
+<div class="sourceCode" id="cb909"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb909-1"><a href="data-transformation.html#cb909-1" aria-hidden="true" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
+<span id="cb909-2"><a href="data-transformation.html#cb909-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">m_arr_delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
+<pre><code>## # A tibble: 327,346 × 5
+## # Groups:   month [12]
+##    month   day dep_delay arr_delay m_arr_delay
+##    &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+##  1     1     1         2        11        6.13
+##  2     1     1         4        20        6.13
+##  3     1     1         2        33        6.13
+##  4     1     1        -1       -18        6.13
+##  5     1     1        -6       -25        6.13
+##  6     1     1        -4        12        6.13
+##  7     1     1        -5        19        6.13
+##  8     1     1        -3       -14        6.13
+##  9     1     1        -3        -8        6.13
+## 10     1     1        -2         8        6.13
+## # … with 327,336 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>Entsprechend können wir die Gruppierung in Verbindung mit <code>filter()</code> nutzen:</p>
+<div class="sourceCode" id="cb911"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb911-1"><a href="data-transformation.html#cb911-1" aria-hidden="true" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
+<span id="cb911-2"><a href="data-transformation.html#cb911-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(<span class="fu">mean</span>(arr_delay) <span class="sc">&gt;</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 109,952 × 4
+## # Groups:   month [4]
+##    month   day dep_delay arr_delay
+##    &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1    12     1        14         1
+##  2    12     1        18         6
+##  3    12     1        -7       -15
+##  4    12     1         5       -19
+##  5    12     1        -4        -5
+##  6    12     1       -10       -22
+##  7    12     1        -4       -21
+##  8    12     1         1        -9
+##  9    12     1       -11       -11
+## 10    12     1       -10       -29
+## # … with 109,942 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<p>Zum Test können wir die Anzahl der Zeilen in der jeweiligen Gruppe bestimmen und die ausgegebenen Monate mit <code>summarize(fluege_month, delay = mean(arr_delay))</code> vergleichen:</p>
+<div class="sourceCode" id="cb913"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb913-1"><a href="data-transformation.html#cb913-1" aria-hidden="true" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
+<span id="cb913-2"><a href="data-transformation.html#cb913-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(<span class="fu">mean</span>(arr_delay) <span class="sc">&gt;</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb913-3"><a href="data-transformation.html#cb913-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 2
+##   month count
+##   &lt;int&gt; &lt;int&gt;
+## 1     4 27564
+## 2     6 27075
+## 3     7 28293
+## 4    12 27020</code></pre>
+<p>Die spezielle Funktion <code>n()</code> kann nur in den Funktionen <code>summarize()</code>, <code>mutate()</code> und <code>filter()</code> benutzt werden. Sie gibt die Anzahl der Observationen in der jeweiligen Gruppe zurück.</p>
+</div>
+</div>
+<div id="übungen-5" class="section level2 unnumbered hasAnchor">
+<h2>Übungen<a href="data-transformation.html#übungen-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Die folgenden Aufgaben beziehen sich auf den Datensatz <code>flights</code> aus dem Paket <code>nycflights13</code>.</p>
+<p><strong>Aufgabe 1</strong></p>
+<p>Welche der drei Funktionsaufrufe sind identisch? Was ist der Unterschied?</p>
+<div class="sourceCode" id="cb915"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb915-1"><a href="data-transformation.html#cb915-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb915-2"><a href="data-transformation.html#cb915-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> day <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb915-3"><a href="data-transformation.html#cb915-3" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> day <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><strong>Aufgabe 2</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Gesucht sind alle Flüge, die mehr als 150 Minuten verspätet den Zielflughafen erreichten.</p></li>
+<li><p>Gesucht sind alle Flüge, die mehr als 150 Minuten verspätet den Zielflughafen erreichten, obwohl sie pünktlich gestartet waren.</p></li>
+<li><p>Alle Flüge in den Monaten September, Oktober, November und Dezember, die mit mehr als 150 Minuten Verspätung den Zielflughafen erreichten.</p></li>
+</ol>
+<p><strong>Aufgabe 3</strong></p>
+<p>Sind Verspätungen von mehr als 150 Minuten in den Monaten April bis September deutlich seltener als in den restlichen sechs Monaten des Jahres? Was sind die genauen Prozentzahlen?</p>
+<p><strong>Aufgabe 4</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Gesucht sind alle Flüge, die mit mehr als 60 Minuten Verspätung gestartet sind, aber mehr als 60 Minuten im Flug aufgeholt haben.</p></li>
+<li><p>Gesucht sind alle Flüge, die mit mehr als 60 Minuten Verspätung gestartet sind, aber mehr als 60 Minuten im Flug aufgeholt haben und nicht verspätet gelandet sind.</p></li>
+</ol>
+<p><strong>Aufgabe 5</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Bei wie vielen Flügen ist die Abflugzeit nicht aufgelistet?</p></li>
+<li><p>Bei wie vielen Flügen ist die Verspätung der Abflugzeit nicht aufgelistet?</p></li>
+<li><p>Bei wie vielen Flügen ist die Verspätung der Abflugzeit aufgelistet, aber nicht die Abflugzeit?</p></li>
+</ol>
+<p><strong>Aufgabe 6</strong></p>
+<p>Was ist der Unterschied zwischen:</p>
+<div class="sourceCode" id="cb916"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb916-1"><a href="data-transformation.html#cb916-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, year, month, day)</span>
+<span id="cb916-2"><a href="data-transformation.html#cb916-2" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, day, month, year)</span></code></pre></div>
+<p>?</p>
+<p><strong>Aufgabe 7</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Wie lang ist die längste Flugroute? Von wo nach wo?</p></li>
+<li><p>Listen Sie sortiert nach Länge alle Flugrouten auf, die länger als 4000 km sind. Ausgegeben werden sollen pro Zeile: Start- und Zielflughafen und die Länge in Meilen und km (Umrechnung: 1.000 Meilen entsprechen 1.609,344 km). Benutzen Sie den Pipe-Operator.</p></li>
+</ol>
+<p><strong>Aufgabe 8</strong></p>
+<p>Was wird jeweils ausgegeben?</p>
+<ol style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb917"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb917-1"><a href="data-transformation.html#cb917-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, year, day, year)</span></code></pre></div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb918"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb918-1"><a href="data-transformation.html#cb918-1" aria-hidden="true" tabindex="-1"></a>spalten <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;day&quot;</span>, <span class="st">&quot;dep_delay&quot;</span>, <span class="st">&quot;arr_delay&quot;</span>)</span></code></pre></div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb919"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb919-1"><a href="data-transformation.html#cb919-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">contains</span>(<span class="st">&quot;DEP&quot;</span>))</span></code></pre></div>
+<ol start="4" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb920"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb920-1"><a href="data-transformation.html#cb920-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> </span>
+<span id="cb920-2"><a href="data-transformation.html#cb920-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(flight, <span class="fu">contains</span>(<span class="st">&quot;DEP&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb920-3"><a href="data-transformation.html#cb920-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div>
+<p><strong>Aufgabe 9</strong></p>
+<p>Die Zeitformate <code>dep_time</code> und <code>sched_dep_time</code> in <code>flights</code> benutzen das Format HHMM oder HMM; 1607 entspricht also 16:07 Uhr. Erstellen Sie eine Tabelle mit allen Flüge mit den Spalten
+<code>year</code>, <code>month</code>, <code>day</code>, <code>flight</code>, <code>dep_time</code>, <code>sched_dep_time</code></p>
+<p>Dabei sollen <code>dep_time</code> und <code>sched_dep_time</code> eine Darstellung haben, die der Anzahl der Minuten nach Mitternacht entspricht. Schreiben Sie hierfür eine Funktion <code>zeitInMinuten()</code>. Die mögliche Zeitangabe 2400 für Mitternacht soll dabei auf 0 Minuten abgebildet werden (d.h. <code>zeitInMinuten(2400)</code> soll den Wert 0 zurückgeben).</p>
+<p><strong>Aufgabe 10</strong></p>
+<p>Erklären Sie folgende Ausgabe:</p>
+<div class="sourceCode" id="cb921"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb921-1"><a href="data-transformation.html#cb921-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> </span>
+<span id="cb921-2"><a href="data-transformation.html#cb921-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(flight, distance) <span class="sc">%&gt;%</span>  </span>
+<span id="cb921-3"><a href="data-transformation.html#cb921-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb921-4"><a href="data-transformation.html#cb921-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(flight)  <span class="sc">%&gt;%</span> </span>
+<span id="cb921-5"><a href="data-transformation.html#cb921-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dMin =</span> <span class="fu">min</span>(distance), <span class="at">dMax =</span> <span class="fu">max</span>(distance)) <span class="sc">%&gt;%</span></span>
+<span id="cb921-6"><a href="data-transformation.html#cb921-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">r =</span> <span class="fu">min_rank</span>(distance)) <span class="sc">%&gt;%</span> </span>
+<span id="cb921-7"><a href="data-transformation.html#cb921-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(dMax <span class="sc">-</span> dMin <span class="sc">&gt;</span> <span class="dv">2500</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb921-8"><a href="data-transformation.html#cb921-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(dMax <span class="sc">-</span> dMin, distance) <span class="sc">%&gt;%</span> </span>
+<span id="cb921-9"><a href="data-transformation.html#cb921-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div>
+
+<!--
+# (PART\*) Übungen - Tidy data, Relational data, Iteration {-}
+
+**Aufgabe 1**
+
+Gegeben sind jeweils vier gemessene Laufzeiten eines Algorithmus in Abhängigkeit von der Anzahl der Eingabedaten `n`:
+
+
+```r
+zeiten1 <- tibble(
+  n = (4:9)*1e3L,
+  mess1 = c(3.656, 4.672, 5.719, 6.720, 7.641, 8.750),
+  mess2 = c(3.781, 4.735, 5.672, 6.782, 7.673, 8.798),
+  mess3 = c(3.719, 4.719, 5.672, 6.688, 7.704, 9.048),
+  mess4 = c(3.766, 4.688, 5.625, 6.610, 7.750, 8.735)
+)
+
+zeiten1
+```
+
+```
+## # A tibble: 6 × 5
+##       n mess1 mess2 mess3 mess4
+##   <int> <dbl> <dbl> <dbl> <dbl>
+## 1  4000  3.66  3.78  3.72  3.77
+## 2  5000  4.67  4.74  4.72  4.69
+## 3  6000  5.72  5.67  5.67  5.62
+## 4  7000  6.72  6.78  6.69  6.61
+## 5  8000  7.64  7.67  7.70  7.75
+## 6  9000  8.75  8.80  9.05  8.74
+```
+
+a)  Wandeln Sie `zeiten1` in `zeiten2` um (siehe folgende Auflistung).
+
+
+
+
+```r
+print(zeiten2, n=Inf)
+```
+
+```
+## # A tibble: 24 × 3
+##        n Nr     zeit
+##    <int> <chr> <dbl>
+##  1  4000 mess1  3.66
+##  2  5000 mess1  4.67
+##  3  6000 mess1  5.72
+##  4  7000 mess1  6.72
+##  5  8000 mess1  7.64
+##  6  9000 mess1  8.75
+##  7  4000 mess2  3.78
+##  8  5000 mess2  4.74
+##  9  6000 mess2  5.67
+## 10  7000 mess2  6.78
+## 11  8000 mess2  7.67
+## 12  9000 mess2  8.80
+## 13  4000 mess3  3.72
+## 14  5000 mess3  4.72
+## 15  6000 mess3  5.67
+## 16  7000 mess3  6.69
+## 17  8000 mess3  7.70
+## 18  9000 mess3  9.05
+## 19  4000 mess4  3.77
+## 20  5000 mess4  4.69
+## 21  6000 mess4  5.62
+## 22  7000 mess4  6.61
+## 23  8000 mess4  7.75
+## 24  9000 mess4  8.74
+```
+
+
+b)  Handelt es sich bei `zeiten1` bzw. bei `zeiten2` um „Tidy Data“ im Sinne von Wickham?
+
+c)  Mit welcher Anweisung kann aus `zeiten2` der ursprüngliche Datensatz `zeiten1` erzeugt werden?
+
+d)  Berechnen Sie in Abhängigkeit von `n` die Mittelwerte der Laufzeiten. Gehen Sie zuerst davon aus, dass lediglich `zeiten1` gegeben ist, danach gehen Sie davon aus, dass nur `zeiten2` gegeben ist.
+
+
+**Aufgabe 2**
+
+Ähnlich wie in der vorherigen Aufgabe sind unterschiedliche Laufzeiten eines Algorithmus in Abhängigkeit von `n` gegeben:
+
+
+```r
+n <- (4:9)*1e3L
+mess1 <- c(3.656, NA, 5.719, NA, 7.641, 8.750)
+mess2 <- c(3.781, 4.735, NA, 6.782,NA , 8.798)
+mess3 <- c(NA, 4.719, 5.672, 6.688, 7.704, 9.048)
+mess4 <- c(NA, 4.688, 5.625, 6.610, 7.750, NA) 
+mess5 <- c(3.766, 4.672,NA, 6.720, 7.673, 8.735  )
+mess6 <- c(3.719, NA, NA, NA, NA, NA) 
+zeiten1 <- tibble(n, mess1, mess2, mess3, mess4, mess5, mess6)
+
+zeiten1
+```
+
+```
+## # A tibble: 6 × 7
+##       n mess1 mess2 mess3 mess4 mess5 mess6
+##   <int> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1  4000  3.66  3.78 NA    NA     3.77  3.72
+## 2  5000 NA     4.74  4.72  4.69  4.67 NA   
+## 3  6000  5.72 NA     5.67  5.62 NA    NA   
+## 4  7000 NA     6.78  6.69  6.61  6.72 NA   
+## 5  8000  7.64 NA     7.70  7.75  7.67 NA   
+## 6  9000  8.75  8.80  9.05 NA     8.74 NA
+```
+
+a) Wandeln Sie ähnlich wie in der vorherigen Aufgabe `zeiten1` in `zeiten2` um (siehe folgende Auflistung).
+
+
+
+
+```r
+print(zeiten2, n=Inf)
+```
+
+```
+## # A tibble: 23 × 3
+##        n Nr     zeit
+##    <int> <fct> <dbl>
+##  1  4000 mess1  3.66
+##  2  6000 mess1  5.72
+##  3  8000 mess1  7.64
+##  4  9000 mess1  8.75
+##  5  4000 mess2  3.78
+##  6  5000 mess2  4.74
+##  7  7000 mess2  6.78
+##  8  9000 mess2  8.80
+##  9  5000 mess3  4.72
+## 10  6000 mess3  5.67
+## 11  7000 mess3  6.69
+## 12  8000 mess3  7.70
+## 13  9000 mess3  9.05
+## 14  5000 mess4  4.69
+## 15  6000 mess4  5.62
+## 16  7000 mess4  6.61
+## 17  8000 mess4  7.75
+## 18  4000 mess5  3.77
+## 19  5000 mess5  4.67
+## 20  7000 mess5  6.72
+## 21  8000 mess5  7.67
+## 22  9000 mess5  8.74
+## 23  4000 mess6  3.72
+```
+
+
+b) Handelt es sich bei `zeiten1` bzw. bei `zeiten2` um „Tidy Data“ im Sinne von Wickham?
+
+c)  Mit welcher Anweisung kann aus `zeiten2` der ursprüngliche Datensatz `zeiten1` erzeugt werden?
+
+d) Berechnen Sie in Abhängigkeit von `n` die Mittelwerte der Laufzeiten ausgehend jeweils von `zeiten1` und `zeiten2`.
+
+
+**Aufgabe 3**
+
+Welche Zielflughäfen sind in `flights` (als `dest`) aufgelistet, erscheinen aber nicht als FAA-Kennung in `airports`?
+
+**Aufgabe 4**
+
+Geben Sie diejenigen Datensätze aus `airports` aus, die als Zielflughafen in `flights` (als `dest`) vorkommen.
+
+**Aufgabe 5**
+
+Geben Sie diejenigen Datensätze aus `airports` aus, die als Abflughafen in `flights` (als `origin`) vorkommen.
+
+**Aufgabe 6**
+
+Geben Sie Breitengrad und Längengrad der drei Abflughäfen im Datensatz `flights` aus. Unterscheiden sich die Koordinatenangaben deutlich und was sind die entsprechenden Mittelwerte?
+
+**Aufgabe 7**
+
+a)  Nennen Sie den Datensatz `flights` in den Datensatz `flights_withCoord` um und fügen Sie aus dem Datensatz `airports` den Breitengrad (Latitude) und den Längengrad (Longitude) des jeweiligen Zielflughafens in den Datensatz `flights` ein. 
+
+b)  Wie groß sind die Korrelationen zwischen
+
+    + Breitengrad und Fluglänge
+    + Längengrad und Fluglänge? (Hinweis: `use="complete.obs"`)
+    
+Ändern sich diese Korrelationen, wenn man die Fluglänge in Kilometer statt in Meilen bei der Berechnung der Korrelation zugrunde legt?
+
+c)  Betrachten Sie nun für jeden Flug die Differenz der Längen- und Breitengrade von Abflug- und Zielflughafen. Bestimmen Sie die Wurzel aus der Summe der Quadrate dieser beiden Differenzen und ermitteln Sie die Korrelation mit der Fluglänge. Was für einen Wert erwarten Sie?
+
+**Aufgabe 8**
+
+Was geben die folgenden Anweisungen aus und wieso?
+
+
+```r
+map(1:10, rnorm)
+map(1:10, ~rnorm(.))
+map(1:10, ~rnorm(4, .))
+```
+
+**Aufgabe 9**
+
+Berechnen Sie die Mittelwerte aller Spalten in `mtcars`.
+
+**Aufgabe 10**
+
+Implementieren Sie mithilfe der Funktionen `is.numeric()` und `map_lgl()` eine Funktion `numerisch()`, die als Argument einen Tibble `df` erwartet und den Tibble zurückgibt, der genau aus allen numerischen Spalten von `df` besteht. Insbesondere soll dann möglich sein:
+
+
+
+
+```r
+cor(numerisch(diamonds), use="complete.obs")
+```
+
+```
+##            carat       depth      table      price           x           y
+## carat 1.00000000  0.02822431  0.1816175  0.9215913  0.97509423  0.95172220
+## depth 0.02822431  1.00000000 -0.2957785 -0.0106474 -0.02528925 -0.02934067
+## table 0.18161755 -0.29577852  1.0000000  0.1271339  0.19534428  0.18376015
+## price 0.92159130 -0.01064740  0.1271339  1.0000000  0.88443516  0.86542090
+## x     0.97509423 -0.02528925  0.1953443  0.8844352  1.00000000  0.97470148
+## y     0.95172220 -0.02934067  0.1837601  0.8654209  0.97470148  1.00000000
+## z     0.95338738  0.09492388  0.1509287  0.8612494  0.97077180  0.95200572
+##                z
+## carat 0.95338738
+## depth 0.09492388
+## table 0.15092869
+## price 0.86124944
+## x     0.97077180
+## y     0.95200572
+## z     1.00000000
+```
+
+```r
+cor(numerisch(mpg), use="complete.obs")
+```
+
+```
+##            displ         year        cyl         cty          hwy
+## displ  1.0000000  0.147842816  0.9302271 -0.79852397 -0.766020021
+## year   0.1478428  1.000000000  0.1222453 -0.03723229  0.002157643
+## cyl    0.9302271  0.122245347  1.0000000 -0.80577141 -0.761912354
+## cty   -0.7985240 -0.037232291 -0.8057714  1.00000000  0.955915914
+## hwy   -0.7660200  0.002157643 -0.7619124  0.95591591  1.000000000
+```
+
+
+**Aufgabe 11**
+
+Erklären Sie folgenden Quelltext:
+
+
+```r
+d <- diamonds %>% drop_na() %>% mutate(vol=x*y*z)
+
+lmd <- lm(price ~ vol, data = d)
+sum_lmd <- summary(lmd)
+sum_lmd$r.squared
+```
+
+```
+## [1] 0.8142979
+```
+
+```r
+models <- d %>% 
+    split(.$cut) %>% 
+    map(~lm(price ~ vol, data = .))
+
+models %>% 
+   map(summary) %>% 
+   map_dbl(~.$r.squared)
+```
+
+```
+##      Fair      Good Very Good   Premium     Ideal 
+## 0.7391252 0.8437127 0.8523177 0.7516382 0.8616549
+```
+
+
+
+<!--
+# (PART\*) Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis {-}
+
+**Aufgabe 1**
+
+Woran erkennt man, dass ein R-Objekt kein Objekt einer S3 Klasse ist?
+
+
+**Aufgabe 2**
+
+Implementieren Sie eine S3-Klasse `binseq`, die binäre (nicht-leere) Folgen modelliert. Eine binäre Folge ist eine endliche Folge, die nur aus den Elementen -1 und +1 besteht. Die Klasse soll sich wie folgt verhalten:
+
+
+
+
+
+```r
+s <- binseq(c(1,1,1,-1,1,-1,-1))
+str(s)
+```
+
+```
+##  'binseq' int [1:7] 1 1 1 -1 1 -1 -1
+##  - attr(*, "n")= int 7
+```
+
+```r
+print(s)
+```
+
+```
+## [1] "Binäre Folge der Länge 7"
+## [1]  1  1  1 -1  1 -1 -1
+```
+
+```r
+attributes(s)
+```
+
+```
+## $n
+## [1] 7
+## 
+## $class
+## [1] "binseq"
+```
+
+
+```r
+# binseq(c(1,1,-1.0,1))
+# # binseq(c(1,3,-1.0,1))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
+# 
+# # binseq(double())
+# #R> Fehler: n==0
+# 
+# # binseq(c("a", "b"))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# #R> Zusätzlich: Warnmeldung:
+# #R> In binseq(c("a", "b")) :
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# binseq(-1)
+# # binseq(c(1,1,1,0))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# binseq(c(T, T, T, F))
+# identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
+```
+
+Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham [https://adv-r.hadley.nz/](https://adv-r.hadley.nz/) beschrieben:
+
++ Implementieren Sie die Funktionen `new_binseq()`, `validate_binseq()` und `binseq()`.
+
++ Erzeugen Sie die Methode `print.binseq()` für die generische Funktion `print()`.
+
+**Aufgabe 3**
+
+a)  Was sind generische Funktionen?
+b)  Was ist der Unterschied zwischen einer generischen Funktion und einer Methode?
+c)  Gibt es in Base-R mehr als 100 generische Funktionen?
+d)  Was gibt die Funktion `methods()` zurück? (Zum Beispiel: `methods(mean)` oder `methods(print)`)
+
+**Aufgabe 4**
+
+Eine \textbf{\emph{binäre Folge der Länge n}} ist eine endliche Folge $s = \left(s_1, s_2, ..., s_n\right)$ mit $s_j \in \{-1, +1\}$ für alle $1 \leq j \leq n$. Für $0 < k < n$ ist die \textbf{\emph{aperiodische Autokorrelation}} *(der Ordnung k)* definiert durch:
+
+\begin*{equation}
+C_k(s) = \sum_{j=1}^{n-k} s_j \cdot s_{j+k}
+\end{equation}
+
+In R kann $s$ leicht durch einen Integer-Vektor dargestellt und die aperiodische Autokorrelation bei-spielsweise wie folgt implementiert werden:
+
+
+```r
+autokorrelation1 <- function(s) {
+  n <- length(s)
+  res <- vector(mode = "integer", length = n - 1)
+  for (k in 1:(n-1)) {
+    res[k] <- as.integer(t(s[1:(n - k)]) %*% s[(k + 1):n])
+  }
+  return(res)
+}
+```
+
+a)  Modifizieren Sie die Funktion `autokorrelation1()`, indem Sie die Schleife durch `map_int()` (aus `purrr`) ersetzen. Nennen Sie die modifizierte Version `autokorrelation2()`.
+
+b)  Vergleichen Sie die Laufzeiten der beiden Funktionen für große `n` mithilfe von `system.time()`, beispielsweise durch:
+
+
+```r
+randBinSeq <- function(n) {
+  return(sample(c(-1L, 1L), n, replace = TRUE))
+}
+s <- randBinSeq(2E4) 
+autokorrelation1(s)
+autokorrelation2(s)
+```
+
+c)  Erstellen Sie einen weiteren Laufzeittest; erklären und interpretieren Sie die Ergebnisse:
+
+
+```r
+require(compiler)
+f <- cmpfun(autokorrelation1)
+system.time(f(s))
+```
+
+**HINWEIS:** Byte Code Compilation und JIT-Compiler
+
+**Aufgabe 5**
+
+Erzeugen Sie eine neue generische Funktion `autokor()` und implementieren Sie für die Klasse `binseq` (siehe oben) eine entsprechende Methode, die die aperiodische Autokorrelation zurückgibt. Wann ist dieses Vorgehen sinnvoll?
+
+**Aufgabe 6**
+
+Erklären Sie den folgenden Quelltext:
+
+
+```r
+foo1 <- function(x,...) {
+  print(x)
+  args <- list(...)
+  for(a in args){
+    print(a)
+  }
+}
+
+foo1(1)
+foo1(1,2,3,4, mean=6)
+```
+
+
+```r
+foo2 <- function(n, ...) {
+  return(rnorm(n, ...))
+}
+
+foo2(4)
+foo2(4,100)
+foo2(4, mean=100)
+foo2(4, mean=100, sd=500)
+foo2(4, meen=100, sd=500)
+```
+
+
+```r
+foo3 <- function(x, ...) {
+  return(c(mean(x,...), median(x,...)))
+}
+
+x <- c(1,2,100,4)
+foo3(x)
+x <- c(1,2,NA, 100,4)
+foo3(x)
+foo3(x, na.rm=TRUE)
+foo3(x, rm.na=TRUE)
+```
+
+**HINWEIS**
+
+Das in R wichtige Konzept `environment` haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf [https://adv-r.hadley.nz/environments.html](https://adv-r.hadley.nz/environments.html).
+
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="datenvisualisierung-mit-ggplot2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="spezielle-themen-und-fallstudien.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/07-data_transformation.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bchwtz-rprg.pdf", "bchwtz-rprg.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
