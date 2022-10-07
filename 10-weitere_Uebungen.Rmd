@@ -1,0 +1,357 @@
+# Weitere Übungen {-}
+
+
+## Übungen - Tidy data, Relational data, Iteration {-}
+
+### Aufgabe 1 {-}
+
+Gegeben sind jeweils vier gemessene Laufzeiten eines Algorithmus in Abhängigkeit von der Anzahl der Eingabedaten `n`:
+
+```{r}
+zeiten1 <- tibble(
+  n = (4:9)*1e3L,
+  mess1 = c(3.656, 4.672, 5.719, 6.720, 7.641, 8.750),
+  mess2 = c(3.781, 4.735, 5.672, 6.782, 7.673, 8.798),
+  mess3 = c(3.719, 4.719, 5.672, 6.688, 7.704, 9.048),
+  mess4 = c(3.766, 4.688, 5.625, 6.610, 7.750, 8.735)
+)
+
+zeiten1
+```
+
+a)	Wandeln Sie `zeiten1` in `zeiten2` um (siehe folgende Auflistung).
+
+```{r, echo=FALSE}
+zeiten2 <- zeiten1 %>% gather(-n, key=Nr, value=zeit)
+```
+
+```{r}
+print(zeiten2, n=Inf)
+```
+
+
+b)	Handelt es sich bei `zeiten1` bzw. bei `zeiten2` um „Tidy Data“ im Sinne von Wickham?
+
+c)	Mit welcher Anweisung kann aus `zeiten2` der ursprüngliche Datensatz `zeiten1` erzeugt werden?
+
+d)	Berechnen Sie in Abhängigkeit von `n` die Mittelwerte der Laufzeiten. Gehen Sie zuerst davon aus, dass lediglich `zeiten1` gegeben ist, danach gehen Sie davon aus, dass nur `zeiten2` gegeben ist.
+
+
+### Aufgabe 2 {-}
+
+Ähnlich wie in der vorherigen Aufgabe sind unterschiedliche Laufzeiten eines Algorithmus in Abhängigkeit von `n` gegeben:
+
+```{r}
+n <- (4:9)*1e3L
+mess1 <- c(3.656, NA, 5.719, NA, 7.641, 8.750)
+mess2 <- c(3.781, 4.735, NA, 6.782,NA , 8.798)
+mess3 <- c(NA, 4.719, 5.672, 6.688, 7.704, 9.048)
+mess4 <- c(NA, 4.688, 5.625, 6.610, 7.750, NA) 
+mess5 <- c(3.766, 4.672,NA, 6.720, 7.673, 8.735  )
+mess6 <- c(3.719, NA, NA, NA, NA, NA) 
+zeiten1 <- tibble(n, mess1, mess2, mess3, mess4, mess5, mess6)
+
+zeiten1
+```
+
+a) Wandeln Sie ähnlich wie in der vorherigen Aufgabe `zeiten1` in `zeiten2` um (siehe folgende Auflistung).
+
+```{r, echo=FALSE}
+zeiten2 <- zeiten1 %>% 
+  gather(-n, key=Nr, value=zeit, factor_key = TRUE, na.rm = TRUE)
+```
+
+```{r}
+print(zeiten2, n=Inf)
+```
+
+
+b) Handelt es sich bei `zeiten1` bzw. bei `zeiten2` um „Tidy Data“ im Sinne von Wickham?
+
+c)	Mit welcher Anweisung kann aus `zeiten2` der ursprüngliche Datensatz `zeiten1` erzeugt werden?
+
+d) Berechnen Sie in Abhängigkeit von `n` die Mittelwerte der Laufzeiten ausgehend jeweils von `zeiten1` und `zeiten2`.
+
+
+### Aufgabe 3 {-}
+
+Welche Zielflughäfen sind in `flights` (als `dest`) aufgelistet, erscheinen aber nicht als FAA-Kennung in `airports`?
+
+### Aufgabe 4 {-}
+
+Geben Sie diejenigen Datensätze aus `airports` aus, die als Zielflughafen in `flights` (als `dest`) vorkommen.
+
+### Aufgabe 5 {-}
+
+Geben Sie diejenigen Datensätze aus `airports` aus, die als Abflughafen in `flights` (als `origin`) vorkommen.
+
+### Aufgabe 6 {-}
+
+Geben Sie Breitengrad und Längengrad der drei Abflughäfen im Datensatz `flights` aus. Unterscheiden sich die Koordinatenangaben deutlich und was sind die entsprechenden Mittelwerte?
+
+### Aufgabe 7 {-}
+
+a)	Nennen Sie den Datensatz `flights` in den Datensatz `flights_withCoord` um und fügen Sie aus dem Datensatz `airports` den Breitengrad (Latitude) und den Längengrad (Longitude) des jeweiligen Zielflughafens in den Datensatz `flights` ein. 
+
+b)	Wie groß sind die Korrelationen zwischen
+
+    + Breitengrad und Fluglänge
+    + Längengrad und Fluglänge? (Hinweis: `use="complete.obs"`)
+    
+Ändern sich diese Korrelationen, wenn man die Fluglänge in Kilometer statt in Meilen bei der Berechnung der Korrelation zugrunde legt?
+
+c)	Betrachten Sie nun für jeden Flug die Differenz der Längen- und Breitengrade von Abflug- und Zielflughafen. Bestimmen Sie die Wurzel aus der Summe der Quadrate dieser beiden Differenzen und ermitteln Sie die Korrelation mit der Fluglänge. Was für einen Wert erwarten Sie?
+
+### Aufgabe 8 {-}
+
+Was geben die folgenden Anweisungen aus und wieso?
+
+```{r, eval=FALSE}
+map(1:10, rnorm)
+map(1:10, ~rnorm(.))
+map(1:10, ~rnorm(4, .))
+```
+
+### Aufgabe 9 {-}
+
+Berechnen Sie die Mittelwerte aller Spalten in `mtcars`.
+
+### Aufgabe 10 {-}
+
+Implementieren Sie mithilfe der Funktionen `is.numeric()` und `map_lgl()` eine Funktion `numerisch()`, die als Argument einen Tibble `df` erwartet und den Tibble zurückgibt, der genau aus allen numerischen Spalten von `df` besteht. Insbesondere soll dann möglich sein:
+
+```{r, echo=FALSE}
+numerisch <- function(df) {
+  df[map_lgl(df, is.numeric)]
+}
+
+# map_lgl(diamonds, is.numeric)
+# numerisch(diamonds)
+```
+
+```{r}
+cor(numerisch(diamonds), use="complete.obs")
+cor(numerisch(mpg), use="complete.obs")
+```
+
+
+### Aufgabe 11 {-}
+
+Erklären Sie folgenden Quelltext:
+
+```{r}
+d <- diamonds %>% drop_na() %>% mutate(vol=x*y*z)
+
+lmd <- lm(price ~ vol, data = d)
+sum_lmd <- summary(lmd)
+sum_lmd$r.squared
+
+
+models <- d %>% 
+    split(.$cut) %>% 
+    map(~lm(price ~ vol, data = .))
+
+models %>% 
+   map(summary) %>% 
+   map_dbl(~.$r.squared)
+```
+
+
+
+
+## Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis {-}
+
+### Aufgabe 1 {-}
+
+Woran erkennt man, dass ein R-Objekt kein Objekt einer S3 Klasse ist?
+
+
+### Aufgabe 2 {-}
+
+Implementieren Sie eine S3-Klasse `binseq`, die binäre (nicht-leere) Folgen modelliert. Eine binäre Folge ist eine endliche Folge, die nur aus den Elementen -1 und +1 besteht. Die Klasse soll sich wie folgt verhalten:
+
+```{r, echo=FALSE, eval=TRUE}
+new_binseq <- function(x) {
+  n=length(x)
+  structure(
+    x, 
+    n = n,
+    class = "binseq"
+  )
+}
+
+validate_binseq <- function(x) {
+  values <- unclass(x)
+  n <- attr(x, "n")
+  
+  if(n != length(values)) {
+    stop("Falscher n-Wert", call. = FALSE)
+  }
+  
+  if(n == 0) {
+    stop("n==0", call. = FALSE)
+  }
+  
+  if(!is.integer(x)) {
+    stop("Kein Integer-Vektor", call. = FALSE)
+  }
+  
+  if (!all(!is.na(values) & (values == 1   | values == -1))) {
+    stop("Alle Elemente dürfen nur den Wert 1 oder -1 haben", call. = FALSE)
+  }
+  
+  return(x)
+}
+
+## Helper  
+# In anderen OO-Sprachen ist dies der Kontruktor
+binseq <- function(x) {
+  if(is.logical(x)){
+    x <- 2L*x-1L
+  } else {
+    x <- as.integer(x)
+  }
+  validate_binseq(new_binseq(x))
+}
+
+print.binseq <- function(s, ...) {  
+  print(paste("Binäre Folge der Länge",length(s) ))
+  print(as.integer(s))
+}
+```
+
+
+```{r}
+s <- binseq(c(1,1,1,-1,1,-1,-1))
+str(s)
+print(s)
+attributes(s)
+```
+
+```{r}
+# binseq(c(1,1,-1.0,1))
+# # binseq(c(1,3,-1.0,1))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
+# 
+# # binseq(double())
+# #R> Fehler: n==0
+# 
+# # binseq(c("a", "b"))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# #R> Zusätzlich: Warnmeldung:
+# #R> In binseq(c("a", "b")) :
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# binseq(-1)
+# # binseq(c(1,1,1,0))
+# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
+# binseq(c(T, T, T, F))
+# identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
+```
+
+Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham [https://adv-r.hadley.nz/](https://adv-r.hadley.nz/) beschrieben:
+
++ Implementieren Sie die Funktionen `new_binseq()`, `validate_binseq()` und `binseq()`.
+
++ Erzeugen Sie die Methode `print.binseq()` für die generische Funktion `print()`.
+
+### Aufgabe 3 {-}
+
+a)	Was sind generische Funktionen?
+b)	Was ist der Unterschied zwischen einer generischen Funktion und einer Methode?
+c)	Gibt es in Base-R mehr als 100 generische Funktionen?
+d)	Was gibt die Funktion `methods()` zurück? (Zum Beispiel: `methods(mean)` oder `methods(print)`)
+
+### Aufgabe 4 {-}
+
+Eine \textbf{\emph{binäre Folge der Länge n}} ist eine endliche Folge $s = \left(s_1, s_2, ..., s_n\right)$ mit $s_j \in \{-1, +1\}$ für alle $1 \leq j \leq n$. Für $0 < k < n$ ist die \textbf{\emph{aperiodische Autokorrelation}} *(der Ordnung k)* definiert durch:
+
+\begin*{equation}
+C_k(s) = \sum_{j=1}^{n-k} s_j \cdot s_{j+k}
+\end{equation}
+
+In R kann $s$ leicht durch einen Integer-Vektor dargestellt und die aperiodische Autokorrelation bei-spielsweise wie folgt implementiert werden:
+
+```{r}
+autokorrelation1 <- function(s) {
+  n <- length(s)
+  res <- vector(mode = "integer", length = n - 1)
+  for (k in 1:(n-1)) {
+    res[k] <- as.integer(t(s[1:(n - k)]) %*% s[(k + 1):n])
+  }
+  return(res)
+}
+```
+
+a)	Modifizieren Sie die Funktion `autokorrelation1()`, indem Sie die Schleife durch `map_int()` (aus `purrr`) ersetzen. Nennen Sie die modifizierte Version `autokorrelation2()`.
+
+b)	Vergleichen Sie die Laufzeiten der beiden Funktionen für große `n` mithilfe von `system.time()`, beispielsweise durch:
+
+```{r, eval=FALSE}
+randBinSeq <- function(n) {
+  return(sample(c(-1L, 1L), n, replace = TRUE))
+}
+s <- randBinSeq(2E4) 
+autokorrelation1(s)
+autokorrelation2(s)
+```
+
+c)	Erstellen Sie einen weiteren Laufzeittest; erklären und interpretieren Sie die Ergebnisse:
+
+```{r, eval=FALSE}
+require(compiler)
+f <- cmpfun(autokorrelation1)
+system.time(f(s))
+```
+
+**HINWEIS:** Byte Code Compilation und JIT-Compiler
+
+
+### Aufgabe 5 {-}
+
+Erzeugen Sie eine neue generische Funktion `autokor()` und implementieren Sie für die Klasse `binseq` (siehe oben) eine entsprechende Methode, die die aperiodische Autokorrelation zurückgibt. Wann ist dieses Vorgehen sinnvoll?
+
+### Aufgabe 6 {-}
+
+Erklären Sie den folgenden Quelltext:
+
+```{r, eval=FALSE}
+foo1 <- function(x,...) {
+  print(x)
+  args <- list(...)
+  for(a in args){
+    print(a)
+  }
+}
+
+foo1(1)
+foo1(1,2,3,4, mean=6)
+```
+
+```{r, eval=FALSE}
+foo2 <- function(n, ...) {
+  return(rnorm(n, ...))
+}
+
+foo2(4)
+foo2(4,100)
+foo2(4, mean=100)
+foo2(4, mean=100, sd=500)
+foo2(4, meen=100, sd=500)
+```
+
+```{r, eval=FALSE}
+foo3 <- function(x, ...) {
+  return(c(mean(x,...), median(x,...)))
+}
+
+x <- c(1,2,100,4)
+foo3(x)
+x <- c(1,2,NA, 100,4)
+foo3(x)
+foo3(x, na.rm=TRUE)
+foo3(x, rm.na=TRUE)
+```
+
+**Hinweis:**
+
+Das in R wichtige Konzept `environment` haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf [@Wickhamny, Abschnitt 7 *Environments*].
