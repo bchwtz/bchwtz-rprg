@@ -3,6 +3,12 @@
 
 ## Übungen - Tidy data, Relational data, Iteration 
 
+```{r, echo=TRUE, eval=FALSE}
+require(tidyverse)
+require(nycflights13)   # Für die Datensätze flights und airports (siehe library(nycflights13)).
+```
+
+
 ### Aufgabe 1 {-}
 
 Gegeben sind jeweils vier gemessene Laufzeiten eines Algorithmus in Abhängigkeit von der Anzahl der Eingabedaten `n`:
@@ -15,7 +21,6 @@ zeiten1 <- tibble(
   mess3 = c(3.719, 4.719, 5.672, 6.688, 7.704, 9.048),
   mess4 = c(3.766, 4.688, 5.625, 6.610, 7.750, 8.735)
 )
-
 zeiten1
 ```
 
@@ -25,9 +30,9 @@ a)	Wandeln Sie `zeiten1` in `zeiten2` um (siehe folgende Auflistung).
 zeiten2 <- zeiten1 %>% gather(-n, key=Nr, value=zeit)
 ```
 
-```{r}
-print(zeiten2, n=Inf)
-```
+    ```{r}
+    print(zeiten2, n = Inf)
+    ```
 
 
 b)	Handelt es sich bei `zeiten1` bzw. bei `zeiten2` um „Tidy Data“ im Sinne von Wickham?
@@ -50,7 +55,6 @@ mess4 <- c(NA, 4.688, 5.625, 6.610, 7.750, NA)
 mess5 <- c(3.766, 4.672,NA, 6.720, 7.673, 8.735  )
 mess6 <- c(3.719, NA, NA, NA, NA, NA) 
 zeiten1 <- tibble(n, mess1, mess2, mess3, mess4, mess5, mess6)
-
 zeiten1
 ```
 
@@ -61,9 +65,9 @@ zeiten2 <- zeiten1 %>%
   gather(-n, key=Nr, value=zeit, factor_key = TRUE, na.rm = TRUE)
 ```
 
-```{r}
-print(zeiten2, n=Inf)
-```
+    ```{r}
+    print(zeiten2, n = Inf)
+    ```
 
 
 b) Handelt es sich bei `zeiten1` bzw. bei `zeiten2` um „Tidy Data“ im Sinne von Wickham?
@@ -95,12 +99,15 @@ a)	Nennen Sie den Datensatz `flights` in den Datensatz `flights_withCoord` um un
 
 b)	Wie groß sind die Korrelationen zwischen
 
-    + Breitengrad und Fluglänge
-    + Längengrad und Fluglänge? (Hinweis: `use="complete.obs"`)
+    + Breitengrad und Fluglänge?
+    + Längengrad und Fluglänge?
     
-Ändern sich diese Korrelationen, wenn man die Fluglänge in Kilometer statt in Meilen bei der Berechnung der Korrelation zugrunde legt?
+    (Hinweis: `use = "complete.obs"`)
+    
 
-c)	Betrachten Sie nun für jeden Flug die Differenz der Längen- und Breitengrade von Abflug- und Zielflughafen. Bestimmen Sie die Wurzel aus der Summe der Quadrate dieser beiden Differenzen und ermitteln Sie die Korrelation mit der Fluglänge. Was für einen Wert erwarten Sie?
+    Ändern sich diese Korrelationen, wenn man die Fluglänge in Kilometer statt in Meilen bei der Berechnung der Korrelation zugrunde legt?
+
+c)	Betrachten Sie nun für jeden Flug die Differenz der Längen- und Breitengrade von Abflug- und Zielflughafen. Bestimmen Sie die Wurzel aus der Summe der Quadrate dieser beiden Differenzen und ermitteln Sie die Korrelation mit der Fluglänge. Was für einen Wert erwarten Sie und warum?
 
 ### Aufgabe 8 {-}
 
@@ -130,8 +137,8 @@ numerisch <- function(df) {
 ```
 
 ```{r}
-cor(numerisch(diamonds), use="complete.obs")
-cor(numerisch(mpg), use="complete.obs")
+cor(numerisch(diamonds), use = "complete.obs")
+cor(numerisch(mpg), use = "complete.obs")
 ```
 
 
@@ -140,16 +147,16 @@ cor(numerisch(mpg), use="complete.obs")
 Erklären Sie folgenden Quelltext:
 
 ```{r}
-d <- diamonds %>% drop_na() %>% mutate(vol=x*y*z)
+d <- diamonds %>% drop_na() %>% mutate(vol = x * y * z)
 
-lmd <- lm(price ~ vol, data = d)
+lmd <- lm(price ~ 1 + vol, data = d)
 sum_lmd <- summary(lmd)
 sum_lmd$r.squared
 
 
 models <- d %>% 
     split(.$cut) %>% 
-    map(~lm(price ~ vol, data = .))
+    map(~lm(price ~ 1 + vol, data = .))
 
 models %>% 
    map(summary) %>% 
@@ -222,33 +229,27 @@ print.binseq <- function(s, ...) {
 
 
 ```{r}
-s <- binseq(c(1,1,1,-1,1,-1,-1))
+s <- binseq(c(1, 1, 1, -1, 1, -1, -1))
 str(s)
 print(s)
 attributes(s)
 ```
 
-```{r}
-# binseq(c(1,1,-1.0,1))
-# # binseq(c(1,3,-1.0,1))
-# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.
-# 
-# # binseq(double())
-# #R> Fehler: n==0
-# 
-# # binseq(c("a", "b"))
-# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
-# #R> Zusätzlich: Warnmeldung:
-# #R> In binseq(c("a", "b")) :
-# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
-# binseq(-1)
-# # binseq(c(1,1,1,0))
-# #R> Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben
-# binseq(c(T, T, T, F))
-# identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
+```{r, error=TRUE}
+binseq(c(1, 1, -1.0, 1))
+binseq(c(1, 3, -1.0, 1))
+
+binseq(double())
+
+binseq(c("a", "b"))
+binseq(-1)
+binseq(c(1, 1, 1, 0))
+
+binseq(c(T, T, T, F))
+identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))
 ```
 
-Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham [https://adv-r.hadley.nz/](https://adv-r.hadley.nz/) beschrieben:
+Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ [@Wickham2019] beschrieben:
 
 + Implementieren Sie die Funktionen `new_binseq()`, `validate_binseq()` und `binseq()`.
 
@@ -263,11 +264,10 @@ d)	Was gibt die Funktion `methods()` zurück? (Zum Beispiel: `methods(mean)` ode
 
 ### Aufgabe 4 {-}
 
-Eine \textbf{\emph{binäre Folge der Länge n}} ist eine endliche Folge $s = \left(s_1, s_2, ..., s_n\right)$ mit $s_j \in \{-1, +1\}$ für alle $1 \leq j \leq n$. Für $0 < k < n$ ist die \textbf{\emph{aperiodische Autokorrelation}} *(der Ordnung k)* definiert durch:
+Eine **binäre Folge der Länge $n$** ist eine endliche Folge $s = \left(s_1, s_2, ..., s_n\right)$ mit $s_j \in \{-1, +1\}$ für alle $1 \leq j \leq n$. Für $0 < k < n$ ist die **aperiodische Autokorrelation** *(der Ordnung k)* definiert durch:
 
-\begin*{equation}
-C_k(s) = \sum_{j=1}^{n-k} s_j \cdot s_{j+k}
-\end{equation}
+
+$$C_k(s) = \sum_{j=1}^{n-k} s_j \cdot s_{j+k}.$$
 
 In R kann $s$ leicht durch einen Integer-Vektor dargestellt und die aperiodische Autokorrelation bei-spielsweise wie folgt implementiert werden:
 
@@ -282,28 +282,28 @@ autokorrelation1 <- function(s) {
 }
 ```
 
-a)	Modifizieren Sie die Funktion `autokorrelation1()`, indem Sie die Schleife durch `map_int()` (aus `purrr`) ersetzen. Nennen Sie die modifizierte Version `autokorrelation2()`.
+a)	Modifizieren Sie die Funktion `autokorrelation1()`, indem Sie die Schleife durch `map_int()` (aus `purrr` [@purrr]) ersetzen. Nennen Sie die modifizierte Version `autokorrelation2()`.
 
 b)	Vergleichen Sie die Laufzeiten der beiden Funktionen für große `n` mithilfe von `system.time()`, beispielsweise durch:
 
-```{r, eval=FALSE}
-randBinSeq <- function(n) {
-  return(sample(c(-1L, 1L), n, replace = TRUE))
-}
-s <- randBinSeq(2E4) 
-autokorrelation1(s)
-autokorrelation2(s)
-```
+    ```{r, eval=FALSE}
+    randBinSeq <- function(n) {
+      return(sample(c(-1L, 1L), n, replace = TRUE))
+    }
+    s <- randBinSeq(2E4) 
+    autokorrelation1(s)
+    autokorrelation2(s)
+    ```
 
 c)	Erstellen Sie einen weiteren Laufzeittest; erklären und interpretieren Sie die Ergebnisse:
 
-```{r, eval=FALSE}
-require(compiler)
-f <- cmpfun(autokorrelation1)
-system.time(f(s))
-```
+    ```{r, eval=FALSE}
+    require(compiler)
+    f <- cmpfun(autokorrelation1)
+    system.time(f(s))
+    ```
 
-**HINWEIS:** Byte Code Compilation und JIT-Compiler
+**Hinweis:** Byte Code Compilation und JIT-Compiler
 
 
 ### Aufgabe 5 {-}
@@ -324,7 +324,7 @@ foo1 <- function(x,...) {
 }
 
 foo1(1)
-foo1(1,2,3,4, mean=6)
+foo1(1, 2, 3, 4, mean = 6)
 ```
 
 ```{r, eval=FALSE}
@@ -333,10 +333,10 @@ foo2 <- function(n, ...) {
 }
 
 foo2(4)
-foo2(4,100)
-foo2(4, mean=100)
-foo2(4, mean=100, sd=500)
-foo2(4, meen=100, sd=500)
+foo2(4, 100)
+foo2(4, mean = 100)
+foo2(4, mean = 100, sd = 500)
+foo2(4, meen = 100, sd = 500)
 ```
 
 ```{r, eval=FALSE}
@@ -344,14 +344,14 @@ foo3 <- function(x, ...) {
   return(c(mean(x,...), median(x,...)))
 }
 
-x <- c(1,2,100,4)
+x <- c(1, 2, 100, 4)
 foo3(x)
-x <- c(1,2,NA, 100,4)
+x <- c(1, 2, NA, 100, 4)
 foo3(x)
-foo3(x, na.rm=TRUE)
-foo3(x, rm.na=TRUE)
+foo3(x, na.rm = TRUE)
+foo3(x, rm.na = TRUE)
 ```
 
 **Hinweis:**
 
-Das in R wichtige Konzept `environment` haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf [@Wickhamny, Abschnitt 7 *Environments*].
+Das in R wichtige Konzept `environment` haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf [@Wickham2019, Abschnitt 7 *Environments*]
