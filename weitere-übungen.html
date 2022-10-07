@@ -4,20 +4,20 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Prüfungsleistungen | Statistical Programming</title>
-  <meta name="description" content="Prüfungsleistungen | Statistical Programming Course Notes" />
+  <title>Weitere Übungen | Statistical Programming</title>
+  <meta name="description" content="Weitere Übungen | Statistical Programming Course Notes" />
   <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Prüfungsleistungen | Statistical Programming" />
+  <meta property="og:title" content="Weitere Übungen | Statistical Programming" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Prüfungsleistungen | Statistical Programming Course Notes" />
+  <meta property="og:description" content="Weitere Übungen | Statistical Programming Course Notes" />
   <meta name="github-repo" content="bchwtz/bchwtz-rprg" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Prüfungsleistungen | Statistical Programming" />
+  <meta name="twitter:title" content="Weitere Übungen | Statistical Programming" />
   
-  <meta name="twitter:description" content="Prüfungsleistungen | Statistical Programming Course Notes" />
+  <meta name="twitter:description" content="Weitere Übungen | Statistical Programming Course Notes" />
   
 
 <meta name="author" content="Benjamin Buchwitz" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="spezielle-themen-und-fallstudien.html"/>
-<link rel="next" href="system-info.html"/>
+<link rel="prev" href="exploratory-data-analysis-eda.html"/>
+<link rel="next" href="spezielle-themen-und-fallstudien.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -450,62 +450,358 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="prüfungsleistungen" class="section level1 unnumbered hasAnchor">
-<h1>Prüfungsleistungen<a href="prüfungsleistungen.html#prüfungsleistungen" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="übungsblätter" class="section level2 unnumbered hasAnchor">
-<h2>Übungsblätter<a href="prüfungsleistungen.html#übungsblätter" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<table>
-<colgroup>
-<col width="42%" />
-<col width="20%" />
-<col width="37%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Präsenztermin</th>
-<th>Thema</th>
-<th>Übungsblatt</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Erste Schritte, Vektoren, Kontrollstrukturen und Funktionen</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<div id="weitere-übungen" class="section level1 unnumbered hasAnchor">
+<h1>Weitere Übungen<a href="weitere-übungen.html#weitere-übungen" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="übungen---tidy-data-relational-data-iteration" class="section level2 unnumbered hasAnchor">
+<h2>Übungen - Tidy data, Relational data, Iteration<a href="weitere-übungen.html#übungen---tidy-data-relational-data-iteration" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="aufgabe-1-6" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 1<a href="weitere-übungen.html#aufgabe-1-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Gegeben sind jeweils vier gemessene Laufzeiten eines Algorithmus in Abhängigkeit von der Anzahl der Eingabedaten <code>n</code>:</p>
+<div class="sourceCode" id="cb937"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb937-1"><a href="weitere-übungen.html#cb937-1" aria-hidden="true" tabindex="-1"></a>zeiten1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb937-2"><a href="weitere-übungen.html#cb937-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> (<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>)<span class="sc">*</span><span class="fl">1e3</span>L,</span>
+<span id="cb937-3"><a href="weitere-übungen.html#cb937-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess1 =</span> <span class="fu">c</span>(<span class="fl">3.656</span>, <span class="fl">4.672</span>, <span class="fl">5.719</span>, <span class="fl">6.720</span>, <span class="fl">7.641</span>, <span class="fl">8.750</span>),</span>
+<span id="cb937-4"><a href="weitere-übungen.html#cb937-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess2 =</span> <span class="fu">c</span>(<span class="fl">3.781</span>, <span class="fl">4.735</span>, <span class="fl">5.672</span>, <span class="fl">6.782</span>, <span class="fl">7.673</span>, <span class="fl">8.798</span>),</span>
+<span id="cb937-5"><a href="weitere-übungen.html#cb937-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess3 =</span> <span class="fu">c</span>(<span class="fl">3.719</span>, <span class="fl">4.719</span>, <span class="fl">5.672</span>, <span class="fl">6.688</span>, <span class="fl">7.704</span>, <span class="fl">9.048</span>),</span>
+<span id="cb937-6"><a href="weitere-übungen.html#cb937-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">mess4 =</span> <span class="fu">c</span>(<span class="fl">3.766</span>, <span class="fl">4.688</span>, <span class="fl">5.625</span>, <span class="fl">6.610</span>, <span class="fl">7.750</span>, <span class="fl">8.735</span>)</span>
+<span id="cb937-7"><a href="weitere-übungen.html#cb937-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb937-8"><a href="weitere-übungen.html#cb937-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb937-9"><a href="weitere-übungen.html#cb937-9" aria-hidden="true" tabindex="-1"></a>zeiten1</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##       n mess1 mess2 mess3 mess4
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  4000  3.66  3.78  3.72  3.77
+## 2  5000  4.67  4.74  4.72  4.69
+## 3  6000  5.72  5.67  5.67  5.62
+## 4  7000  6.72  6.78  6.69  6.61
+## 5  8000  7.64  7.67  7.70  7.75
+## 6  9000  8.75  8.80  9.05  8.74</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Wandeln Sie <code>zeiten1</code> in <code>zeiten2</code> um (siehe folgende Auflistung).</li>
+</ol>
+<div class="sourceCode" id="cb939"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb939-1"><a href="weitere-übungen.html#cb939-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(zeiten2, <span class="at">n=</span><span class="cn">Inf</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 24 × 3
+##        n Nr     zeit
+##    &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1  4000 mess1  3.66
+##  2  5000 mess1  4.67
+##  3  6000 mess1  5.72
+##  4  7000 mess1  6.72
+##  5  8000 mess1  7.64
+##  6  9000 mess1  8.75
+##  7  4000 mess2  3.78
+##  8  5000 mess2  4.74
+##  9  6000 mess2  5.67
+## 10  7000 mess2  6.78
+## 11  8000 mess2  7.67
+## 12  9000 mess2  8.80
+## 13  4000 mess3  3.72
+## 14  5000 mess3  4.72
+## 15  6000 mess3  5.67
+## 16  7000 mess3  6.69
+## 17  8000 mess3  7.70
+## 18  9000 mess3  9.05
+## 19  4000 mess4  3.77
+## 20  5000 mess4  4.69
+## 21  6000 mess4  5.62
+## 22  7000 mess4  6.61
+## 23  8000 mess4  7.75
+## 24  9000 mess4  8.74</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Handelt es sich bei <code>zeiten1</code> bzw. bei <code>zeiten2</code> um „Tidy Data“ im Sinne von Wickham?</p></li>
+<li><p>Mit welcher Anweisung kann aus <code>zeiten2</code> der ursprüngliche Datensatz <code>zeiten1</code> erzeugt werden?</p></li>
+<li><p>Berechnen Sie in Abhängigkeit von <code>n</code> die Mittelwerte der Laufzeiten. Gehen Sie zuerst davon aus, dass lediglich <code>zeiten1</code> gegeben ist, danach gehen Sie davon aus, dass nur <code>zeiten2</code> gegeben ist.</p></li>
+</ol>
 </div>
-<div id="implementierungsaufgabe" class="section level2 unnumbered hasAnchor">
-<h2>Implementierungsaufgabe<a href="prüfungsleistungen.html#implementierungsaufgabe" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="aufgabe-2-6" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 2<a href="weitere-übungen.html#aufgabe-2-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ähnlich wie in der vorherigen Aufgabe sind unterschiedliche Laufzeiten eines Algorithmus in Abhängigkeit von <code>n</code> gegeben:</p>
+<div class="sourceCode" id="cb941"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb941-1"><a href="weitere-übungen.html#cb941-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> (<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>)<span class="sc">*</span><span class="fl">1e3</span>L</span>
+<span id="cb941-2"><a href="weitere-übungen.html#cb941-2" aria-hidden="true" tabindex="-1"></a>mess1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.656</span>, <span class="cn">NA</span>, <span class="fl">5.719</span>, <span class="cn">NA</span>, <span class="fl">7.641</span>, <span class="fl">8.750</span>)</span>
+<span id="cb941-3"><a href="weitere-übungen.html#cb941-3" aria-hidden="true" tabindex="-1"></a>mess2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.781</span>, <span class="fl">4.735</span>, <span class="cn">NA</span>, <span class="fl">6.782</span>,<span class="cn">NA</span> , <span class="fl">8.798</span>)</span>
+<span id="cb941-4"><a href="weitere-übungen.html#cb941-4" aria-hidden="true" tabindex="-1"></a>mess3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fl">4.719</span>, <span class="fl">5.672</span>, <span class="fl">6.688</span>, <span class="fl">7.704</span>, <span class="fl">9.048</span>)</span>
+<span id="cb941-5"><a href="weitere-übungen.html#cb941-5" aria-hidden="true" tabindex="-1"></a>mess4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fl">4.688</span>, <span class="fl">5.625</span>, <span class="fl">6.610</span>, <span class="fl">7.750</span>, <span class="cn">NA</span>) </span>
+<span id="cb941-6"><a href="weitere-übungen.html#cb941-6" aria-hidden="true" tabindex="-1"></a>mess5 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.766</span>, <span class="fl">4.672</span>,<span class="cn">NA</span>, <span class="fl">6.720</span>, <span class="fl">7.673</span>, <span class="fl">8.735</span>  )</span>
+<span id="cb941-7"><a href="weitere-übungen.html#cb941-7" aria-hidden="true" tabindex="-1"></a>mess6 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.719</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>) </span>
+<span id="cb941-8"><a href="weitere-übungen.html#cb941-8" aria-hidden="true" tabindex="-1"></a>zeiten1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(n, mess1, mess2, mess3, mess4, mess5, mess6)</span>
+<span id="cb941-9"><a href="weitere-übungen.html#cb941-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb941-10"><a href="weitere-übungen.html#cb941-10" aria-hidden="true" tabindex="-1"></a>zeiten1</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 7
+##       n mess1 mess2 mess3 mess4 mess5 mess6
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  4000  3.66  3.78 NA    NA     3.77  3.72
+## 2  5000 NA     4.74  4.72  4.69  4.67 NA   
+## 3  6000  5.72 NA     5.67  5.62 NA    NA   
+## 4  7000 NA     6.78  6.69  6.61  6.72 NA   
+## 5  8000  7.64 NA     7.70  7.75  7.67 NA   
+## 6  9000  8.75  8.80  9.05 NA     8.74 NA</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Wandeln Sie ähnlich wie in der vorherigen Aufgabe <code>zeiten1</code> in <code>zeiten2</code> um (siehe folgende Auflistung).</li>
+</ol>
+<div class="sourceCode" id="cb943"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb943-1"><a href="weitere-übungen.html#cb943-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(zeiten2, <span class="at">n=</span><span class="cn">Inf</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 23 × 3
+##        n Nr     zeit
+##    &lt;int&gt; &lt;fct&gt; &lt;dbl&gt;
+##  1  4000 mess1  3.66
+##  2  6000 mess1  5.72
+##  3  8000 mess1  7.64
+##  4  9000 mess1  8.75
+##  5  4000 mess2  3.78
+##  6  5000 mess2  4.74
+##  7  7000 mess2  6.78
+##  8  9000 mess2  8.80
+##  9  5000 mess3  4.72
+## 10  6000 mess3  5.67
+## 11  7000 mess3  6.69
+## 12  8000 mess3  7.70
+## 13  9000 mess3  9.05
+## 14  5000 mess4  4.69
+## 15  6000 mess4  5.62
+## 16  7000 mess4  6.61
+## 17  8000 mess4  7.75
+## 18  4000 mess5  3.77
+## 19  5000 mess5  4.67
+## 20  7000 mess5  6.72
+## 21  8000 mess5  7.67
+## 22  9000 mess5  8.74
+## 23  4000 mess6  3.72</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Handelt es sich bei <code>zeiten1</code> bzw. bei <code>zeiten2</code> um „Tidy Data“ im Sinne von Wickham?</p></li>
+<li><p>Mit welcher Anweisung kann aus <code>zeiten2</code> der ursprüngliche Datensatz <code>zeiten1</code> erzeugt werden?</p></li>
+<li><p>Berechnen Sie in Abhängigkeit von <code>n</code> die Mittelwerte der Laufzeiten ausgehend jeweils von <code>zeiten1</code> und <code>zeiten2</code>.</p></li>
+</ol>
+</div>
+<div id="aufgabe-3-6" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 3<a href="weitere-übungen.html#aufgabe-3-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Welche Zielflughäfen sind in <code>flights</code> (als <code>dest</code>) aufgelistet, erscheinen aber nicht als FAA-Kennung in <code>airports</code>?</p>
+</div>
+<div id="aufgabe-4-6" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 4<a href="weitere-übungen.html#aufgabe-4-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Geben Sie diejenigen Datensätze aus <code>airports</code> aus, die als Zielflughafen in <code>flights</code> (als <code>dest</code>) vorkommen.</p>
+</div>
+<div id="aufgabe-5-5" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 5<a href="weitere-übungen.html#aufgabe-5-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Geben Sie diejenigen Datensätze aus <code>airports</code> aus, die als Abflughafen in <code>flights</code> (als <code>origin</code>) vorkommen.</p>
+</div>
+<div id="aufgabe-6-5" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 6<a href="weitere-übungen.html#aufgabe-6-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Geben Sie Breitengrad und Längengrad der drei Abflughäfen im Datensatz <code>flights</code> aus. Unterscheiden sich die Koordinatenangaben deutlich und was sind die entsprechenden Mittelwerte?</p>
+</div>
+<div id="aufgabe-7-4" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 7<a href="weitere-übungen.html#aufgabe-7-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: lower-alpha">
+<li><p>Nennen Sie den Datensatz <code>flights</code> in den Datensatz <code>flights_withCoord</code> um und fügen Sie aus dem Datensatz <code>airports</code> den Breitengrad (Latitude) und den Längengrad (Longitude) des jeweiligen Zielflughafens in den Datensatz <code>flights</code> ein.</p></li>
+<li><p>Wie groß sind die Korrelationen zwischen</p>
+<ul>
+<li>Breitengrad und Fluglänge</li>
+<li>Längengrad und Fluglänge? (Hinweis: <code>use="complete.obs"</code>)</li>
+</ul></li>
+</ol>
+<p>Ändern sich diese Korrelationen, wenn man die Fluglänge in Kilometer statt in Meilen bei der Berechnung der Korrelation zugrunde legt?</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Betrachten Sie nun für jeden Flug die Differenz der Längen- und Breitengrade von Abflug- und Zielflughafen. Bestimmen Sie die Wurzel aus der Summe der Quadrate dieser beiden Differenzen und ermitteln Sie die Korrelation mit der Fluglänge. Was für einen Wert erwarten Sie?</li>
+</ol>
+</div>
+<div id="aufgabe-8-4" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 8<a href="weitere-übungen.html#aufgabe-8-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Was geben die folgenden Anweisungen aus und wieso?</p>
+<div class="sourceCode" id="cb945"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb945-1"><a href="weitere-übungen.html#cb945-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, rnorm)</span>
+<span id="cb945-2"><a href="weitere-übungen.html#cb945-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span><span class="fu">rnorm</span>(.))</span>
+<span id="cb945-3"><a href="weitere-übungen.html#cb945-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span><span class="fu">rnorm</span>(<span class="dv">4</span>, .))</span></code></pre></div>
+</div>
+<div id="aufgabe-9-3" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 9<a href="weitere-übungen.html#aufgabe-9-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Berechnen Sie die Mittelwerte aller Spalten in <code>mtcars</code>.</p>
+</div>
+<div id="aufgabe-10-3" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 10<a href="weitere-übungen.html#aufgabe-10-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Implementieren Sie mithilfe der Funktionen <code>is.numeric()</code> und <code>map_lgl()</code> eine Funktion <code>numerisch()</code>, die als Argument einen Tibble <code>df</code> erwartet und den Tibble zurückgibt, der genau aus allen numerischen Spalten von <code>df</code> besteht. Insbesondere soll dann möglich sein:</p>
+<div class="sourceCode" id="cb946"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb946-1"><a href="weitere-übungen.html#cb946-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">numerisch</span>(diamonds), <span class="at">use=</span><span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>##            carat       depth      table      price           x           y
+## carat 1.00000000  0.02822431  0.1816175  0.9215913  0.97509423  0.95172220
+## depth 0.02822431  1.00000000 -0.2957785 -0.0106474 -0.02528925 -0.02934067
+## table 0.18161755 -0.29577852  1.0000000  0.1271339  0.19534428  0.18376015
+## price 0.92159130 -0.01064740  0.1271339  1.0000000  0.88443516  0.86542090
+## x     0.97509423 -0.02528925  0.1953443  0.8844352  1.00000000  0.97470148
+## y     0.95172220 -0.02934067  0.1837601  0.8654209  0.97470148  1.00000000
+## z     0.95338738  0.09492388  0.1509287  0.8612494  0.97077180  0.95200572
+##                z
+## carat 0.95338738
+## depth 0.09492388
+## table 0.15092869
+## price 0.86124944
+## x     0.97077180
+## y     0.95200572
+## z     1.00000000</code></pre>
+<div class="sourceCode" id="cb948"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb948-1"><a href="weitere-übungen.html#cb948-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">numerisch</span>(mpg), <span class="at">use=</span><span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>##            displ         year        cyl         cty          hwy
+## displ  1.0000000  0.147842816  0.9302271 -0.79852397 -0.766020021
+## year   0.1478428  1.000000000  0.1222453 -0.03723229  0.002157643
+## cyl    0.9302271  0.122245347  1.0000000 -0.80577141 -0.761912354
+## cty   -0.7985240 -0.037232291 -0.8057714  1.00000000  0.955915914
+## hwy   -0.7660200  0.002157643 -0.7619124  0.95591591  1.000000000</code></pre>
+</div>
+<div id="aufgabe-11-2" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 11<a href="weitere-übungen.html#aufgabe-11-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Erklären Sie folgenden Quelltext:</p>
+<div class="sourceCode" id="cb950"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb950-1"><a href="weitere-übungen.html#cb950-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> diamonds <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">vol=</span>x<span class="sc">*</span>y<span class="sc">*</span>z)</span>
+<span id="cb950-2"><a href="weitere-übungen.html#cb950-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb950-3"><a href="weitere-übungen.html#cb950-3" aria-hidden="true" tabindex="-1"></a>lmd <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> vol, <span class="at">data =</span> d)</span>
+<span id="cb950-4"><a href="weitere-übungen.html#cb950-4" aria-hidden="true" tabindex="-1"></a>sum_lmd <span class="ot">&lt;-</span> <span class="fu">summary</span>(lmd)</span>
+<span id="cb950-5"><a href="weitere-übungen.html#cb950-5" aria-hidden="true" tabindex="-1"></a>sum_lmd<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.8142979</code></pre>
+<div class="sourceCode" id="cb952"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb952-1"><a href="weitere-übungen.html#cb952-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> </span>
+<span id="cb952-2"><a href="weitere-übungen.html#cb952-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">split</span>(.<span class="sc">$</span>cut) <span class="sc">%&gt;%</span> </span>
+<span id="cb952-3"><a href="weitere-übungen.html#cb952-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(<span class="sc">~</span><span class="fu">lm</span>(price <span class="sc">~</span> vol, <span class="at">data =</span> .))</span>
+<span id="cb952-4"><a href="weitere-übungen.html#cb952-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb952-5"><a href="weitere-übungen.html#cb952-5" aria-hidden="true" tabindex="-1"></a>models <span class="sc">%&gt;%</span> </span>
+<span id="cb952-6"><a href="weitere-übungen.html#cb952-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">map</span>(summary) <span class="sc">%&gt;%</span> </span>
+<span id="cb952-7"><a href="weitere-übungen.html#cb952-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">map_dbl</span>(<span class="sc">~</span>.<span class="sc">$</span>r.squared)</span></code></pre></div>
+<pre><code>##      Fair      Good Very Good   Premium     Ideal 
+## 0.7391252 0.8437127 0.8523177 0.7516382 0.8616549</code></pre>
+</div>
+</div>
+<div id="übungen---objektorientierte-programmierung-in-r-laufzeitverhalten-three-dots-ellipsis" class="section level2 unnumbered hasAnchor">
+<h2>Übungen - Objektorientierte Programmierung in R, Laufzeitverhalten, three dots ellipsis<a href="weitere-übungen.html#übungen---objektorientierte-programmierung-in-r-laufzeitverhalten-three-dots-ellipsis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="aufgabe-1-7" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 1<a href="weitere-übungen.html#aufgabe-1-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Woran erkennt man, dass ein R-Objekt kein Objekt einer S3 Klasse ist?</p>
+</div>
+<div id="aufgabe-2-7" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 2<a href="weitere-übungen.html#aufgabe-2-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Implementieren Sie eine S3-Klasse <code>binseq</code>, die binäre (nicht-leere) Folgen modelliert. Eine binäre Folge ist eine endliche Folge, die nur aus den Elementen -1 und +1 besteht. Die Klasse soll sich wie folgt verhalten:</p>
+<div class="sourceCode" id="cb954"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb954-1"><a href="weitere-übungen.html#cb954-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">binseq</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb954-2"><a href="weitere-übungen.html#cb954-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(s)</span></code></pre></div>
+<pre><code>##  &#39;binseq&#39; int [1:7] 1 1 1 -1 1 -1 -1
+##  - attr(*, &quot;n&quot;)= int 7</code></pre>
+<div class="sourceCode" id="cb956"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb956-1"><a href="weitere-übungen.html#cb956-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(s)</span></code></pre></div>
+<pre><code>## [1] &quot;Binäre Folge der Länge 7&quot;
+## [1]  1  1  1 -1  1 -1 -1</code></pre>
+<div class="sourceCode" id="cb958"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb958-1"><a href="weitere-übungen.html#cb958-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(s)</span></code></pre></div>
+<pre><code>## $n
+## [1] 7
+## 
+## $class
+## [1] &quot;binseq&quot;</code></pre>
+<div class="sourceCode" id="cb960"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb960-1"><a href="weitere-übungen.html#cb960-1" aria-hidden="true" tabindex="-1"></a><span class="co"># binseq(c(1,1,-1.0,1))</span></span>
+<span id="cb960-2"><a href="weitere-übungen.html#cb960-2" aria-hidden="true" tabindex="-1"></a><span class="co"># # binseq(c(1,3,-1.0,1))</span></span>
+<span id="cb960-3"><a href="weitere-übungen.html#cb960-3" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben.</span></span>
+<span id="cb960-4"><a href="weitere-übungen.html#cb960-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb960-5"><a href="weitere-übungen.html#cb960-5" aria-hidden="true" tabindex="-1"></a><span class="co"># # binseq(double())</span></span>
+<span id="cb960-6"><a href="weitere-übungen.html#cb960-6" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: n==0</span></span>
+<span id="cb960-7"><a href="weitere-übungen.html#cb960-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb960-8"><a href="weitere-übungen.html#cb960-8" aria-hidden="true" tabindex="-1"></a><span class="co"># # binseq(c(&quot;a&quot;, &quot;b&quot;))</span></span>
+<span id="cb960-9"><a href="weitere-übungen.html#cb960-9" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben</span></span>
+<span id="cb960-10"><a href="weitere-übungen.html#cb960-10" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Zusätzlich: Warnmeldung:</span></span>
+<span id="cb960-11"><a href="weitere-übungen.html#cb960-11" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; In binseq(c(&quot;a&quot;, &quot;b&quot;)) :</span></span>
+<span id="cb960-12"><a href="weitere-übungen.html#cb960-12" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben</span></span>
+<span id="cb960-13"><a href="weitere-übungen.html#cb960-13" aria-hidden="true" tabindex="-1"></a><span class="co"># binseq(-1)</span></span>
+<span id="cb960-14"><a href="weitere-übungen.html#cb960-14" aria-hidden="true" tabindex="-1"></a><span class="co"># # binseq(c(1,1,1,0))</span></span>
+<span id="cb960-15"><a href="weitere-übungen.html#cb960-15" aria-hidden="true" tabindex="-1"></a><span class="co"># #R&gt; Fehler: Alle Elemente dürfen nur den Wert 1 oder -1 haben</span></span>
+<span id="cb960-16"><a href="weitere-übungen.html#cb960-16" aria-hidden="true" tabindex="-1"></a><span class="co"># binseq(c(T, T, T, F))</span></span>
+<span id="cb960-17"><a href="weitere-übungen.html#cb960-17" aria-hidden="true" tabindex="-1"></a><span class="co"># identical(binseq(c(T, T, T, F)), binseq(c(1, 1, 1, -1)))</span></span></code></pre></div>
+<p>Gehen Sie dabei genauso vor wie in Kapitel 13 in „Advanced R“ von Hadley Wickham <a href="https://adv-r.hadley.nz/">https://adv-r.hadley.nz/</a> beschrieben:</p>
+<ul>
+<li><p>Implementieren Sie die Funktionen <code>new_binseq()</code>, <code>validate_binseq()</code> und <code>binseq()</code>.</p></li>
+<li><p>Erzeugen Sie die Methode <code>print.binseq()</code> für die generische Funktion <code>print()</code>.</p></li>
+</ul>
+</div>
+<div id="aufgabe-3-7" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 3<a href="weitere-übungen.html#aufgabe-3-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: lower-alpha">
+<li>Was sind generische Funktionen?</li>
+<li>Was ist der Unterschied zwischen einer generischen Funktion und einer Methode?</li>
+<li>Gibt es in Base-R mehr als 100 generische Funktionen?</li>
+<li>Was gibt die Funktion <code>methods()</code> zurück? (Zum Beispiel: <code>methods(mean)</code> oder <code>methods(print)</code>)</li>
+</ol>
+</div>
+<div id="aufgabe-4-7" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 4<a href="weitere-übungen.html#aufgabe-4-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Eine ist eine endliche Folge <span class="math inline">\(s = \left(s_1, s_2, ..., s_n\right)\)</span> mit <span class="math inline">\(s_j \in \{-1, +1\}\)</span> für alle <span class="math inline">\(1 \leq j \leq n\)</span>. Für <span class="math inline">\(0 &lt; k &lt; n\)</span> ist die <em>(der Ordnung k)</em> definiert durch:</p>
+<p>\begin*{equation}
+C_k(s) = <em>{j=1}^{n-k} s_j s</em>{j+k}
+\end{equation}</p>
+<p>In R kann <span class="math inline">\(s\)</span> leicht durch einen Integer-Vektor dargestellt und die aperiodische Autokorrelation bei-spielsweise wie folgt implementiert werden:</p>
+<div class="sourceCode" id="cb961"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb961-1"><a href="weitere-übungen.html#cb961-1" aria-hidden="true" tabindex="-1"></a>autokorrelation1 <span class="ot">&lt;-</span> <span class="cf">function</span>(s) {</span>
+<span id="cb961-2"><a href="weitere-übungen.html#cb961-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(s)</span>
+<span id="cb961-3"><a href="weitere-übungen.html#cb961-3" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;integer&quot;</span>, <span class="at">length =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb961-4"><a href="weitere-übungen.html#cb961-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n<span class="dv">-1</span>)) {</span>
+<span id="cb961-5"><a href="weitere-übungen.html#cb961-5" aria-hidden="true" tabindex="-1"></a>    res[k] <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">t</span>(s[<span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> k)]) <span class="sc">%*%</span> s[(k <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>n])</span>
+<span id="cb961-6"><a href="weitere-übungen.html#cb961-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb961-7"><a href="weitere-übungen.html#cb961-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb961-8"><a href="weitere-übungen.html#cb961-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<ol style="list-style-type: lower-alpha">
+<li><p>Modifizieren Sie die Funktion <code>autokorrelation1()</code>, indem Sie die Schleife durch <code>map_int()</code> (aus <code>purrr</code>) ersetzen. Nennen Sie die modifizierte Version <code>autokorrelation2()</code>.</p></li>
+<li><p>Vergleichen Sie die Laufzeiten der beiden Funktionen für große <code>n</code> mithilfe von <code>system.time()</code>, beispielsweise durch:</p></li>
+</ol>
+<div class="sourceCode" id="cb962"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb962-1"><a href="weitere-übungen.html#cb962-1" aria-hidden="true" tabindex="-1"></a>randBinSeq <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb962-2"><a href="weitere-übungen.html#cb962-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">-</span>1L, 1L), n, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb962-3"><a href="weitere-übungen.html#cb962-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb962-4"><a href="weitere-übungen.html#cb962-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">randBinSeq</span>(<span class="fl">2E4</span>) </span>
+<span id="cb962-5"><a href="weitere-übungen.html#cb962-5" aria-hidden="true" tabindex="-1"></a><span class="fu">autokorrelation1</span>(s)</span>
+<span id="cb962-6"><a href="weitere-übungen.html#cb962-6" aria-hidden="true" tabindex="-1"></a><span class="fu">autokorrelation2</span>(s)</span></code></pre></div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Erstellen Sie einen weiteren Laufzeittest; erklären und interpretieren Sie die Ergebnisse:</li>
+</ol>
+<div class="sourceCode" id="cb963"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb963-1"><a href="weitere-übungen.html#cb963-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(compiler)</span>
+<span id="cb963-2"><a href="weitere-übungen.html#cb963-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">cmpfun</span>(autokorrelation1)</span>
+<span id="cb963-3"><a href="weitere-übungen.html#cb963-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">f</span>(s))</span></code></pre></div>
+<p><strong>HINWEIS:</strong> Byte Code Compilation und JIT-Compiler</p>
+</div>
+<div id="aufgabe-5-6" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 5<a href="weitere-übungen.html#aufgabe-5-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Erzeugen Sie eine neue generische Funktion <code>autokor()</code> und implementieren Sie für die Klasse <code>binseq</code> (siehe oben) eine entsprechende Methode, die die aperiodische Autokorrelation zurückgibt. Wann ist dieses Vorgehen sinnvoll?</p>
+</div>
+<div id="aufgabe-6-6" class="section level3 unnumbered hasAnchor">
+<h3>Aufgabe 6<a href="weitere-übungen.html#aufgabe-6-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Erklären Sie den folgenden Quelltext:</p>
+<div class="sourceCode" id="cb964"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb964-1"><a href="weitere-übungen.html#cb964-1" aria-hidden="true" tabindex="-1"></a>foo1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x,...) {</span>
+<span id="cb964-2"><a href="weitere-übungen.html#cb964-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(x)</span>
+<span id="cb964-3"><a href="weitere-übungen.html#cb964-3" aria-hidden="true" tabindex="-1"></a>  args <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb964-4"><a href="weitere-übungen.html#cb964-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(a <span class="cf">in</span> args){</span>
+<span id="cb964-5"><a href="weitere-übungen.html#cb964-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(a)</span>
+<span id="cb964-6"><a href="weitere-übungen.html#cb964-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb964-7"><a href="weitere-übungen.html#cb964-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb964-8"><a href="weitere-übungen.html#cb964-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb964-9"><a href="weitere-übungen.html#cb964-9" aria-hidden="true" tabindex="-1"></a><span class="fu">foo1</span>(<span class="dv">1</span>)</span>
+<span id="cb964-10"><a href="weitere-übungen.html#cb964-10" aria-hidden="true" tabindex="-1"></a><span class="fu">foo1</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>, <span class="at">mean=</span><span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb965"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb965-1"><a href="weitere-übungen.html#cb965-1" aria-hidden="true" tabindex="-1"></a>foo2 <span class="ot">&lt;-</span> <span class="cf">function</span>(n, ...) {</span>
+<span id="cb965-2"><a href="weitere-übungen.html#cb965-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rnorm</span>(n, ...))</span>
+<span id="cb965-3"><a href="weitere-übungen.html#cb965-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb965-4"><a href="weitere-übungen.html#cb965-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb965-5"><a href="weitere-übungen.html#cb965-5" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>)</span>
+<span id="cb965-6"><a href="weitere-übungen.html#cb965-6" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>,<span class="dv">100</span>)</span>
+<span id="cb965-7"><a href="weitere-übungen.html#cb965-7" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>, <span class="at">mean=</span><span class="dv">100</span>)</span>
+<span id="cb965-8"><a href="weitere-übungen.html#cb965-8" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>, <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">500</span>)</span>
+<span id="cb965-9"><a href="weitere-übungen.html#cb965-9" aria-hidden="true" tabindex="-1"></a><span class="fu">foo2</span>(<span class="dv">4</span>, <span class="at">meen=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">500</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb966"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb966-1"><a href="weitere-übungen.html#cb966-1" aria-hidden="true" tabindex="-1"></a>foo3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb966-2"><a href="weitere-übungen.html#cb966-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(<span class="fu">mean</span>(x,...), <span class="fu">median</span>(x,...)))</span>
+<span id="cb966-3"><a href="weitere-übungen.html#cb966-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb966-4"><a href="weitere-übungen.html#cb966-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb966-5"><a href="weitere-übungen.html#cb966-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">100</span>,<span class="dv">4</span>)</span>
+<span id="cb966-6"><a href="weitere-übungen.html#cb966-6" aria-hidden="true" tabindex="-1"></a><span class="fu">foo3</span>(x)</span>
+<span id="cb966-7"><a href="weitere-übungen.html#cb966-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="cn">NA</span>, <span class="dv">100</span>,<span class="dv">4</span>)</span>
+<span id="cb966-8"><a href="weitere-übungen.html#cb966-8" aria-hidden="true" tabindex="-1"></a><span class="fu">foo3</span>(x)</span>
+<span id="cb966-9"><a href="weitere-übungen.html#cb966-9" aria-hidden="true" tabindex="-1"></a><span class="fu">foo3</span>(x, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb966-10"><a href="weitere-übungen.html#cb966-10" aria-hidden="true" tabindex="-1"></a><span class="fu">foo3</span>(x, <span class="at">rm.na=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><strong>Hinweis:</strong></p>
+<p>Das in R wichtige Konzept <code>environment</code> haben wir bisher nur indirekt behandelt. Wer mehr wissen will, den verweise ich auf <span class="citation">(<a href="#ref-Wickhamny" role="doc-biblioref">Wickham and Grolemund ny</a>, Abschnitt 7 <em>Environments</em>)</span>.</p>
 
 </div>
 </div>
-
-
-
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Wickhamny" class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. ny. <em>R for Data Science</em>. <a href="https://r4ds.had.co.nz/index.html">https://r4ds.had.co.nz/index.html</a>.
+</div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="spezielle-themen-und-fallstudien.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="system-info.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exploratory-data-analysis-eda.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="spezielle-themen-und-fallstudien.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -536,7 +832,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/X1-Pruefungsleistung.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/10-weitere_Uebungen.Rmd",
 "text": "Edit"
 },
 "history": {
