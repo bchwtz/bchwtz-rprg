@@ -18,20 +18,20 @@ Ebenso wie `mpg` ist `diamonds` Teil des `ggplot2`-Packages [@ggplot2] (siehe `?
 diamonds
 ```
 
-Der Datensatz `diamonds` ist ein „Tibble“, der annähernd 54,000 Diamanten beschreibt. Jede dieser Observation besteht aus 10 Variablen, die unter anderem Informationen über Preis, Karat, Farbe, Reinheit und Schliff enthalten:
+Der Datensatz `diamonds` ist ein „Tibble“, der annähernd 54,000 Diamanten beschreibt. Jede dieser Observationen besteht aus 10 Variablen, die unter anderem Informationen über Preis, Karat, Farbe, Reinheit und Schliff enthalten:
 
-Variable | deutsche Übersetzung | Bedeutung
+Variable | dt. Übersetzung | Bedeutung
 ---------|----------------------|--------------
-price | Preis | price in US dollars (\$326–\$18,823)
-carat | Karatgewicht | weight of the diamond (0.2–5.01)
-cut | Schliff | quality of the cut (Fair, Good, Very Good, Premium, Ideal)
-color | Farbe | diamond colour, from D (best) to J (worst)
-clarity | Reinheit | a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
-x | | length in mm (0–10.74)
-y | | width in mm (0–58.9)
-z | | depth in mm (0–31.8)
-depth | | total depth percentage = z / mean(x, y) = 2 * z / (x + y) (43–79)
-table | | width of top of diamond relative to widest point (43–95)
+`price` | Preis | price in US dollars (\$326–\$18,823)
+`carat` | Karatgewicht | weight of the diamond (0.2–5.01)
+`cut` | Schliff | quality of the cut (Fair, Good, Very Good, Premium, Ideal)
+`color` | Farbe | diamond colour, from D (best) to J (worst)
+`clarity` | Reinheit | a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
+`x` | | length in mm (0–10.74)
+`y` | | width in mm (0–58.9)
+`z` | | depth in mm (0–31.8)
+`depth` | | total depth percentage = z / mean(x, y) = 2 * z / (x + y) (43–79)
+`table` | | width of top of diamond relative to widest point (43–95)
 
 
 ## Übungen {-}
@@ -41,101 +41,108 @@ require(tidyverse)
 ```
 
 
-**Aufgabe 1**
+### Aufgabe 1
 
-Gegeben ist eine diskrete Variable `dx` und eine kontinuierliche Variable `kx`. Mithilfe von `ggplot2` soll die Verteilung der Werte von `dx` visualisiert werden; ebenso soll in einem separaten Plot die Verteilung der Werte von `dx` visualisiert werden.
+Gegeben ist eine diskrete Variable `dx` und eine kontinuierliche Variable `kx`. Mithilfe von `ggplot2` soll die Verteilung der Werte von `dx` visualisiert werden; ebenso soll in einem separaten Plot die Verteilung der Werte von `kx` visualisiert werden.
 
 a)	Wann benutzen Sie `geom_bar()` und wann `geom_histogram()`?
 
 b) Bei der Auswertung des Datensatzes `diamonds` wurden folgende Plots vorgeschlagen. Was ist falsch oder zumindest fraglich und warum? 
 
-```{r, eval=FALSE}
-ggplot(data = diamonds) +
-  geom_bar(mapping = aes(x = cut))
+    ```{r, eval=FALSE}
+    ggplot(data = diamonds) +
+      geom_bar(mapping = aes(x = cut))
 
-ggplot(data = diamonds) +
-  geom_histogram(mapping = aes(x = carat))
+    ggplot(data = diamonds) +
+      geom_histogram(mapping = aes(x = carat))
 
-ggplot(data = diamonds) +
-  geom_bar(mapping = aes(x = carat))
+    ggplot(data = diamonds) +
+      geom_bar(mapping = aes(x = carat))
 
-ggplot(data = diamonds) +
-  geom_histogram(mapping = aes(x = cut))
-```
+    ggplot(data = diamonds) +
+      geom_histogram(mapping = aes(x = cut))
+    ```
 
-**Aufgabe 2**
+### Aufgabe 2
 
 a)	Sind folgende Funktionsaufrufe identisch? Was bewirken Sie?
 
-```{r, eval=FALSE}
-diamonds %>% tally()
-diamonds %>% count()
-diamonds %>% summarize(n=n())
-tibble(n=nrow(diamonds))
-```
+    ```{r, eval=FALSE}
+    diamonds %>% tally()
+    diamonds %>% count()
+    diamonds %>% summarize(n = n())
+    tibble(n = nrow(diamonds))
+    ```
 
 b)	Sind folgende Funktionsaufrufe identisch? Was bewirken Sie?
 
-```{r, eval=FALSE}
-diamonds %>% group_by(carat) %>% summarize(n=n())
-diamonds %>% group_by(carat) %>% tally()
-diamonds %>% group_by(carat) %>% count()
-```
+    ```{r, eval=FALSE}
+    diamonds %>% group_by(carat) %>% summarize(n=n())
+    diamonds %>% group_by(carat) %>% tally()
+    diamonds %>% group_by(carat) %>% count()
+    ```
 
 c)	Wie kann man mithilfe von `count()` oder `tally()` Folgendes kürzer schreiben?
 
-```{r, eval=FALSE}
-diamonds %>% group_by(carat) %>% summarize(n=n())
-```
+    ```{r, eval=FALSE}
+    diamonds %>% group_by(carat) %>% summarize(n = n())
+    ```
 
 d)	Wie kann man mithilfe von `count()` oder `tally()` Folgendes kürzer schreiben?
 
-```{r, eval=FALSE}
-diamonds %>% summarize(n=sum(carat))
-```
+    ```{r, eval=FALSE}
+    diamonds %>% summarize(n = sum(carat))
+    ```
 
 e) Wie kann man mithilfe von `count()` oder `tally()` Folgendes kürzer schreiben?
 
-```{r, eval=FALSE}
-tibble(n=diamonds %>% select(carat) %>% sum())
-```
+    ```{r, eval=FALSE}
+    tibble(n = diamonds %>% select(carat) %>% sum())
+    ```
 
-**Aufgabe 3**
+### Aufgabe 3
 
 Erklären Sie den folgenden Quelltext:
 
-```{r, eval=FALSE}
-dd <- diamonds[1:8,]
-dd$carat
-cut_width(dd$carat, 0.5)
-dd %>% count(cut_width(carat, 0.5))
-count(dd, cut_width(carat, 0.5))
-```
+    ```{r, eval=FALSE}
+    dd <- diamonds[1:8,]
+    dd$carat
+    cut_width(dd$carat, 0.5)
+    dd %>% count(cut_width(carat, 0.5))
+    count(dd, cut_width(carat, 0.5))
+    ```
 
-**Aufgabe 4**
+### Aufgabe 4
 
 a)	Was gibt die Funktion `ganzOderWeniger()` zurück? 
 
+    ```{r, echo=TRUE}
+    ganzOderWeniger <- function(x, delta) {
+      return(floor(x + delta) == ceiling(x))
+    }
+    ```
+
+
 b)	Erklären Sie den folgenden Quelltext und werten Sie die entsprechende Ausgabe aus. Was ist daran auffällig?
 
-```{r, eval=FALSE}
-diamonds %>% 
-  filter(ganzOderWeniger(carat,0.05)) %>%  
-  count(carat)
+    ```{r, eval=FALSE}
+    diamonds %>% 
+      filter(ganzOderWeniger(carat, 0.05)) %>%  
+      count(carat)
 
-# äqivalent hierzu:
-diamonds %>% 
-  filter(ganzOderWeniger(carat,0.05)) %>% 
-  group_by(carat) %>%
-  summarize(n=n())
-```
+    # äqivalent hierzu:
+    diamonds %>% 
+      filter(ganzOderWeniger(carat, 0.05)) %>% 
+      group_by(carat) %>%
+      summarize(n = n())
+    ```
 
 c)	Vergleichen Sie folgende Variante mit Aufgabenteil b)? Gibt es die Auffälligkeiten immer noch?
 
-```{r, eval=FALSE}
-diamonds %>% 
-  filter(ganzOderWeniger(2*carat,0.1)) %>%  
-  count(carat) %>% 
-  print(n=Inf)
-```
+    ```{r, eval=FALSE}
+    diamonds %>% 
+      filter(ganzOderWeniger(2*carat, 0.1)) %>%  
+      count(carat) %>% 
+      print(n = Inf)
+    ```
 
