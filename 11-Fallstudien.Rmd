@@ -167,23 +167,24 @@ for(x in 1:9){ # Plotten der ersten neun Ziffern
 
 Wir werden in dieser Fallstudie Daten aus der [Internet Movie Database (IMDb)](https://de.wikipedia.org/wiki/Internet_Movie_Database) verwenden, die eine Vielzahl von Filmbewertungen enthält.  
 
-Hierfür benötigen wir die Dateien „imdbData.rds“ und „wortIndex.rds“, die im Downloadbereich hinterlegt sind. Die Daten sind aus dem R-Package `keras` [@keras] entnommen, wobei die Anzahl der Filmbewertungen von 50 000 auf 100 reduziert wurde. Keras ist ein High-Level-Framework für Deep-Learning, das eine einheitliche Schnittstelle für unterschiedliche Deep-Learning-Frameworks wie TensorFlow anbietet.  
+Hierfür benötigen wir die Liste `imdb`, die im `fhswf`-Paket [@fhswf] enthalten ist und die wie folgt aufgerufen wird:
+
+```{r, echo=TRUE, eval=TRUE}
+imdb <- fhswf::imdb
+```
+
+
+Die Daten sind aus dem R-Package `keras` [@keras] entnommen, wobei die Anzahl der Filmbewertungen von 50 000 auf 100 reduziert wurde. Keras ist ein High-Level-Framework für Deep-Learning, das eine einheitliche Schnittstelle für unterschiedliche Deep-Learning-Frameworks wie TensorFlow anbietet.  
 
 Die Beispiele aus dieser Fallstudie werden auch im Kapitel 3 des Buchs @Chollet2018 behandelt, wenn auch in einer leicht anderen Form.  Dort werden Sie als Trainings- und Testdaten für Neuronale Netze benutzt, die lernen sollen, ob eine Bewertung positiv oder negativ ist.
 
-Um in R die Objekte `imdbData` und `wortIndex` zu erhalten, müssen die Daten deserialisiert werden:
+`imdb` besteht aus den Listen `imdbData` und `wortIndex`:
 
 ```{r, echo=TRUE, eval=FALSE}
-imdbData <- readRDS("imdbData.rds")
-wortIndex <- readRDS("wortIndex.rds") 
+imdbData <- imdb$imdbData
+wortIndex <- imdb$wortIndex
 ```
 
-```{r, echo=FALSE, eval=TRUE}
-imdbData <- readRDS("data/imdbData.rds")
-wortIndex <- readRDS("data/wortIndex.rds") 
-```
-
-In unserem Beispiel gehen wir davon aus, dass sich die beiden Dateien im aktuellen Arbeitsverzeichnis befinden. 
 
 ### `imdb_Bewertungen`
 
