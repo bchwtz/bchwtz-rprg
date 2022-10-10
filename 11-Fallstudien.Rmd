@@ -169,7 +169,7 @@ Wir werden in dieser Fallstudie Daten aus der [Internet Movie Database (IMDb)](h
 
 Hierfür benötigen wir die Dateien „imdbData.rds“ und „wortIndex.rds“, die im Downloadbereich hinterlegt sind. Die Daten sind aus dem R-Package `keras` [@keras] entnommen, wobei die Anzahl der Filmbewertungen von 50 000 auf 100 reduziert wurde. Keras ist ein High-Level-Framework für Deep-Learning, das eine einheitliche Schnittstelle für unterschiedliche Deep-Learning-Frameworks wie TensorFlow anbietet.  
 
-Die Beispiele aus dieser Fallstudie werden auch im Kapitel 3 des Buchs [@Chollet2018] behandelt, wenn auch in einer leicht anderen Form.  Dort werden Sie als Trainings- und Testdaten für Neuronale Netze benutzt, die lernen sollen, ob eine Bewertung positiv oder negativ ist.
+Die Beispiele aus dieser Fallstudie werden auch im Kapitel 3 des Buchs @Chollet2018 behandelt, wenn auch in einer leicht anderen Form.  Dort werden Sie als Trainings- und Testdaten für Neuronale Netze benutzt, die lernen sollen, ob eine Bewertung positiv oder negativ ist.
 
 Um in R die Objekte `imdbData` und `wortIndex` zu erhalten, müssen die Daten deserialisiert werden:
 
@@ -200,7 +200,7 @@ Zuerst wollen wir das Objekt `imdb_Bewertungen` betrachten, das hundert Filmbewe
 str(imdb_Bewertungen)
 ```
 
-Abgesehen von den Werten 1, 2 und 3 sind die restlichen Einträge als Indexwerte in einer Wortliste zu interpretieren, die im Prinzip im `wortIndex` enthalten ist. Allerdings sind die gespeicherten Bewertungen nicht vollständig: Es wurden nur häufig benutzte Worte berücksichtigt. So lautet zum Beispiel der Anfang der zweiten Bewertung: 
+Abgesehen von den Werten 1, 2 und 3 sind die restlichen Einträge als Indexwerte in einer Wortliste zu interpretieren, die im Prinzip in `wortIndex` enthalten ist. Allerdings sind die gespeicherten Bewertungen nicht vollständig: Es wurden nur häufig benutzte Worte berücksichtigt. So lautet zum Beispiel der Anfang der zweiten Bewertung: 
 
 `„this film requires a lot of patience because it focuses on mood and character development the plot is very simple and many of the scenes take place on the same set in frances ? the sandy dennis character apartment but the film builds to a disturbing climax br br the characters create an atmosphere ? with sexual tension and psychological ? it's very interesting that robert altman directed this considering the style and structure of his other films still the trademark altman audio style is evident here and there i think what really makes this film work is the brilliant performance by sandy dennis it's definitely one of her darker characters but she plays it so perfectly and convincingly that it's scary michael burns does a good job as the mute young …“` 
 
@@ -311,31 +311,31 @@ names(wortVektor) <- indexVektor
 
 e)	Schreiben Sie eine Funktion `getWort(index)`, die aus `wortVektor` das Wort mit dem Wort-Index `index` zurückgibt. Insbesondere soll gelten:
 
-```{r, echo=FALSE, eval=TRUE}
-getWort <- function(index) { 
-    return(unname(wortVektor[as.character(index)]))
-}
-```
+    ```{r, echo=FALSE, eval=TRUE}
+    getWort <- function(index) { 
+        return(unname(wortVektor[as.character(index)]))
+    }
+    ```
 
-```{r, echo=TRUE, eval=TRUE}
-for(idx in 1:10){
-  print(getWort(idx))
-}
-```
+    ```{r, echo=TRUE, eval=TRUE}
+    for(idx in 1:10){
+      print(getWort(idx))
+    }
+    ```
 
 
 f) Erklären Sie folgenden Quelltext und führen Sie ihn aus:
 
-```{r, echo=TRUE, eval=TRUE}
-for(idx in 1:5){ 
-  bewertung <- imdb_Bewertungen[[idx]][-1] -3 
-  w <- getWort(bewertung)
-  w[is.na(w)] <- "?"
-  text <- paste(w, collapse = " ") 
-  print(text)
-  print("------------------------------")
-}
-```
+    ```{r, echo=TRUE, eval=FALSE}
+    for(idx in 1:5){ 
+      bewertung <- imdb_Bewertungen[[idx]][-1] -3 
+      w <- getWort(bewertung)
+      w[is.na(w)] <- "?"
+      text <- paste(w, collapse = " ") 
+      print(text)
+      print("------------------------------")
+    }
+    ```
 
 
 g)	Sortieren Sie nun `wortVektor` gemäß den Wort-Indexwerten, so dass man einen unbenannten `character`-Vektor `worte` der Länge 88584 erhält, der alle Worte geordnet nach ihrer Häufigkeit umfasst (**Hinweis:** Dies ist ein Einzeiler!):
@@ -345,10 +345,10 @@ worte <- names(indexVektor)[order(indexVektor)]
 # str(worte[1])
 ```
 
-```{r, echo=TRUE, eval=TRUE}
-str(worte)
-head(worte, n=100)
-```
+    ```{r, echo=TRUE, eval=TRUE}
+    str(worte)
+    head(worte, n=100)
+    ```
 
 Insgesamt sind u. a. folgende Objekte erzeugt worden:
 
@@ -360,20 +360,20 @@ Objekt | Datentyp | Anzahl der Elemente | Bemerkung
 
 h)	Erklären Sie folgenden Quelltext und führen Sie ihn aus:
 
-```{r, echo=TRUE, eval=FALSE}
-for(idx in 1:5){ 
-  bewertung <- imdb_Bewertungen[[idx]][-1] -3 
-  bewertung[bewertung < 1 | bewertung > length(worte)] <- NA
-  w <- worte[bewertung]
-  w[is.na(w)] <- "?"
-  text <- paste(w, collapse = " ") 
-  print(text)
-  print("------------------------------")
-}
-```
+    ```{r, echo=TRUE, eval=FALSE}
+    for(idx in 1:5){ 
+      bewertung <- imdb_Bewertungen[[idx]][-1] -3 
+      bewertung[bewertung < 1 | bewertung > length(worte)] <- NA
+      w <- worte[bewertung]
+      w[is.na(w)] <- "?"
+      text <- paste(w, collapse = " ") 
+      print(text)
+      print("------------------------------")
+    }
+    ```
 
 
-Damit die einzelnen Bewertungen als Input einem Neuronalen Netz übergeben werden können, müssen sie umcodiert werden. Eine Möglichkeit ist die sogenannte **One-Hot-Codierung**. In unserem Fall wird hierfür eine Matrix `C` erzeugt, die nur die Werte 0 oder 1 annimmt. Es gilt: `C[idx,j] == 1`  genau dann, wenn `j` in der `idx`-ten Bewertung (d.h. in `imdb_Bewertungen[[idx]]`) (als Wort-Indexwert) vorkommt. 
+Damit die einzelnen Bewertungen als Input einem Neuronalen Netz übergeben werden können, müssen sie umcodiert werden. Eine Möglichkeit ist die sogenannte **One-Hot-Codierung**. In unserem Fall wird hierfür eine Matrix `C` erzeugt, die nur die Werte 0 oder 1 annimmt. Es gilt: `C[idx, j] == 1`  genau dann, wenn `j` in der `idx`-ten Bewertung (d.h. in `imdb_Bewertungen[[idx]]`) (als Wort-Indexwert) vorkommt. 
 
 ```{r, echo=FALSE, eval=TRUE}
 # i <- 1
@@ -394,14 +394,14 @@ for (idx in 1:length(imdb_Bewertungen)){
 Beispielhaft enthält `C` folgende Werte:
 
 ```{r, echo=TRUE, eval=TRUE}
-C[1:8, 1:16]
+C[1:8, 1:14]
 ```
 
 
 Für große Spaltenindexwerte ist `C` hingegen dünn besetzt:
 
 ```{r, echo=TRUE, eval=TRUE}
-C[1:8, 501:516]
+C[1:8, 501:514]
 ```
 
 i)	Die Matrix `C` sollte nicht größer als nötig sein. Wie groß ist `C`? 
