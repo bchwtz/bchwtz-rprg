@@ -163,8 +163,253 @@ for(x in 1:9){ # Plotten der ersten neun Ziffern
 
 (ref:plot-ziffer3) Plots der ersten neun extrahierten Bilder der Ziffer 3 aus dem Ziffern-Trainingsdatensatz [@dslabs].
 
+## Fallstudie 2.1 - IMDb Internet Movie Database
 
-## Fallstudie 2 - Zeichenketten
+Wir werden in dieser Fallstudie Daten aus der [Internet Movie Database (IMDb)](https://de.wikipedia.org/wiki/Internet_Movie_Database) verwenden, die eine Vielzahl von Filmbewertungen enthält.  
+
+Hierfür benötigen wir die Dateien „imdbData.rds“ und „wortIndex.rds“, die im Downloadbereich hinterlegt sind. Die Daten sind aus dem R-Package `keras` [@keras] entnommen, wobei die Anzahl der Filmbewertungen von 50 000 auf 100 reduziert wurde. Keras ist ein High-Level-Framework für Deep-Learning, das eine einheitliche Schnittstelle für unterschiedliche Deep-Learning-Frameworks wie TensorFlow anbietet.  
+
+Die Beispiele aus dieser Fallstudie werden auch im Kapitel 3 des Buchs [@Chollet2018] behandelt, wenn auch in einer leicht anderen Form.  Dort werden Sie als Trainings- und Testdaten für Neuronale Netze benutzt, die lernen sollen, ob eine Bewertung positiv oder negativ ist.
+
+Um in R die Objekte `imdbData` und `wortIndex` zu erhalten, müssen die Daten deserialisiert werden:
+
+```{r, echo=TRUE, eval=FALSE}
+imdbData <- readRDS("imdbData.rds")
+wortIndex <- readRDS("wortIndex.rds") 
+```
+
+```{r, echo=FALSE, eval=TRUE}
+imdbData <- readRDS("data/imdbData.rds")
+wortIndex <- readRDS("data/wortIndex.rds") 
+```
+
+In unserem Beispiel gehen wir davon aus, dass sich die beiden Dateien im aktuellen Arbeitsverzeichnis befinden. 
+
+### `imdb_Bewertungen`
+
+Das Objekt `imdbData` ist eine Liste bestehend aus den Elementen `x` und `y`.
+
+```{r, echo=TRUE, eval=TRUE}
+imdb_Bewertungen <- imdbData$x
+imdb_Ergebnisse <- imdbData$y
+```
+
+Zuerst wollen wir das Objekt `imdb_Bewertungen` betrachten, das hundert Filmbewertungen enthält. Mithilfe von `str()` erfahren wir, dass es sich bei `imdb_Bewertungen` um eine Liste (ohne Namen) mit hundert Elementen handelt. Jedes Listenelement entspricht einer Filmbewertung und besteht aus einem `integer`-Vektor:
+
+```{r, echo=TRUE, eval=TRUE}
+str(imdb_Bewertungen)
+```
+
+Abgesehen von den Werten 1, 2 und 3 sind die restlichen Einträge als Indexwerte in einer Wortliste zu interpretieren, die im Prinzip im `wortIndex` enthalten ist. Allerdings sind die gespeicherten Bewertungen nicht vollständig: Es wurden nur häufig benutzte Worte berücksichtigt. So lautet zum Beispiel der Anfang der zweiten Bewertung: 
+
+`„this film requires a lot of patience because it focuses on mood and character development the plot is very simple and many of the scenes take place on the same set in frances ? the sandy dennis character apartment but the film builds to a disturbing climax br br the characters create an atmosphere ? with sexual tension and psychological ? it's very interesting that robert altman directed this considering the style and structure of his other films still the trademark altman audio style is evident here and there i think what really makes this film work is the brilliant performance by sandy dennis it's definitely one of her darker characters but she plays it so perfectly and convincingly that it's scary michael burns does a good job as the mute young …“` 
+
+Ob eine Filmbewertung positiv oder negativ ist, wird in `imdb_Ergebnisse` festgehalten. Es ist ein Vektor bestehend aus 100 Elementen, die entweder den Wert 0 (negative Bewertung) oder den Wert 1 (positive Bewertung) haben. 
+
+**Beantworten Sie folgende Frage:**
+
+a)	Was ist in `imdb_Bewertungen` der kleinste und was ist der größte Wert?
+
+```{r, echo=FALSE, eval=FALSE}
+# solution - J. Willms
+sapply(imdb_Bewertungen, max)
+max(sapply(imdb_Bewertungen, max))
+min(sapply(imdb_Bewertungen, min))
+```
+
+
+### `wortIndex`
+
+Auch `wortIndex` ist eine Liste. Sie enthält 88584 Elemente. Jedes Element ist ein benannter `integer`-Vektor der Länge 1, den wir als skalaren Wert betrachten und als **Wort-Indexwert** bezeichnen wollen.
+
+```{r, echo=TRUE, eval=TRUE}
+head(wortIndex , n = 4)
+```
+
+```{r, echo=TRUE, eval=TRUE}
+head(names(wortIndex), n = 20)
+```
+
+```{r, echo=TRUE, eval=TRUE}
+wortIndex[[1]]
+
+wortIndex$fawn
+```
+
+Das am häufigsten benutzte Wort („the“) hat den Wort-Indexwert 1, das am zweithäufigsten benutzte Wort („and“) hat den Wort-Indexwert 2, usw.
+
+```{r, echo=TRUE, eval=TRUE}
+wortIndex[wortIndex == 1]
+
+wortIndex[wortIndex == 2]
+```
+
+
+Das Wort „fawn“ wurde nicht so häufig benutzt; es hat den Wort-Indexwert 34701.
+
+
+**Beantworten Sie folgende Fragen:**
+
+b)	Was ist in `wortIndex` der kleinste und was ist der größte Wort-Indexwert?  Ist jeder Wert dazwischen ein Wort-Indexwert?
+
+c)	Erstellen Sie einen `character`-Vektor `topWorte`, der die hundert häufigsten Worte enthält, geordnet nach der Häufigkeit:
+
+**Hinweis:** Es ist sinnvoll, die Liste `wortIndex` in einen Vektor zu überführen:
+
+```{r, echo=TRUE, eval=TRUE}
+indexVektor <- unlist(wortIndex)
+```
+
+
+```{r, echo=FALSE, eval=TRUE}
+topWorte <- indexVektor[indexVektor <= 100]
+topWorte <- sort(topWorte)
+topWorte <-names(topWorte)  # topWorte ist nun ein unbenannter Vektor
+```
+
+```{r, echo=TRUE, eval=TRUE}
+topWorte
+```
+
+Wir können jetzt `indexVektor` als ein "Dictionary<string, int>" (In C++ entspricht dies der Datenstruktur `map<string, int>`.) betrachten: 
+Zu einem Schlüssel (key) wie `"fawn"` wird als Wert (*value*) der entsprechende Wort-Indexwert `indexVector["fawn"]` zurückgegeben; in diesem Fall ist dies 34701.
+
+Da es eine 1:1 Beziehung zwischen „key“ und „value“ gibt, können wir dieses "Dictionary" auch „umdrehen“. Dies wird durch den `character`-Vektor `wortVektor` erreicht und ist die nächste Teilaufgabe. Siehe folgende Beziehungen:
+
+Code | Wert | Name | Alternative Schreibweise | Zugrundeliegender Datentyp
+-----|------|------|--------------------------|---------------------------
+`indexVektor[1]` | `34701` | `"Fawn"` | `indexVetor["Fawn"]` | `integer`
+`wortVektor[1]` | `"Fawn"` | `"34701"` | `wortVektor["34701"]` | `character`
+`worte [34701]` | `"Fawn"` | `NULL` | | `character`
+
+
+d)	Erzeugen Sie einen benannten `character`-Vektor `wortVektor`, der wie ein Dictionary aus einem Wort-Indexwert (aufgefasst als Zeichenkette), das entsprechende Wort zurückgibt:
+
+```{r, echo=FALSE, eval=TRUE}
+wortVektor <-names(indexVektor)
+names(wortVektor) <- indexVektor
+#wortVektor[1]
+# str(wortVektor[1])
+# wortVektor["34701"]
+
+# str(wortVektor)
+# head(wortVektor, n = 20)
+```
+
+    ```{r, echo=TRUE, eval=TRUE}
+    wortVektor[as.character(34701)]
+    unname(wortVektor[as.character(34701)])
+    ```
+
+
+    Für `wortVektor` soll also u. a. gelten:
+
+    ```{r}
+    str(wortVektor)
+    head(wortVektor, n = 20)
+    ```
+
+e)	Schreiben Sie eine Funktion `getWort(index)`, die aus `wortVektor` das Wort mit dem Wort-Index `index` zurückgibt. Insbesondere soll gelten:
+
+```{r, echo=FALSE, eval=TRUE}
+getWort <- function(index) { 
+    return(unname(wortVektor[as.character(index)]))
+}
+```
+
+```{r, echo=TRUE, eval=TRUE}
+for(idx in 1:10){
+  print(getWort(idx))
+}
+```
+
+
+f) Erklären Sie folgenden Quelltext und führen Sie ihn aus:
+
+```{r, echo=TRUE, eval=TRUE}
+for(idx in 1:5){ 
+  bewertung <- imdb_Bewertungen[[idx]][-1] -3 
+  w <- getWort(bewertung)
+  w[is.na(w)] <- "?"
+  text <- paste(w, collapse = " ") 
+  print(text)
+  print("------------------------------")
+}
+```
+
+
+g)	Sortieren Sie nun `wortVektor` gemäß den Wort-Indexwerten, so dass man einen unbenannten `character`-Vektor `worte` der Länge 88584 erhält, der alle Worte geordnet nach ihrer Häufigkeit umfasst (**Hinweis:** Dies ist ein Einzeiler!):
+
+```{r, echo=FALSE, eval=TRUE}
+worte <- names(indexVektor)[order(indexVektor)]
+# str(worte[1])
+```
+
+```{r, echo=TRUE, eval=TRUE}
+str(worte)
+head(worte, n=100)
+```
+
+Insgesamt sind u. a. folgende Objekte erzeugt worden:
+
+Objekt | Datentyp | Anzahl der Elemente | Bemerkung 
+-------|----------|---------------------|-----------
+`wortIndex` | Liste | 88584 | benannt: `indexVector <- unlist(wortIndex)`
+`indexVektor` | `integer`-Vektor | 88584 | benannt: „Dictionary“
+`wortVektor` | `character`-Vektor | 88584 | benannt: „Dictionary“
+
+h)	Erklären Sie folgenden Quelltext und führen Sie ihn aus:
+
+```{r, echo=TRUE, eval=FALSE}
+for(idx in 1:5){ 
+  bewertung <- imdb_Bewertungen[[idx]][-1] -3 
+  bewertung[bewertung < 1 | bewertung > length(worte)] <- NA
+  w <- worte[bewertung]
+  w[is.na(w)] <- "?"
+  text <- paste(w, collapse = " ") 
+  print(text)
+  print("------------------------------")
+}
+```
+
+
+Damit die einzelnen Bewertungen als Input einem Neuronalen Netz übergeben werden können, müssen sie umcodiert werden. Eine Möglichkeit ist die sogenannte **One-Hot-Codierung**. In unserem Fall wird hierfür eine Matrix `C` erzeugt, die nur die Werte 0 oder 1 annimmt. Es gilt: `C[idx,j] == 1`  genau dann, wenn `j` in der `idx`-ten Bewertung (d.h. in `imdb_Bewertungen[[idx]]`) (als Wort-Indexwert) vorkommt. 
+
+```{r, echo=FALSE, eval=TRUE}
+# i <- 1
+# bewertung <- imdb_Bewertungen[[i]] 
+
+nSpalten <- max(sapply(imdb_Bewertungen, max)) # siehe a)
+
+# length(imdb_Bewertungen)    # 100 : Anzahl der Zeilen in C 
+ 
+C <- matrix(0, nrow = length(imdb_Bewertungen), ncol = nSpalten)
+
+for (idx in 1:length(imdb_Bewertungen)){
+  C[idx, imdb_Bewertungen[[idx]]] <- 1
+}
+```
+
+
+Beispielhaft enthält `C` folgende Werte:
+
+```{r, echo=TRUE, eval=TRUE}
+C[1:8, 1:16]
+```
+
+
+Für große Spaltenindexwerte ist `C` hingegen dünn besetzt:
+
+```{r, echo=TRUE, eval=TRUE}
+C[1:8, 501:516]
+```
+
+i)	Die Matrix `C` sollte nicht größer als nötig sein. Wie groß ist `C`? 
+Erstellen Sie die Matrix `C`.
+
+
+
+## Fallstudie 2.2 - Zeichenketten
 
 **Lernziel(e):**
 
