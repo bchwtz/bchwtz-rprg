@@ -1,0 +1,377 @@
+---
+title: "Programmierung für statistische Datenanalyse - Übungsblatt 2"
+author: "Prof. Dr. Benjamin Buchwitz"
+output: pdf_document
+date: "`r Sys.Date()`"
+biblio-style: authoryear-comp
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, attr.source='.numberLines')
+```
+
+
+**Hinweis:** Dem Argument `FUN` innerhalb der `*apply()`-Funktionen können auch anonyme Funktionen\newline (`FUN = function(...){...}`) übergeben werden.
+
+# Aufgabe 1 (11 P)
+
+Gegeben ist folgender Vektor `x`.
+
+```{r, echo=TRUE}
+x <- c(1:3, c(7.3:4), c(2, c(8:9)))
+```
+
+a) Wie werden durch die folgende Codezeile die angezeigten Ergebnisse erhalten und wieso? Seien Sie so ausführlich wie möglich und nehmen Sie dabei Bezug auf *Recycling*.
+
+    ```{r, echo=TRUE, eval=TRUE}
+    x[x >= 3 & x < 7.3 & (x %% 2) != 0]
+    ```
+    
+```{r, echo=FALSE}
+# solution:
+# 1. Schritt:
+# durch Recycling: aus dem skalaren Wert 3 wird der Vektor (3, 3, 3, 3, 3, 3, 3, 3, 3, 3) (length(x) = 10)
+# durch Recycling: aus dem skalaren Wert 7.3 wird der Vektor (7.3, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3, 7.3) (length(x) = 10)
+# durch (x %% 2) != 0: alle ungeraden Zahlen
+# 2. Schritt:
+# 2.1 aus dem Vergleich x >= 3 resultiert: FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
+# 2.2 aus dem Vergleich x < 7.3 resultiert: TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+# 2.3 aus dem Vergleich (x %% 2) != 0 resultiert: TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE
+# 3. Schritt aus x >= 3 & x < 7.3 & (x %% 2) != 0 folgt: FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE
+# 4. Schritt: Die entsprechenden Werte von x lauten: 3.0 6.3 5.3 4.3
+
+# Bewertungsvorschlag:
+# auf jede Bedingung einzeln eingehen: 2 P (3 * 2 P = 6 P)
+# auf insgesamte Bedeutung (Kombination der Bedingung und eckige Klammer eingehen): 2 P
+
+# insgesamt: 8 P
+```
+
+b) Erhalten Sie das gleiche Ergebnis wie in a), wenn Sie die Reihenfolge der in den eckigen Klammern angegebenen Abfragen vertauschen? Begründen Sie Ihre Entscheidung und geben Sie ein Code-Beispiel an.
+
+```{r, eval=FALSE}
+# solution:
+x[(x %% 2) != 0 & x >= 3 & x < 7.3]
+
+x[x < 7.3 & (x %% 2) != 0 & x >= 3]
+# Code-Beispiel: 1 P
+# Antwort (nein): 1 P
+# Begründung: 1 P
+
+# insgesamt: 3 P
+```
+
+
+# Aufgabe 2 (9 P)
+
+Gegeben sind die Variablen `x`, `y` und `z`. Um welche Datentypen handelt es bei `x`, `y` und `z`?
+
+```{r, echo=TRUE}
+x <- TRUE
+y <- "TRUE"
+z <- 1.2
+```
+
+```{r}
+# solution:
+x <- TRUE # logical
+y <- "TRUE" # character
+z <- 1.2 # double (numeric)
+```
+
+Um welche Datentypen handelt es bei den folgenden Vektoren `v1`, `v2`, `v3` und `v4`? Was können Sie daraus schließen? Erklären Sie in diesem Zusammenhang den Begriff *Coercion*, indem Sie Sätze dazu schreiben als auch eine Skizze anfertigen. 
+
+```{r, echo=TRUE}
+v1 <- c(TRUE, 1.2) 
+v2 <- c(TRUE, "TRUE")
+v3 <- c(1.2, "TRUE")
+v4 <- c(TRUE, "TRUE", 1.2)
+```
+
+```{r}
+# solution:
+v1 <- c(TRUE, 1.2) # double (numeric)
+v2 <- c(TRUE, "TRUE") # character
+v3 <- c(1.2, "TRUE") # character
+v4 <- c(TRUE, "TRUE", 1.2) # character
+# logical -> numeric -> character (from more specific to more general)
+# Bewertungsvorschlag:
+# Datentyp: jeweils: 0.5 P (4 * 0.5 P = 2 P + 3 * 0.5 P = 3.5 P)
+# Schlussfolgerung: 1.5 P 
+# Coercion (ausformulierte Sätze): 2 P (specific --> generic, automatische Umwandlung der Datentypen in R)
+# Skizze: 2 P
+```
+
+# Aufgabe 3 (14 P)
+
+a) Beschreiben und erklären Sie, was der folgende Code ausführt: Benennen Sie das mathematische Konzept. Unterstützen Sie Ihre Beobachtungen durch Rechnungen in \LaTeX-Notation.\newline
+Beantworten Sie dabei folgende Fragen:
+
+    + Welcher Klasse gehört das Objekt `A3` an?
+
+    + Wie sieht `A3` aus?
+
+    + Wie wird `A3` erhalten? 
+
+
+    ```{r, echo=TRUE, eval=FALSE}
+    a1 <- c(1, 2, 3, 4, 5, 6)
+    A1 <- matrix(a1, nrow = 2, ncol = 3, byrow = TRUE)
+
+    a2 <- c(1, 2, 4, 6, 8, 9, 7, 4, 2, 1, 3, 0)
+    A2 <- matrix(a2, nrow = 3, ncol = 4, byrow = TRUE)
+    nr <- nrow(A1)
+    rr <- ncol(A2)
+    A3 <- matrix(NA, nrow = nr, ncol = rr)
+
+    for(n in 1:nr){
+      for(r in 1:rr){
+        A3[n, r] <- sum(A1[n,] * A2[,r])
+      }
+    }
+
+    A3
+    ```
+
+```{r}
+## Matrixmultiplikation: entspricht %*%
+
+# Bewertungsvorschlag:
+# class(A3): matrix, array: 1 P
+# A3: 2x4-Matrix mit folgenden Werten...: 1 P
+# wie wird A3 erhalten: Code erklären (2 Matrizen (A1 und A2) (1 P), die miteinander multipliziert werden) (auf Bedeutung der Indizes eingehen: 1 P, Matrixmultiplikation: 1 P) und Rechnung: 2 P
+# insgesamt: 7 P
+```
+
+b) Schreiben Sie den Code in Aufgabe 3a) in Form einer Funktion auf. Geben Sie der Funktion einen *geeigneten* Namen. Wenden Sie dann die Funktion auf die folgenden Objekte `X` und `Y` an. Welches Ergebnis bzw. welchen Rückgabewert (strukturell und inhaltlich gesehen) erwarten Sie nach Anwendung der Funktion auf die Objekte `X` und `Y` und wieso?
+
+    ```{r, eval=TRUE, echo=TRUE}
+    X <- matrix(c(1, 2, 4, 5, 6, 7, 8, 9, 2), nrow = 3, ncol = 3)
+    Y <- matrix(c(9, 2, 1, 3, 3, 3, 4, 5, 6), nrow = 3, ncol = 3)
+    ```
+
+```{r}
+matrixMultiplikation <- function(X, Y){
+  nr <- nrow(X)
+  mc <- ncol(Y)
+  rr <- ncol(Y)
+  A3 <- matrix(NA, nrow = nr, ncol = rr)
+
+  for(n in 1:nr){
+    for(r in 1:rr){
+      A3[n, r] <- sum(X[n,] * Y[,r])
+    }
+  }
+  return(A3)
+}
+```
+
+```{r}
+# solution:
+
+# Bewertungsvorschlag:
+
+# für "geeignete" Namensgebung: 1 P
+# Funktion(skörper): Argumente (1 P), Rückgabewert (1 P) = 2 P
+# fehlerfreie Anwendung der Funktion auf Objekte X und Y: 1 P
+# Erwartung des Rückgabewerts (strukturell: 1 P und inhaltlich: 1 P = 2 P) + Begründung: 1 P
+# insgesamt: 7 P
+```
+
+```{r, eval=FALSE}
+matrixMultiplikation(X, Y)
+
+# X %*% Y
+```
+
+\newpage
+
+# Aufgabe 4 (20 P)
+
+a) Reproduzieren Sie folgende Datenstruktur in R und benennen Sie diese `Arr`. 
+
+    ```{r, eval=TRUE}
+    a1 <- 1:9
+    a2 <- 9:1
+    a3 <- rep(3, 9)
+    a4 <- a1 + a3
+    values <- c(a1, a2, a3, a4)
+    Arr <- array(values, dim = c(3, 3, 4))
+    Arr
+    ```
+
+```{r, echo=FALSE}
+# Bewertungsvorschlag:
+# für jede Matrix in Arr: 1 P (4 * 1 P = 4 P) 
+```
+
+
+b) Aus wie vielen Elementen (Werten) besteht `Arr`? Nutzen Sie hierfür eine *geeignete* Abfragemöglichkeit in R.
+
+```{r, eval=FALSE}
+length(Arr)
+# Abfrage: 1 P
+# Antwortsatz: 1 P
+```
+
+
+c) Aus wie vielen Dimensionen besteht `Arr`? Nutzen Sie hierfür eine *geeignete* Abfragemöglichkeit in R.
+
+```{r, eval=FALSE}
+dim(Arr) # 3 # length(dim(Arr))
+# Abfrage: 1 P
+# Antwortsatz: 1 P
+```
+
+
+d) Aus wie vielen Elementen besteht die 3. Dimension? Nutzen Sie hierfür eine *geeignete* Abfragemöglichkeit in R.
+
+    ```{r, eval=FALSE}
+    dim(Arr)[3]
+    # Abfrage: 1 P
+    # Antwortsatz: 1 P
+    ```
+
+e) Bennen Sie die Zeilennamen jeder Matrix in `Arr` in "r1", "r2" und "r3" und die Spaltennamen entsprechend in "c1", "c2" und "c3" um, sodass folgendes Ergebnis erhalten wird: 
+
+    ```{r}
+    rownames(Arr) <- c("r1", "r2", "r3")
+    colnames(Arr) <- c("c1", "c2", "c3")
+    Arr
+    # Bewertungsvorschlag: 
+    # für richtige Zeilennamen: 1 P
+    # für richtige Spaltennamen: 1 P
+    ```
+
+f) Greifen Sie nun per Namen auf die 3. Spalte **jeder** in `Arr` gespeicherten Matrix **in einem Aufruf** zu. Benennen Sie das Ergebnis `Arr3c`.
+
+    ```{r}
+    Arr3c <- Arr[,"c3",] # per Namen: 1 P, ein Aufruf: 1 P
+    #Arr3c
+    # Bewertungsvorschlag: 2 P
+    ```
+
+g) Modifizieren Sie `Arr3c`, sodass `Arr3c` wie folgt aussieht:
+
+    ```{r, eval=TRUE}
+    colnames(Arr3c) <- c("M1", "M2", "M3", "M4")
+    rownames(Arr3c) <- c("c3.1", "c3.2", "c3.3")
+    Arr3c
+    # Bewertungsvorschlag: 
+    # für richtige Zeilennamen: 1 P
+    # für richtige Spaltennamen: 1 P
+    # insgesamt: 2 P
+    ```
+
+h) Wie ist `Arr3c` bezüglich seiner Zeilen und Spalten inhaltlich aufgebaut?
+
+```{r}
+# Bewertungsvorschlag: 
+# Bedeutung der Zeilen erklären: 1 P
+# Bedeutung der Spalten erklären: 1 P
+```
+
+
+i) Tauschen Sie die in `Arr3c` angegebenen Werte durch die Elemente aus `LETTERS` aus, wenn Sie die Elemente in `Arr3c` als Indizes auffassen. Nutzen Sie hierfür die Funktion `apply()`.\newline
+*Hinweise:* Dem Argument `FUN` kann eine anonyme Funktion übergeben werden. Gegebenenfalls sind Zeilen- und/oder Spaltennamen im Nachgang anzupassen.
+
+    ```{r}
+    ArrLetters <- apply(Arr3c, 2, FUN = function(x){LETTERS[x]})
+    rownames(ArrLetters) <- rownames(Arr3c)
+    ArrLetters
+    # Bewertungsvorschlag: 
+        # Nutzung der apply-Funktion für "Austausch" der Elemente: 1 P
+        # für richtige Zeilen- und Spaltennamen: 1 P
+    # insgesamt: 2 P
+    ```
+
+\newpage
+
+# Aufgabe 5 (21 P)
+
+a) Sie erhalten folgende Informationen über eine Datenstruktur namens `Brr`:
+
+```{r, eval=TRUE}
+set.seed(10)
+x <- sample(seq(0, 50, by=0.01), size = 100, replace = TRUE)
+Brr <- array(x, dim = c(4, 5, 5))
+```
+
+    ```{r, echo=TRUE, eval=TRUE}
+    dim(Brr)
+    ```
+
+
+    Was können Sie über diese Datenstruktur aussagen? Diskutieren Sie, ob es sich bei dieser Datenstruktur um eine Matrix handelt. 
+    
+    ```{r}
+# Bewertungsvorschlag:
+# Erläuterung jeder Dimension: 0.5 P (3 * 0.5 P = 1.5 P)
+# für "richtige" Antwort, ob Matrix ja oder nein: 1 P 
+# Begründung: 1.5 P (direkt keine Matrix, da 3 Dimensionen, aber kann in Matrizen aufgesplittet werden)
+# insgesamt: 4 P
+```
+
+
+b) Gegeben ist folgender Array:
+
+    ```{r, echo=TRUE, eval=TRUE}
+    set.seed(10)
+    x <- sample(seq(0, 50, by = 0.01), size = 100, replace = TRUE)
+    Ar <- array(x, dim = c(5, 5, 4))
+    ```
+
+    b.1) Bestimmen Sie die spaltenweisen Summen (Spaltensummen) für die 1. Matrix von `Ar` und benennen Sie diesen Vektor `apcsum`. Nutzen Sie die `apply()`-Funktion.
+
+```{r, eval=TRUE}
+matrix1 <- Ar[, , 1] # 1 P
+apcsum <- apply(X = matrix1, MARGIN = 2, FUN = sum) # 1 P
+# Bewertungsvorschlag: insgesamt 2 P 
+```
+
+    b.2) Welche Funktion kennen Sie, um die Spaltensummen der 1. Matrix von `Ar` zu bestimmen? Wenden Sie diese auf die 1. Matrix von `Ar` an und benennen Sie diesen Vektor `csum`. (*Hinweis:* Es ist keine `apply()`-Funktion gemeint.)
+
+```{r, eval=TRUE}
+csum <- colSums(matrix1) 
+# Nennung der Funktion: 1 P
+# Anwendung der Funktion: 1 P
+```
+      
+    b.3) Testen Sie in R, ob `apcsum` und `csum` identisch sind und begründen Sie das Ergebnis.
+    
+```{r, eval=FALSE}
+identical(apcsum, csum) # 1 P
+# Begründung: 1 P
+# insgesamt: 2 P
+```
+    
+    b.4) Bestimmen Sie für jede Matrix in `Ar` ihre Determinante. Verwenden Sie dazu die `apply()`-Funktion und schreiben Sie das Ergebnis in einen Vektor.
+
+```{r, eval=FALSE}
+app_det <- apply(X = Ar, MARGIN = 3, FUN = det) # 1 P
+```
+
+
+    b.5) Welche Funktion nutzen Sie, wenn die gleichen Werte wie in b.4) erhalten werden sollen, es sich jedoch beim Rückgabewert um eine Liste handeln soll? Wenden Sie die von Ihnen gewählte Funktion an und überprüfen Sie die Klasse Ihres Rückgabewerts. Können Sie die Funktion `sapply()` hierfür nutzen? Begründen Sie Ihre Entscheidung.
+    
+```{r, eval=FALSE}
+sAr <- apply(X = Ar, MARGIN = 3, FUN = det, simplify = FALSE) 
+class(sAr)
+# Nennung der Funktion: 1 P
+# Anwendung der Funktion: 1 P
+# Überprüfung der Klasse: 1 P
+# "richtige" Antwort: 1 P
+# Begründung: 1 P 
+# insgesamt: 5 P
+```
+
+    b.6) In b.1) haben Sie die Spaltensummen für die 1. Matrix in `Ar` bestimmt. Bestimmen Sie die Spaltensummen für **jede** in `Ar` gespeicherte Matrix unter Verwendung der `apply()`-Funktion (eine Codezeile). Welcher Klasse gehört der Rückgabewert an und wie ist dieser inhaltlich (Spalten und Zeilen) und strukturell aufgebaut?
+
+```{r, eval=FALSE}
+Ar_sums <- apply(X = Ar, MARGIN = 3, FUN = function(x){apply(x, MARGIN = 2, FUN = sum)}) # 2 P (je 1 P für jede Anwendung von apply)
+class(Ar_sums)
+Ar_sums
+# Klasse: 1 P
+# inhaltlicher und struktureller Aufbau (Zeilen und Spalten erläutern): 2 P
+# insgesamt: 5 P
+```
