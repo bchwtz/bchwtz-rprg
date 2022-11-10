@@ -1023,6 +1023,7 @@ dd <- dd[]
 
 ```{r}
 head(dd)
+dim(dd)
 ```
 
 **Bearbeiten Sie folgende Aufgabe:**
@@ -1069,9 +1070,9 @@ identical(dd, ddTmp)
 Zusätzlich wird die `price`-Spalte von Dollar in Euro umgerechnet und eine zusätzliche Spalte „Verfüg-bar“ mit ziemlich willkürlichen Werten eingeführt:
 
 ```{r, echo=TRUE, eval=TRUE}
-dd <- dd %>% mutate(price=as.integer(round(0.9043*price,2))) %>%  # in EURO
-  rename(EUR=price) %>% 
-  mutate(Verfügbar = (round(EUR)%%3>0) )
+dd <- dd %>% mutate(price = as.integer(round(0.9043 * price, 2))) %>%  # in EURO
+  rename(EUR = price) %>% 
+  mutate(Verfügbar = (round(EUR) %% 3 > 0) )
 ```
 
 Schließlich wird das Objekt `dd` als CSV-Datei in das aktuelle Verzeichnis geschrieben:
@@ -1082,7 +1083,7 @@ write_csv2(dd, "diamonds100.csv")
 
 ### Aufgabe 3 - Importieren
 
-Wie wir in Kapitel 5 im Skript gesehen haben, können wir CSV-Dateien mit `read.csv()` bzw. mit `read.csv2()` einlesen:
+Wie wir in Kapitel \@ref(chap5) im Skript gesehen haben, können wir CSV-Dateien mit `read.csv()` bzw. mit `read.csv2()` einlesen:
 
 ```{r, echo=TRUE, eval=FALSE}
 diam1 <- read.csv2("diamonds100.csv") 
@@ -1113,7 +1114,7 @@ all.equal(dd, diam2)
 identical(dd, diam2)
 ```
 
-Es müssen also noch einige Änderungen an `diam2` vorgenommen werden, bevor die Objekte `diam` und `dd` exakt gleich sind. Wir wollen aber diesen Weg nicht weiterverfolgen. Stattdessen werden die CSV-Daten mit der Funktion `read_csv2()` aus dem `readr`-Paket [@readr] eingelesen. Das `readr`-Paket ist genau wie das `dplyr`-Paket Bestandteil von tidyverse. Die Funktion `read_csv2()` bzw. `read_csv()` kann auch mit komprimierten Dateien wie zip-Dateien umgehen. Ferner werden Dateinamen, die mit „http://“, „https://“, „ftp://“ oder „ftps://“ beginnen, automatisch aus dem Netz heruntergeladen. Im Vergleich zu `read.csv2()` scheint die Funktion `read_csv2()` insbesondere bei großen Eingabedateien viel schneller die Daten einzulesen. 
+Es müssen also noch einige Änderungen an `diam2` vorgenommen werden, bevor die Objekte `diam` und `dd` exakt gleich sind. Wir wollen aber diesen Weg nicht weiterverfolgen. Stattdessen werden die CSV-Daten mit der Funktion `read_csv2()` aus dem `readr`-Paket [@readr] eingelesen. Das `readr`-Paket ist genau wie das `dplyr`-Paket Bestandteil von `tidyverse`. Die Funktion `read_csv2()` bzw. `read_csv()` kann auch mit komprimierten Dateien wie zip-Dateien umgehen. Ferner werden Dateinamen, die mit „`http://`“, „`https://`“, „`ftp://`“ oder „`ftps://`“ beginnen, automatisch aus dem Netz heruntergeladen. Im Vergleich zu `read.csv2()` scheint die Funktion `read_csv2()` insbesondere bei großen Eingabedateien viel schneller die Daten einzulesen. 
 
 ```{r, echo=TRUE, eval=FALSE}
 diam <- read_csv2("diamonds100.csv")
@@ -1121,12 +1122,13 @@ diam <- read_csv2("diamonds100.csv")
 
 ```{r, echo=FALSE, eval=TRUE}
 diam <- read_csv2("data/diamonds100.csv")
+spec(diam)
 ```
 
 Mithilfe von `str()` sehen wir, dass `diam` im Gegensatz zu `dd` keinerlei Faktoren als Spalten hat. Dies wird auch durch Folgendes deutlich:
 
 ```{r, echo=TRUE, eval=TRUE}
-names(dd)[!sapply((1:11), function(i) {identical(dd[i], diam[i])})]
+names(dd)[!sapply((1:11), function(idx) {identical(dd[idx], diam[idx])})]
 ```
 
 
@@ -1138,15 +1140,16 @@ Eine Möglichkeit, dies zu korrigieren, ist:
 
 ```{r, echo=TRUE, eval=TRUE}
 diam$EUR <- as.integer(diam$EUR)
-diam$cut <- factor(diam$cut, levels=c("Fair","Good","Very Good","Premium","Ideal"), 
-                       ordered=TRUE)
-diam$color <- factor(diam$color, ordered=TRUE)
-diam$clarity <- factor(diam$clarity,levels=c("I1","SI2","SI1","VS2","VS1","VVS2","VVS1","IF"), 
-                          ordered=TRUE)
+diam$cut <- factor(diam$cut, levels = c("Fair","Good","Very Good","Premium","Ideal"), 
+                       ordered = TRUE)
+diam$color <- factor(diam$color, ordered = TRUE)
+diam$clarity <- factor(diam$clarity, 
+                       levels = c("I1","SI2","SI1","VS2","VS1","VVS2","VVS1","IF"), 
+                          ordered = TRUE)
 ```
 
 
-Wir wollen stattdessen einen anderen Weg verfolgen. Wir kopieren die Informationen `column specification`, die wir beim Aufruf `read_csv2()` erhalten haben, und passen Sie unseren Erfordernissen entsprechend an:
+Wir wollen stattdessen einen anderen Weg verfolgen. Wir kopieren die Informationen `column specification`, die wir beim Aufruf `read_csv2()` bzw. `spec()` erhalten haben, und passen Sie unseren Erfordernissen entsprechend an:
 
 ```{r, echo=TRUE, eval=FALSE}
 diam <- read_csv2("diamonds100.csv",col_types = cols(
@@ -1186,16 +1189,15 @@ diam <- read_csv2("data/diamonds100.csv",col_types = cols(
 )
 ```
 
-Unser Ziel haben wir nun fast erreicht:
 
-```{r, echo=TRUE, eval=TRUE}
+```{r, echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE}
 all.equal(dd, diam)
 identical(dd, diam)
 ```
 
 **Bearbeiten Sie folgende Aufgabe:**
 
-d)	Wieso sind  `diam` und `dd` nicht identisch (siehe @readronline (Abschnitt: "tibble subclass"))? 
+d)	Wieso sind  `diam` und `dd` nicht identisch (siehe @readronline Abschnitt: "tibble subclass")? 
 
 Wie im Abschnitt „tibble subclass“ in @readronline erklärt, liefert aber erst Indizieren (subsetting) den richtigen Datentyp. Dies können wir leicht erreichen durch:
 
@@ -1208,6 +1210,10 @@ Alternativ hätten wir dies auch erhalten durch:
 
 ```{r, echo=TRUE, eval=TRUE}
 diam <- diam %>% select(everything())
+```
+
+```{r}
+all.equal(dd, diam)
 ```
 
 
