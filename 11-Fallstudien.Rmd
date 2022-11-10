@@ -1,6 +1,6 @@
 # Spezielle Themen und Fallstudien 
 
-## Fallstudie 1 - Boxplots und MNIST-Daten
+## Fallstudie 1: Boxplots und MNIST-Daten
 
 ### Boxplots
 
@@ -163,7 +163,7 @@ for(x in 1:9){ # Plotten der ersten neun Ziffern
 
 (ref:plot-ziffer3) Plots der ersten neun extrahierten Bilder der Ziffer 3 aus dem Ziffern-Trainingsdatensatz [@dslabs].
 
-## Fallstudie 2.1 - IMDb Internet Movie Database
+## Fallstudie 2.1: IMDb Internet Movie Database
 
 Wir werden in dieser Fallstudie Daten aus der [Internet Movie Database (IMDb)](https://de.wikipedia.org/wiki/Internet_Movie_Database) verwenden, die eine Vielzahl von Filmbewertungen enthält.  
 
@@ -409,7 +409,7 @@ Erstellen Sie die Matrix `C`.
 
 
 
-## Fallstudie 2.2 - Zeichenketten
+## Fallstudie 2.2: Zeichenketten
 
 In dieser Fallstudie geht es um Filmtitel, die im Zuge des *Internet movie* Datensatzes ([*internet movie database; IMDB*](http://imdb.com/)) gesammelt worden sind. Auf diesen Datensatz kann über das Paket `ggplot2movies` [@ggplot2movies] in R zugegriffen werden. Entsprechend ist eine Beschreibung des Datensatzes über `?movies` erhältlich.
 
@@ -988,8 +988,230 @@ ggplot(data.frame(s2000), aes(sample = s2000))+
 
 (ref:np-plot-3) NP-Plot mit 2000 Werten.
 
+## Fallstudie 4.1: Datenimport
 
-## Fallstudie 4: Datenimport, -manipulation und -speicherung
+### Aufgabe 1
+
+In dieser Fallstudie wollen wir uns mit dem Import von Daten beschäftigen. Weiterführende Ausführungen zu diesem Thema finden Sie in [@Wickhamny, Kapitel 11].
+
+Genauer wollen wir uns mit folgender Aufgabenstellung beschäftigen:
+
+Gegeben ist die CSV-Datei [diamonds100.csv](data/diamonds100.csv).
+
+Aufgabe ist es nun, diese Daten zu importieren und ein Objekt `diam` zu erzeugen, das genau folgende Eigenschaften hat:
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+dd <- read_csv2("data/diamonds100.csv")
+dd <- read_csv2("data/diamonds100.csv",col_types = cols(
+  carat = col_double(),
+  cut = col_factor(levels=c("Fair","Good","Very Good","Premium","Ideal"), 
+                   ordered =TRUE),
+  color = col_factor(levels=LETTERS[4:10], 
+                     ordered =TRUE),
+  clarity = col_factor(levels=c("I1","SI2","SI1","VS2","VS1","VVS2","VVS1","IF"), 
+                       ordered =TRUE),
+  depth = col_double(),
+  table = col_double(),
+  EUR = col_integer(),
+  x = col_double(),
+  y = col_double(),
+  z = col_double(),
+  Verfügbar = col_logical())
+)
+dd <- dd[]
+```
+
+```{r}
+head(dd)
+```
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+a)	Was bedeuten `<dbl>`, `<ord>`, `<int>` und `<lgl>` in der obigen Ausgabe?  
+
+```{r, echo=TRUE, eval=TRUE}
+str(dd)
+```
+
+Wie im Datensatz `diamonds` sind die geordneten Level der einzelnen Faktoren:
+
++ `cut: Fair < Good < Very Good < Premium < Ideal`
+
++ `color: D < E < F < G < H < I < J`
+
++ `clarity: I1 < SI2 < SI1 < VS2 < VS1 < VVS2 < VVS1 < IF`
+
+Damit Sie leicht Ihre importierten Daten mit den ursprünglichen Daten abgleichen können, zeigen wir im nächsten Kapitel zu Kontrollzwecken, wie die Daten ursprünglich erzeugt wurden. In Aufgabe 3 zeigen wir mögliche Lösungswege auf.
+
+
+### Aufgabe 2 - Zu Kontrollzwecken: Erzeugung der Daten
+
+Grundlage für unsere Daten ist der Datensatz diamonds (siehe auch Kapitel \@ref(chap8) des Skripts), aus dem wir 100 zufällige Daten wählen. Dazu nutzen wir die Funktion `sample_n()` aus dem `dplyr`-Paket [@dplyr]:
+
+```{r, echo=TRUE, eval=TRUE}
+set.seed(071219)
+dd <- sample_n(diamonds, 100)     # dplyr
+```
+
+Alternativ hätten wir auch in Base-R schreiben können:
+
+```{r, echo=TRUE, eval=TRUE}
+set.seed(071219) 
+ddTmp <- diamonds[sample(nrow(diamonds), 100), ] 
+```
+
+Wie wir sehen, erhalten wir identische Ergebnisse:
+
+```{r, echo=TRUE, eval=TRUE}
+identical(dd, ddTmp)
+```
+
+Zusätzlich wird die `price`-Spalte von Dollar in Euro umgerechnet und eine zusätzliche Spalte „Verfüg-bar“ mit ziemlich willkürlichen Werten eingeführt:
+
+```{r, echo=TRUE, eval=TRUE}
+dd <- dd %>% mutate(price=as.integer(round(0.9043*price,2))) %>%  # in EURO
+  rename(EUR=price) %>% 
+  mutate(Verfügbar = (round(EUR)%%3>0) )
+```
+
+Schließlich wird das Objekt `dd` als CSV-Datei in das aktuelle Verzeichnis geschrieben:
+
+```{r, echo=TRUE, eval=FALSE}
+write_csv2(dd, "diamonds100.csv")
+```
+
+### Aufgabe 3 - Importieren
+
+Wie wir in Kapitel 5 im Skript gesehen haben, können wir CSV-Dateien mit `read.csv()` bzw. mit `read.csv2()` einlesen:
+
+```{r, echo=TRUE, eval=FALSE}
+diam1 <- read.csv2("diamonds100.csv") 
+```
+
+```{r, echo=FALSE, eval=TRUE}
+diam1 <- read.csv2("data/diamonds100.csv") 
+```
+
+oder besser:
+
+```{r, echo=TRUE, eval=FALSE}
+diam2 <- read.csv2("diamonds100.csv", fileEncoding = "UTF-8")
+```
+
+```{r, echo=FALSE, eval=TRUE}
+diam2 <- read.csv2("data/diamonds100.csv", fileEncoding = "UTF-8")
+```
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+b) Was ist der Unterschied zwischen `diam1` und `diam2`?
+
+Wir erhalten:
+
+```{r, echo=TRUE, eval=TRUE}
+all.equal(dd, diam2)
+identical(dd, diam2)
+```
+
+Es müssen also noch einige Änderungen an `diam2` vorgenommen werden, bevor die Objekte `diam` und `dd` exakt gleich sind. Wir wollen aber diesen Weg nicht weiterverfolgen. Stattdessen werden die CSV-Daten mit der Funktion `read_csv2()` aus dem `readr`-Paket [@readr] eingelesen. Das `readr`-Paket ist genau wie das `dplyr`-Paket Bestandteil von tidyverse. Die Funktion `read_csv2()` bzw. `read_csv()` kann auch mit komprimierten Dateien wie zip-Dateien umgehen. Ferner werden Dateinamen, die mit „http://“, „https://“, „ftp://“ oder „ftps://“ beginnen, automatisch aus dem Netz heruntergeladen. Im Vergleich zu `read.csv2()` scheint die Funktion `read_csv2()` insbesondere bei großen Eingabedateien viel schneller die Daten einzulesen. 
+
+```{r, echo=TRUE, eval=FALSE}
+diam <- read_csv2("diamonds100.csv")
+```
+
+```{r, echo=FALSE, eval=TRUE}
+diam <- read_csv2("data/diamonds100.csv")
+```
+
+Mithilfe von `str()` sehen wir, dass `diam` im Gegensatz zu `dd` keinerlei Faktoren als Spalten hat. Dies wird auch durch Folgendes deutlich:
+
+```{r, echo=TRUE, eval=TRUE}
+names(dd)[!sapply((1:11), function(i) {identical(dd[i], diam[i])})]
+```
+
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+c)	Erklären Sie die letzte Anweisung. Was ist der Grund für die Unterschiede? 
+
+Eine Möglichkeit, dies zu korrigieren, ist:
+
+```{r, echo=TRUE, eval=TRUE}
+diam$EUR <- as.integer(diam$EUR)
+diam$cut <- factor(diam$cut, levels=c("Fair","Good","Very Good","Premium","Ideal"), 
+                       ordered=TRUE)
+diam$color <- factor(diam$color, ordered=TRUE)
+diam$clarity <- factor(diam$clarity,levels=c("I1","SI2","SI1","VS2","VS1","VVS2","VVS1","IF"), 
+                          ordered=TRUE)
+```
+
+
+Wir wollen stattdessen einen anderen Weg verfolgen. Wir kopieren die Informationen `column specification`, die wir beim Aufruf `read_csv2()` erhalten haben, und passen Sie unseren Erfordernissen entsprechend an:
+
+```{r, echo=TRUE, eval=FALSE}
+diam <- read_csv2("diamonds100.csv",col_types = cols(
+  carat = col_double(),
+  cut = col_factor(levels=c("Fair","Good","Very Good","Premium","Ideal"), 
+                   ordered =TRUE),
+  color = col_factor(levels=LETTERS[4:10], 
+                     ordered =TRUE),
+  clarity = col_factor(levels=c("I1","SI2","SI1","VS2","VS1","VVS2","VVS1","IF"), 
+                       ordered =TRUE),
+  depth = col_double(),
+  table = col_double(),
+  EUR = col_integer(),
+  x = col_double(),
+  y = col_double(),
+  z = col_double(),
+  Verfügbar = col_logical())
+)
+```
+
+```{r, echo=FALSE, eval=TRUE}
+diam <- read_csv2("data/diamonds100.csv",col_types = cols(
+  carat = col_double(),
+  cut = col_factor(levels=c("Fair","Good","Very Good","Premium","Ideal"), 
+                   ordered =TRUE),
+  color = col_factor(levels=LETTERS[4:10], 
+                     ordered =TRUE),
+  clarity = col_factor(levels=c("I1","SI2","SI1","VS2","VS1","VVS2","VVS1","IF"), 
+                       ordered =TRUE),
+  depth = col_double(),
+  table = col_double(),
+  EUR = col_integer(),
+  x = col_double(),
+  y = col_double(),
+  z = col_double(),
+  Verfügbar = col_logical())
+)
+```
+
+Unser Ziel haben wir nun fast erreicht:
+
+```{r, echo=TRUE, eval=TRUE}
+all.equal(dd, diam)
+identical(dd, diam)
+```
+
+**Bearbeiten Sie folgende Aufgabe:**
+
+d)	Wieso sind  `diam` und `dd` nicht identisch (siehe @readronline (Abschnitt: "tibble subclass"))? 
+
+Wie im Abschnitt „tibble subclass“ in @readronline erklärt, liefert aber erst Indizieren (subsetting) den richtigen Datentyp. Dies können wir leicht erreichen durch:
+
+```{r, echo=TRUE, eval=TRUE}
+diam <- diam[]
+identical(dd, diam)
+```
+
+Alternativ hätten wir dies auch erhalten durch:
+
+```{r, echo=TRUE, eval=TRUE}
+diam <- diam %>% select(everything())
+```
+
+
+## Fallstudie 4.2: Datenimport, -manipulation und -speicherung
 
 ### Aufgabe 1
 
@@ -1650,14 +1872,14 @@ cor(d)
 
 Für die nächste Grafik in Abbildung \@ref(fig:cor-analyse) wollen wir das R-Paket `GGally` [@GGally] benutzen, das `ggplot2` [@ggplot2] erweitert. Es ist nicht Bestandteil von `tidyverse` [@tidyverse] und muss daher getrennt installiert werden. Aus dem `GGally`-Paket wollen wir lediglich die Funktion `ggpairs()` nutzen, die in einer Matrixform je zwei Spalten vergleicht und grafisch darstellt. Insgesamt werden dabei 10×10 Teilgrafiken automatisch erzeugt. Wird der komplette Datensatz benutzt, dann braucht die Erzeugung dieser Grafik viel Zeit und manche Teilgrafiken sind auch durch die vielen Punkte nicht mehr aussagekräftig. Daher werden für die Erzeugung der Grafik lediglich 5000 zufällig ausgewählte Datensätze zugrunde gelegt (5000 ist hier ein willkürlich gewählter Wert).
 
-```{r cor-analyse, warning=FALSE, fig.cap="(ref:plot-cor-analyse)", out.width="80%"}
+```{r cor-analyse, warning=FALSE, fig.cap="(ref:plot-cor-analyse)", out.width="80%", message=FALSE}
 diamondsSample <- sample_n(diamonds, 5000)
 diamondsSample %>%   
   ggpairs(title = "Diamonds", mapping =ggplot2::aes(alpha = 0.2))
 ```
 
-(ref:plot-cor-analyse) Mit ggpairs() erstellte Auswertung.
+(ref:plot-cor-analyse) Mit `ggpairs()` erstellte Auswertung. 
 
 **Bearbeiten Sie folgende Aufgabe:**
 
-d)	Erklären Sie die Grafiken in Abbildung \@ref(fig:cor-analyse).
+d) Erklären Sie die Grafiken in Abbildung \@ref(fig:cor-analyse).
