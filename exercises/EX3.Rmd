@@ -1,0 +1,429 @@
+---
+title: "Programmierung für statistische Datenanalyse - Übungsblatt 3"
+author: "Prof. Dr. Benjamin Buchwitz"
+output: pdf_document
+date: "`r Sys.Date()`"
+bibliography: references_rprg_ex.bib
+biblio-style: authoryear-comp
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(ggplot2)
+```
+
+**Hinweis:** Dem Argument `FUN` innerhalb der `*apply()`-Funktionen können auch anonyme Funktionen \newline(`FUN = function(...){...}`) übergeben werden.
+
+
+# Aufgabe 1 (32 P)
+
+Es wurde eine Liste namens `house`, die Informationen über ein Haus enthält, erstellt. Es sind folgende Ausgaben bekannt: 
+
+```{r, echo=FALSE, eval=TRUE}
+# solution:
+living_space <- matrix(c(0, 1, 2, 0, 0, 2, 0, 0, 1, 1, 0, 2, 0, 0, 1, 1, 0, 2, 0, 0, 1, 0, 1, 4, 0, 1, 2), ncol = 3, byrow = TRUE)
+
+dimnames(living_space) <- list(c("kitchen", "bathroom1", "bathroom2", "bedroom1", "bedroom2", "bedroom3", "study", "living_room", "utility_room"), c("balcony", "terrace", "number_windows"))
+
+house <- list(rooms = c("kitchen", "bathroom1", "bathroom2", "bedroom1", "bedroom2", "bedroom3", "study", "living_room", "utility_room"),
+             squaremetre = c("15", "10", "5", "12", "13", "14", "9", "25", "10"),
+             site_squaremetre = 300,
+             living_space,
+             garden = TRUE,
+             cellar = FALSE,
+             kitchen = list(fitted_kitchen = "available",
+                            electrical_appliance  = 2018))
+```
+
+```{r, echo=TRUE}
+str(house)
+```
+
+\vspace{1cm}
+
+```{r, echo=TRUE}
+house
+```
+
+a) Erzeugen Sie die entsprechende Liste. Folgenden Code können Sie hierfür nutzen. Achten Sie auf die Datentypen und die Namensgebung!
+
+    ```{r, echo=TRUE, eval=FALSE}
+    listenelement_1 <- c("kitchen", "bathroom1", "bathroom2", "bedroom1", "bedroom2",
+                         "bedroom3", "study", "living_room", "utility_room")
+    listenelement_2 <- c("15", "10", "5", "12", "13", "14", "9", "25", "10")
+    listenelement_4 <- c(0, 1, 2, 0, 0, 2, 0, 0, 1, 1, 0, 2, 0, 0, 1, 1, 0, 2, 0, 0, 1, 
+                         0, 1, 4, 0, 1, 2)
+    ```
+
+```{r}
+# Bewertungsvorschlag: 8 Listenelemente, wenn die beiden "Unterlisten" von kueche mitgezählt werden:
+# für jeden Listeneintrag: 1,5 P (Inhalt korrekt?: 0,5 P, Name korrekt?: 0,5 P, Datentyp korrekt? 0,5 P) -> 8 * 1,5 P = 12 P
+```
+
+
+b) Wie groß ist das Schlafzimmer 2 ("bedroom2") (in $m^2$)? Beantworten Sie diese Frage mithilfe einer *geeigneten* Abfragemöglichkeit in R.
+
+```{r, eval=FALSE}
+# solution:
+haus$quadratmeter[which(haus$raeume=="schlafzimmer2")]
+# 1 P
+# Antwort: 1 P
+# insgesamt: 2 P
+```
+
+c) Benennen Sie das 4. Listenelement von `house` in `entrance` um (*entrance* ist hier im Sinne von Zugang bzw. Zutritt gemeint).
+
+```{r}
+names(house)[4] <- "entrance" # 1 P
+```
+
+d) Nutzen Sie `entrance` und bearbeiten Sie mithilfe *geeigneter* Funktionen des R-Pakets `dplyr` und des Pipe-Operators [@dplyr] folgende Teilaufgaben. Schreiben Sie zu jeder Teilaufgabe einen Antwortsatz.
+
+    d.1) Wie viele Räume verfügen jeweils über zwei Fenster und haben einen Zugang zur Terrasse?
+    
+```{r}
+zugaenge <- house$entrance
+zugaenge <- as.data.frame(zugaenge)
+# "Vorarbeit": 1 P
+```
+
+```{r, eval=FALSE}
+zugaenge %>% # 1 P
+  filter(Anzahl_Fenster == 2 & Terrasse == 1)%>% # 1 P
+  summarize(n = n()) # 1 P
+# Antwortsatz (einschließlich korrektem Ergebnis): 1 P
+# insgesamt: 5 P
+```
+    
+    
+    d.2) Wie viele Räume verfügen jeweils über zwei oder mehr Fenster und haben keinen Zugang zur Terrasse?
+
+```{r, eval=FALSE}
+zugaenge %>% # 1 P
+  filter(Anzahl_Fenster >= 2 & Terrasse == 0)%>% # 1 P
+  summarize(n = n()) # 1 P
+# Antwortsatz (einschließlich korrektem Ergebnis): 1 P
+# insgesamt: 4 P
+```
+
+      d.3) Wie viele Räume verfügen jeweils über mindestens ein Fenster und haben entweder einen Zugang zur Terrasse oder zum Balkon?
+      
+```{r, eval=FALSE}
+zugaenge %>% # 1 P
+  filter(Anzahl_Fenster > 0 & (Terrasse == 1 | Balkon == 1))%>% # 1 P
+  summarize(n = n()) # 1 P
+# Antwortsatz (einschließlich korrektem Ergebnis): 1 P
+# insgesamt: 4 P
+```
+      
+      
+      d.4) Wie viele Räume existieren - in Abhängigkeit von der Anzahl an Fenstern -, die einen Zugang zum Balkon oder zur Terrasse besitzen?
+      
+```{r, eval=FALSE}
+zugaenge %>% # 1 P
+  filter(Balkon == 1 | Terrasse == 1)%>% # 1 P
+  count(Anzahl_Fenster) # 1 P
+# Antwortsatz (einschließlich korrektem Ergebnis): 1 P
+# insgesamt: 4 P
+```
+
+
+\newpage
+
+# Aufgabe 2 (48 P)
+
+Gegeben ist folgender Data Frame namens `best_running_results`, der die Ergebnisse der besten 17 10km-Läufer:innen eines Laufwettkampfs enthält (siehe auch Tabelle 1).\newline
+Dabei beschreiben
+
++ `runnerName` den Name (abgekürzt) der Läuferin bzw. des Läufers,
+
++ `time` die gelaufene Zeit (Laufzeit) in Minuten,
+
++ `man` und `woman`, ob die laufende Person als männlich oder weiblich registriert ist, und
+
++ `achievement` die Leistungskategorie, in die der Läufer oder die Läuferin aufgrund seiner/ihrer Laufzeit eingeordnet wird.
+    
+
+```{r}
+Leistung_kategorie <- function(Zeit){
+  leistung_kat <- numeric(length(Zeit))
+  for(idx in 1:length(Zeit)){
+  if(Zeit[idx] <= 42){
+    leistung_kat[idx] <- "A"
+  }else if(Zeit[idx] > 42 & Zeit[idx] <= 45){
+    leistung_kat[idx] <- "B"
+  }else if (Zeit[idx] > 45 & Zeit[idx] <= 48){
+    leistung_kat[idx] <- "C"
+  }else if(Zeit[idx] > 48 & Zeit[idx] <= 51){
+    leistung_kat[idx] <- "D"
+  }else if(Zeit[idx] > 51){
+    leistung_kat[idx] <- "E"
+  }
+  }
+  return(leistung_kat)
+} 
+
+#beste_Laufergebnisse$Leistung <- Leistung_kategorie(beste_Laufergebnisse$Zeit)
+```
+
+```{r, echo=TRUE, eval=TRUE}
+best_running_results <- data.frame("runnerName" = c("A.B.", "A.D.", "B.E.", "B.Z.", "C.E.", 
+                                                "G.L.", "G.S.", "M.E.", "M.M.", "M.N.",
+                                                "S.S.", "S.L.", "T.A.", "T.Al.", "T.R.",
+                                                "U.B.", "V.U."),
+                          "time" = c(41.20, 46.18, 44.20, 43.45, 46.42, 48.45, 51.13,
+                                    41.54, 54.44, 56.44, 57.01, 47.56, 51.15, 49.32,
+                                    48.12, 50.49, 51.20),
+                          "man" = c(1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1),
+                          "woman" = c(0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0),
+                          "achievement" = c("A", "C", "B", "B", "C", "D", "E", "A", "E", 
+                                         "E", "E", "C", "E", "D", "D", "D", "E"))
+```
+
+
+```{r laufen-ergebnis, eval=TRUE}
+knitr::kable(best_running_results, booktabs=T, caption="Laufergebnisse der besten 17 10km-Läufer:innen.", linesep = "") %>%
+  kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+\newpage
+
+Die Spalte `achievement` (Leistung) wurde nach folgender Übersicht erstellt:
+
+`achievement` (Leistung) | `time` (Laufzeit)
+---------|---------
+A | <= 42 min
+B | > 42 min & <= 45 min
+C | > 45 min & <= 48 min
+D | > 48 min & <= 51 min
+E | > 51 min
+
+
+a) Basierend auf dem Datensatz `best_running_results`, geben Sie für jede der folgenden Aufgabenstellungen bzw. Abfragen zwei Umsetzungen an: 
+
+    + Eine davon basiert **nicht** auf den Funktionen des `dplyr`-Pakets [@dplyr] (d.h. auch **ohne** Pipe-Operator); es soll sich um einen Einzeiler handeln. 
+    
+    + Im Gegensatz dazu wird die andere Abfrage **mittels** `dplyr` [@dplyr] **und** dem Pipe-Operator erstellt. 
+    
+    Sind die von Ihnen erzeugten Ergebnisse identisch? Überprüfen Sie dies!
+    
+
+    Siehe folgendes Beispiel:
+
+    **Beispiel**:\newline
+    Aufgabe: Reduzieren Sie den Datensatz `best_running_results` auf die Spalten `runnerName` und `time`.
+
+    + Lösung **ohne** `dplyr` und **ohne** Pipe-Operator:
+    ```{r, echo=TRUE, eval=TRUE}
+    b1 <- best_running_results[,c("runnerName", "time")]
+    ```
+        
+    + Lösung basierend auf `dplyr` **und** Pipe-Operator: 
+    ```{r, echo=TRUE, eval=TRUE}
+    b2 <- best_running_results %>%
+      select(runnerName, time)
+    
+    identical(b1, b2)
+    ```
+        
+
+
+    a.1) Zählen Sie, wie oft die einzelnen Leistungskategorien erzielt wurden. Formulieren Sie das Ergebnis in eigenen Worten.
+    
+```{r, eval=FALSE}
+# solution:
+table(best_running_results$achievement) # 1 P
+
+best_running_results %>% # 1 P
+  count(achievement) # 1 P
+
+# korrekte Erstellung des Datensatzes: best_running_results: 1 P
+# für Umsetzung: 3 P
+# Antwortsatz: 1 P
+# Überprüfung, ob die Objekte identisch sind: 1 P
+# insgesamt: 6 P
+```
+    
+    
+    a.2) Geben Sie jeweils die Anzahl an Frauen vs. Männern an, die unter den 17 besten Läufer:innen vertreten sind. Formulieren Sie das Ergebnis in eigenen Worten.
+    
+```{r, eval=FALSE}
+# alternativ: apply(best_running_results[,c(3:4)], 2, sum) # 1 P
+table(best_running_results$man) # 1 P
+
+best_running_results %>% # 1 P
+  count(man, woman) # 1 P
+
+# für Umsetzung: 3 P
+# Antwortsatz: 1 P
+# Überprüfung, ob die Objekte identisch sind: 1 P
+# 5 P
+```
+    
+    
+    a.3) Sortieren Sie `best_running_results` nach aufsteigender Laufzeit.
+    
+```{r, eval=FALSE}
+best_running_results[order(best_running_results$time),] # 1P
+
+best_running_results %>% # 1 P
+  arrange(time) # 1 P
+# Überprüfung, ob die Objekte identisch sind: 1 P
+
+# insgesamt: 4 P
+```
+    
+    
+    a.4) Geben Sie jeweils die Anzahl an Frauen und Männern an, die in die Leistungskategorie A bis D fallen. Formulieren Sie das Ergebnis in eigenen Worten.
+    
+```{r, eval=FALSE}
+apply(best_running_results[,c(3:4)][which(best_running_results$achievement != "E"),], 2,  sum) # Filtern: 1 P, apply or table: 1 P
+# alternativ: table(best_running_results$man[which(best_running_results$achievement != "E")])
+
+best_running_results %>%  # 1 P
+  filter(!(achievement %in% "E"))%>% # 1 P
+  count(woman, man) # 1 P
+
+# Umsetzung: 5 P
+# Antwortsatz: 1P
+# Überprüfung, ob die Objekte identisch sind: 1 P
+# insgesamt: 7 P
+```
+    
+    
+    a.5) Geben Sie die Gesamtzahl an Läufer:innen an, die entweder der Leistungsgruppe A oder C angehören. Formulieren Sie das Ergebnis in eigenen Worten.
+    
+```{r, eval=FALSE}
+# alternativ: sum(best_running_results[,c(3:4)][which(best_running_results$achievement %in% c("A", "C")),]) # Filtern: 1 P, Summe: 1 P
+sum(ifelse(best_running_results$achievement %in% c("A", "C"), 1, 0))
+
+best_running_results %>% # 1 P
+  filter(achievement %in% c("A", "C"))%>% # 1 P
+  select(man, woman)%>% # 1 P
+  count() # 1 P
+
+# Umsetzung: 6 P
+# Antwortsatz: 1 P
+# Überprüfung, ob die Objekte identisch sind: 1 P
+# insgesamt: 8 P
+```
+    
+
+b) Machen Sie sich mit der Funktion `split()` in base-R vertraut. Nutzen Sie diese, um `best_running_results` nach den fünf Leistungskategorien *aufzusplitten*. Benennen Sie das resultierende Objekt `running_achievements`. Welcher Klasse gehört `running_achievements` an?
+
+```{r}
+running_achievements <- split(best_running_results, best_running_results$achievement)
+# class(running_achievements) (inkl. Antwortsatz): 1 P 
+
+# Umsetzung: 1 P
+# insgesamt: 2 P
+```
+
+c) Beantworten Sie basierend auf `running_achievements` folgende Fragestellungen (inklusive Antwortsatz). Entscheiden Sie, ob Funktionen aus der Familie der `*apply()`-Funktionen und/oder des `dplyr`-Pakets [@dplyr] notwendig sind. Wenn Sie Funktionen des `dplyr`-Pakets nutzen, verwenden Sie den Pipe-Operator.
+
+    c.1) Wie viele Läufer:innen (Männer und Frauen zusammen) existieren in jeder, d.h. pro, Leistungskategorie? Der Rückgabewert ist ein Vektor.
+
+```{r, eval=FALSE}
+sapply(running_achievements, FUN = nrow)
+# 1 P
+# Antwortsatz: 1 P
+# insgesamt: 2 P
+```
+
+
+    c.2) Wie viele Frauen und Männer existieren jeweils pro Leistungskategorie (Anzahl an Männern und Frauen pro Leistungskategorie getrennt)? Der Rückgabewert ist eine Matrix.
+
+```{r, eval=FALSE}
+sm <- sapply(running_achievements, FUN = function(x){apply(x[,c(3:4)], 2, sum)})
+# class(sm) (hier Zusatz)
+
+# 2 P
+# Antwortsatz: 1 P
+# insgesamt: 3 P
+```
+
+    c.3) Wie groß ist das arithmetische Mittel der Laufzeit für jede Leistungskategorie (pro Leistungskategorie wird kein Unterschied zwischen den Laufzeiten von Männern und Frauen getätigt)? Geben Sie die Werte in Form einer Liste aus.
+
+    
+```{r, eval=FALSE}
+lapply(running_achievements, FUN = function(x){sapply(x["time"], mean)})
+# 2 P
+# Antwortsatz: 1 P
+```
+
+    c.4) Wie groß ist der Median der Laufzeiten der Frauen, die der Leistungskategorie E angehören?
+    
+```{r, eval=FALSE}
+leistungE <- running_achievements$E
+leistungE %>% # 1 P
+  filter(woman == 1)%>% # 1 P
+  summarize(median_time = median(time)) # 1 P
+
+# 3 P 
+# Antwortsatz: 1 P
+# insgesamt: 4 P
+```
+    
+
+d) Überschreiben Sie die Laufzeiten (Variable `time`) in `best_running_results`, indem Sie die Laufzeiten auf ganze Werte (keine Nachkommastellen) runden. Bestimmen Sie dann, wie viele unterschiedliche Laufzeiten existieren, wenn Sekunden bzw. Nachkommastellen keine Rolle spielen. Formulieren Sie das Ergebnis in einem Satz.
+
+```{r, echo=FALSE, eval=FALSE}
+best_running_results$time <- round(best_running_results$time) # 2 P
+length(unique(best_running_results$time)) # 1 P
+# Antwortsatz: 1 P
+# insgesamt: 4 P
+```
+
+\vspace{0.5cm}
+
+# Aufgabe 3 (6 P)
+
+a) Welche Vorteile bieten `*apply()`-Funktionen, d.h., wann bietet es sich an, `*apply()`-Funktionen zu nutzen? Nennen Sie mindestens drei Vorteile und formulieren Sie pro genanntem Vorteil 1--2 Sätze.
+
+
+b) Ein häufig genannter Vorteil von `*apply()`-Funktionen beinhaltet Zeitersparnis. Überprüfen Sie dies anhand von Beispielen aus den vorherigen Aufgaben dieses Übungsblatts. *Hinweis:* R-Paket `microbenchmark` [@microbenchmark]
+
+```{r}
+# Vorteile: 
+# Vermeidung von Schleifen, dadurch Zeitersparnis
+# weniger Code --> übersichtlicher
+# Definition der Datenstruktur des Rückgabewerts, z.B. Anwendung der sapply()-Funktion, um einen Vektor als Rückgabewert zu erhalten
+# innerhalb der *apply()-Funktion: Definition einer anonymen Funktion möglich
+
+# Wann *apply()-Funktionen nutzen?
+# wenn Data frame, Matrix, Array oder Liste vorliegt
+# zur Vermeidung von Schleifen
+
+# a) pro Vorteil: 1 P (Nennung: 0.5 P, Erläuterung: 0.5 P)
+```
+
+    
+# Aufgabe 4 (4 P)
+
+Wie können durch die Anwendung der Funktionen `lapply()` und `sapply()` auf eine Liste identische Rückgabewerte erzeugt werden?\newline
+Illustrieren Sie Ihren Lösungsweg anhand der folgenden Liste `l`, indem für jedes Listenelement (`a`, `b` und `c`) jeweils die Summe berechnet wird und formulieren Sie Ihre Schlussfolgerung in 1–2 Sätzen.
+
+```{r, echo=TRUE, eval=TRUE}
+l <- list(a = c(10:2), b = c(1:5), c = c(0, 1, 0))
+```
+
+```{r, eval=FALSE}
+# solution:
+l1 <- lapply(l, FUN = sum) # 1 P
+l2 <- sapply(l, FUN = sum, simplify = FALSE) # 1 P
+
+identical(l1, l2) # TRUE # 1 P
+# Schlussfolgerung (argument simplify): 1 P
+# insgesamt 4 P
+
+l3 <- sapply(l, FUN = sum, simplify = TRUE)
+identical(l2, l3) # FALSE
+```
+
+
+
+\newpage
+
+
+# Quellenverzeichnis
