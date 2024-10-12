@@ -1,6 +1,6 @@
 ---
 title: "Programmierung für statistische Datenanalyse - Übungsblatt 3"
-author: "Prof. Dr. Benjamin Buchwitz"
+author: "Prof. Dr. Benjamin Buchwitz, André Münzberg"
 output: pdf_document
 date: "`r Sys.Date()`"
 bibliography: references_rprg_ex.bib
@@ -68,8 +68,6 @@ b) Wie groß ist das Schlafzimmer 2 ("bedroom2") (in $m^2$)? Beantworten Sie die
 # solution:
 haus$quadratmeter[which(haus$raeume=="schlafzimmer2")]
 # 1 P
-# Antwort: 1 P
-# insgesamt: 2 P
 ```
 
 c) Benennen Sie das 4. Listenelement von `house` in `entrance` um (*entrance* ist hier im Sinne von Zugang bzw. Zutritt gemeint).
@@ -78,22 +76,21 @@ c) Benennen Sie das 4. Listenelement von `house` in `entrance` um (*entrance* is
 names(house)[4] <- "entrance" # 1 P
 ```
 
-d) Nutzen Sie `entrance` und bearbeiten Sie mithilfe *geeigneter* Funktionen des R-Pakets `dplyr` und des Pipe-Operators [@dplyr] folgende Teilaufgaben. Schreiben Sie zu jeder Teilaufgabe einen Antwortsatz.
+d) Nutzen Sie `entrance` und bearbeiten Sie mithilfe *geeigneter* Funktionen des R-Pakets `dplyr` und des Pipe-Operators [@dplyr] folgende Teilaufgaben.
 
     d.1) Wie viele Räume verfügen jeweils über zwei Fenster und haben einen Zugang zur Terrasse?
     
 ```{r}
 zugaenge <- house$entrance
 zugaenge <- as.data.frame(zugaenge)
-# "Vorarbeit": 1 P
+# "Vorarbeit"
 ```
 
 ```{r, eval=FALSE}
 zugaenge %>% # 1 P
   filter(Anzahl_Fenster == 2 & Terrasse == 1)%>% # 1 P
   summarize(n = n()) # 1 P
-# Antwortsatz (einschließlich korrektem Ergebnis): 1 P
-# insgesamt: 5 P
+# insgesamt: 3 P
 ```
     
     
@@ -103,8 +100,7 @@ zugaenge %>% # 1 P
 zugaenge %>% # 1 P
   filter(Anzahl_Fenster >= 2 & Terrasse == 0)%>% # 1 P
   summarize(n = n()) # 1 P
-# Antwortsatz (einschließlich korrektem Ergebnis): 1 P
-# insgesamt: 4 P
+# insgesamt: 3 P
 ```
 
       d.3) Wie viele Räume verfügen jeweils über mindestens ein Fenster und haben entweder einen Zugang zur Terrasse oder zum Balkon?
@@ -113,8 +109,7 @@ zugaenge %>% # 1 P
 zugaenge %>% # 1 P
   filter(Anzahl_Fenster > 0 & (Terrasse == 1 | Balkon == 1))%>% # 1 P
   summarize(n = n()) # 1 P
-# Antwortsatz (einschließlich korrektem Ergebnis): 1 P
-# insgesamt: 4 P
+# insgesamt: 3 P
 ```
       
       
@@ -124,14 +119,13 @@ zugaenge %>% # 1 P
 zugaenge %>% # 1 P
   filter(Balkon == 1 | Terrasse == 1)%>% # 1 P
   count(Anzahl_Fenster) # 1 P
-# Antwortsatz (einschließlich korrektem Ergebnis): 1 P
-# insgesamt: 4 P
+# insgesamt: 3 P
 ```
 
 
 \newpage
 
-# Aufgabe 2 (48 P)
+# Aufgabe 2 (39 P)
 
 Gegeben ist folgender Data Frame namens `best_running_results`, der die Ergebnisse der besten 17 10km-Läufer:innen eines Laufwettkampfs enthält (siehe auch Tabelle 1).\newline
 Dabei beschreiben
@@ -229,24 +223,23 @@ a) Basierend auf dem Datensatz `best_running_results`, geben Sie für jede der f
         
 
 
-    a.1) Zählen Sie, wie oft die einzelnen Leistungskategorien erzielt wurden. Formulieren Sie das Ergebnis in eigenen Worten.
+    a.1) Ermitteln Sie, wie oft die einzelnen Leistungskategorien erzielt wurden.
     
 ```{r, eval=FALSE}
+# korrekte Erstellung des Datensatzes: best_running_results: 1 P
+
 # solution:
 table(best_running_results$achievement) # 1 P
 
 best_running_results %>% # 1 P
   count(achievement) # 1 P
 
-# korrekte Erstellung des Datensatzes: best_running_results: 1 P
-# für Umsetzung: 3 P
-# Antwortsatz: 1 P
 # Überprüfung, ob die Objekte identisch sind: 1 P
-# insgesamt: 6 P
+# insgesamt: 5 P
 ```
     
     
-    a.2) Geben Sie jeweils die Anzahl an Frauen vs. Männern an, die unter den 17 besten Läufer:innen vertreten sind. Formulieren Sie das Ergebnis in eigenen Worten.
+    a.2) Geben Sie jeweils die Anzahl an Frauen vs. Männern an, die unter den 17 besten Läufer:innen vertreten sind.
     
 ```{r, eval=FALSE}
 # alternativ: apply(best_running_results[,c(3:4)], 2, sum) # 1 P
@@ -255,10 +248,8 @@ table(best_running_results$man) # 1 P
 best_running_results %>% # 1 P
   count(man, woman) # 1 P
 
-# für Umsetzung: 3 P
-# Antwortsatz: 1 P
 # Überprüfung, ob die Objekte identisch sind: 1 P
-# 5 P
+# insgesamt 4 P
 ```
     
     
@@ -275,7 +266,7 @@ best_running_results %>% # 1 P
 ```
     
     
-    a.4) Geben Sie jeweils die Anzahl an Frauen und Männern an, die in die Leistungskategorie A bis D fallen. Formulieren Sie das Ergebnis in eigenen Worten.
+    a.4) Geben Sie jeweils die Anzahl an Frauen und Männern an, die in die Leistungskategorie A bis D fallen.
     
 ```{r, eval=FALSE}
 apply(best_running_results[,c(3:4)][which(best_running_results$achievement != "E"),], 2,  sum) # Filtern: 1 P, apply or table: 1 P
@@ -285,14 +276,12 @@ best_running_results %>%  # 1 P
   filter(!(achievement %in% "E"))%>% # 1 P
   count(woman, man) # 1 P
 
-# Umsetzung: 5 P
-# Antwortsatz: 1P
 # Überprüfung, ob die Objekte identisch sind: 1 P
-# insgesamt: 7 P
+# insgesamt: 6 P
 ```
     
     
-    a.5) Geben Sie die Gesamtzahl an Läufer:innen an, die entweder der Leistungsgruppe A oder C angehören. Formulieren Sie das Ergebnis in eigenen Worten.
+    a.5) Geben Sie die Gesamtzahl an Läufer:innen an, die entweder der Leistungsgruppe A oder C angehören.
     
 ```{r, eval=FALSE}
 # alternativ: sum(best_running_results[,c(3:4)][which(best_running_results$achievement %in% c("A", "C")),]) # Filtern: 1 P, Summe: 1 P
@@ -303,32 +292,28 @@ best_running_results %>% # 1 P
   select(man, woman)%>% # 1 P
   count() # 1 P
 
-# Umsetzung: 6 P
-# Antwortsatz: 1 P
 # Überprüfung, ob die Objekte identisch sind: 1 P
-# insgesamt: 8 P
+# insgesamt: 7 P
 ```
     
 
-b) Machen Sie sich mit der Funktion `split()` in base-R vertraut. Nutzen Sie diese, um `best_running_results` nach den fünf Leistungskategorien *aufzusplitten*. Benennen Sie das resultierende Objekt `running_achievements`. Welcher Klasse gehört `running_achievements` an?
+b) Machen Sie sich mit der Funktion `split()` in base-R vertraut. Nutzen Sie diese, um `best_running_results` nach den fünf Leistungskategorien zu differenzieren. Benennen Sie das resultierende Objekt `running_achievements`. Welcher Klasse gehört `running_achievements` an?
 
 ```{r}
-running_achievements <- split(best_running_results, best_running_results$achievement)
-# class(running_achievements) (inkl. Antwortsatz): 1 P 
+running_achievements <- split(best_running_results, best_running_results$achievement) # 1 P
+# class(running_achievements): 1 P 
 
-# Umsetzung: 1 P
 # insgesamt: 2 P
 ```
 
-c) Beantworten Sie basierend auf `running_achievements` folgende Fragestellungen (inklusive Antwortsatz). Entscheiden Sie, ob Funktionen aus der Familie der `*apply()`-Funktionen und/oder des `dplyr`-Pakets [@dplyr] notwendig sind. Wenn Sie Funktionen des `dplyr`-Pakets nutzen, verwenden Sie den Pipe-Operator.
+c) Beantworten Sie basierend auf `running_achievements` folgende Fragestellungen. Entscheiden Sie, ob Funktionen aus der Familie der `*apply()`-Funktionen und/oder des `dplyr`-Pakets [@dplyr] notwendig sind. Wenn Sie Funktionen des `dplyr`-Pakets nutzen, verwenden Sie den Pipe-Operator.
 
     c.1) Wie viele Läufer:innen (Männer und Frauen zusammen) existieren in jeder, d.h. pro, Leistungskategorie? Der Rückgabewert ist ein Vektor.
 
 ```{r, eval=FALSE}
 sapply(running_achievements, FUN = nrow)
 # 1 P
-# Antwortsatz: 1 P
-# insgesamt: 2 P
+# insgesamt: 1 P
 ```
 
 
@@ -338,9 +323,7 @@ sapply(running_achievements, FUN = nrow)
 sm <- sapply(running_achievements, FUN = function(x){apply(x[,c(3:4)], 2, sum)})
 # class(sm) (hier Zusatz)
 
-# 2 P
-# Antwortsatz: 1 P
-# insgesamt: 3 P
+# insgesamt: 2 P
 ```
 
     c.3) Wie groß ist das arithmetische Mittel der Laufzeit für jede Leistungskategorie (pro Leistungskategorie wird kein Unterschied zwischen den Laufzeiten von Männern und Frauen getätigt)? Geben Sie die Werte in Form einer Liste aus.
@@ -348,8 +331,8 @@ sm <- sapply(running_achievements, FUN = function(x){apply(x[,c(3:4)], 2, sum)})
     
 ```{r, eval=FALSE}
 lapply(running_achievements, FUN = function(x){sapply(x["time"], mean)})
+
 # 2 P
-# Antwortsatz: 1 P
 ```
 
     c.4) Wie groß ist der Median der Laufzeiten der Frauen, die der Leistungskategorie E angehören?
@@ -361,28 +344,22 @@ leistungE %>% # 1 P
   summarize(median_time = median(time)) # 1 P
 
 # 3 P 
-# Antwortsatz: 1 P
-# insgesamt: 4 P
 ```
     
 
-d) Überschreiben Sie die Laufzeiten (Variable `time`) in `best_running_results`, indem Sie die Laufzeiten auf ganze Werte (keine Nachkommastellen) runden. Bestimmen Sie dann, wie viele unterschiedliche Laufzeiten existieren, wenn Sekunden bzw. Nachkommastellen keine Rolle spielen. Formulieren Sie das Ergebnis in einem Satz.
+d) Überschreiben Sie die Laufzeiten (Variable `time`) in `best_running_results`, indem Sie die Laufzeiten auf ganze Werte (keine Nachkommastellen) runden. Bestimmen Sie dann, wie viele unterschiedliche Laufzeiten existieren, wenn Sekunden bzw. Nachkommastellen keine Rolle spielen.
 
 ```{r, echo=FALSE, eval=FALSE}
 best_running_results$time <- round(best_running_results$time) # 2 P
 length(unique(best_running_results$time)) # 1 P
-# Antwortsatz: 1 P
-# insgesamt: 4 P
+# insgesamt: 3 P
 ```
 
 \vspace{0.5cm}
 
-# Aufgabe 3 (6 P)
+# Aufgabe 3 (10 P)
 
 a) Welche Vorteile bieten `*apply()`-Funktionen, d.h., wann bietet es sich an, `*apply()`-Funktionen zu nutzen? Nennen Sie mindestens drei Vorteile und formulieren Sie pro genanntem Vorteil 1--2 Sätze.
-
-
-b) Ein häufig genannter Vorteil von `*apply()`-Funktionen beinhaltet Zeitersparnis. Überprüfen Sie dies anhand von Beispielen aus den vorherigen Aufgaben dieses Übungsblatts. *Hinweis:* R-Paket `microbenchmark` [@microbenchmark]
 
 ```{r}
 # Vorteile: 
@@ -398,10 +375,10 @@ b) Ein häufig genannter Vorteil von `*apply()`-Funktionen beinhaltet Zeiterspar
 # a) pro Vorteil: 1 P (Nennung: 0.5 P, Erläuterung: 0.5 P)
 ```
 
-    
-# Aufgabe 4 (4 P)
 
-Wie können durch die Anwendung der Funktionen `lapply()` und `sapply()` auf eine Liste identische Rückgabewerte erzeugt werden?\newline
+b) Ein häufig genannter Vorteil von `*apply()`-Funktionen beinhaltet Zeitersparnis. Überprüfen Sie dies anhand von Beispielen aus den vorherigen Aufgaben dieses Übungsblatts. *Hinweis:* R-Paket `microbenchmark` [@microbenchmark]
+
+c) Wie können durch die Anwendung der Funktionen `lapply()` und `sapply()` auf eine Liste identische Rückgabewerte erzeugt werden?\newline
 Illustrieren Sie Ihren Lösungsweg anhand der folgenden Liste `l`, indem für jedes Listenelement (`a`, `b` und `c`) jeweils die Summe berechnet wird und formulieren Sie Ihre Schlussfolgerung in 1–2 Sätzen.
 
 ```{r, echo=TRUE, eval=TRUE}
@@ -421,6 +398,357 @@ l3 <- sapply(l, FUN = sum, simplify = TRUE)
 identical(l2, l3) # FALSE
 ```
 
+\vspace{0.5cm}
+
+# Aufgabe 4 (13 P)
+
+Diese Aufgabe basiert auf dem `airquality`-Datensatz aus dem R-Paket `datasets` [@R]. Machen Sie sich als Erstes mit dem Datensatz vertraut (siehe `?airquality`).
+
+a) Gegeben ist folgender Code, wobei die angewandten Funktionen hauptsächlich aus dem `dplyr`-Paket [@dplyr] stammen:
+
+    ```{r, echo=TRUE}
+    air_filter <- filter(airquality, Month %in% c(7:9), Temp >= 80)
+    air_select <- select(air_filter, Solar.R, Wind, Temp, Month, Day)
+    air_mutate <- mutate(air_select, Temp_C = (Temp - 32)*(5/9))
+    air_arrange <- arrange(air_mutate, desc(Temp_C))
+    ```
+    
+    Beachten Sie dabei folgende Gleichung:
+    
+    $$ Celsius\text{ }(^{\circ} C) = (^{\circ} F - 32) / 1.8,$$
+    
+    wobei es sich bei $^{\circ}F$ um Grad Fahrenheit handelt. [@NIST2021]
+    
+    Schreiben Sie den Code um, indem Sie den Pipe-Operator nutzen, ohne die Zwischenschritte in separate Variablen zu schreiben. Benennen Sie das insgesamte Ergebnis `air_Temp_C`. 
+
+```{r, eval=FALSE}
+# solution:
+air_Temp_C <- airquality %>%
+  filter(Month %in% c(7:9), Temp >= 80) %>%
+  select(Solar.R, Wind, Temp, Month, Day) %>%
+  mutate(Temp_C = (Temp - 32)*(5/9)) %>%
+  arrange(desc(Temp_C)) 
+# Bewertungsvorschlag: für jede Codezeile: 0.5 P (5 * 0.5 P = 2.5 P)
+# Benennung: air_Temp_C: 0.5 P
+# insgesamt: 3 P
+```
+
+b) Nachdem Sie den Code in a) *umgeschrieben* haben, beschreiben Sie, welche Werte `air_Temp_C` enthält und wie `air_Temp_C` erzeugt wurde. Achten Sie dabei darauf, die Variablen im Sachkontext zu gebrauchen.
+
+```{r}
+# Bewertungsvorschlag:
+# für jeden Schritt: 1 P (4 * 1 P) = 4 P
+# Schritte: 1. filtern der Monate, die Juli, August und September entsprechen und Temperaturen größer gleich 80 Grad Fahrenheit betragen
+# 2. Variablen Solarstrahlung, Windgeschwindigkeit, Temperatur, Monat (numerisch) und Tag selektieren
+# 3. eine Variable namens Temp_C hinzufügen, die die Temperatur in Grad Celsius beinhaltet (Transformation basierend auf der Variablen Temp; Umrechnung von Grad Fahrenheit in Grad Celsius)
+# 4. absteigendes Sortieren nach Grad Celsius
+```
+
+
+c) Nach Durchführung der Codezeilen 1--2 des in a) angegebenen Codes wird `air_select` erhalten:
+
+    ```{r, echo=TRUE}
+    head(air_select)
+    ```
+
+    Wie kann der Aufruf der Funktion `select()` in der 2. Codezeile *verkürzt* werden, sodass der gleiche Rückgabewert für `air_select` erhalten wird? Beschreiben Sie dies kurz in eigenen Worten und setzen Sie dies um! *Hinweise:* Es ist **nicht** der Pipe-Operator gemeint! Inklusion vs. Exklusion.
+    
+```{r}
+# solution:
+# select(- Ozone)
+# air_select <- select(air_filter, -Ozone)
+# Antwort (beschreiben in eigenen Worten) (indem nicht notiert wird, welche Variablen selektiert werden wie in a), sondern durch Angabe, welche Variablen nicht selektiert werden): 1 P
+# Umsetzung: 1 P
+# insgesamt: 2 P
+```
+    
+
+d) Was ist der Unterschied zwischen den Funktionen `dplyr::mutate()` und `dplyr::transmute()` hinsichtlich des erhaltenen Ergebnisses? Beschreiben Sie dies in eigenen Worten und wenden Sie `mutate()` und `transmute()` beispielhaft auf `air_Temp_C` an, um den Unterschied zu illustrieren.
+
+```{r}
+# Bewertungsvorschlag (auf jede Funktion eingehen: jeweils 1 P) 2 P
+# Anwendung jeder der beiden Funktionen: je 1 P (2 * 1 P = 2 P)
+# insgesamt: 4 P
+```
+
+\vspace{0.5cm}
+
+# Aufgabe 5 (5 P)
+
+Beschreiben und erklären Sie in eigenen Worten, wie grundsätzlich Plots, die auf dem R-Paket `ggplot2` [@ggplot2] basieren, erzeugt werden. Verwenden Sie dabei u.a. die Begriffe *Syntax* und *Semantik* und gehen Sie u.a. auf Geoms und Ästhetische Eigenschaften (aesthetics) ein.
+
+```{r}
+# solution:
+# ggplot besteht aus Layern (ggplot wird "schichtweise" konstruiert, indem weitere Elemente des ggplots hinzugefügt werden) (Semantik), u.a. Layer werden über ein +-Zeichen miteinander verknüpft (Syntax)
+# -> (Grammar of Graphics; siehe ggplot2 Cheat sheet)
+# Semantik: 1 P
+# Syntax: 1 P
+# Datensatz (ggpplot()) und seine Variablen (siehe auch aesthetics): 1 P
+# geoms: 1 P
+# ästhetische Eigenschaften: 1 P
+```
+
+
+# Aufgabe 6 (50 P)
+
+Für diese Aufgabe nutzen Sie vorwiegend die Funktionen der R-Pakete `dplyr` [@dplyr] und `ggplot2` [@ggplot2]. Wenden Sie diese - wie im Folgenden beschrieben - auf den Datensatz `airquality` [@R] unter Verwendung des Pipe-Operators an:
+
+a) Filtern Sie alle Windgeschwindigkeiten, die mindestens 5 und höchstens 18 mph betragen. Weiterhin sind alle Variablen bis auf die Solarstrahlung und den Ozongehalt von Interesse. Anschließend ist der Datensatz um eine Spalte namens `Season` zu erweitern, in der die Jahreszeiten ("Spring" (März, April, Mai), "Summer" (Juni, Juli, August), "Autumn" (September, Oktober, November), "Winter" (Dezember, Januar, Februar)) der in der Spalte `Month` angegebenen Monate als Faktor gespeichert sind.\newline
+Nennen Sie den resultierenden Datensatz `air_season`.
+
+```{r}
+air_season <- airquality %>% # 1 P (Pipe-Operator: 0.5 P, Speicherung des gefilterten Datensatzes als air_season: 0.5 P)
+  filter(Wind >= 5 & Wind <= 18) %>% # 1 P
+  select(Wind, Temp, Month, Day) %>% # 1 P, alternativ (select (-c(Solar.R, Ozone)))
+  mutate(Season = factor(Month, levels = c(5, 6, 7, 8, 9), labels = c("Spring", "Summer", "Summer", "Summer", "Autumn"), ordered = TRUE)) # ordered  = TRUE ist hier optional
+# mutate mit factor: 1 P
+# insgesamt: 4 P
+```
+
+
+b) Basierend auf den Ergebnissen aus a) erstellen Sie einen `ggplot`, der wie folgt aussieht:
+
+```{r ex4-plot-air1, fig.height=4}
+air_season %>% # 1 P (data und Pipe-operator)
+  ggplot(mapping = aes(x = Temp, y = Wind))+ # 1 P
+  geom_point()+ # 1 P
+  facet_grid(~Season)+ # 1 P
+  xlab("Temperature [°F]")+ ylab("Windspeed [mph]") # je 0.5 P (1 P)
+# insgesamt: 5 P
+```
+
+\newpage
+
+c) Basierend auf den Ergebnissen aus a) erstellen Sie einen `ggplot`, der wie folgt aussieht:
+
+```{r, fig.height=4}
+air_season %>% # 1 P
+  ggplot(mapping = aes(x = Temp, y = Wind, color = Month))+ # 1.5 P
+  geom_point()+ # 1 P
+  facet_grid(~Season)+ # 1 P 
+  xlab("Temperature [°F]")+ ylab("Windspeed [mph]") # 1 P
+# insgesamt: 5.5 P
+```
+
+d) Basierend auf den Ergebnissen aus a) erstellen Sie einen `ggplot`, der wie folgt aussieht:
+
+```{r, fig.height=4}
+air_season %>% # 1 P
+  ggplot(mapping = aes(x = Temp, y = Wind))+ # 1 P
+  geom_point()+ # 1 P
+  facet_grid(~Month)+ # 1 P
+  xlab("Temperature [°F]")+ ylab("Windspeed [mph]") # 1 P
+# insgesamt: 5 P
+```
+
+
+e) Basierend auf den Ergebnissen aus a) erstellen Sie einen `ggplot`, der wie folgt aussieht:
+
+```{r, fig.height=4}
+air_season %>% # 1 P
+  ggplot(mapping = aes(x = Temp, y = Wind, color = Month))+ # 1.5 P
+  geom_point()+ # 1 P
+  facet_wrap(~Season, nrow = 3)+ # 1 P
+  xlab("Temperature [°F]")+ ylab("Windspeed [mph]") # 1 P
+# insgesamt: 5.5 P
+```
+
+f) In den Aufgabenteilen c) und e) dieser Aufgabe 3 wird in den Legenden der Abbildungen eine kontinuierliche Farbskala für den Monat angegeben. Warum ist dies nicht korrekt? Wie müssten die Legenden jeweils aussehen und wie erreichen Sie dies? Setzen Sie dies beispielhaft für Aufgabenteil 3c) um.
+
+```{r, echo=FALSE, eval=FALSE}
+# solution: 
+
+air_season$Month <- factor(air_season$Month, levels = unique(air_season$Month), ordered = TRUE)
+air_season %>% 
+  ggplot(mapping = aes(x = Temp, y = Wind, color = Month))+ 
+  geom_point()+
+  facet_grid(~Season)+  
+  xlab("Temperature [°F]")+ ylab("Windspeed [mph]")
+
+# ist nicht korrekt, da Month diskret ist
+# begründete Antwort auf Frage: 1 P
+# Wie müsste Legende aussehen? Aussehen der Legende beschreiben: 5 Farben für 5 Monate: 1 P
+# Umsetzung schildern (Month als Faktor): 1 P
+# Umsetzung durchführen (Faktor): 1 P
+# Umsetzung durchführen beispielhaft für 3c): 1 P
+# insgesamt: 5 P
+```
+\newpage
+
+g) Basierend auf den Ergebnissen aus a) erstellen Sie einen `ggplot`, der wie folgt aussieht (bei den in blau eingezeichneten Linien handelt es sich um lineare Regressionsgeraden):
+
+```{r, warning=FALSE, message=FALSE, fig.height=4}
+air_season %>% # 1 P
+  ggplot(mapping = aes(x = Temp, y = Wind))+ # 1 P
+  geom_point()+ # 1 P
+  geom_smooth(method = "lm")+ # 1 P
+  facet_wrap(~Season, nrow = 3)+ # 1 P
+  xlab("Temperature [°F]")+ ylab("Windspeed [mph]") # 1 P
+# insgesamt: 6 P
+```
+
+
+h) Basierend auf dem (unmodifizierten) `airquality`-Datensatz [@R]: Ermitteln Sie mithilfe eines `ggplots`, ob es bezüglich der Windgeschwindigkeit möglicherweise *Ausreißer* gibt. Schlagen Sie ein grafisches Mittel vor und erläutern Sie dessen Funktionsweise. Können Sie *Ausreißer* identifizieren? Wenn ja, um welche Werte handelt es sich?
+
+```{r, eval=FALSE, fig.height=4}
+air_wind_outl <- airquality %>% # 1 P
+  ggplot(mapping = aes(x = Wind))+ # 1 P
+  geom_boxplot()+ # 1 P
+  xlab("Windspeed [mph]") # 0.5 P
+
+air_wind_outl
+
+# grafisches Hilfsmittel vorschlagen und erläutern: Boxplot (1 P)
+# Anwendung (siehe obigen Code): 3.5 P
+
+# Ja, die 3 Ausreißer: 3*0.5 P = 1.5 P
+
+# insgesamt: 6 P
+
+ggplot_build(air_wind_outl)$data[[1]]$outliers[[1]] # alternativ: ablesen
+```
+
+
+i) Gegeben ist folgender Code:
+
+    ```{r, echo=TRUE, eval=FALSE}
+    median(airquality$Solar.R[which(airquality$Wind <= 19.1 & airquality$Month==6)])
+
+    median(airquality$Solar.R[which(airquality$Wind <= 19.1 & airquality$Month==7)])
+
+    median(airquality$Solar.R[which(airquality$Wind <= 19.1 & airquality$Month==9)])
+    ```
+
+
+    i.1) Was wird mittels des in i) angegebenen Codes berechnet?
+    
+```{r}
+# Median der Solarstrahlung für die Monate Juni, Juli und September, unter der Voraussetzung, dass Windgeschwindigkeit <= 19.1 mph beträgt
+# 4 P 
+```
+    
+    
+    i.2) Schreiben Sie den Code in i) mittels *geeigneter* `dplyr`-Funktionen und des Pipe-Operators [@dplyr] um, sodass die gleichen Ergebnisse, jedoch *tabellenartig*, erhalten werden. *Hinweis:* Als Rückgabewert empfiehlt sich ein Tibble.
+    
+```{r, eval=FALSE}
+airquality %>% # 1 P
+  filter(Wind <= 19.1 & Month %in% c(6, 7, 9)) %>% # 1 P
+  group_by(Month) %>% # 1 P
+  summarize(Median = median(Solar.R)) # 1 P
+# insgesamt: 4 P
+```
+
+# Aufgabe 7 (10 P)
+
+a) Erzeugen Sie basierend auf dem `airquality`-Datensatz [@R] in **base-R** (**keine** `ggplot2`-Funktionen) einen Plot,
+
++ in dem der Zusammenhang der Windgeschwindigkeit von der Temperatur dargestellt ist,
+
++ eine entsprechende Regressionsgerade mit y-Achsenabschnitt in blau eingezeichnet ist und
+
++ die Achsen angemessen inklusive Einheiten beschriftet sind.
+
+  \vspace{0.2cm}
+  Welche Zwischenschritte - bezogen auf die Ermittlung und Einzeichnung einer Regressionsgeraden - sind hierfür notwendig?
+    
+
+```{r}
+# Zwischenschritte benennen: lineares Modell definieren (1 P) 
+# und y-Achsenabschnitt und Steigung mittels abline() extrahieren: 1 P
+air_lm <- lm(Wind ~ 1 + Temp, data = airquality) # 1 P
+```
+
+
+```{r, eval=FALSE}
+plot(airquality$Temp, airquality$Wind, xlab = "Temperature [°F]",
+     ylab = "Windspeed [mph]") # 2 P
+abline(air_lm, col = "blue") # 1 P
+# insgesamt: 6 P
+```
+
+
+b) Schreiben Sie die Gleichung der Regressionsgeraden aus Aufgabenteil a) unter Verwendung der Variablennamen auf. Welche Informationen benötigen Sie hierfür und wie erhalten Sie diese? *Hinweis:* Verwenden Sie mathematische Notationen (\LaTeX).
+
+```{r, eval=FALSE}
+summary(air_lm) 
+# Erhalt über summary: 1 P
+# Welche Informationen: Koeffizienten (beta_0: y-Achsenabschnitt, beta_1: Steigung) # 1 P
+# Gleichung: Windgeschwindigkeit = 23.23369 - 0.17046 * Temperature: 2 P
+# insgesamt: 4 P
+```
+
+# Aufgabe 8 (10 P)
+
+Sie kennen bereits den folgenden Data Frame namens `best_running_results`, der die Ergebnisse der besten 17 10km-Läufer:innen eines Laufwettkampfs enthält (siehe auch Tabelle 1). 
+
+```{r, echo=TRUE, eval=TRUE}
+best_running_results <- data.frame("runnerName" = c("A.B.", "A.D.", "B.E.", "B.Z.", "C.E.", 
+                                                "G.L.", "G.S.", "M.E.", "M.M.", "M.N.",
+                                                "S.S.", "S.L.", "T.A.", "T.Al.", "T.R.",
+                                                "U.B.", "V.U."),
+                          "time" = c(41.20, 46.18, 44.20, 43.45, 46.42, 48.45, 51.13,
+                                    41.54, 54.44, 56.44, 57.01, 47.56, 51.15, 49.32,
+                                    48.12, 50.49, 51.20),
+                          "man" = c(1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1),
+                          "woman" = c(0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0))
+```
+
+
+```{r laufen-ergebnis, eval=TRUE}
+knitr::kable(best_running_results, booktabs=T, caption="Laufergebnisse der besten 17 10km-Läufer:innen.", linesep = "") %>%
+  kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+Der Datensatz `best_running_results` erhielt eine weitere Spalte namens `achievement` (Leistung), die nach folgender Übersicht erstellt wurde:
+
+`achievement` (Leistung) | `time` (Laufzeit)
+-------------------------|---------------------
+A | <= 42 min
+B | > 42 min & <= 45 min
+C | > 45 min & <= 48 min
+D | > 48 min & <= 51 min
+E | > 51 min
+
+a) Machen Sie sich mit der Funktion `dplyr::case_when()` [@dplyr] vertraut. Nutzen Sie diese, um den Data Frame `best_running_results` um die Spalte `achievement` nach vorangegangener Übersicht zu erweitern.
+
+    
+```{r}
+best_running_results$achievement <-
+  case_when(
+    best_running_results$time <= 42 ~ "A",
+    best_running_results$time > 42 & best_running_results$time <= 45 ~ "B",
+    best_running_results$time > 45 & best_running_results$time <= 48 ~ "C",
+    best_running_results$time > 48 & best_running_results$time <= 51 ~ "D",
+    TRUE ~ "E"
+  )
+
+# case_when: 4 P
+# weitere Spalte inklusive richtigem Namen: 1 P
+# insgesamt: 5 P
+```
+  
+    
+b) Erzeugen Sie den folgenden Plot. *Hinweis:* Modifizieren Sie den Datensatz `best_running_results`, bevor Sie den Plot erzeugen.
+    
+```{r}
+best_running_results$gender <- ifelse(best_running_results$man == 1, "Mann", "Frau") 
+# 2 x 0,5 P für Modifikation
+```
+
+```{r, fig.height=4}
+best_lauf_boxplot <- best_running_results %>% # 0.5 P (Verwendung des Datensatzes)
+ggplot(aes(x = gender, y = time))+ # 1 P
+  geom_boxplot()+ # 1 P
+  xlab("Geschlecht")+ # 0.5 P
+  ylab("Laufzeit [min]")+ # 0.5 P
+  ggtitle("Boxplots der 17 schnellsten 10km-Laufzeiten nach Geschlecht") #0.5 P
+
+# Plot: 4 P 
+# insgesamt: 5 P
+
+best_lauf_boxplot
+# ggplotly(best_lauf_boxplot)
+```
 
 
 \newpage
