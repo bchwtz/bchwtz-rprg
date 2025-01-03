@@ -191,15 +191,22 @@ fhswf_list_submissions <- function(part = "", url){
 
 url <- "https://fh-swf.sciebo.de/public.php/webdav/"
 l <- lapply(c("EX1", "EX2", "EX3","Implementation"), fhswf_list_submissions, url=url)
+tbl <- bind_rows(l) 
 ```
 
 ```{r}
-bind_rows(l) %>% kable(format = "pipe")
+tbl %>% kable(format = "pipe")
 ```
 
 
-```{r}
-bind_rows(l) %>% kbl() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"), font_size = 10)
+```{r, error=TRUE}
+tbl %>% kbl() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"), font_size = 10)
 ```
+
+```{r, error=TRUE}
+
+tbl %>% kbl() %>% kable_styling(bootstrap_options = c("hover"), font_size = 10) %>% column_spec(2, color = ifelse(tbl$OK, "green", "red"))
+```
+
 
 
