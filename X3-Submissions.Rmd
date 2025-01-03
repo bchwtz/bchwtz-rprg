@@ -1,6 +1,6 @@
 # Submissions {-}
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, error=TRUE}
 devtools::install_github("StrategicProjects/webdav")
 library(webdav)
 library(tidyverse)
@@ -138,7 +138,7 @@ webdav_list_files <- function(
 }
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, error=TRUE}
 f <- webdav_list_files(
   base_url = "https://fh-swf.sciebo.de/public.php/webdav/", 
   folder_path = "EX2", 
@@ -166,10 +166,11 @@ f %>%
   # Sort the tibble
   arrange(desc(OK), id, match, iteration) %>% 
   # Rearrange columns
-  relocate(OK, id, iteration, last_modified, file) %>% 
+  relocate(OK, id, iteration, last_modified, file) 
+#%>% 
   # Output table
-  kbl() %>%
-  kable_styling()
+ # kbl() %>%
+  #kable_styling()
 
 ```
 
