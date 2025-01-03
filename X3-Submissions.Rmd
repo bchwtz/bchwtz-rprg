@@ -1,10 +1,8 @@
 # Submissions {-}
 
 ```{r, echo=FALSE, error=TRUE}
-devtools::install_github("StrategicProjects/webdav")
 library(webdav)
 library(tidyverse)
-install.packages("curl", force=TRUE)
 ```
 
 ```{r, echo=FALSE}
@@ -140,38 +138,49 @@ webdav_list_files <- function(
 ```
 
 ```{r, echo=FALSE, error=TRUE}
-f <- webdav_list_files(
-  base_url = "https://fh-swf.sciebo.de/public.php/webdav/", 
-  folder_path = "EX2", 
-  username = Sys.getenv("WEBDAV_USER"), 
-  password = Sys.getenv("WEBDAV_PW"), 
-  depth = 1, 
-  verbose = FALSE
-)
 
-parsing <- str_match(f$contents,"(?<id>^\\d{7,9})(?:\\s*\\(*)(?<iteration>\\d*)(?:\\)?)\\.zip$")
-colnames(parsing)[1] <- "match"
-f <- bind_cols(f,parsing)
+fhswf_list_submissions <- function(part = "", url){
+  
+  f <- webdav_list_files(
+    base_url = url, 
+    folder_path = part, 
+    username = Sys.getenv("WEBDAV_USERNAME"), 
+    password = Sys.getenv("WEBDAV_PASSWORD"), 
+    depth = 1, 
+    verbose = FALSE
+  )
+  
+  parsing <- str_match(f$contents,"(?<id>^\\d{7,9})(?:\\s*\\(*)(?<iteration>\\d*)(?:\\)?)\\.zip$")
+  colnames(parsing)[1] <- "match"
+  f <- bind_cols(f,parsing)
+  
+  f %>% 
+    # Remove folders
+    filter(!is.na(content_type)) %>%
+    # Indicate valid submission
+    mutate(OK = !is.na(match)) %>%
+    # Add 1 as iteration value for valid files
+    mutate(iteration = ifelse(!is.na(match) & (iteration == ""), 1, iteration)) %>%
+    # Add part identifier
+    mutate(part = part) %>%
+    # Replace all numbers with hashtag for non valid files
+    mutate(file = ifelse(!is.na(match), contents, str_replace_all(contents,"\\d","#"))) %>%
+    # Remove not needed columns
+    select( -full_path, -http_status, -content_type, -content_length, -contents, -match) %>%
+    # Sort the tibble
+    arrange(part, desc(OK), id, desc(iteration)) %>% 
+    # Rearrange columns
+    relocate(part, OK, id, iteration, last_modified, file)
+}
 
-f %>% 
-  # Remove folders
-  filter(!is.na(content_type)) %>%
-  # Indicate valid submission
-  mutate(OK = !is.na(match)) %>%
-  # Add 1 as iteration value for valid files
-  mutate(iteration = ifelse(!is.na(match) & (iteration == ""), 1, iteration)) %>%
-  # Replace all numbers with hashtag for non valid files
-  mutate(file = ifelse(!is.na(match), contents, str_replace_all(contents,"\\d","#"))) %>%
-  # Remove not needed columns
-  select( -full_path, -http_status, -content_type, -content_length, -contents) %>%
-  # Sort the tibble
-  arrange(desc(OK), id, match, iteration) %>% 
-  # Rearrange columns
-  relocate(OK, id, iteration, last_modified, file) 
-#%>% 
-  # Output table
- # kbl() %>%
-  #kable_styling()
+#fhswf_list_submissions(url = "https://fh-swf.sciebo.de/public.php/webdav/", 
+#                       part = "EX2")
+
+url <- "https://fh-swf.sciebo.de/public.php/webdav/"
+l <- lapply(c("EX1", "EX2", "EX3"), fhswf_list_submissions, url=url)
+
+
+bind_rows(l) %>% kbl() %>% kable_styling()
 
 ```
 
