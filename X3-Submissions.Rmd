@@ -1,0 +1,175 @@
+# Submissions {-}
+
+```{r, echo=FALSE}
+devtools::install_github("StrategicProjects/webdav")
+library(webdav)
+library(tidyverse)
+```
+
+```{r, echo=FALSE}
+#' List files from a specific folder on WebDAV server
+#'
+#' This function lists the files in a specific folder on the WebDAV server. If no folder path is provided, it lists files from the root directory. The function validates the provided parameters and handles errors during the process.
+#'
+#' @param base_url The base URL of the WebDAV server.
+#' @param folder_path The path inside WebDAV where the files are located. If not provided or empty, the root folder will be listed.
+#' @param username The username for WebDAV authentication. Defaults to the "WEBDAV_USERNAME" environment variable.
+#' @param password The password for WebDAV authentication. Defaults to the "WEBDAV_PASSWORD" environment variable.
+#' @param depth The depth of the PROPFIND request (default is 1).
+#' @param verbose Logical value indicating whether to print detailed debug messages. When TRUE, the function outputs additional information about its progress and actions.
+#'
+#' @return A tibble with the file names and paths relative to the folder, or NULL if an error occurs.
+#' @importFrom httr2 req_perform req_auth_basic req_headers req_method req_body_raw req_options
+#' @importFrom glue glue
+#' @importFrom dplyr filter mutate select arrange slice_tail
+#' @importFrom stringr str_detect str_remove
+#' @importFrom xml2 read_xml xml_find_all xml_text
+#' @importFrom httpuv encodeURI decodeURI
+#' @importFrom tibble tibble
+#' @importFrom magrittr %>%
+#' @examples
+#' # Example usage with a public WebDAV server.
+#' # Visit test_server$url link to view the results of the operation.
+#' library(magrittr)
+#' library(httr2)
+#' test_server <- "https://www.webdavserver.com/" %>%
+#'   request() %>%
+#'   req_retry(max_tries = 3, max_seconds = 4, backoff =  ~ 1) %>%
+#'   req_perform() %>%
+#'   try(silent = TRUE)
+#'
+#' # List files in a directory
+#' if (class(test_server) != "try-error")
+#'   webdav_list_files(base_url = test_server$url, folder_path = "Sales/", verbose = TRUE)
+#' @export
+webdav_list_files <- function(
+    base_url,
+    folder_path = NULL,
+    username = Sys.getenv("WEBDAV_USERNAME"),
+    password = Sys.getenv("WEBDAV_PASSWORD"),
+    depth = 1,
+    verbose = FALSE) {
+  
+  check_and_load_package("httr2")
+  check_and_load_package("xml2")
+  check_and_load_package("stringr")
+  check_and_load_package("dplyr")
+  check_and_load_package("tibble")
+  check_and_load_package("httpuv")
+  
+  # Validate base_url
+  if (missing(base_url) || !is.character(base_url) || nchar(base_url) == 0) {
+    stop("The 'base_url' parameter is required and must be a non-empty string.")
+  }
+  
+  # Handle folder_path and construct URL
+  path <- if (is.null(folder_path) || nchar(folder_path) == 0) {
+    glue::glue("{stringr::str_remove(base_url, '/$')}/") # Root folder
+  } else {
+    glue::glue("{stringr::str_remove(base_url, '/$')}/{stringr::str_remove(folder_path, '/$')}")
+  }
+  
+  if (verbose) {
+    message("Listing files in folder: ", ifelse(is.null(folder_path) || nchar(folder_path) == 0, "root", folder_path))
+    message("Full URL: ", path)
+  }
+  
+  # Try to list files in the folder
+  tryCatch({
+    req <- webdav_create_request(path, username, password, verbose) %>%
+      httr2::req_method("PROPFIND") %>%
+      httr2::req_headers("Depth" = as.character(depth))
+    
+    # Perform the request
+    response <- req %>%
+      httr2::req_perform()
+    
+    # Handle response and parse XML
+    if (httr2::resp_status(response) < 400) {
+      content <- response %>% httr2::resp_body_string()
+      xml_content <- xml2::read_xml(content)
+      xml_responses <- xml_content %>% xml2::xml_find_all(".//d:response")
+      
+      raw <- xml_responses %>%
+        xml2::xml_find_first(".//d:href") %>%
+        xml2::xml_text() %>%
+        httpuv::decodeURI()
+      
+      lastmodified <- xml_responses %>% 
+        xml2::xml_find_first(".//d:getlastmodified") %>% 
+        xml2::xml_text()
+      
+      contentlength <- xml_responses %>% 
+        xml2::xml_find_first(".//d:getcontentlength") %>%
+        xml2::xml_text() %>% 
+        as.numeric()
+      
+      contenttype <- xml_responses %>% 
+        xml2::xml_find_first(".//d:getcontenttype") %>%
+        xml2::xml_text()
+      
+      httpstatus <- xml_responses %>% 
+        xml2::xml_find_first(".//d:status") %>%
+        xml2::xml_text()
+      
+      # Process and filter files, skipping the first entry (root or folder itself)
+      contents <- tibble::tibble(
+        contents = stringr::str_remove(raw, raw[1]), # Remove the first entry, which is the folder itself
+        full_path = raw,
+        last_modified = lastmodified,
+        http_status = httpstatus,
+        content_type = contenttype,
+        content_length = contentlength
+      ) %>%
+        slice_tail(n = -1)
+      
+      if (verbose) {
+        message("Files listed successfully.")
+      }
+      return(contents)
+    } else {
+      stop("Failed to list files. Server responded with status: ", httr2::resp_status(response))
+    }
+    
+  }, error = function(e) {
+    message("Error listing files in the folder: ", conditionMessage(e), "\n")
+    return(NULL)
+  })
+}
+```
+
+```{r, echo=FALSE}
+f <- webdav_list_files(
+  base_url = "https://fh-swf.sciebo.de/public.php/webdav/", 
+  folder_path = "EX2", 
+  username = Sys.getenv("WEBDAV_USER"), 
+  password = Sys.getenv("WEBDAV_PW"), 
+  depth = 1, 
+  verbose = FALSE
+)
+
+parsing <- str_match(f$contents,"(?<id>^\\d{7,9})(?:\\s*\\(*)(?<iteration>\\d*)(?:\\)?)\\.zip$")
+colnames(parsing)[1] <- "match"
+f <- bind_cols(f,parsing)
+
+f %>% 
+  # Remove folders
+  filter(!is.na(content_type)) %>%
+  # Indicate valid submission
+  mutate(OK = !is.na(match)) %>%
+  # Add 1 as iteration value for valid files
+  mutate(iteration = ifelse(!is.na(match) & (iteration == ""), 1, iteration)) %>%
+  # Replace all numbers with hashtag for non valid files
+  mutate(file = ifelse(!is.na(match), contents, str_replace_all(contents,"\\d","#"))) %>%
+  # Remove not needed columns
+  select( -full_path, -http_status, -content_type, -content_length, -contents) %>%
+  # Sort the tibble
+  arrange(desc(OK), id, match, iteration) %>% 
+  # Rearrange columns
+  relocate(OK, id, iteration, last_modified, file) %>% 
+  # Output table
+  kbl() %>%
+  kable_styling()
+
+```
+
