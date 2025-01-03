@@ -172,13 +172,20 @@ fhswf_list_submissions <- function(part = "", url){
     # Sort the tibble
     arrange(part, desc(OK), id, desc(iteration)) %>% 
     # Rearrange columns
-    relocate(part, OK, id, iteration, last_modified, file)
+    relocate(part, OK, id, iteration, last_modified, file) %>%
+    # Ensure proper column format for empty returns
+    mutate(part=as.character(part), 
+           OK = as.logical(OK), 
+           id = as.character(id), 
+           iteration = as.numeric(iteration), 
+           last_modified = as.character(last_modified),
+           file = as.character(file))
 }
 
 url <- "https://fh-swf.sciebo.de/public.php/webdav/"
-l <- lapply(c("EX1", "EX2", "EX3", "Implementation"), fhswf_list_submissions, url=url)
+l <- lapply(c("EX1", "EX2", "EX3","Implementation"), fhswf_list_submissions, url=url)
 
-bind_rows(l) %>% kbl() %>% kable_styling(font_size = 7)
+bind_rows(l) %>% kbl() %>% kable_styling(font_size = 8)
 
 ```
 
