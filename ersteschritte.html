@@ -848,21 +848,21 @@ Figure 2.7: (ref:boxplot-ts-Nile)
 </div>
 <p>In R sind bereits viele Funktionen zu häufig verwendeten Wahrscheinlichkeitsverteilungen implementiert. Exemplarisch wollen wir an dieser Stelle die Funktionen <code>rnorm()</code> und <code>runif()</code> betrachten (siehe <code>?rnorm</code> und <code>?runif</code>). Beide Funktionen geben Pseudozufallszahlen gemäß der Normalverteilung bzw. der Gleichverteilung zurück. Werden keine weiteren Argumente spezifiziert, dann wird bei der Normalverteilung Mittelwert 0 und Standardabweichung 1 angenommen; entsprechend gibt <code>rnorm(n)</code> einen Vektor mit <code>n</code> normalverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="ersteschritte.html#cb92-1" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] -0.02474378 -1.42839275 -0.35365677  0.55133035  0.30967714 -0.96217478
-##  [7] -1.87566768 -1.20119654  0.57406055  0.82176379</code></pre>
+<pre><code>##  [1] -0.97954194  0.57193647  1.17292563  2.27665936 -0.40440703 -0.15025496
+##  [7]  1.20343879  0.52675163  0.00484461  1.71527792</code></pre>
 <p>Bei der Gleichverteilung wird standardmäßig vom Intervall [0,1] ausgegangen; entsprechend gibt <code>runiform(n)</code> einen Vektor mit <code>n</code> in [0,1] gleichverteilten Pseudozufallszahlen zurück:</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="ersteschritte.html#cb94-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.2967244 0.9932664 0.1660494 0.5422604 0.8191001 0.4117246 0.9948440
-##  [8] 0.3425462 0.6137283 0.9916225</code></pre>
+<pre><code>##  [1] 0.5196867 0.2420885 0.5621761 0.5748974 0.7229832 0.5235196 0.8583111
+##  [8] 0.7465655 0.7093946 0.5972236</code></pre>
 <p>Wenn wir im Folgenden von erzeugten Zufallszahlen (oder zufälligen Werten) sprechen, dann meinen wir stets <em>Pseudozufallszahlen</em>.</p>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="ersteschritte.html#cb96-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
 <span id="cb96-2"><a href="ersteschritte.html#cb96-2" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
-<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## -3.442486 -0.768936 -0.004412 -0.047137  0.645703  2.938129</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -3.05307 -0.77640 -0.02606 -0.03336  0.67444  2.93422</code></pre>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="ersteschritte.html#cb98-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>)</span>
 <span id="cb98-2"><a href="ersteschritte.html#cb98-2" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
 <pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## -4.125463 -0.674490 -0.000659  0.002105  0.677798  4.243881</code></pre>
+## -4.248786 -0.669667  0.000289  0.000408  0.671824  4.688956</code></pre>
 <p>Um zu prüfen, ob die erzeugten Zufallszahlen einer Normalverteilung genügen, können wir als ersten Test ein Histogramm erzeugen:</p>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="ersteschritte.html#cb100-1" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:hist-10breaks"></span>
@@ -894,12 +894,12 @@ Figure 2.10: Wahrscheinlichkeitsdichte der Normalverteilung <span class="math in
 <p>Das Gleiche wollen wir mit zufällig erzeugten gleichverteilten Werten wiederholen:</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="ersteschritte.html#cb103-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
 <span id="cb103-2"><a href="ersteschritte.html#cb103-2" tabindex="-1"></a><span class="fu">summary</span>(y)</span></code></pre></div>
-<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## 0.0008805 0.2487557 0.4918961 0.5003459 0.7616013 0.9977755</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.001878 0.237680 0.485444 0.490141 0.742880 0.999771</code></pre>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="ersteschritte.html#cb105-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">100000</span>)</span>
 <span id="cb105-2"><a href="ersteschritte.html#cb105-2" tabindex="-1"></a><span class="fu">summary</span>(x)</span></code></pre></div>
-<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## 0.000012 0.250441 0.504524 0.501346 0.750793 0.999979</code></pre>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## 0.0000079 0.2506296 0.5004287 0.5004170 0.7501027 0.9999795</code></pre>
 <p>Auch wollen wir wieder die Histogramme des kleinen und des großen Datensatzes erzeugen:</p>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="ersteschritte.html#cb107-1" tabindex="-1"></a><span class="fu">hist</span>(y)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:hist-equ-small"></span>
