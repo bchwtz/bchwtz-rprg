@@ -989,12 +989,6 @@ Figure 5.8: Balkendiagramm basierend auf der Variablen <code>c2</code>.
 <h3><span class="header-section-number">5.3.1</span> Data Frame erzeugen<a href="chap5.html#dataframeerzeugen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Als nächstes Beispiel wollen wir folgenden Datensatz betrachten:</p>
 
-<pre><code>## Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
-## Use &#39;xfun::attr2()&#39; instead.
-## See help(&quot;Deprecated&quot;)
-## Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
-## Use &#39;xfun::attr2()&#39; instead.
-## See help(&quot;Deprecated&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:unnamed-chunk-253">Table 5.1: </span><span id="tab:unnamed-chunk-253">Table 5.2: </span>Beispieldatensatz Zeitmessung.
@@ -1126,8 +1120,8 @@ Messung 4
 <p>Dieser Datensatz enthält für sechs unterschiedliche <span class="math inline">\(n\)</span>-Werte jeweils vier Zeitmessungen. Gemessen wurde dabei, wie lange eine bestimmte Implementierung des Quicksort-Algorithmus auf einem gegebenen Rechner braucht, um <span class="math inline">\(n\)</span> ganze Zahlen zu sortieren. Die zu sortierenden Daten wurden vor jeder einzelnen Zeitmessung „zufällig“ (mithilfe eines Pseudo-Zufallsgenerators) erzeugt.</p>
 <p>Die entsprechenden Werte wurden in einer CSV-Datei „zeiten1.csv“ hinterlegt.</p>
 <p>Wir können den Datensatz dieser Datei leicht in R einlesen, vorausgesetzt die Datei „<a href="data/zeiten1.csv">zeiten1.csv</a>“ befindet sich im Arbeitsverzeichnis:</p>
-<div class="sourceCode" id="cb767"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb767-1"><a href="chap5.html#cb767-1" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;data/zeiten1.csv&quot;</span>)</span>
-<span id="cb767-2"><a href="chap5.html#cb767-2" tabindex="-1"></a>df1</span></code></pre></div>
+<div class="sourceCode" id="cb766"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb766-1"><a href="chap5.html#cb766-1" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;data/zeiten1.csv&quot;</span>)</span>
+<span id="cb766-2"><a href="chap5.html#cb766-2" tabindex="-1"></a>df1</span></code></pre></div>
 <pre><code>##          n Messung.1 Messung.2 Messung.3 Messung.4
 ## 1 40000000     3.656     3.781     3.719     3.766
 ## 2 50000000     4.672     4.735     4.719     4.688
@@ -1137,7 +1131,7 @@ Messung 4
 ## 6 90000000     8.750     8.798     9.048     8.735</code></pre>
 <p>Zum Einlesen wurde die Funktion <code>read.csv2()</code> benutzt, eine Variante der Funktion <code>read.table()</code>. Die Funktion <code>read.table()</code> ist die Standardfunktion in R zum Einlesen von Tabellendaten. Abgesehen von bereits für CSV-Dateien (comma separated values) geeignet gesetzten Defaultwerten, sind die beiden Varianten <code>read.csv()</code> und <code>read.csv2()</code> identisch zu <code>read.table()</code>. Die Funktion <code>read.csv2()</code> eignet sich besonders für Dateien, in denen das Komma als Dezimaltrennzeichen und das Semikolon als Datentrennzeichen benutzt wird; genau dies ist bei unserer Datendatei „zeiten1.csv“ der Fall.</p>
 <p><code>df1</code> ist nun ein Data Frame bestehend aus 5 Variablen (der Anzahl „n“ plus vier Messvariablen) und 6 Observationen:</p>
-<div class="sourceCode" id="cb769"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb769-1"><a href="chap5.html#cb769-1" tabindex="-1"></a><span class="fu">str</span>(df1)</span></code></pre></div>
+<div class="sourceCode" id="cb768"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb768-1"><a href="chap5.html#cb768-1" tabindex="-1"></a><span class="fu">str</span>(df1)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  5 variables:
 ##  $ n        : int  40000000 50000000 60000000 70000000 80000000 90000000
 ##  $ Messung.1: num  3.66 4.67 5.72 6.72 7.64 ...
@@ -1145,19 +1139,19 @@ Messung 4
 ##  $ Messung.3: num  3.72 4.72 5.67 6.69 7.7 ...
 ##  $ Messung.4: num  3.77 4.69 5.62 6.61 7.75 ...</code></pre>
 <p>Die Namen der Spaltenvariablen sind mit leichter Veränderung aus den Daten der Datei übernommen worden:</p>
-<div class="sourceCode" id="cb771"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb771-1"><a href="chap5.html#cb771-1" tabindex="-1"></a><span class="fu">names</span>(df1)</span></code></pre></div>
+<div class="sourceCode" id="cb770"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb770-1"><a href="chap5.html#cb770-1" tabindex="-1"></a><span class="fu">names</span>(df1)</span></code></pre></div>
 <pre><code>## [1] &quot;n&quot;         &quot;Messung.1&quot; &quot;Messung.2&quot; &quot;Messung.3&quot; &quot;Messung.4&quot;</code></pre>
 <p>Ein Data Frame kann natürlich auch explizit erzeugt werden. Hierzu benutzen wir die Funktion <code>data.frame()</code>:</p>
-<div class="sourceCode" id="cb773"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb773-1"><a href="chap5.html#cb773-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> (<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">*</span> <span class="fl">1e7</span>L</span>
-<span id="cb773-2"><a href="chap5.html#cb773-2" tabindex="-1"></a>mess1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.656</span>, <span class="fl">4.672</span>, <span class="fl">5.719</span>, <span class="fl">6.720</span>, <span class="fl">7.641</span>, <span class="fl">8.750</span>)</span>
-<span id="cb773-3"><a href="chap5.html#cb773-3" tabindex="-1"></a>mess2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.781</span>, <span class="fl">4.735</span>, <span class="fl">5.672</span>, <span class="fl">6.782</span>, <span class="fl">7.673</span>, <span class="fl">8.798</span>)</span>
-<span id="cb773-4"><a href="chap5.html#cb773-4" tabindex="-1"></a>mess3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.719</span>, <span class="fl">4.719</span>, <span class="fl">5.672</span>, <span class="fl">6.688</span>, <span class="fl">7.704</span>, <span class="fl">9.048</span>)</span>
-<span id="cb773-5"><a href="chap5.html#cb773-5" tabindex="-1"></a>mess4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.766</span>, <span class="fl">4.688</span>, <span class="fl">5.625</span>, <span class="fl">6.610</span>, <span class="fl">7.750</span>, <span class="fl">8.735</span>)</span>
-<span id="cb773-6"><a href="chap5.html#cb773-6" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(n, mess1, mess2, mess3, mess4)</span></code></pre></div>
+<div class="sourceCode" id="cb772"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb772-1"><a href="chap5.html#cb772-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> (<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">*</span> <span class="fl">1e7</span>L</span>
+<span id="cb772-2"><a href="chap5.html#cb772-2" tabindex="-1"></a>mess1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.656</span>, <span class="fl">4.672</span>, <span class="fl">5.719</span>, <span class="fl">6.720</span>, <span class="fl">7.641</span>, <span class="fl">8.750</span>)</span>
+<span id="cb772-3"><a href="chap5.html#cb772-3" tabindex="-1"></a>mess2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.781</span>, <span class="fl">4.735</span>, <span class="fl">5.672</span>, <span class="fl">6.782</span>, <span class="fl">7.673</span>, <span class="fl">8.798</span>)</span>
+<span id="cb772-4"><a href="chap5.html#cb772-4" tabindex="-1"></a>mess3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.719</span>, <span class="fl">4.719</span>, <span class="fl">5.672</span>, <span class="fl">6.688</span>, <span class="fl">7.704</span>, <span class="fl">9.048</span>)</span>
+<span id="cb772-5"><a href="chap5.html#cb772-5" tabindex="-1"></a>mess4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.766</span>, <span class="fl">4.688</span>, <span class="fl">5.625</span>, <span class="fl">6.610</span>, <span class="fl">7.750</span>, <span class="fl">8.735</span>)</span>
+<span id="cb772-6"><a href="chap5.html#cb772-6" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(n, mess1, mess2, mess3, mess4)</span></code></pre></div>
 <p>Interessant ist, dass die Namen der Argumente aus dem Funktionsaufruf
 <code>data.frame(n, mess1, mess2, mess3, mess4)</code> direkt übernommen werden, wenn kein Name explizit angegeben wird.
 Wie wir sehen, sind die beiden Data Frames <code>df1</code> und <code>df2</code> nahezu identisch:</p>
-<div class="sourceCode" id="cb774"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb774-1"><a href="chap5.html#cb774-1" tabindex="-1"></a><span class="fu">str</span>(df2)</span></code></pre></div>
+<div class="sourceCode" id="cb773"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb773-1"><a href="chap5.html#cb773-1" tabindex="-1"></a><span class="fu">str</span>(df2)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  5 variables:
 ##  $ n    : int  40000000 50000000 60000000 70000000 80000000 90000000
 ##  $ mess1: num  3.66 4.67 5.72 6.72 7.64 ...
@@ -1165,21 +1159,21 @@ Wie wir sehen, sind die beiden Data Frames <code>df1</code> und <code>df2</code>
 ##  $ mess3: num  3.72 4.72 5.67 6.69 7.7 ...
 ##  $ mess4: num  3.77 4.69 5.62 6.61 7.75 ...</code></pre>
 <p>Sie unterscheiden sich lediglich in den Namen:</p>
-<div class="sourceCode" id="cb776"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb776-1"><a href="chap5.html#cb776-1" tabindex="-1"></a><span class="fu">names</span>(df2)</span></code></pre></div>
+<div class="sourceCode" id="cb775"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb775-1"><a href="chap5.html#cb775-1" tabindex="-1"></a><span class="fu">names</span>(df2)</span></code></pre></div>
 <pre><code>## [1] &quot;n&quot;     &quot;mess1&quot; &quot;mess2&quot; &quot;mess3&quot; &quot;mess4&quot;</code></pre>
 <p>Seit neueren R-Versionen wie z.B. R-4.2.1 ist in der Standardeinstellung von <code>data.frame()</code> <code>stringsAsFactors = FALSE</code> angegeben, wodurch verhindert wird, dass <code>character</code>-Vektoren in Faktoren umgewandelt werden (in früheren R-Versionen war dies z.T. noch nicht der Fall.), siehe folgendes Beispiel.</p>
-<div class="sourceCode" id="cb778"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb778-1"><a href="chap5.html#cb778-1" tabindex="-1"></a>bezeichnung <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb778-2"><a href="chap5.html#cb778-2" tabindex="-1"></a><span class="fu">str</span>(bezeichnung)</span></code></pre></div>
+<div class="sourceCode" id="cb777"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb777-1"><a href="chap5.html#cb777-1" tabindex="-1"></a>bezeichnung <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb777-2"><a href="chap5.html#cb777-2" tabindex="-1"></a><span class="fu">str</span>(bezeichnung)</span></code></pre></div>
 <pre><code>##  chr [1:6] &quot;M1&quot; &quot;M2&quot; &quot;M3&quot; &quot;M4&quot; &quot;M5&quot; &quot;M6&quot;</code></pre>
-<div class="sourceCode" id="cb780"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb780-1"><a href="chap5.html#cb780-1" tabindex="-1"></a>df_a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(n, bezeichnung, mess1)</span>
-<span id="cb780-2"><a href="chap5.html#cb780-2" tabindex="-1"></a><span class="fu">str</span>(df_a)</span></code></pre></div>
+<div class="sourceCode" id="cb779"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb779-1"><a href="chap5.html#cb779-1" tabindex="-1"></a>df_a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(n, bezeichnung, mess1)</span>
+<span id="cb779-2"><a href="chap5.html#cb779-2" tabindex="-1"></a><span class="fu">str</span>(df_a)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  3 variables:
 ##  $ n          : int  40000000 50000000 60000000 70000000 80000000 90000000
 ##  $ bezeichnung: chr  &quot;M1&quot; &quot;M2&quot; &quot;M3&quot; &quot;M4&quot; ...
 ##  $ mess1      : num  3.66 4.67 5.72 6.72 7.64 ...</code></pre>
 <p>Hier wird ein Data Frame erzeugt, bestehend aus den Variablen <code>n</code>, <code>bezeichnung</code> und <code>mess1</code>.</p>
-<div class="sourceCode" id="cb782"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb782-1"><a href="chap5.html#cb782-1" tabindex="-1"></a>df_b <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(n, bezeichnung, mess1, <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb782-2"><a href="chap5.html#cb782-2" tabindex="-1"></a><span class="fu">str</span>(df_b)</span></code></pre></div>
+<div class="sourceCode" id="cb781"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb781-1"><a href="chap5.html#cb781-1" tabindex="-1"></a>df_b <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(n, bezeichnung, mess1, <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb781-2"><a href="chap5.html#cb781-2" tabindex="-1"></a><span class="fu">str</span>(df_b)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  3 variables:
 ##  $ n          : int  40000000 50000000 60000000 70000000 80000000 90000000
 ##  $ bezeichnung: Factor w/ 6 levels &quot;M1&quot;,&quot;M2&quot;,&quot;M3&quot;,..: 1 2 3 4 5 6
@@ -1188,85 +1182,85 @@ Wie wir sehen, sind die beiden Data Frames <code>df1</code> und <code>df2</code>
 <div id="der-indexoperator" class="section level3 hasAnchor" number="5.3.2">
 <h3><span class="header-section-number">5.3.2</span> Der Indexoperator<a href="chap5.html#der-indexoperator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Da ein Data Frame eine Liste der Spaltenvariablen ist, können die einzelnen Daten wie bei einer Liste angesprochen werden. Am übersichtlichsten kann über die Namen zugegriffen werden:</p>
-<div class="sourceCode" id="cb784"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb784-1"><a href="chap5.html#cb784-1" tabindex="-1"></a><span class="fu">str</span>(df1<span class="sc">$</span>n)</span></code></pre></div>
+<div class="sourceCode" id="cb783"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb783-1"><a href="chap5.html#cb783-1" tabindex="-1"></a><span class="fu">str</span>(df1<span class="sc">$</span>n)</span></code></pre></div>
 <pre><code>##  int [1:6] 40000000 50000000 60000000 70000000 80000000 90000000</code></pre>
-<div class="sourceCode" id="cb786"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb786-1"><a href="chap5.html#cb786-1" tabindex="-1"></a><span class="fu">str</span>(df1<span class="sc">$</span>Messung<span class="fl">.1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb785"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb785-1"><a href="chap5.html#cb785-1" tabindex="-1"></a><span class="fu">str</span>(df1<span class="sc">$</span>Messung<span class="fl">.1</span>)</span></code></pre></div>
 <pre><code>##  num [1:6] 3.66 4.67 5.72 6.72 7.64 ...</code></pre>
-<div class="sourceCode" id="cb788"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb788-1"><a href="chap5.html#cb788-1" tabindex="-1"></a>df1<span class="sc">$</span>n[<span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb787"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb787-1"><a href="chap5.html#cb787-1" tabindex="-1"></a>df1<span class="sc">$</span>n[<span class="dv">2</span>]</span></code></pre></div>
 <pre><code>## [1] 50000000</code></pre>
 <p>Möglich ist es aber auch, den Indexoperator zu benutzen. Wie bei Listen gibt es auch hier einen gravierenden Unterschied zwischen dem einfachen und dem doppelten Indexoperator. Der einfache Indexoperator angewandt auf ein Data Frame gibt ein Data Frame zurück! Will man einzelne Elemente als Vektor erhalten, so muss ähnlich wie bei Listen der doppelte Indexoperator benutzt werden:</p>
-<div class="sourceCode" id="cb790"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb790-1"><a href="chap5.html#cb790-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb789"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb789-1"><a href="chap5.html#cb789-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  1 variable:
 ##  $ n: int  40000000 50000000 60000000 70000000 80000000 90000000</code></pre>
-<div class="sourceCode" id="cb792"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb792-1"><a href="chap5.html#cb792-1" tabindex="-1"></a><span class="fu">str</span>(df1[[<span class="dv">1</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb791"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb791-1"><a href="chap5.html#cb791-1" tabindex="-1"></a><span class="fu">str</span>(df1[[<span class="dv">1</span>]])</span></code></pre></div>
 <pre><code>##  int [1:6] 40000000 50000000 60000000 70000000 80000000 90000000</code></pre>
-<div class="sourceCode" id="cb794"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb794-1"><a href="chap5.html#cb794-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="st">&quot;n&quot;</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb793"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb793-1"><a href="chap5.html#cb793-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="st">&quot;n&quot;</span>])</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  1 variable:
 ##  $ n: int  40000000 50000000 60000000 70000000 80000000 90000000</code></pre>
-<div class="sourceCode" id="cb796"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb796-1"><a href="chap5.html#cb796-1" tabindex="-1"></a><span class="fu">str</span>(df1[[<span class="st">&quot;n&quot;</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb795"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb795-1"><a href="chap5.html#cb795-1" tabindex="-1"></a><span class="fu">str</span>(df1[[<span class="st">&quot;n&quot;</span>]])</span></code></pre></div>
 <pre><code>##  int [1:6] 40000000 50000000 60000000 70000000 80000000 90000000</code></pre>
 <p>Auf einzelne Tabellenwerte kann wie gewohnt zugegriffen werden:</p>
-<div class="sourceCode" id="cb798"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb798-1"><a href="chap5.html#cb798-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="dv">2</span>, <span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb797"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb797-1"><a href="chap5.html#cb797-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="dv">2</span>, <span class="dv">1</span>])</span></code></pre></div>
 <pre><code>##  int 50000000</code></pre>
-<div class="sourceCode" id="cb800"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb800-1"><a href="chap5.html#cb800-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="dv">1</span>, <span class="dv">2</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb799"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb799-1"><a href="chap5.html#cb799-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="dv">1</span>, <span class="dv">2</span>])</span></code></pre></div>
 <pre><code>##  num 3.66</code></pre>
 <p>Auf den ersten Blick überraschend ist, dass Zugriffe auf Zeilen und Spalten unterschiedliche Datentypen zurückgeben. Zeilen werden als einzelne Observationen aufgefasst, während Spalten sich auf den Datenvektor einer Variablen beziehen:</p>
-<div class="sourceCode" id="cb802"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb802-1"><a href="chap5.html#cb802-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="dv">1</span>,]) <span class="do">## 1. Zeile</span></span></code></pre></div>
+<div class="sourceCode" id="cb801"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb801-1"><a href="chap5.html#cb801-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="dv">1</span>,]) <span class="do">## 1. Zeile</span></span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    1 obs. of  5 variables:
 ##  $ n        : int 40000000
 ##  $ Messung.1: num 3.66
 ##  $ Messung.2: num 3.78
 ##  $ Messung.3: num 3.72
 ##  $ Messung.4: num 3.77</code></pre>
-<div class="sourceCode" id="cb804"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb804-1"><a href="chap5.html#cb804-1" tabindex="-1"></a><span class="fu">str</span>(df1[,<span class="dv">1</span>]) <span class="do">## 1. Spalte</span></span></code></pre></div>
+<div class="sourceCode" id="cb803"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb803-1"><a href="chap5.html#cb803-1" tabindex="-1"></a><span class="fu">str</span>(df1[,<span class="dv">1</span>]) <span class="do">## 1. Spalte</span></span></code></pre></div>
 <pre><code>##  int [1:6] 40000000 50000000 60000000 70000000 80000000 90000000</code></pre>
 <p>In unserem Beispiel ist <code>df1[-1]</code> der Teil des Data Frames, der die Messwerte erhält:</p>
-<div class="sourceCode" id="cb806"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb806-1"><a href="chap5.html#cb806-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="sc">-</span><span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb805"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb805-1"><a href="chap5.html#cb805-1" tabindex="-1"></a><span class="fu">str</span>(df1[<span class="sc">-</span><span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  4 variables:
 ##  $ Messung.1: num  3.66 4.67 5.72 6.72 7.64 ...
 ##  $ Messung.2: num  3.78 4.74 5.67 6.78 7.67 ...
 ##  $ Messung.3: num  3.72 4.72 5.67 6.69 7.7 ...
 ##  $ Messung.4: num  3.77 4.69 5.62 6.61 7.75 ...</code></pre>
 <p>In unserem Fall hätten wir auch <code>df1[2:5]</code> statt <code>df1[-1]</code> schreiben können:</p>
-<div class="sourceCode" id="cb808"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb808-1"><a href="chap5.html#cb808-1" tabindex="-1"></a><span class="fu">identical</span>(df1[<span class="sc">-</span><span class="dv">1</span>], df1[<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb807"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb807-1"><a href="chap5.html#cb807-1" tabindex="-1"></a><span class="fu">identical</span>(df1[<span class="sc">-</span><span class="dv">1</span>], df1[<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>])</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="apply-1" class="section level3 hasAnchor" number="5.3.3">
 <h3><span class="header-section-number">5.3.3</span> <code>apply()</code><a href="chap5.html#apply-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Mithilfe von <code>apply()</code> können wir die Mittelwerte der gemessenen Zeiten ermitteln. Allgemein kann <code>apply()</code> angewandt werden, wenn die beteiligten Spalten denselben Datentyp haben. Die Mittelwerte für die 6 Observationen erhalten wir durch (Zur Erinnerung: bei <code>apply()</code> steht 1 für Zeilen und 2 für Spalten.):</p>
-<div class="sourceCode" id="cb810"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb810-1"><a href="chap5.html#cb810-1" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> df1[<span class="sc">-</span><span class="dv">1</span>], <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="at">FUN =</span> mean)</span></code></pre></div>
+<div class="sourceCode" id="cb809"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb809-1"><a href="chap5.html#cb809-1" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> df1[<span class="sc">-</span><span class="dv">1</span>], <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="at">FUN =</span> mean)</span></code></pre></div>
 <pre><code>## [1] 3.73050 4.70350 5.67200 6.70000 7.69200 8.83275</code></pre>
 <p>Für <span class="math inline">\(n\)</span> = 40 000 000 ist also 3.73050 der Mittelwert der 4 Messwerte.
 Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p>
-<div class="sourceCode" id="cb812"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb812-1"><a href="chap5.html#cb812-1" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> df1[<span class="sc">-</span><span class="dv">1</span>], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> mean)</span></code></pre></div>
+<div class="sourceCode" id="cb811"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb811-1"><a href="chap5.html#cb811-1" tabindex="-1"></a><span class="fu">apply</span>(<span class="at">X =</span> df1[<span class="sc">-</span><span class="dv">1</span>], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> mean)</span></code></pre></div>
 <pre><code>## Messung.1 Messung.2 Messung.3 Messung.4 
 ##  6.193000  6.240167  6.258333  6.195667</code></pre>
 <p>Da ein Date Frame eine Liste der Spaltenvariablen ist, kann für die letzte Abfrage auch <code>lapply()</code> oder besser noch <code>sapply()</code> benutzt werden:</p>
-<div class="sourceCode" id="cb814"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb814-1"><a href="chap5.html#cb814-1" tabindex="-1"></a><span class="fu">sapply</span>(<span class="at">X =</span> df1[<span class="sc">-</span><span class="dv">1</span>], <span class="at">FUN =</span> mean)</span></code></pre></div>
+<div class="sourceCode" id="cb813"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb813-1"><a href="chap5.html#cb813-1" tabindex="-1"></a><span class="fu">sapply</span>(<span class="at">X =</span> df1[<span class="sc">-</span><span class="dv">1</span>], <span class="at">FUN =</span> mean)</span></code></pre></div>
 <pre><code>## Messung.1 Messung.2 Messung.3 Messung.4 
 ##  6.193000  6.240167  6.258333  6.195667</code></pre>
 </div>
 <div id="filtern-einfügen-und-löschen" class="section level3 hasAnchor" number="5.3.4">
 <h3><span class="header-section-number">5.3.4</span> Filtern, Einfügen und Löschen<a href="#filtern-einf%C3%BCgen-und-l%C3%B6schen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Wie bei Matrizen und Listen kann man in Data Frames filtern:</p>
-<div class="sourceCode" id="cb816"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb816-1"><a href="chap5.html#cb816-1" tabindex="-1"></a>df2<span class="sc">$</span>mess1 <span class="sc">&gt;</span> <span class="dv">6</span></span></code></pre></div>
+<div class="sourceCode" id="cb815"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb815-1"><a href="chap5.html#cb815-1" tabindex="-1"></a>df2<span class="sc">$</span>mess1 <span class="sc">&gt;</span> <span class="dv">6</span></span></code></pre></div>
 <pre><code>## [1] FALSE FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
-<div class="sourceCode" id="cb818"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb818-1"><a href="chap5.html#cb818-1" tabindex="-1"></a>df2<span class="sc">$</span>mess1 <span class="sc">&gt;</span> df2<span class="sc">$</span>mess3</span></code></pre></div>
+<div class="sourceCode" id="cb817"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb817-1"><a href="chap5.html#cb817-1" tabindex="-1"></a>df2<span class="sc">$</span>mess1 <span class="sc">&gt;</span> df2<span class="sc">$</span>mess3</span></code></pre></div>
 <pre><code>## [1] FALSE FALSE  TRUE  TRUE FALSE FALSE</code></pre>
-<div class="sourceCode" id="cb820"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb820-1"><a href="chap5.html#cb820-1" tabindex="-1"></a>df2[df2<span class="sc">$</span>mess1 <span class="sc">&gt;</span> df2<span class="sc">$</span>mess3, ]</span></code></pre></div>
+<div class="sourceCode" id="cb819"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb819-1"><a href="chap5.html#cb819-1" tabindex="-1"></a>df2[df2<span class="sc">$</span>mess1 <span class="sc">&gt;</span> df2<span class="sc">$</span>mess3, ]</span></code></pre></div>
 <pre><code>##          n mess1 mess2 mess3 mess4
 ## 3 60000000 5.719 5.672 5.672 5.625
 ## 4 70000000 6.720 6.782 6.688 6.610</code></pre>
 <p>Der letzte Funktionsaufruf kann sogar noch kürzer geschrieben werden:</p>
-<div class="sourceCode" id="cb822"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb822-1"><a href="chap5.html#cb822-1" tabindex="-1"></a>df2[mess1 <span class="sc">&gt;</span> mess3,]</span></code></pre></div>
+<div class="sourceCode" id="cb821"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb821-1"><a href="chap5.html#cb821-1" tabindex="-1"></a>df2[mess1 <span class="sc">&gt;</span> mess3,]</span></code></pre></div>
 <pre><code>##          n mess1 mess2 mess3 mess4
 ## 3 60000000 5.719 5.672 5.672 5.625
 ## 4 70000000 6.720 6.782 6.688 6.610</code></pre>
 <p>Ähnlich wie bei Matrizen hätte man alternativ auch die Funktion <code>subset()</code> benutzen können.</p>
 <p>Als Nächstes wollen wir eine Kopie von <code>df2</code> erstellen und eine neue Variable <code>diff1</code> zum Data Frame hinzufügen. Die neue Spaltenvariable soll gleich der Differenz der ersten beiden Messwerte sein:</p>
-<div class="sourceCode" id="cb824"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb824-1"><a href="chap5.html#cb824-1" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> df2</span>
-<span id="cb824-2"><a href="chap5.html#cb824-2" tabindex="-1"></a>df3<span class="sc">$</span>diff1 <span class="ot">&lt;-</span> df2<span class="sc">$</span>mess2 <span class="sc">-</span>df2<span class="sc">$</span>mess1</span>
-<span id="cb824-3"><a href="chap5.html#cb824-3" tabindex="-1"></a><span class="fu">str</span>(df3)</span></code></pre></div>
+<div class="sourceCode" id="cb823"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb823-1"><a href="chap5.html#cb823-1" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> df2</span>
+<span id="cb823-2"><a href="chap5.html#cb823-2" tabindex="-1"></a>df3<span class="sc">$</span>diff1 <span class="ot">&lt;-</span> df2<span class="sc">$</span>mess2 <span class="sc">-</span>df2<span class="sc">$</span>mess1</span>
+<span id="cb823-3"><a href="chap5.html#cb823-3" tabindex="-1"></a><span class="fu">str</span>(df3)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  6 variables:
 ##  $ n    : int  40000000 50000000 60000000 70000000 80000000 90000000
 ##  $ mess1: num  3.66 4.67 5.72 6.72 7.64 ...
@@ -1275,9 +1269,9 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 ##  $ mess4: num  3.77 4.69 5.62 6.61 7.75 ...
 ##  $ diff1: num  0.125 0.063 -0.047 0.062 0.032 ...</code></pre>
 <p>Wie bei Matrizen können auch <code>cbind()</code> und <code>rbind()</code> benutzt werden, um neue Daten an jeder beliebigen Stelle einzufügen:</p>
-<div class="sourceCode" id="cb826"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb826-1"><a href="chap5.html#cb826-1" tabindex="-1"></a>Nummer <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
-<span id="cb826-2"><a href="chap5.html#cb826-2" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(df3[<span class="dv">1</span>], Nummer, df3[<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb826-3"><a href="chap5.html#cb826-3" tabindex="-1"></a><span class="fu">str</span>(df3)</span></code></pre></div>
+<div class="sourceCode" id="cb825"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb825-1"><a href="chap5.html#cb825-1" tabindex="-1"></a>Nummer <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb825-2"><a href="chap5.html#cb825-2" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(df3[<span class="dv">1</span>], Nummer, df3[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb825-3"><a href="chap5.html#cb825-3" tabindex="-1"></a><span class="fu">str</span>(df3)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  7 variables:
 ##  $ n     : int  40000000 50000000 60000000 70000000 80000000 90000000
 ##  $ Nummer: int  1 2 3 4 5 6
@@ -1287,8 +1281,8 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 ##  $ mess4 : num  3.77 4.69 5.62 6.61 7.75 ...
 ##  $ diff1 : num  0.125 0.063 -0.047 0.062 0.032 ...</code></pre>
 <p>Auffällig ist, dass der Name „Nummer“ der hinzugefügten Spalte automatisch im Data Frame übernommen wird! Durch <code>df3$diff1 &lt;- NULL</code> wird die Spaltenvariable <code>diff1</code> wieder gelöscht:</p>
-<div class="sourceCode" id="cb828"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb828-1"><a href="chap5.html#cb828-1" tabindex="-1"></a>df3<span class="sc">$</span>diff1 <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb828-2"><a href="chap5.html#cb828-2" tabindex="-1"></a><span class="fu">str</span>(df3)</span></code></pre></div>
+<div class="sourceCode" id="cb827"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb827-1"><a href="chap5.html#cb827-1" tabindex="-1"></a>df3<span class="sc">$</span>diff1 <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb827-2"><a href="chap5.html#cb827-2" tabindex="-1"></a><span class="fu">str</span>(df3)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    6 obs. of  6 variables:
 ##  $ n     : int  40000000 50000000 60000000 70000000 80000000 90000000
 ##  $ Nummer: int  1 2 3 4 5 6
@@ -1310,8 +1304,8 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <div id="aufgabe-1-3" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 1<a href="chap5.html#aufgabe-1-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Betrachten Sie folgenden Quelltext:</p>
-<div class="sourceCode" id="cb830"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb830-1"><a href="chap5.html#cb830-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fl">1e4</span>)</span>
-<span id="cb830-2"><a href="chap5.html#cb830-2" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">hist</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb829"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb829-1"><a href="chap5.html#cb829-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fl">1e4</span>)</span>
+<span id="cb829-2"><a href="chap5.html#cb829-2" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">hist</span>(x)</span></code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li><p>Welchen Datentyp hat <code>h</code>?</p></li>
 <li><p>Ist <code>h</code> eine Liste?</p></li>
@@ -1328,15 +1322,15 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <div id="aufgabe-3-3" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 3<a href="chap5.html#aufgabe-3-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Gegegeben ist:</p>
-<div class="sourceCode" id="cb831"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb831-1"><a href="chap5.html#cb831-1" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
-<span id="cb831-2"><a href="chap5.html#cb831-2" tabindex="-1"></a>w <span class="ot">&lt;-</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span>
-<span id="cb831-3"><a href="chap5.html#cb831-3" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(v,T, w[<span class="sc">-</span><span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb830"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb830-1"><a href="chap5.html#cb830-1" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb830-2"><a href="chap5.html#cb830-2" tabindex="-1"></a>w <span class="ot">&lt;-</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span>
+<span id="cb830-3"><a href="chap5.html#cb830-3" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(v,T, w[<span class="sc">-</span><span class="dv">1</span>])</span></code></pre></div>
 <p>Mit welcher Anweisung können Sie innerhalb der Liste <code>l1</code> den Buchstaben <em>C</em> (der durch <code>w</code> einfügt wurde) durch den Buchstaben <em>U</em> ersetzen?</p>
 </div>
 <div id="aufgabe-4-3" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 4<a href="chap5.html#aufgabe-4-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Gegeben ist eine Liste <code>l1</code> der Form:</p>
-<div class="sourceCode" id="cb832"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb832-1"><a href="chap5.html#cb832-1" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;1&quot;</span> <span class="ot">=</span> <span class="dv">4</span>, <span class="st">&quot;3&quot;</span> <span class="ot">=</span> <span class="dv">8</span>, <span class="st">&quot;5&quot;</span> <span class="ot">=</span> <span class="dv">12</span>, <span class="st">&quot;7&quot;</span> <span class="ot">=</span> <span class="dv">16</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb831"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb831-1"><a href="chap5.html#cb831-1" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;1&quot;</span> <span class="ot">=</span> <span class="dv">4</span>, <span class="st">&quot;3&quot;</span> <span class="ot">=</span> <span class="dv">8</span>, <span class="st">&quot;5&quot;</span> <span class="ot">=</span> <span class="dv">12</span>, <span class="st">&quot;7&quot;</span> <span class="ot">=</span> <span class="dv">16</span>)</span></code></pre></div>
 <p>Wie können Sie mithilfe von <code>sum()</code></p>
 <ol style="list-style-type: lower-alpha">
 <li><p>die Summe der Listenelemente (also 4+8+12+16) bestimmen?</p></li>
@@ -1351,7 +1345,7 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <div id="aufgabe-6-3" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 6<a href="chap5.html#aufgabe-6-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Gegeben ist eine Liste <code>l1</code>:</p>
-<div class="sourceCode" id="cb833"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb833-1"><a href="chap5.html#cb833-1" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">1</span>, <span class="st">&quot;Data Science&quot;</span>,  <span class="fu">c</span>(<span class="st">&quot;Data Science&quot;</span>, <span class="st">&quot;FH SWF&quot;</span>), <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb832"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb832-1"><a href="chap5.html#cb832-1" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">1</span>, <span class="st">&quot;Data Science&quot;</span>,  <span class="fu">c</span>(<span class="st">&quot;Data Science&quot;</span>, <span class="st">&quot;FH SWF&quot;</span>), <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span></code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li><p>Was gibt <code>length(l1)</code> zurück?</p></li>
 <li><p>Bestimmen Sie die Länge des zweiten und des dritten Listenelements.</p></li>
@@ -1361,7 +1355,7 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <div id="aufgabe-7-2" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 7<a href="chap5.html#aufgabe-7-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Ändern Sie die Liste <code>l1</code> in der vorherigen Aufgabe so, dass <code>str(l1)</code> Folgendes zurückgibt:</p>
-<div class="sourceCode" id="cb834"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb834-1"><a href="chap5.html#cb834-1" tabindex="-1"></a><span class="fu">str</span>(l1)</span></code></pre></div>
+<div class="sourceCode" id="cb833"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb833-1"><a href="chap5.html#cb833-1" tabindex="-1"></a><span class="fu">str</span>(l1)</span></code></pre></div>
 <pre><code>## List of 4
 ##  $ A: int [1:10] 10 9 8 7 6 5 4 3 2 1
 ##  $ B: chr &quot;Data Science&quot;
@@ -1371,10 +1365,10 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <div id="aufgabe-8-2" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 8<a href="chap5.html#aufgabe-8-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Gegeben ist:</p>
-<div class="sourceCode" id="cb836"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb836-1"><a href="chap5.html#cb836-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb836-2"><a href="chap5.html#cb836-2" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">sample</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb836-3"><a href="chap5.html#cb836-3" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="fu">factor</span>(data, <span class="at">levels =</span> <span class="fu">c</span>( <span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb836-4"><a href="chap5.html#cb836-4" tabindex="-1"></a>f1</span></code></pre></div>
+<div class="sourceCode" id="cb835"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb835-1"><a href="chap5.html#cb835-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb835-2"><a href="chap5.html#cb835-2" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">sample</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb835-3"><a href="chap5.html#cb835-3" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="fu">factor</span>(data, <span class="at">levels =</span> <span class="fu">c</span>( <span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb835-4"><a href="chap5.html#cb835-4" tabindex="-1"></a>f1</span></code></pre></div>
 <pre><code>##   [1] A    &lt;NA&gt; A    A    B    &lt;NA&gt; B    B    A    &lt;NA&gt; A    &lt;NA&gt; &lt;NA&gt; B    B   
 ##  [16] C    A    A    C    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; B    &lt;NA&gt; C    B    A    B   
 ##  [31] C    B    &lt;NA&gt; &lt;NA&gt; B    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; B    B    C    A    &lt;NA&gt; B   
@@ -1385,7 +1379,7 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 ## Levels: A &lt; B &lt; C</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li><p>Ersetzen Sie in <code>f1</code> den Wert <code>B</code> durch <code>X</code>, so dass sich folgende Ausgabe ergibt:</p>
-<div class="sourceCode" id="cb838"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb838-1"><a href="chap5.html#cb838-1" tabindex="-1"></a>f1</span></code></pre></div>
+<div class="sourceCode" id="cb837"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb837-1"><a href="chap5.html#cb837-1" tabindex="-1"></a>f1</span></code></pre></div>
 <pre><code>##   [1] A    &lt;NA&gt; A    A    X    &lt;NA&gt; X    X    A    &lt;NA&gt; A    &lt;NA&gt; &lt;NA&gt; X    X   
 ##  [16] C    A    A    C    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; X    &lt;NA&gt; C    X    A    X   
 ##  [31] C    X    &lt;NA&gt; &lt;NA&gt; X    &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; X    X    C    A    &lt;NA&gt; X   
@@ -1396,7 +1390,7 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 ## Levels: A &lt; X &lt; C</code></pre></li>
 <li><p>Ersetzen Sie in <code>f1</code> die Werte <code>A</code> und <code>C</code> durch <code>Y</code>.</p></li>
 <li><p>Löschen Sie in <code>f1</code> alle <code>NA</code>-Werte:</p>
-<div class="sourceCode" id="cb840"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb840-1"><a href="chap5.html#cb840-1" tabindex="-1"></a>f1</span></code></pre></div>
+<div class="sourceCode" id="cb839"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb839-1"><a href="chap5.html#cb839-1" tabindex="-1"></a>f1</span></code></pre></div>
 <pre><code>##  [1] A A A X X X A A X X C A A C X C X A X C X X X X C A X X X C X X X A A X A A
 ## [39] C C X X A X A X X C C A A A C A X A
 ## Levels: A &lt; X &lt; C</code></pre></li>
@@ -1421,23 +1415,23 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <div id="aufgabe-10-1" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 10<a href="chap5.html#aufgabe-10-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Wir haben im Abschnitt „Data Frame erzeugen“ gesehen, dass die Namen der Argumente automatisch übernommen werden, wenn kein Name explizit angegeben wird. Beispiel:</p>
-<div class="sourceCode" id="cb842"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb842-1"><a href="chap5.html#cb842-1" tabindex="-1"></a>bezeichnung <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
-<span id="cb842-2"><a href="chap5.html#cb842-2" tabindex="-1"></a>nr <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
-<span id="cb842-3"><a href="chap5.html#cb842-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(nr, bezeichnung)</span></code></pre></div>
+<div class="sourceCode" id="cb841"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb841-1"><a href="chap5.html#cb841-1" tabindex="-1"></a>bezeichnung <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb841-2"><a href="chap5.html#cb841-2" tabindex="-1"></a>nr <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb841-3"><a href="chap5.html#cb841-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(nr, bezeichnung)</span></code></pre></div>
 <p>Gilt das auch für Listen?</p>
 </div>
 </div>
 <div id="übungen---teil-2" class="section level2 unnumbered hasAnchor">
 <h2>Übungen - Teil 2<a href="#%C3%BCbungen---teil-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Für die Aufgaben im Teil 2 betrachten wir ein Data Frame <code>student</code>. Erzeugt werden kann <code>student</code> durch:</p>
-<div class="sourceCode" id="cb843"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb843-1"><a href="chap5.html#cb843-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb843-2"><a href="chap5.html#cb843-2" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span>  <span class="dv">100</span></span>
-<span id="cb843-3"><a href="chap5.html#cb843-3" tabindex="-1"></a>student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">MatNr =</span> <span class="fu">round</span>(<span class="fu">runif</span>(anzahl, <span class="at">min=</span> <span class="dv">100000</span>, <span class="dv">999999</span>)),</span>
-<span id="cb843-4"><a href="chap5.html#cb843-4" tabindex="-1"></a>                       <span class="at">Punkte =</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(anzahl, <span class="at">mean =</span> <span class="dv">65</span>, <span class="at">sd =</span> <span class="dv">20</span>)),</span>
-<span id="cb843-5"><a href="chap5.html#cb843-5" tabindex="-1"></a>                       <span class="at">Bestanden =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb843-6"><a href="chap5.html#cb843-6" tabindex="-1"></a>                       <span class="at">Stdgang =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;ET&quot;</span>,<span class="st">&quot;MB&quot;</span>), anzahl, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb842"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb842-1"><a href="chap5.html#cb842-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb842-2"><a href="chap5.html#cb842-2" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span>  <span class="dv">100</span></span>
+<span id="cb842-3"><a href="chap5.html#cb842-3" tabindex="-1"></a>student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">MatNr =</span> <span class="fu">round</span>(<span class="fu">runif</span>(anzahl, <span class="at">min=</span> <span class="dv">100000</span>, <span class="dv">999999</span>)),</span>
+<span id="cb842-4"><a href="chap5.html#cb842-4" tabindex="-1"></a>                       <span class="at">Punkte =</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(anzahl, <span class="at">mean =</span> <span class="dv">65</span>, <span class="at">sd =</span> <span class="dv">20</span>)),</span>
+<span id="cb842-5"><a href="chap5.html#cb842-5" tabindex="-1"></a>                       <span class="at">Bestanden =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb842-6"><a href="chap5.html#cb842-6" tabindex="-1"></a>                       <span class="at">Stdgang =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;ET&quot;</span>,<span class="st">&quot;MB&quot;</span>), anzahl, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 <p>Die Ausgabe von <code>head(student)</code> lautet:</p>
-<div class="sourceCode" id="cb844"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb844-1"><a href="chap5.html#cb844-1" tabindex="-1"></a><span class="fu">head</span>(student)</span></code></pre></div>
+<div class="sourceCode" id="cb843"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb843-1"><a href="chap5.html#cb843-1" tabindex="-1"></a><span class="fu">head</span>(student)</span></code></pre></div>
 <pre><code>##    MatNr Punkte Bestanden Stdgang
 ## 1 338958     73     FALSE      ET
 ## 2 434911     53     FALSE      ET
@@ -1450,18 +1444,18 @@ Die Mittelwerte für jede der vier Messvariablen erhalten wir hingegen durch:</p
 <ol style="list-style-type: lower-alpha">
 <li><p>Aus wie vielen Variablen und aus wie vielen Observationen besteht <code>student</code>?</p></li>
 <li><p>Die Funktionen <code>head(x)</code> und <code>tail(x)</code> liefern den ersten und letzten Teil von <code>x</code> zurück. Was wird ausgegeben durch:</p>
-<div class="sourceCode" id="cb846"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb846-1"><a href="chap5.html#cb846-1" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n =</span> <span class="dv">10</span>)</span>
-<span id="cb846-2"><a href="chap5.html#cb846-2" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n =</span> <span class="sc">-</span><span class="dv">95</span>)</span>
-<span id="cb846-3"><a href="chap5.html#cb846-3" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n =</span> <span class="sc">-</span><span class="dv">93</span>)</span>
-<span id="cb846-4"><a href="chap5.html#cb846-4" tabindex="-1"></a><span class="fu">tail</span>(student) </span></code></pre></div>
+<div class="sourceCode" id="cb845"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb845-1"><a href="chap5.html#cb845-1" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb845-2"><a href="chap5.html#cb845-2" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n =</span> <span class="sc">-</span><span class="dv">95</span>)</span>
+<span id="cb845-3"><a href="chap5.html#cb845-3" tabindex="-1"></a><span class="fu">head</span>(student, <span class="at">n =</span> <span class="sc">-</span><span class="dv">93</span>)</span>
+<span id="cb845-4"><a href="chap5.html#cb845-4" tabindex="-1"></a><span class="fu">tail</span>(student) </span></code></pre></div>
 <p>?</p></li>
 <li><p>Was wird ausgegeben durch:</p>
-<div class="sourceCode" id="cb847"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb847-1"><a href="chap5.html#cb847-1" tabindex="-1"></a>student[<span class="dv">1</span>]</span>
-<span id="cb847-2"><a href="chap5.html#cb847-2" tabindex="-1"></a>student[<span class="dv">2</span>] </span></code></pre></div>
+<div class="sourceCode" id="cb846"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb846-1"><a href="chap5.html#cb846-1" tabindex="-1"></a>student[<span class="dv">1</span>]</span>
+<span id="cb846-2"><a href="chap5.html#cb846-2" tabindex="-1"></a>student[<span class="dv">2</span>] </span></code></pre></div>
 <p>?</p></li>
 <li><p>Geben Sie die erste Zeile von <code>student</code> aus.</p></li>
 <li><p>Um die Klausur zu bestehen, reichen 50 Punkte. Ändern Sie <code>student</code> entsprechend!</p>
-<div class="sourceCode" id="cb848"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb848-1"><a href="chap5.html#cb848-1" tabindex="-1"></a><span class="fu">head</span>(student)</span></code></pre></div>
+<div class="sourceCode" id="cb847"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb847-1"><a href="chap5.html#cb847-1" tabindex="-1"></a><span class="fu">head</span>(student)</span></code></pre></div>
 <pre><code>##    MatNr Punkte Bestanden Stdgang
 ## 1 338958     73      TRUE      ET
 ## 2 434911     53      TRUE      ET
@@ -1612,42 +1606,42 @@ Figure 5.9: Balkendiagramm des Notenspiegels.
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-  "sharing": {
-    "github": false,
-    "facebook": true,
-    "twitter": true,
-    "linkedin": false,
-    "weibo": false,
-    "instapaper": false,
-    "vk": false,
-    "whatsapp": false,
-    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-  },
-  "fontsettings": {
-    "theme": "white",
-    "family": "sans",
-    "size": 2
-  },
-  "edit": {
-    "link": "https://github.com/rstudio/bookdown-demo/edit/master/05-weitere_datenstrukturen.Rmd",
-    "text": "Edit"
-  },
-  "history": {
-    "link": null,
-    "text": null
-  },
-  "view": {
-    "link": null,
-    "text": null
-  },
-  "download": ["bchwtz-rprg.pdf", "bchwtz-rprg.epub"],
-  "search": {
-    "engine": "fuse",
-    "options": null
-  },
-  "toc": {
-    "collapse": "subsection"
-  }
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-weitere_datenstrukturen.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bchwtz-rprg.pdf", "bchwtz-rprg.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
 });
 });
 </script>
