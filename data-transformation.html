@@ -474,15 +474,15 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 7</span> Data Transformation<a href="data-transformation.html#data-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Parallel zu diesem Kapitel sollen Sie das Kapitel „5 Data transformation“ aus <em>„R for Data Sciences“</em> <span class="citation">(<a href="#ref-Wickhamny">Wickham and Grolemund 2017</a>)</span> durcharbeiten, das sich mit dem <code>dplyr</code>-Paket (dplyr steht für “<strong>d</strong>ata frame ap<strong>plyer</strong>”) auseinandersetzt, einer weiteren Kernkomponente der <code>tidyverse</code>-Welt.</p>
 <p>Im Folgenden setzen wir voraus:</p>
-<div class="sourceCode" id="cb872"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb872-1"><a href="data-transformation.html#cb872-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div class="sourceCode" id="cb874"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb874-1"><a href="data-transformation.html#cb874-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <p>Dadurch werden die folgenden Pakete (packages) (in der Version: <code>tidyverse</code> 1.2.1) geladen:
 <code>ggplot2</code>, <code>purrr</code>, <code>tibble</code>, <code>dplyr</code>, <code>tidyr</code>, <code>stringr</code>, <code>readr</code>, <code>forcats</code>.</p>
 <p>In diesem Kapitel wollen wir mit der großen Datensammlung <code>flights</code> arbeiten, die im <code>nycflights13</code>-Paket <span class="citation">(<a href="#ref-nycflights13">Wickham 2021</a>)</span> enthalten ist; daher setzen wir zusätzlich voraus:</p>
-<div class="sourceCode" id="cb873"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb873-1"><a href="data-transformation.html#cb873-1" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span></code></pre></div>
+<div class="sourceCode" id="cb875"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb875-1"><a href="data-transformation.html#cb875-1" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span></code></pre></div>
 <div id="der-datensatz-flights" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Der Datensatz <code>flights</code><a href="data-transformation.html#der-datensatz-flights" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Der Datensatz <code>flights</code> beschreibt alle Flüge, die 2013 von einem der drei New Yorker Flughäfen (JFK, LGA or EWR) gestartet sind (siehe: <code>?flights</code>). <span class="citation">(<a href="#ref-nycflights13">Wickham 2021</a>)</span></p>
-<div class="sourceCode" id="cb874"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb874-1"><a href="data-transformation.html#cb874-1" tabindex="-1"></a><span class="fu">str</span>(flights)</span></code></pre></div>
+<div class="sourceCode" id="cb876"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb876-1"><a href="data-transformation.html#cb876-1" tabindex="-1"></a><span class="fu">str</span>(flights)</span></code></pre></div>
 <pre><code>## tibble [336,776 × 19] (S3: tbl_df/tbl/data.frame)
 ##  $ year          : int [1:336776] 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 ...
 ##  $ month         : int [1:336776] 1 1 1 1 1 1 1 1 1 1 ...
@@ -510,7 +510,7 @@ div.csl-indent {
 <p>Im Gegensatz zu einem Data Frame wird bei der Erzeugung eines Tibbles nicht automatisch ein <code>character</code>-Vektor in einen Faktor umgewandelt, was bei früheren R-Versionen der Fall war; siehe Abschnitt <a href="chap5.html#dataframeerzeugen">5.3.1</a>.</p>
 <p>Mithilfe von <code>as_tibble()</code> kann ein Data Frame leicht in einen Tibble umgewandelt werden. Ein Tibble kann auch direkt mit <code>tibble()</code> erzeugt werden. Auf Tibbles werden wir später zurückkommen.</p>
 <p>Die Ausgabe des Tibbles <code>flights</code> ist in der Tat recht übersichtlich:</p>
-<div class="sourceCode" id="cb876"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb876-1"><a href="data-transformation.html#cb876-1" tabindex="-1"></a>flights</span></code></pre></div>
+<div class="sourceCode" id="cb878"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb878-1"><a href="data-transformation.html#cb878-1" tabindex="-1"></a>flights</span></code></pre></div>
 <pre><code>## # A tibble: 336,776 × 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
@@ -619,9 +619,9 @@ Figure 7.2: Funktion <code>filter()</code> des R-Pakets <code>dplyr</code>.
 <li><p>nur Datenzeilen zurück, bei denen die Filterbedingung wahr ist; NA-Werte werden ausgeschlossen, es sei denn, sie tauchen explizit in der Filterbedingung auf.</p></li>
 </ul>
 <p><strong>Beispiele</strong></p>
-<div class="sourceCode" id="cb878"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb878-1"><a href="data-transformation.html#cb878-1" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb878-2"><a href="data-transformation.html#cb878-2" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">11</span> <span class="sc">|</span> <span class="at">month =</span> <span class="dv">12</span>)</span>
-<span id="cb878-3"><a href="data-transformation.html#cb878-3" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb880"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb880-1"><a href="data-transformation.html#cb880-1" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb880-2"><a href="data-transformation.html#cb880-2" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">11</span> <span class="sc">|</span> <span class="at">month =</span> <span class="dv">12</span>)</span>
+<span id="cb880-3"><a href="data-transformation.html#cb880-3" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>))</span></code></pre></div>
 <p><strong>Hinweis:</strong> (Dies ist der Hinweis aus den Übungen zu Kapitel <a href="chap3.html#chap3">3</a>:</p>
 <p>Der Operator <code>&amp;&amp;</code> bezieht sich bei Vektoren nur auf das erste Element; bei Vektoren sollte man statt <code>&amp;&amp;</code> den Operator <code>&amp;</code> benutzen! Ähnliches gilt für die Operatoren <code>||</code> und <code>|</code> (siehe z. B. <code>?‘&amp;‘</code>).</p>
 </div>
@@ -636,8 +636,8 @@ Figure 7.3: Funktion <code>arrange()</code> des R-Pakets <code>dplyr</code>.
 </div>
 <p>Mit <code>arrange()</code> kann nach Spalten sortiert werden. Mithilfe der Funktion <code>desc()</code> kann in absteigender Reihenfolge sortiert werden.</p>
 <p><strong>Beispiele</strong></p>
-<div class="sourceCode" id="cb879"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb879-1"><a href="data-transformation.html#cb879-1" tabindex="-1"></a><span class="fu">arrange</span>(flights, year, month, day)</span>
-<span id="cb879-2"><a href="data-transformation.html#cb879-2" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="fu">desc</span>(dep_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb881"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb881-1"><a href="data-transformation.html#cb881-1" tabindex="-1"></a><span class="fu">arrange</span>(flights, year, month, day)</span>
+<span id="cb881-2"><a href="data-transformation.html#cb881-2" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="fu">desc</span>(dep_delay))</span></code></pre></div>
 </div>
 <div id="select-spalten-auswählen" class="section level3 hasAnchor" number="7.2.3">
 <h3><span class="header-section-number">7.2.3</span> <code>select()</code>: Spalten auswählen<a href="#select-spalten-ausw%C3%A4hlen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -678,16 +678,16 @@ Figure 7.4: Funktion <code>select()</code> des R-Pakets <code>dplyr</code>.
 </table>
 <p>Um Spaltennamen zu ändern, sollte die Funktion <code>rename()</code> benutzt werden.</p>
 <p><strong>Beispiele</strong></p>
-<div class="sourceCode" id="cb880"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb880-1"><a href="data-transformation.html#cb880-1" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span>
-<span id="cb880-2"><a href="data-transformation.html#cb880-2" tabindex="-1"></a><span class="fu">select</span>(flights, year<span class="sc">:</span>day)</span>
-<span id="cb880-3"><a href="data-transformation.html#cb880-3" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="sc">-</span>(year<span class="sc">:</span>day))</span>
-<span id="cb880-4"><a href="data-transformation.html#cb880-4" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span>
-<span id="cb880-5"><a href="data-transformation.html#cb880-5" tabindex="-1"></a><span class="fu">select</span>(flights, year<span class="sc">:</span>day)</span>
-<span id="cb880-6"><a href="data-transformation.html#cb880-6" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="sc">-</span>(year<span class="sc">:</span>day))</span>
-<span id="cb880-7"><a href="data-transformation.html#cb880-7" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">starts_with</span>(<span class="st">&quot;dep&quot;</span>))</span>
-<span id="cb880-8"><a href="data-transformation.html#cb880-8" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">ends_with</span>(<span class="st">&quot;time&quot;</span>))</span>
-<span id="cb880-9"><a href="data-transformation.html#cb880-9" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">contains</span>(<span class="st">&quot;dep&quot;</span>))</span>
-<span id="cb880-10"><a href="data-transformation.html#cb880-10" tabindex="-1"></a><span class="fu">select</span>(flights, time_hour, air_time, <span class="fu">everything</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb882"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb882-1"><a href="data-transformation.html#cb882-1" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span>
+<span id="cb882-2"><a href="data-transformation.html#cb882-2" tabindex="-1"></a><span class="fu">select</span>(flights, year<span class="sc">:</span>day)</span>
+<span id="cb882-3"><a href="data-transformation.html#cb882-3" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="sc">-</span>(year<span class="sc">:</span>day))</span>
+<span id="cb882-4"><a href="data-transformation.html#cb882-4" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span>
+<span id="cb882-5"><a href="data-transformation.html#cb882-5" tabindex="-1"></a><span class="fu">select</span>(flights, year<span class="sc">:</span>day)</span>
+<span id="cb882-6"><a href="data-transformation.html#cb882-6" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="sc">-</span>(year<span class="sc">:</span>day))</span>
+<span id="cb882-7"><a href="data-transformation.html#cb882-7" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">starts_with</span>(<span class="st">&quot;dep&quot;</span>))</span>
+<span id="cb882-8"><a href="data-transformation.html#cb882-8" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">ends_with</span>(<span class="st">&quot;time&quot;</span>))</span>
+<span id="cb882-9"><a href="data-transformation.html#cb882-9" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">contains</span>(<span class="st">&quot;dep&quot;</span>))</span>
+<span id="cb882-10"><a href="data-transformation.html#cb882-10" tabindex="-1"></a><span class="fu">select</span>(flights, time_hour, air_time, <span class="fu">everything</span>())</span></code></pre></div>
 </div>
 <div id="mutate-neue-spalten-erzeugen" class="section level3 hasAnchor" number="7.2.4">
 <h3><span class="header-section-number">7.2.4</span> <code>mutate()</code>: neue Spalten erzeugen<a href="data-transformation.html#mutate-neue-spalten-erzeugen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -700,12 +700,12 @@ Figure 7.5: Funktion <code>mutate()</code> des R-Pakets <code>dplyr</code>.
 </div>
 <p>Mit <code>mutate()</code> wird der Datensatz durch neue Spalten erweitert, die aus bestehenden Variablen erzeugt werden. Bei Namensgleichheit werden bereits existierende Variablen überschrieben. <code>transmute()</code> lässt zusätzlich alle nicht genannten Spalten weg.</p>
 <p><strong>Beispiele</strong></p>
-<div class="sourceCode" id="cb881"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb881-1"><a href="data-transformation.html#cb881-1" tabindex="-1"></a>(flights_sml <span class="ot">&lt;-</span> <span class="fu">select</span>(flights, year<span class="sc">:</span>day, <span class="fu">ends_with</span>(<span class="st">&quot;delay&quot;</span>), distance, air_time))</span>
-<span id="cb881-2"><a href="data-transformation.html#cb881-2" tabindex="-1"></a><span class="fu">mutate</span>(flights_sml, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay, <span class="at">speed =</span> distance <span class="sc">/</span> air_time <span class="sc">*</span> <span class="dv">60</span>)</span>
-<span id="cb881-3"><a href="data-transformation.html#cb881-3" tabindex="-1"></a><span class="fu">mutate</span>(flights_sml, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay, <span class="at">hours =</span> air_time <span class="sc">/</span> <span class="dv">60</span>, </span>
-<span id="cb881-4"><a href="data-transformation.html#cb881-4" tabindex="-1"></a>       <span class="at">gain_per_hour =</span> gain <span class="sc">/</span> hours)   </span>
-<span id="cb881-5"><a href="data-transformation.html#cb881-5" tabindex="-1"></a><span class="fu">transmute</span>(flights, year, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay, <span class="at">hours =</span> air_time <span class="sc">/</span> <span class="dv">60</span>, </span>
-<span id="cb881-6"><a href="data-transformation.html#cb881-6" tabindex="-1"></a>          <span class="at">gain_per_hour =</span> gain <span class="sc">/</span> hours) </span></code></pre></div>
+<div class="sourceCode" id="cb883"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb883-1"><a href="data-transformation.html#cb883-1" tabindex="-1"></a>(flights_sml <span class="ot">&lt;-</span> <span class="fu">select</span>(flights, year<span class="sc">:</span>day, <span class="fu">ends_with</span>(<span class="st">&quot;delay&quot;</span>), distance, air_time))</span>
+<span id="cb883-2"><a href="data-transformation.html#cb883-2" tabindex="-1"></a><span class="fu">mutate</span>(flights_sml, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay, <span class="at">speed =</span> distance <span class="sc">/</span> air_time <span class="sc">*</span> <span class="dv">60</span>)</span>
+<span id="cb883-3"><a href="data-transformation.html#cb883-3" tabindex="-1"></a><span class="fu">mutate</span>(flights_sml, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay, <span class="at">hours =</span> air_time <span class="sc">/</span> <span class="dv">60</span>, </span>
+<span id="cb883-4"><a href="data-transformation.html#cb883-4" tabindex="-1"></a>       <span class="at">gain_per_hour =</span> gain <span class="sc">/</span> hours)   </span>
+<span id="cb883-5"><a href="data-transformation.html#cb883-5" tabindex="-1"></a><span class="fu">transmute</span>(flights, year, <span class="at">gain =</span> dep_delay <span class="sc">-</span> arr_delay, <span class="at">hours =</span> air_time <span class="sc">/</span> <span class="dv">60</span>, </span>
+<span id="cb883-6"><a href="data-transformation.html#cb883-6" tabindex="-1"></a>          <span class="at">gain_per_hour =</span> gain <span class="sc">/</span> hours) </span></code></pre></div>
 </div>
 <div id="summarize-spalten-verdichten" class="section level3 hasAnchor" number="7.2.5">
 <h3><span class="header-section-number">7.2.5</span> <code>summarize()</code>: Spalten verdichten<a href="data-transformation.html#summarize-spalten-verdichten" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -718,55 +718,55 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 </div>
 <p>Mit <code>summarize()</code> kann ein Datensatz auf eine einzelne Zeile reduziert werden, indem ausgewählte Spalten verdichtet werden. <code>summarise()</code> und <code>summarize()</code> sind Synonyme.</p>
 <p><strong>Beispiele</strong></p>
-<div class="sourceCode" id="cb882"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb882-1"><a href="data-transformation.html#cb882-1" tabindex="-1"></a><span class="fu">summarize</span>(flights, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb882-2"><a href="data-transformation.html#cb882-2" tabindex="-1"></a><span class="fu">summarize</span>(flights, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb882-3"><a href="data-transformation.html#cb882-3" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb884"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb884-1"><a href="data-transformation.html#cb884-1" tabindex="-1"></a><span class="fu">summarize</span>(flights, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb884-2"><a href="data-transformation.html#cb884-2" tabindex="-1"></a><span class="fu">summarize</span>(flights, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb884-3"><a href="data-transformation.html#cb884-3" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 <p><code>summarize()</code> wird sehr häufig im Zusammenspiel mit <code>group_by()</code> verwendet. Wir werden weiter unten hierauf detaillierter eingehen.</p>
 </div>
 <div id="der-pipe-operator" class="section level3 hasAnchor" number="7.2.6">
 <h3><span class="header-section-number">7.2.6</span> Der Pipe-Operator <code>%&gt;%</code><a href="data-transformation.html#der-pipe-operator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Der Pipe-Operator <code>%&gt;%</code> (In Visual Studio R fügt <code>Strg+Shift+m</code> den <code>%&gt;%</code> ein) ist nicht Bestandteil von Base-R; er wird durch das <code>tidyverse</code>-Paket <span class="citation">(<a href="#ref-tidyverse">Wickham et al. 2019</a>)</span> automatisch eingeführt und spielt in der <code>tidyverse</code>-Welt eine wichtige Rolle.</p>
 <p>Allgemein gilt, dass</p>
-<div class="sourceCode" id="cb883"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb883-1"><a href="data-transformation.html#cb883-1" tabindex="-1"></a>x <span class="sc">%&gt;%</span> <span class="fu">f</span>(y)</span></code></pre></div>
+<div class="sourceCode" id="cb885"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb885-1"><a href="data-transformation.html#cb885-1" tabindex="-1"></a>x <span class="sc">%&gt;%</span> <span class="fu">f</span>(y)</span></code></pre></div>
 <p>äquivalent ist zu</p>
-<div class="sourceCode" id="cb884"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb884-1"><a href="data-transformation.html#cb884-1" tabindex="-1"></a><span class="fu">f</span>(x, y)</span></code></pre></div>
+<div class="sourceCode" id="cb886"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb886-1"><a href="data-transformation.html#cb886-1" tabindex="-1"></a><span class="fu">f</span>(x, y)</span></code></pre></div>
 <p>Folglich entspricht:</p>
-<div class="sourceCode" id="cb885"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb885-1"><a href="data-transformation.html#cb885-1" tabindex="-1"></a>x <span class="sc">%&gt;%</span> <span class="fu">f</span>(y) <span class="sc">%&gt;%</span> <span class="fu">g</span>(z) </span></code></pre></div>
+<div class="sourceCode" id="cb887"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb887-1"><a href="data-transformation.html#cb887-1" tabindex="-1"></a>x <span class="sc">%&gt;%</span> <span class="fu">f</span>(y) <span class="sc">%&gt;%</span> <span class="fu">g</span>(z) </span></code></pre></div>
 <p>dem Ausdruck:</p>
-<div class="sourceCode" id="cb886"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb886-1"><a href="data-transformation.html#cb886-1" tabindex="-1"></a><span class="fu">g</span>(<span class="fu">f</span>(x, y), z)</span></code></pre></div>
+<div class="sourceCode" id="cb888"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb888-1"><a href="data-transformation.html#cb888-1" tabindex="-1"></a><span class="fu">g</span>(<span class="fu">f</span>(x, y), z)</span></code></pre></div>
 <p>Als Beispiel wollen wir die Ausgabe der Funktion <code>sd()</code> auf drei verschiedene Arten nachrechnen. Dazu wollen wir die folgenden drei Funktionen nutzen:</p>
-<div class="sourceCode" id="cb887"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb887-1"><a href="data-transformation.html#cb887-1" tabindex="-1"></a>potenz <span class="ot">&lt;-</span> <span class="cf">function</span>(x,n) <span class="fu">return</span>(x<span class="sc">^</span>n)</span>
-<span id="cb887-2"><a href="data-transformation.html#cb887-2" tabindex="-1"></a>zentriere <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">return</span>(x <span class="sc">-</span> <span class="fu">mean</span>(x))</span>
-<span id="cb887-3"><a href="data-transformation.html#cb887-3" tabindex="-1"></a>mittel <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">return</span>( <span class="fu">sum</span>(x)<span class="sc">/</span> (<span class="fu">length</span>(x)<span class="sc">-</span><span class="dv">1</span>)) <span class="co"># Precondition: length(x) &gt; 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb889"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb889-1"><a href="data-transformation.html#cb889-1" tabindex="-1"></a>potenz <span class="ot">&lt;-</span> <span class="cf">function</span>(x,n) <span class="fu">return</span>(x<span class="sc">^</span>n)</span>
+<span id="cb889-2"><a href="data-transformation.html#cb889-2" tabindex="-1"></a>zentriere <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">return</span>(x <span class="sc">-</span> <span class="fu">mean</span>(x))</span>
+<span id="cb889-3"><a href="data-transformation.html#cb889-3" tabindex="-1"></a>mittel <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">return</span>( <span class="fu">sum</span>(x)<span class="sc">/</span> (<span class="fu">length</span>(x)<span class="sc">-</span><span class="dv">1</span>)) <span class="co"># Precondition: length(x) &gt; 1</span></span></code></pre></div>
 <p>Es gilt:</p>
-<div class="sourceCode" id="cb888"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb888-1"><a href="data-transformation.html#cb888-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb888-2"><a href="data-transformation.html#cb888-2" tabindex="-1"></a><span class="fu">sd</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb890"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb890-1"><a href="data-transformation.html#cb890-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb890-2"><a href="data-transformation.html#cb890-2" tabindex="-1"></a><span class="fu">sd</span>(d)</span></code></pre></div>
 <pre><code>## [1] 3.02765</code></pre>
 <p>In unserer ersten Variante rufen wir die Funktionen geschachtelt auf:</p>
-<div class="sourceCode" id="cb890"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb890-1"><a href="data-transformation.html#cb890-1" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mittel</span>(<span class="fu">potenz</span>(<span class="fu">zentriere</span>(d),<span class="dv">2</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb892"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb892-1"><a href="data-transformation.html#cb892-1" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mittel</span>(<span class="fu">potenz</span>(<span class="fu">zentriere</span>(d),<span class="dv">2</span>)))</span></code></pre></div>
 <pre><code>## [1] 3.02765</code></pre>
 <p>In der zweiten Variante gehen wir schrittweise vor:</p>
-<div class="sourceCode" id="cb892"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb892-1"><a href="data-transformation.html#cb892-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">zentriere</span>(d)</span>
-<span id="cb892-2"><a href="data-transformation.html#cb892-2" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">potenz</span>(res,<span class="dv">2</span>)</span>
-<span id="cb892-3"><a href="data-transformation.html#cb892-3" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">mittel</span>(res)</span>
-<span id="cb892-4"><a href="data-transformation.html#cb892-4" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(res)</span>
-<span id="cb892-5"><a href="data-transformation.html#cb892-5" tabindex="-1"></a>res</span></code></pre></div>
+<div class="sourceCode" id="cb894"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb894-1"><a href="data-transformation.html#cb894-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">zentriere</span>(d)</span>
+<span id="cb894-2"><a href="data-transformation.html#cb894-2" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">potenz</span>(res,<span class="dv">2</span>)</span>
+<span id="cb894-3"><a href="data-transformation.html#cb894-3" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">mittel</span>(res)</span>
+<span id="cb894-4"><a href="data-transformation.html#cb894-4" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(res)</span>
+<span id="cb894-5"><a href="data-transformation.html#cb894-5" tabindex="-1"></a>res</span></code></pre></div>
 <pre><code>## [1] 3.02765</code></pre>
 <p>In der dritten Variante nutzen wir schließlich den Pipe-Mechanismus (Wie <code>+</code> darf <code>%&gt;%</code> nicht am Anfang einer Zeile stehen.) (er setzt allerdings voraus, dass Base-R durch ein Paket wie <code>tidyverse</code> erweitert worden ist; Wir hätten dies auch durch die Anweisung <code>require(tidyverse)</code> verdeutlichen können. Ursprünglich stammt der Pipe-Mechanismus aus dem Paket <code>magrittr</code>.):</p>
-<div class="sourceCode" id="cb894"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb894-1"><a href="data-transformation.html#cb894-1" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
-<span id="cb894-2"><a href="data-transformation.html#cb894-2" tabindex="-1"></a>  <span class="fu">zentriere</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb894-3"><a href="data-transformation.html#cb894-3" tabindex="-1"></a>  <span class="fu">potenz</span>(<span class="dv">2</span>)  <span class="sc">%&gt;%</span></span>
-<span id="cb894-4"><a href="data-transformation.html#cb894-4" tabindex="-1"></a>  <span class="fu">mittel</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb894-5"><a href="data-transformation.html#cb894-5" tabindex="-1"></a>  <span class="fu">sqrt</span>()  </span></code></pre></div>
+<div class="sourceCode" id="cb896"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb896-1"><a href="data-transformation.html#cb896-1" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb896-2"><a href="data-transformation.html#cb896-2" tabindex="-1"></a>  <span class="fu">zentriere</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb896-3"><a href="data-transformation.html#cb896-3" tabindex="-1"></a>  <span class="fu">potenz</span>(<span class="dv">2</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb896-4"><a href="data-transformation.html#cb896-4" tabindex="-1"></a>  <span class="fu">mittel</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb896-5"><a href="data-transformation.html#cb896-5" tabindex="-1"></a>  <span class="fu">sqrt</span>()  </span></code></pre></div>
 <pre><code>## [1] 3.02765</code></pre>
 <p>In komplexen Situationen kann der Pipe-Mechanismus die Lesbarkeit des Quelltextes deutlich erhöhen. Insbesondere in der <code>tidyverse</code>-Welt wird hiervon viel Gebrauch gemacht. Eine Ausnahme bildet <code>ggplot2</code>: es benutzt das gleiche Prinzip, nur wird dort leider <code>+</code> statt <code>%&gt;%</code> benutzt!</p>
 </div>
 <div id="gruppierungen-mit-group_by" class="section level3 hasAnchor" number="7.2.7">
 <h3><span class="header-section-number">7.2.7</span> Gruppierungen mit <code>group_by()</code><a href="data-transformation.html#gruppierungen-mit-group_by" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Die Funktion <code>group_by()</code> und ihr Gegenstück <code>ungroup()</code> ist für sich aus gesehen nicht besonders nützlich. Erst im Zusammenspiel mit Funktionen wie <code>summarize()</code>, die die erstellten Gruppierungen berücksichtigen, entfalten sie ihr Potential. Wir wollen dies an einem Beispiel verdeutlichen. Aus Gründen der Übersichtlichkeit wollen wir hierbei nur einen Teil des Datensatzes <code>flights</code> benutzen:</p>
-<div class="sourceCode" id="cb896"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb896-1"><a href="data-transformation.html#cb896-1" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> <span class="fu">select</span>(flights, month, day, <span class="fu">contains</span>(<span class="st">&quot;delay&quot;</span>))</span>
-<span id="cb896-2"><a href="data-transformation.html#cb896-2" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> <span class="fu">filter</span>(fluege, <span class="sc">!</span><span class="fu">is.na</span>(arr_delay), <span class="sc">!</span><span class="fu">is.na</span>(dep_delay))</span>
-<span id="cb896-3"><a href="data-transformation.html#cb896-3" tabindex="-1"></a>fluege</span></code></pre></div>
+<div class="sourceCode" id="cb898"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb898-1"><a href="data-transformation.html#cb898-1" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> <span class="fu">select</span>(flights, month, day, <span class="fu">contains</span>(<span class="st">&quot;delay&quot;</span>))</span>
+<span id="cb898-2"><a href="data-transformation.html#cb898-2" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> <span class="fu">filter</span>(fluege, <span class="sc">!</span><span class="fu">is.na</span>(arr_delay), <span class="sc">!</span><span class="fu">is.na</span>(dep_delay))</span>
+<span id="cb898-3"><a href="data-transformation.html#cb898-3" tabindex="-1"></a>fluege</span></code></pre></div>
 <pre><code>## # A tibble: 327,346 × 4
 ##    month   day dep_delay arr_delay
 ##    &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;
@@ -783,12 +783,12 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 ## # ℹ 327,336 more rows</code></pre>
 <p>Durch die beiden Filterbedingungen <code>!is.na(arr_delay)</code> und <code>!is.na(dep_delay)</code> schließen wir NA-Werte bei den Verspätungen aus.</p>
 <p>Mithilfe des Pipe-Operators können wir stattdessen auch alternativ schreiben:</p>
-<div class="sourceCode" id="cb898"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb898-1"><a href="data-transformation.html#cb898-1" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
-<span id="cb898-2"><a href="data-transformation.html#cb898-2" tabindex="-1"></a>  <span class="fu">select</span>(month, day, <span class="fu">contains</span>(<span class="st">&quot;delay&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb898-3"><a href="data-transformation.html#cb898-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(arr_delay), <span class="sc">!</span><span class="fu">is.na</span>(dep_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb900"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb900-1"><a href="data-transformation.html#cb900-1" tabindex="-1"></a>fluege <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb900-2"><a href="data-transformation.html#cb900-2" tabindex="-1"></a>  <span class="fu">select</span>(month, day, <span class="fu">contains</span>(<span class="st">&quot;delay&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb900-3"><a href="data-transformation.html#cb900-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(arr_delay), <span class="sc">!</span><span class="fu">is.na</span>(dep_delay))</span></code></pre></div>
 <p>Als Nächstes wollen wir die Funktion <code>group_by()</code> auf <code>fluege</code> anwenden:</p>
-<div class="sourceCode" id="cb899"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb899-1"><a href="data-transformation.html#cb899-1" tabindex="-1"></a>fluege_month <span class="ot">&lt;-</span> <span class="fu">group_by</span>(fluege, month)</span>
-<span id="cb899-2"><a href="data-transformation.html#cb899-2" tabindex="-1"></a>fluege_month</span></code></pre></div>
+<div class="sourceCode" id="cb901"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb901-1"><a href="data-transformation.html#cb901-1" tabindex="-1"></a>fluege_month <span class="ot">&lt;-</span> <span class="fu">group_by</span>(fluege, month)</span>
+<span id="cb901-2"><a href="data-transformation.html#cb901-2" tabindex="-1"></a>fluege_month</span></code></pre></div>
 <pre><code>## # A tibble: 327,346 × 4
 ## # Groups:   month [12]
 ##    month   day dep_delay arr_delay
@@ -805,12 +805,12 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 ## 10     1     1        -2         8
 ## # ℹ 327,336 more rows</code></pre>
 <p>Wie man sieht, ist jetzt eine Gruppierung hinzugekommen, bestehend aus 12 Gruppen. Funktionen wie <code>summarize()</code> berücksichtigen diese Gruppierung:</p>
-<div class="sourceCode" id="cb901"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb901-1"><a href="data-transformation.html#cb901-1" tabindex="-1"></a><span class="fu">summarize</span>(fluege, <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb903"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb903-1"><a href="data-transformation.html#cb903-1" tabindex="-1"></a><span class="fu">summarize</span>(fluege, <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##   delay
 ##   &lt;dbl&gt;
 ## 1  6.90</code></pre>
-<div class="sourceCode" id="cb903"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb903-1"><a href="data-transformation.html#cb903-1" tabindex="-1"></a><span class="fu">summarize</span>(fluege_month, <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb905"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb905-1"><a href="data-transformation.html#cb905-1" tabindex="-1"></a><span class="fu">summarize</span>(fluege_month, <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 2
 ##    month  delay
 ##    &lt;int&gt;  &lt;dbl&gt;
@@ -829,14 +829,14 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 <p><code>summarize()</code> berücksichtigt die Gruppierung in <code>fluege_month</code>: die Mittelwerte werden nun pro Monat berechnet. Da hingegen <code>fluege</code> keine Gruppierung besitzt, wird im ersten Aufruf
 <code>summarize(fluege, delay = mean(arr_delay))</code> der Mittelwert über alle Daten berechnet.</p>
 <p>Mit <code>ungroup()</code> kann die Gruppierung wieder rückgängig gemacht werden:</p>
-<div class="sourceCode" id="cb905"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb905-1"><a href="data-transformation.html#cb905-1" tabindex="-1"></a><span class="fu">summarize</span>(<span class="fu">ungroup</span>(fluege_month), <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb907"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb907-1"><a href="data-transformation.html#cb907-1" tabindex="-1"></a><span class="fu">summarize</span>(<span class="fu">ungroup</span>(fluege_month), <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##   delay
 ##   &lt;dbl&gt;
 ## 1  6.90</code></pre>
 <p>Möglich sind auch Gruppierungen nach mehreren Variablen. Dies zeigt das nächste Beispiel:</p>
-<div class="sourceCode" id="cb907"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb907-1"><a href="data-transformation.html#cb907-1" tabindex="-1"></a>fluege_monthDay <span class="ot">&lt;-</span> <span class="fu">group_by</span>(fluege, month, day)</span>
-<span id="cb907-2"><a href="data-transformation.html#cb907-2" tabindex="-1"></a><span class="fu">summarize</span>(fluege_monthDay, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb909"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb909-1"><a href="data-transformation.html#cb909-1" tabindex="-1"></a>fluege_monthDay <span class="ot">&lt;-</span> <span class="fu">group_by</span>(fluege, month, day)</span>
+<span id="cb909-2"><a href="data-transformation.html#cb909-2" tabindex="-1"></a><span class="fu">summarize</span>(fluege_monthDay, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay))</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;month&#39;. You can override using the
 ## `.groups` argument.</code></pre>
 <pre><code>## # A tibble: 365 × 3
@@ -855,8 +855,8 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 ## 10     1    10  2.84
 ## # ℹ 355 more rows</code></pre>
 <p>Gruppierungen sind in Verbindung mit <code>summarize()</code> sehr nützlich, werden oft auch bei <code>mutate()</code> and <code>filter()</code> eingesetzt. Im nächsten Beispiel wird zu <code>fluege_month</code> eine zusätzliche Variable hinzugefügt, die in jeder Zeile die entsprechende monatliche durchschnittliche Verspätung bei der Ankunft angibt (vgl. <code>summarize(fluege_month, delay = mean(arr_delay))</code>, siehe oben):</p>
-<div class="sourceCode" id="cb910"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb910-1"><a href="data-transformation.html#cb910-1" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
-<span id="cb910-2"><a href="data-transformation.html#cb910-2" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">m_arr_delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb912"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb912-1"><a href="data-transformation.html#cb912-1" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
+<span id="cb912-2"><a href="data-transformation.html#cb912-2" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">m_arr_delay =</span> <span class="fu">mean</span>(arr_delay))</span></code></pre></div>
 <pre><code>## # A tibble: 327,346 × 5
 ## # Groups:   month [12]
 ##    month   day dep_delay arr_delay m_arr_delay
@@ -873,8 +873,8 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 ## 10     1     1        -2         8        6.13
 ## # ℹ 327,336 more rows</code></pre>
 <p>Entsprechend können wir die Gruppierung in Verbindung mit <code>filter()</code> nutzen:</p>
-<div class="sourceCode" id="cb912"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb912-1"><a href="data-transformation.html#cb912-1" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
-<span id="cb912-2"><a href="data-transformation.html#cb912-2" tabindex="-1"></a>   <span class="fu">filter</span>(<span class="fu">mean</span>(arr_delay) <span class="sc">&gt;</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb914"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb914-1"><a href="data-transformation.html#cb914-1" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
+<span id="cb914-2"><a href="data-transformation.html#cb914-2" tabindex="-1"></a>   <span class="fu">filter</span>(<span class="fu">mean</span>(arr_delay) <span class="sc">&gt;</span> <span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 109,952 × 4
 ## # Groups:   month [4]
 ##    month   day dep_delay arr_delay
@@ -891,9 +891,9 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 ## 10    12     1       -10       -29
 ## # ℹ 109,942 more rows</code></pre>
 <p>Zum Test können wir die Anzahl der Zeilen in der jeweiligen Gruppe bestimmen und die ausgegebenen Monate mit <code>summarize(fluege_month, delay = mean(arr_delay))</code> vergleichen:</p>
-<div class="sourceCode" id="cb914"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb914-1"><a href="data-transformation.html#cb914-1" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
-<span id="cb914-2"><a href="data-transformation.html#cb914-2" tabindex="-1"></a>   <span class="fu">filter</span>(<span class="fu">mean</span>(arr_delay) <span class="sc">&gt;</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb914-3"><a href="data-transformation.html#cb914-3" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb916"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb916-1"><a href="data-transformation.html#cb916-1" tabindex="-1"></a>fluege_month  <span class="sc">%&gt;%</span></span>
+<span id="cb916-2"><a href="data-transformation.html#cb916-2" tabindex="-1"></a>   <span class="fu">filter</span>(<span class="fu">mean</span>(arr_delay) <span class="sc">&gt;</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb916-3"><a href="data-transformation.html#cb916-3" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 2
 ##   month count
 ##   &lt;int&gt; &lt;int&gt;
@@ -907,14 +907,14 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 <div id="übungen-5" class="section level2 unnumbered hasAnchor">
 <h2>Übungen<a href="#%C3%BCbungen-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Die folgenden Aufgaben beziehen sich auf den Datensatz <code>flights</code> aus dem Paket <code>nycflights13</code> <span class="citation">(<a href="#ref-nycflights13">Wickham 2021</a>)</span>.</p>
-<div class="sourceCode" id="cb916"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb916-1"><a href="data-transformation.html#cb916-1" tabindex="-1"></a><span class="fu">require</span>(tidyverse)</span>
-<span id="cb916-2"><a href="data-transformation.html#cb916-2" tabindex="-1"></a><span class="fu">require</span>(nycflights13)</span></code></pre></div>
+<div class="sourceCode" id="cb918"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb918-1"><a href="data-transformation.html#cb918-1" tabindex="-1"></a><span class="fu">require</span>(tidyverse)</span>
+<span id="cb918-2"><a href="data-transformation.html#cb918-2" tabindex="-1"></a><span class="fu">require</span>(nycflights13)</span></code></pre></div>
 <div id="aufgabe-1-4" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 1<a href="data-transformation.html#aufgabe-1-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Welche der drei Funktionsaufrufe sind identisch? Was ist der Unterschied?</p>
-<div class="sourceCode" id="cb917"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb917-1"><a href="data-transformation.html#cb917-1" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb917-2"><a href="data-transformation.html#cb917-2" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> day <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb917-3"><a href="data-transformation.html#cb917-3" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> day <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb919"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb919-1"><a href="data-transformation.html#cb919-1" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb919-2"><a href="data-transformation.html#cb919-2" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> day <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb919-3"><a href="data-transformation.html#cb919-3" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> day <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
 </div>
 <div id="aufgabe-2-4" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 2<a href="data-transformation.html#aufgabe-2-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -946,8 +946,8 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 <div id="aufgabe-6-4" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 6<a href="data-transformation.html#aufgabe-6-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Was ist der Unterschied zwischen:</p>
-<div class="sourceCode" id="cb918"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb918-1"><a href="data-transformation.html#cb918-1" tabindex="-1"></a><span class="fu">arrange</span>(flights, year, month, day)</span>
-<span id="cb918-2"><a href="data-transformation.html#cb918-2" tabindex="-1"></a><span class="fu">arrange</span>(flights, day, month, year)</span></code></pre></div>
+<div class="sourceCode" id="cb920"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb920-1"><a href="data-transformation.html#cb920-1" tabindex="-1"></a><span class="fu">arrange</span>(flights, year, month, day)</span>
+<span id="cb920-2"><a href="data-transformation.html#cb920-2" tabindex="-1"></a><span class="fu">arrange</span>(flights, day, month, year)</span></code></pre></div>
 <p>?</p>
 </div>
 <div id="aufgabe-7-3" class="section level3 unnumbered hasAnchor">
@@ -963,21 +963,21 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 <ol style="list-style-type: lower-alpha">
 <li></li>
 </ol>
-<div class="sourceCode" id="cb919"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb919-1"><a href="data-transformation.html#cb919-1" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, year, day, year)</span></code></pre></div>
+<div class="sourceCode" id="cb921"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb921-1"><a href="data-transformation.html#cb921-1" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, year, day, year)</span></code></pre></div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li></li>
 </ol>
-<div class="sourceCode" id="cb920"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb920-1"><a href="data-transformation.html#cb920-1" tabindex="-1"></a>spalten <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;day&quot;</span>, <span class="st">&quot;dep_delay&quot;</span>, <span class="st">&quot;arr_delay&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb922"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb922-1"><a href="data-transformation.html#cb922-1" tabindex="-1"></a>spalten <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;day&quot;</span>, <span class="st">&quot;dep_delay&quot;</span>, <span class="st">&quot;arr_delay&quot;</span>)</span></code></pre></div>
 <ol start="3" style="list-style-type: lower-alpha">
 <li></li>
 </ol>
-<div class="sourceCode" id="cb921"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb921-1"><a href="data-transformation.html#cb921-1" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">contains</span>(<span class="st">&quot;DEP&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb923"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb923-1"><a href="data-transformation.html#cb923-1" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">contains</span>(<span class="st">&quot;DEP&quot;</span>))</span></code></pre></div>
 <ol start="4" style="list-style-type: lower-alpha">
 <li></li>
 </ol>
-<div class="sourceCode" id="cb922"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb922-1"><a href="data-transformation.html#cb922-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> </span>
-<span id="cb922-2"><a href="data-transformation.html#cb922-2" tabindex="-1"></a>  <span class="fu">select</span>(flight, <span class="fu">contains</span>(<span class="st">&quot;DEP&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb922-3"><a href="data-transformation.html#cb922-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb924"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb924-1"><a href="data-transformation.html#cb924-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> </span>
+<span id="cb924-2"><a href="data-transformation.html#cb924-2" tabindex="-1"></a>  <span class="fu">select</span>(flight, <span class="fu">contains</span>(<span class="st">&quot;DEP&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb924-3"><a href="data-transformation.html#cb924-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div>
 </div>
 <div id="aufgabe-9-2" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 9<a href="data-transformation.html#aufgabe-9-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -987,15 +987,15 @@ Figure 7.6: Funktion <code>summarize()</code> des R-Pakets <code>dplyr</code>.
 <div id="aufgabe-10-2" class="section level3 unnumbered hasAnchor">
 <h3>Aufgabe 10<a href="data-transformation.html#aufgabe-10-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Erklären Sie folgende Ausgabe:</p>
-<div class="sourceCode" id="cb923"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb923-1"><a href="data-transformation.html#cb923-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> </span>
-<span id="cb923-2"><a href="data-transformation.html#cb923-2" tabindex="-1"></a>  <span class="fu">select</span>(flight, distance) <span class="sc">%&gt;%</span>  </span>
-<span id="cb923-3"><a href="data-transformation.html#cb923-3" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb923-4"><a href="data-transformation.html#cb923-4" tabindex="-1"></a>  <span class="fu">group_by</span>(flight)  <span class="sc">%&gt;%</span> </span>
-<span id="cb923-5"><a href="data-transformation.html#cb923-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dMin =</span> <span class="fu">min</span>(distance), <span class="at">dMax =</span> <span class="fu">max</span>(distance)) <span class="sc">%&gt;%</span></span>
-<span id="cb923-6"><a href="data-transformation.html#cb923-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">r =</span> <span class="fu">min_rank</span>(distance)) <span class="sc">%&gt;%</span> </span>
-<span id="cb923-7"><a href="data-transformation.html#cb923-7" tabindex="-1"></a>  <span class="fu">filter</span>(dMax <span class="sc">-</span> dMin <span class="sc">&gt;</span> <span class="dv">2500</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb923-8"><a href="data-transformation.html#cb923-8" tabindex="-1"></a>  <span class="fu">arrange</span>(dMax <span class="sc">-</span> dMin, distance) <span class="sc">%&gt;%</span> </span>
-<span id="cb923-9"><a href="data-transformation.html#cb923-9" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb925"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb925-1"><a href="data-transformation.html#cb925-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> </span>
+<span id="cb925-2"><a href="data-transformation.html#cb925-2" tabindex="-1"></a>  <span class="fu">select</span>(flight, distance) <span class="sc">%&gt;%</span>  </span>
+<span id="cb925-3"><a href="data-transformation.html#cb925-3" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb925-4"><a href="data-transformation.html#cb925-4" tabindex="-1"></a>  <span class="fu">group_by</span>(flight)  <span class="sc">%&gt;%</span> </span>
+<span id="cb925-5"><a href="data-transformation.html#cb925-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dMin =</span> <span class="fu">min</span>(distance), <span class="at">dMax =</span> <span class="fu">max</span>(distance)) <span class="sc">%&gt;%</span></span>
+<span id="cb925-6"><a href="data-transformation.html#cb925-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">r =</span> <span class="fu">min_rank</span>(distance)) <span class="sc">%&gt;%</span> </span>
+<span id="cb925-7"><a href="data-transformation.html#cb925-7" tabindex="-1"></a>  <span class="fu">filter</span>(dMax <span class="sc">-</span> dMin <span class="sc">&gt;</span> <span class="dv">2500</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb925-8"><a href="data-transformation.html#cb925-8" tabindex="-1"></a>  <span class="fu">arrange</span>(dMax <span class="sc">-</span> dMin, distance) <span class="sc">%&gt;%</span> </span>
+<span id="cb925-9"><a href="data-transformation.html#cb925-9" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div>
 
 </div>
 </div>
@@ -1035,42 +1035,42 @@ Wickham, Hadley, and Garrett Grolemund. 2017. <em>R for Data Science</em>. <a hr
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/07-data_transformation.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["bchwtz-rprg.pdf", "bchwtz-rprg.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/07-data_transformation.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["bchwtz-rprg.pdf", "bchwtz-rprg.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
