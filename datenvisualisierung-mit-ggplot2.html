@@ -483,8 +483,8 @@ Wickham, Hadley und Grolemund, Garrett: <em>R für Data Science : Daten importie
 <div id="erste-beispiele" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Erste Beispiele<a href="datenvisualisierung-mit-ggplot2.html#erste-beispiele" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Das Data Frame <code>mpg</code> ist Teil des <code>ggplot2</code>-Packages (siehe <code>?mpg</code>). Es besteht aus 234 Datensätzen mit jeweils 11 Variablen. Es enthält u. a. Informationen über den Energieverbrauch von unterschiedlichen Automodellen aus den Jahren 1999 und 2008, die von der US Environment Protection Agency gesammelt wurden. <span class="citation">(<a href="#ref-ggplot2">Wickham 2016</a>)</span> (siehe auch: <a href="http://fueleconomy.gov" class="uri">http://fueleconomy.gov</a>)</p>
-<div class="sourceCode" id="cb853"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb853-1"><a href="datenvisualisierung-mit-ggplot2.html#cb853-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb853-2"><a href="datenvisualisierung-mit-ggplot2.html#cb853-2" tabindex="-1"></a><span class="fu">str</span>(mpg)</span></code></pre></div>
+<div class="sourceCode" id="cb854"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb854-1"><a href="datenvisualisierung-mit-ggplot2.html#cb854-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb854-2"><a href="datenvisualisierung-mit-ggplot2.html#cb854-2" tabindex="-1"></a><span class="fu">str</span>(mpg)</span></code></pre></div>
 <pre><code>## tibble [234 × 11] (S3: tbl_df/tbl/data.frame)
 ##  $ manufacturer: chr [1:234] &quot;audi&quot; &quot;audi&quot; &quot;audi&quot; &quot;audi&quot; ...
 ##  $ model       : chr [1:234] &quot;a4&quot; &quot;a4&quot; &quot;a4&quot; &quot;a4&quot; ...
@@ -570,6 +570,12 @@ Wickham, Hadley und Grolemund, Garrett: <em>R für Data Science : Daten importie
 </tbody>
 </table>
 <p><strong>Umrechnung: miles per gallon (mpg) nach Liter pro 100 km</strong></p>
+<pre><code>## Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
+## Use &#39;xfun::attr2()&#39; instead.
+## See help(&quot;Deprecated&quot;)
+## Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
+## Use &#39;xfun::attr2()&#39; instead.
+## See help(&quot;Deprecated&quot;)</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -607,21 +613,21 @@ Wickham, Hadley und Grolemund, Garrett: <em>R für Data Science : Daten importie
 </tbody>
 </table>
 <p>Die Umrechnung von Miles per Gallon (mpg) nach Liter pro 100 km kann z. B. durch eine Funk-tion geschehen:</p>
-<div class="sourceCode" id="cb855"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb855-1"><a href="datenvisualisierung-mit-ggplot2.html#cb855-1" tabindex="-1"></a><span class="co"># Umrechnung von Miles per Gallon (mpg) nach Liter pro 100 km</span></span>
-<span id="cb855-2"><a href="datenvisualisierung-mit-ggplot2.html#cb855-2" tabindex="-1"></a>literPer100km <span class="ot">&lt;-</span> <span class="cf">function</span>(mpg) {</span>
-<span id="cb855-3"><a href="datenvisualisierung-mit-ggplot2.html#cb855-3" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">round</span>(<span class="fl">235.195</span> <span class="sc">/</span> mpg, <span class="at">digits =</span> <span class="dv">1</span>))</span>
-<span id="cb855-4"><a href="datenvisualisierung-mit-ggplot2.html#cb855-4" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb857"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb857-1"><a href="datenvisualisierung-mit-ggplot2.html#cb857-1" tabindex="-1"></a><span class="co"># Umrechnung von Miles per Gallon (mpg) nach Liter pro 100 km</span></span>
+<span id="cb857-2"><a href="datenvisualisierung-mit-ggplot2.html#cb857-2" tabindex="-1"></a>literPer100km <span class="ot">&lt;-</span> <span class="cf">function</span>(mpg) {</span>
+<span id="cb857-3"><a href="datenvisualisierung-mit-ggplot2.html#cb857-3" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">round</span>(<span class="fl">235.195</span> <span class="sc">/</span> mpg, <span class="at">digits =</span> <span class="dv">1</span>))</span>
+<span id="cb857-4"><a href="datenvisualisierung-mit-ggplot2.html#cb857-4" tabindex="-1"></a>}</span></code></pre></div>
 <p>Wir erhalten dann die obigen Werte:</p>
-<div class="sourceCode" id="cb856"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb856-1"><a href="datenvisualisierung-mit-ggplot2.html#cb856-1" tabindex="-1"></a>fuel.mpg <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">10</span>, <span class="at">to =</span> <span class="dv">40</span>, <span class="at">by =</span> <span class="dv">5</span>)</span>
-<span id="cb856-2"><a href="datenvisualisierung-mit-ggplot2.html#cb856-2" tabindex="-1"></a>fuel.mpg</span></code></pre></div>
+<div class="sourceCode" id="cb858"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb858-1"><a href="datenvisualisierung-mit-ggplot2.html#cb858-1" tabindex="-1"></a>fuel.mpg <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">10</span>, <span class="at">to =</span> <span class="dv">40</span>, <span class="at">by =</span> <span class="dv">5</span>)</span>
+<span id="cb858-2"><a href="datenvisualisierung-mit-ggplot2.html#cb858-2" tabindex="-1"></a>fuel.mpg</span></code></pre></div>
 <pre><code>## [1] 10 15 20 25 30 35 40</code></pre>
-<div class="sourceCode" id="cb858"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb858-1"><a href="datenvisualisierung-mit-ggplot2.html#cb858-1" tabindex="-1"></a><span class="fu">literPer100km</span>(fuel.mpg)</span></code></pre></div>
+<div class="sourceCode" id="cb860"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb860-1"><a href="datenvisualisierung-mit-ggplot2.html#cb860-1" tabindex="-1"></a><span class="fu">literPer100km</span>(fuel.mpg)</span></code></pre></div>
 <pre><code>## [1] 23.5 15.7 11.8  9.4  7.8  6.7  5.9</code></pre>
 <p>Wie wir sehen, hat der Datensatz <code>mpg</code> einigermaßen vernünftige „sprechende“ Bezeichnungen für die verschiedenen Variablen (Spaltennamen) (für Europäer manchmal vielleicht zu sehr abgekürzt); ebenso haben die nicht nominal skalierten Daten aussagekräftige Werte. Dies wird uns bei der Erstellung der unterschiedlichen Plots helfen.</p>
 <p>Der erste Plot in Kapitel 3 in <span class="citation">Wickham and Grolemund (<a href="#ref-Wickhamny">2017</a>)</span> wurde erzeugt durch:</p>
-<div class="sourceCode" id="cb860"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb860-1"><a href="datenvisualisierung-mit-ggplot2.html#cb860-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy))</span></code></pre></div>
+<div class="sourceCode" id="cb862"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb862-1"><a href="datenvisualisierung-mit-ggplot2.html#cb862-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy))</span></code></pre></div>
 <p>Es geht mithilfe der <code>qplot</code>-Funktion sogar noch kürzer:</p>
-<div class="sourceCode" id="cb861"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb861-1"><a href="datenvisualisierung-mit-ggplot2.html#cb861-1" tabindex="-1"></a><span class="fu">qplot</span>(displ, hwy, <span class="at">data =</span> mpg)</span></code></pre></div>
+<div class="sourceCode" id="cb863"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb863-1"><a href="datenvisualisierung-mit-ggplot2.html#cb863-1" tabindex="-1"></a><span class="fu">qplot</span>(displ, hwy, <span class="at">data =</span> mpg)</span></code></pre></div>
 <pre><code>## Warning: `qplot()` was deprecated in ggplot2 3.4.0.
 ## This warning is displayed once every 8 hours.
 ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
@@ -649,16 +655,16 @@ Figure 6.1: Der erste Plot: Hubraum versus Verbrauch.
 <div id="beispiel-ästhetische-eigenschaften-aesthetic-festlegen" class="section level3 hasAnchor" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Beispiel: Ästhetische Eigenschaften (aesthetic) festlegen<a href="#beispiel-%C3%A4sthetische-eigenschaften-aesthetic-festlegen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Ästhetische Eigenschaften wie <code>colour</code> oder <code>size</code> können direkt mithilfe eines festen Werts festgelegt werden (und zwar außerhalb der Funktion <code>aes()</code>):</p>
-<div class="sourceCode" id="cb863"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb863-1"><a href="datenvisualisierung-mit-ggplot2.html#cb863-1" tabindex="-1"></a><span class="co"># Alle Punkte blau</span></span>
-<span id="cb863-2"><a href="datenvisualisierung-mit-ggplot2.html#cb863-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                          <span class="co"># outside of aes()</span></span>
-<span id="cb863-3"><a href="datenvisualisierung-mit-ggplot2.html#cb863-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb865"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb865-1"><a href="datenvisualisierung-mit-ggplot2.html#cb865-1" tabindex="-1"></a><span class="co"># Alle Punkte blau</span></span>
+<span id="cb865-2"><a href="datenvisualisierung-mit-ggplot2.html#cb865-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                          <span class="co"># outside of aes()</span></span>
+<span id="cb865-3"><a href="datenvisualisierung-mit-ggplot2.html#cb865-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p>Sie können aber auch an eine Variable gebunden werden und nehmen dann abhängig von diesem Variablenwert unterschiedliche Werte an. Dieses „Binden“ geschieht <em>innerhalb</em> der Funktion <code>aes()</code>, dessen Rückgabewert mithilfe des Arguments <code>mapping</code> an das Geom-Objekt übergeben wird:</p>
-<div class="sourceCode" id="cb864"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb864-1"><a href="datenvisualisierung-mit-ggplot2.html#cb864-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                           <span class="co"># inside aes()</span></span>
-<span id="cb864-2"><a href="datenvisualisierung-mit-ggplot2.html#cb864-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> year))</span></code></pre></div>
+<div class="sourceCode" id="cb866"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb866-1"><a href="datenvisualisierung-mit-ggplot2.html#cb866-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                           <span class="co"># inside aes()</span></span>
+<span id="cb866-2"><a href="datenvisualisierung-mit-ggplot2.html#cb866-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> year))</span></code></pre></div>
 <p><code>x</code> und <code>y</code> sind ebenfalls ästhetische Eigenschaften; da sie (in der Regel) an Variablen gebunden werden, stehen sie somit stets innerhalb der Funktion <code>aes()</code>.</p>
 <p>Im folgenden erzeugten Plot sind die Punkte zwar einfarbig, aber nicht blau! „blue“ wird hier als kategoriale Variable interpretiert, die nur einen Wert annimmt und in der erstellten Legende angezeigt wird:</p>
-<div class="sourceCode" id="cb865"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb865-1"><a href="datenvisualisierung-mit-ggplot2.html#cb865-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                         </span>
-<span id="cb865-2"><a href="datenvisualisierung-mit-ggplot2.html#cb865-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb867"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb867-1"><a href="datenvisualisierung-mit-ggplot2.html#cb867-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                         </span>
+<span id="cb867-2"><a href="datenvisualisierung-mit-ggplot2.html#cb867-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:plot-hwy-displ"></span>
 <img src="bchwtz-rprg_files/figure-html/plot-hwy-displ-1.png" alt="Unerwartete Farbe." width="672" />
 <p class="caption">
@@ -667,8 +673,8 @@ Figure 6.2: Unerwartete Farbe.
 </div>
 
 <p>Entsprechend erhält man durch den folgenden Plot eine Vielzahl von Farbtönen und eine entsprechende Legende:</p>
-<div class="sourceCode" id="cb866"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb866-1"><a href="datenvisualisierung-mit-ggplot2.html#cb866-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                          </span>
-<span id="cb866-2"><a href="datenvisualisierung-mit-ggplot2.html#cb866-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">234</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb868"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb868-1"><a href="datenvisualisierung-mit-ggplot2.html#cb868-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                          </span>
+<span id="cb868-2"><a href="datenvisualisierung-mit-ggplot2.html#cb868-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">234</span>))</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:plot-hwy-displ-legend"></span>
 <img src="bchwtz-rprg_files/figure-html/plot-hwy-displ-legend-1.png" alt="Vielzahl von Farben." width="672" />
 <p class="caption">
@@ -682,9 +688,9 @@ Figure 6.3: Vielzahl von Farben.
 <p><code>geom_point()</code> versteht folgende ästhetische Eigenschaften (<code>x</code> und <code>y</code> müssen immer gesetzt werden):
 <code>x</code>, <code>y</code>, <code>alpha</code>, <code>colour</code>, <code>fill</code>, <code>group</code>, <code>shape</code>, <code>size</code>, <code>stroke</code></p>
 <p>Beispielsweise erzeugt folgender Code die Abbildung <a href="datenvisualisierung-mit-ggplot2.html#fig:plot-hwy-displ-fill-colour">6.4</a>:</p>
-<div class="sourceCode" id="cb867"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb867-1"><a href="datenvisualisierung-mit-ggplot2.html#cb867-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                         </span>
-<span id="cb867-2"><a href="datenvisualisierung-mit-ggplot2.html#cb867-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), </span>
-<span id="cb867-3"><a href="datenvisualisierung-mit-ggplot2.html#cb867-3" tabindex="-1"></a>       <span class="at">size =</span> <span class="dv">3</span>, <span class="at">stroke =</span> <span class="fl">1.5</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">color =</span><span class="st">&quot;orange&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb869"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb869-1"><a href="datenvisualisierung-mit-ggplot2.html#cb869-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span>                         </span>
+<span id="cb869-2"><a href="datenvisualisierung-mit-ggplot2.html#cb869-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), </span>
+<span id="cb869-3"><a href="datenvisualisierung-mit-ggplot2.html#cb869-3" tabindex="-1"></a>       <span class="at">size =</span> <span class="dv">3</span>, <span class="at">stroke =</span> <span class="fl">1.5</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">color =</span><span class="st">&quot;orange&quot;</span>) </span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:plot-hwy-displ-fill-colour"></span>
 <img src="bchwtz-rprg_files/figure-html/plot-hwy-displ-fill-colour-1.png" alt="Argumente fill und colour wurden definiert." width="672" />
 <p class="caption">
@@ -786,23 +792,23 @@ Figure 6.5: Farbiges Histogram.
 
 <p><strong>Aufgabe 2</strong></p>
 <p>Gegeben sind folgende Daten:</p>
-<div class="sourceCode" id="cb868"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb868-1"><a href="datenvisualisierung-mit-ggplot2.html#cb868-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">32</span></span>
-<span id="cb868-2"><a href="datenvisualisierung-mit-ggplot2.html#cb868-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="dv">1</span><span class="sc">:</span>n, <span class="dv">1</span><span class="sc">:</span>(n<span class="sc">/</span><span class="dv">2</span>), <span class="dv">1</span><span class="sc">:</span>(n<span class="sc">/</span><span class="dv">4</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb870"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb870-1"><a href="datenvisualisierung-mit-ggplot2.html#cb870-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">32</span></span>
+<span id="cb870-2"><a href="datenvisualisierung-mit-ggplot2.html#cb870-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="dv">1</span><span class="sc">:</span>n, <span class="dv">1</span><span class="sc">:</span>(n<span class="sc">/</span><span class="dv">2</span>), <span class="dv">1</span><span class="sc">:</span>(n<span class="sc">/</span><span class="dv">4</span>)) </span></code></pre></div>
 <p>Was ist der Unterschied zwischen den beiden Plots:</p>
-<div class="sourceCode" id="cb869"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb869-1"><a href="datenvisualisierung-mit-ggplot2.html#cb869-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(x,y)) <span class="sc">+</span> </span>
-<span id="cb869-2"><a href="datenvisualisierung-mit-ggplot2.html#cb869-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))</span></code></pre></div>
-<div class="sourceCode" id="cb870"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb870-1"><a href="datenvisualisierung-mit-ggplot2.html#cb870-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(x,y)) <span class="sc">+</span> </span>
-<span id="cb870-2"><a href="datenvisualisierung-mit-ggplot2.html#cb870-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb871"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb871-1"><a href="datenvisualisierung-mit-ggplot2.html#cb871-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(x,y)) <span class="sc">+</span> </span>
+<span id="cb871-2"><a href="datenvisualisierung-mit-ggplot2.html#cb871-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))</span></code></pre></div>
+<div class="sourceCode" id="cb872"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb872-1"><a href="datenvisualisierung-mit-ggplot2.html#cb872-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(x,y)) <span class="sc">+</span> </span>
+<span id="cb872-2"><a href="datenvisualisierung-mit-ggplot2.html#cb872-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
 <p>Was würden Sie bevorzugen und warum?</p>
 <p><strong>Aufgabe 3</strong></p>
 <p>Gegeben sind ähnlich wie in den Übungen zu Kapitel <a href="chap5.html#chap5">5</a> folgende Daten:</p>
-<div class="sourceCode" id="cb871"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb871-1"><a href="datenvisualisierung-mit-ggplot2.html#cb871-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb871-2"><a href="datenvisualisierung-mit-ggplot2.html#cb871-2" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span>  <span class="dv">100</span></span>
-<span id="cb871-3"><a href="datenvisualisierung-mit-ggplot2.html#cb871-3" tabindex="-1"></a>MatNr <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fl">1E6</span><span class="sc">:</span><span class="fl">1E7</span><span class="dv">-1</span>, anzahl)</span>
-<span id="cb871-4"><a href="datenvisualisierung-mit-ggplot2.html#cb871-4" tabindex="-1"></a><span class="fu">names</span>(MatNr) <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;ET&quot;</span>,<span class="st">&quot;MB&quot;</span>, <span class="st">&quot;WIng&quot;</span>, <span class="st">&quot;WInfo&quot;</span>), anzahl, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
-<span id="cb871-5"><a href="datenvisualisierung-mit-ggplot2.html#cb871-5" tabindex="-1"></a>student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(MatNr)</span>
-<span id="cb871-6"><a href="datenvisualisierung-mit-ggplot2.html#cb871-6" tabindex="-1"></a>student<span class="sc">$</span>Stdgang <span class="ot">&lt;-</span> <span class="fu">names</span>(MatNr)</span>
-<span id="cb871-7"><a href="datenvisualisierung-mit-ggplot2.html#cb871-7" tabindex="-1"></a>student<span class="sc">$</span>Punkte <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">rnorm</span>(anzahl, <span class="at">mean =</span> <span class="dv">68</span>, <span class="at">sd =</span> <span class="dv">12</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb873"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb873-1"><a href="datenvisualisierung-mit-ggplot2.html#cb873-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb873-2"><a href="datenvisualisierung-mit-ggplot2.html#cb873-2" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span>  <span class="dv">100</span></span>
+<span id="cb873-3"><a href="datenvisualisierung-mit-ggplot2.html#cb873-3" tabindex="-1"></a>MatNr <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fl">1E6</span><span class="sc">:</span><span class="fl">1E7</span><span class="dv">-1</span>, anzahl)</span>
+<span id="cb873-4"><a href="datenvisualisierung-mit-ggplot2.html#cb873-4" tabindex="-1"></a><span class="fu">names</span>(MatNr) <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;ET&quot;</span>,<span class="st">&quot;MB&quot;</span>, <span class="st">&quot;WIng&quot;</span>, <span class="st">&quot;WInfo&quot;</span>), anzahl, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb873-5"><a href="datenvisualisierung-mit-ggplot2.html#cb873-5" tabindex="-1"></a>student <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(MatNr)</span>
+<span id="cb873-6"><a href="datenvisualisierung-mit-ggplot2.html#cb873-6" tabindex="-1"></a>student<span class="sc">$</span>Stdgang <span class="ot">&lt;-</span> <span class="fu">names</span>(MatNr)</span>
+<span id="cb873-7"><a href="datenvisualisierung-mit-ggplot2.html#cb873-7" tabindex="-1"></a>student<span class="sc">$</span>Punkte <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">rnorm</span>(anzahl, <span class="at">mean =</span> <span class="dv">68</span>, <span class="at">sd =</span> <span class="dv">12</span>))</span></code></pre></div>
 <p>Es soll wieder das folgende Notenschema zugrunde liegen:</p>
 <table>
 <thead>
@@ -913,42 +919,42 @@ Wickham, Hadley, and Garrett Grolemund. 2017. <em>R for Data Science</em>. <a hr
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/06-datenvisualisierung_mit_ggplot2.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["bchwtz-rprg.pdf", "bchwtz-rprg.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/06-datenvisualisierung_mit_ggplot2.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["bchwtz-rprg.pdf", "bchwtz-rprg.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
